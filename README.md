@@ -148,7 +148,7 @@ rm -rf /datas/novaforge*
 
 At the end, you should have a high-level content similar to this one :
 ```sh
-[config@novapack /]$ find /datas -maxdepth 3 |sort'
+[config@novapack /]$ find /datas -maxdepth 3 |sort
 /datas
 /datas/README.md
 /datas/sources
