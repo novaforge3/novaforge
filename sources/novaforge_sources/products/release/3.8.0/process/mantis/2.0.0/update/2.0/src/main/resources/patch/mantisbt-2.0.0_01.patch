@@ -1,0 +1,254 @@
+diff -rNU5 mantisbt/admin/install.php mantisbt-2.0.0/admin/install.php
+--- mantisbt/admin/install.php	2017-05-12 13:03:07.000000000 +0200
++++ mantisbt-2.0.0/admin/install.php	2017-05-22 18:12:35.000000000 +0200
+@@ -18,10 +18,11 @@
+  * Mantis Database installation process
+  *
+  * @package MantisBT
+  * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+  * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
++ * @copyright Copyright 2017  Atos, NovaForge Version 3 and above.
+  * @link http://www.mantisbt.org
+  */
+ 
+ error_reporting( E_ALL );
+ @set_time_limit( 0 );
+@@ -350,10 +351,11 @@
+ 	}
+ } # end install_state == 0
+ 
+ # got database information, check and install
+ if( 2 == $t_install_state ) {
++    			
+ 	# By now user has picked a timezone, ensure it is set
+ 	date_default_timezone_set( $f_timezone );
+ ?>
+ 
+ <div class="col-md-12 col-xs-12">
+@@ -926,10 +928,16 @@
+ 					);
+ 					$t_target = $g_upgrade[$i][1];
+ 					break;
+ 
+ 				case 'UpdateFunction':
++					// Novaforge - enable script to be launched with curl command
++					$t_cookie_string = auth_get_current_user_cookie();
++					if ( $t_cookie_string == null) {
++						auth_attempt_script_login ('administrator',null);
++					}
++	
+ 					$t_sqlarray = array(
+ 						$g_upgrade[$i][1],
+ 					);
+ 					if( isset( $g_upgrade[$i][2] ) ) {
+ 						$t_sqlarray[] = $g_upgrade[$i][2];
+diff -rNU5 mantisbt/core/bug_api.php mantisbt-2.0.0/core/bug_api.php
+--- mantisbt/core/bug_api.php	2017-02-21 11:35:53.000000000 +0100
++++ mantisbt-2.0.0/core/bug_api.php	2017-03-28 15:47:48.000000000 +0200
+@@ -2320,6 +2320,33 @@
+ 
+ 	bug_clear_cache( $c_bug_id );
+ 
+ 	return true;
+ }
++
++
++/**
++ * Return the number of bugs linked to a specific project and specific status
++ * @param int p_project_id : project identification
++ * @param int p_status_id  : status_id
++ * @return integer 
++ * @access public
++ * @uses database_api.php
++ */
++
++function bug_count_by_status($p_project_id , $p_status_id) {
++   $c_project_id = (int) $p_project_id;
++   $c_status_id = (int) $p_status_id;
++   
++    db_param_push();
++	$t_query = "SELECT COUNT(*) as bug_count from {bug} 
++	WHERE project_id = " . db_param() . "
++	AND status = " . db_param() ;
++
++	$t_result = db_query( $t_query, array( $c_project_id, $c_status_id) );
++	
++	$t_row = db_fetch_array( $t_result );
++	return $t_row['bug_count'];
++
++}
++
+ /* ***** Novaforge ***** */
+\ No newline at end of file
+diff -rNU5 mantisbt/core/constant_inc.php mantisbt-2.0.0/core/constant_inc.php
+--- mantisbt/core/constant_inc.php	2017-02-21 11:35:53.000000000 +0100
++++ mantisbt-2.0.0/core/constant_inc.php	2017-04-04 15:15:18.000000000 +0200
+@@ -437,12 +437,22 @@
+ define( 'ERROR_STATUS_DUPLICATE_LABEL', 5000 );
+ define( 'ERROR_STATUS_INVALID_COLOR', 5003 );
+ define( 'ERROR_STATUS_INVALID_LABEL', 5004 );
+ define( 'ERROR_STATUS_OTHER_LANGUAGE_EMAIL', 5005 );
+ define( 'ERROR_STATUS_CLASSIFICATION_NUMBER', 5006 );
+-define( 'ERROR_STATUS_DELETE_WHEN_USE', 5008 );
+-define( 'ERROR_STATUS_LANGUAGE', 5009 );
++define( 'ERROR_STATUS_CLASSIFICATION_NUMBER_BORNS', 5007 );
++define( 'ERROR_STATUS_DELETE_DEFAULT_STATUS', 5008 );
++define( 'ERROR_STATUS_DELETE_USED_IN_BUGS', 5009 );
++define( 'ERROR_STATUS_DELETE_USED_IN_THRESHOLD', 5010 );
++define( 'ERROR_STATUS_DELETE_USED_IN_WORKFLOW', 5011 );
++
++define( 'ERROR_STATUS_LANGUAGE', 5012 );
++define( 'ERROR_STATUS_CLASSIFICATION_NEW', 5013 );
++define( 'ERROR_STATUS_CLASSIFICATION_CLOSED', 5014 );
++define( 'ERROR_STATUS_CLASSIFICATION_ORDER', 5015 );
++define( 'ERROR_STATUS_ADDING', 5016 );
++define( 'ERROR_STATUS_TECHNICAL', 5017 );
+ 
+ # Generic position constants
+ define( 'POSITION_NONE', 0 );
+ define( 'POSITION_TOP', 1 );
+ define( 'POSITION_BOTTOM', 2 );
+diff -rNU5 mantisbt/core/history_api.php mantisbt-2.0.0/core/history_api.php
+--- mantisbt/core/history_api.php	2017-02-21 11:35:53.000000000 +0100
++++ mantisbt-2.0.0/core/history_api.php	2017-03-16 12:06:09.000000000 +0100
+@@ -850,6 +850,31 @@
+ 	}
+ 
+ 	return true;
+ }
+ 
++/**
++ * Return the number of bug_history 
++ * @param int $p_project_id
++ * @param int $p_status_id
++ * @return the number of bug_history for specified project and status (field_name=status, old_value and new_value)
++ */
++ 
++function history_count_by_status($p_project_id , $p_status_id){
++
++	$c_project_id = (int) $p_project_id;
++	db_param_push();
++	
++	$t_query = "SELECT COUNT(*) as bug_history_count from {bug_history} h
++    JOIN {bug} b on b.id = h.bug_id
++	WHERE b.project_id = ". db_param() ."
++	and h.field_name = 'status'
++	and (h.old_value = ". db_param() ." or h.new_value= ". db_param() .")";
++
++    $t_result = db_query( $t_query, array( $c_project_id, $p_status_id,$p_status_id ) );
++	
++	$t_row = db_fetch_array( $t_result );
++	return $t_row['bug_history_count'];
++
++}
++
+ /* ***** Novaforge ***** */
+diff -rNU5 mantisbt/core/utility_api.php mantisbt-2.0.0/core/utility_api.php
+--- mantisbt/core/utility_api.php	2016-12-30 21:39:51.000000000 +0100
++++ mantisbt-2.0.0/core/utility_api.php	2017-04-04 15:10:26.000000000 +0200
+@@ -27,10 +27,11 @@
+  *
+  * @package CoreAPI
+  * @subpackage UtilityAPI
+  * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+  * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
++ * @copyright Copyright 2017  Atos, NovaForge Version 3 and above.
+  * @link http://www.mantisbt.org
+  *
+  * @uses config_api.php
+  * @uses constant_inc.php
+  * @uses error_api.php
+@@ -315,5 +316,38 @@
+ 		}
+ 	}
+ 
+ 	return null;
+ }
++/* ***** Novaforge ***** */
++/**
++ * return true or false 
++ * The function checks that the array to check is well sorted according to the sorted array
++ * if yes, the function returns true otherwise false
++ * The array to check can include values that are not in sorted array
++ * If one value present in sorted array is not in array to check the function returns false
++ * @param array   $p_arr_sorted      the sorted array
++ * @param string  $p_ arr_to_check   the array to check for order        
++ * return boolean $p_return_object  Whether to return array of property objects.
++ */
++ 
++function is_well_sorted($p_arr_sorted, $p_arr_to_check) { 
++
++	$indice = 0; $count = count($p_arr_to_check);
++	
++	foreach ($p_arr_sorted as $_unused => $value){
++		$not_found = true;
++		for ($i = $indice; $i < $count; $i++){
++			if ($p_arr_to_check[$i] == $value){
++				$indice = $i;
++				$not_found = false;
++				break;
++			}
++		}
++		if ($not_found){
++			return false;
++		}
++	}
++	return true;
++}
++
++/* ***** Novaforge ***** */
+\ No newline at end of file
+diff -rNU5 mantisbt/lang/strings_english.txt mantisbt-2.0.0/lang/strings_english.txt
+--- mantisbt/lang/strings_english.txt	2017-02-21 11:35:53.000000000 +0100
++++ mantisbt-2.0.0/lang/strings_english.txt	2017-04-04 15:15:39.000000000 +0200
+@@ -1801,13 +1801,21 @@
+ $MANTIS_ERROR[ERROR_STATUS_DUPLICATE_LABEL] = 'A status already exists with that label.';
+ $MANTIS_ERROR[ERROR_STATUS_INVALID_COLOR] = 'This color has a wrong format.';
+ $MANTIS_ERROR[ERROR_STATUS_INVALID_LABEL] = 'This label has a wrong format.';
+ $MANTIS_ERROR[ERROR_STATUS_OTHER_LANGUAGE_EMAIL] = 'Missing english email field to add an email in other language.';
+ $MANTIS_ERROR[ERROR_STATUS_CLASSIFICATION_NUMBER] = 'Two status have the same number.';
+-$MANTIS_ERROR[ERROR_STATUS_DELETE_WHEN_USE] = 'Impossible to delete this status : it is used.';
++$MANTIS_ERROR[ERROR_STATUS_CLASSIFICATION_NUMBER_BORNS] = 'The weight of status has to be between those of bounds.';
++$MANTIS_ERROR[ERROR_STATUS_DELETE_DEFAULT_STATUS] = 'Impossible to delete default MantisBT status.';
++$MANTIS_ERROR[ERROR_STATUS_DELETE_USED_IN_BUGS] = 'Impossible to delete  "%1$s" status : it is referenced in bugs.';
++$MANTIS_ERROR[ERROR_STATUS_DELETE_USED_IN_THRESHOLD] = 'Impossible to delete  "%1$s" status : it is used in workflow thresholds.';
++$MANTIS_ERROR[ERROR_STATUS_DELETE_USED_IN_WORKFLOW] = 'Impossible to delete  "%1$s" status : it is used in workflow transitions.';
+ $MANTIS_ERROR[ERROR_STATUS_LANGUAGE] = 'Sorry : impossible to manage status with this default language.';
+-
++$MANTIS_ERROR[ERROR_STATUS_CLASSIFICATION_NEW] = 'Impossible to classify status. The first status must be the NEW status.';
++$MANTIS_ERROR[ERROR_STATUS_CLASSIFICATION_CLOSED] = 'Impossible to classify status. The last status must be the CLOSED status.';
++$MANTIS_ERROR[ERROR_STATUS_CLASSIFICATION_ORDER] = 'The new order has to match with default status Mantis and used customized status order.';
++$MANTIS_ERROR[ERROR_STATUS_ADDING] = 'Impossible to add a status between status "%1$s" and "%2$s".';
++$MANTIS_ERROR[ERROR_STATUS_TECHNICAL] = 'A technical error occurs on status management. Please contact your administrator';
+ # dropzone.js - placeholders format is defined by the library
+ $s_dropzone_default_message = 'Drop files here to upload (or click)';
+ $s_dropzone_fallback_message = 'Your browser does not support drag\'n\'drop file uploads.';
+ $s_dropzone_fallback_text = '';
+ $s_dropzone_file_too_big = 'File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.';
+diff -rNU5 mantisbt/lang/strings_french.txt mantisbt-2.0.0/lang/strings_french.txt
+--- mantisbt/lang/strings_french.txt	2017-02-21 11:35:53.000000000 +0100
++++ mantisbt-2.0.0/lang/strings_french.txt	2017-04-06 11:26:10.000000000 +0200
+@@ -1436,12 +1436,21 @@
+ $MANTIS_ERROR[ERROR_STATUS_DUPLICATE_LABEL] = 'Un statut existe déjà avec ce label.';
+ $MANTIS_ERROR[ERROR_STATUS_INVALID_COLOR] = 'Mauvais format de couleur.';
+ $MANTIS_ERROR[ERROR_STATUS_INVALID_LABEL] = 'Mauvais format de label.';
+ $MANTIS_ERROR[ERROR_STATUS_OTHER_LANGUAGE_EMAIL] = 'Il manque l\'email en anglais pour l\'ajouter dans d\'autre langage.';
+ $MANTIS_ERROR[ERROR_STATUS_CLASSIFICATION_NUMBER] = 'Deux statuts ont le même classement.';
+-$MANTIS_ERROR[ERROR_STATUS_DELETE_WHEN_USE] = 'Impossible de supprimer ce statut : il est actuellement utilisé.';
+-$MANTIS_ERROR[ERROR_STATUS_LANGUAGE] = 'Désolé : impossible de gérer les statut avec ce language par défaut.';
++$MANTIS_ERROR[ERROR_STATUS_CLASSIFICATION_NUMBER_BORNS] = 'Le poids des statuts doit étre compris entre ceux des bornes.'; 
++$MANTIS_ERROR[ERROR_STATUS_DELETE_DEFAULT_STATUS] = 'Impossible de supprimer les statuts natifs de MantisBT.';
++$MANTIS_ERROR[ERROR_STATUS_DELETE_USED_IN_BUGS] = 'Impossible de supprimer le statut "%1$s" : il est référencé dans les bogues.';
++$MANTIS_ERROR[ERROR_STATUS_DELETE_USED_IN_THRESHOLD] = 'Impossible de supprimer le statut "%1$s" : il est utilisé dans les seuils du workfow.';
++$MANTIS_ERROR[ERROR_STATUS_DELETE_USED_IN_WORKFLOW] = 'Impossible de supprimer le statut "%1$s" :  il est utilisé dans le workflow.';
++$MANTIS_ERROR[ERROR_STATUS_LANGUAGE] = 'Désolé : impossible de gérer les états avec ce language par défaut.';
++$MANTIS_ERROR[ERROR_STATUS_CLASSIFICATION_NEW] = 'Impossible de classifier les états. L\'état en première position doit être l\'état NOUVEAU.';
++$MANTIS_ERROR[ERROR_STATUS_CLASSIFICATION_CLOSED] = 'Impossible de classifier les états. L\'état en dernière position doit être l\'état FERME.';
++$MANTIS_ERROR[ERROR_STATUS_CLASSIFICATION_ORDER] = 'La nouvelle classification doit être compatible avec l\'ordre des statuts par défaut de Mantis et l\'ordre des nouveaux statuts en cours d\'utilisation.';
++$MANTIS_ERROR[ERROR_STATUS_ADDING] = 'Impossible d\'ajouter un état entre les états "%1$s" et "%2$s".';
++$MANTIS_ERROR[ERROR_STATUS_TECHNICAL] = 'Erreur technique sur la gestion des états. Veuillez contacter votre administrateur';
+ $s_dropzone_default_message = 'Déposer les fichiers ici pour les téléverser (ou cliquer)';
+ $s_dropzone_fallback_message = 'Votre navigateur ne supporte pas le téléversement de fichiers par glisser-déposer.';
+ $s_dropzone_file_too_big = 'Le fichier est trop gros ({{filesize}}MiB). Taille maximale du fichier : {{maxFilesize}}MiB.';
+ $s_dropzone_invalid_file_type = 'Vous ne pouvez pas téléverser des fichiers de ce type.';
+ $s_dropzone_response_error = 'Le serveur a répondu avec le code {{statusCode}}.';

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<sect1 version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+	<title>Gérer les applications</title>
+
+	<para>
+		Une fois que le projet est validé par l'administrateur de la forge,
+		l'utilisateur ayant créé le projet peut y accéder afin de
+		l'administrer.
+		Dans cette section nous allons voir comment ajouter une application de
+		gestion de faits techniques (Mantis). Pour cela il suffit d'aller au
+		menu de
+		navigation du projet et de choisir
+		<emphasis role="bold">Administration du
+			projet.
+		</emphasis>
+	</para>
+
+	<para>Pour cela sélectionner le projet depuis le menu projets rapide
+	</para>
+
+	<figure>
+		<title>Sélectionner un projet</title>
+
+		<mediaobject>
+			<imageobject>
+				<imagedata align="center"
+					fileref="04-03-010-ManageApplicationSelectProject.png" width="200.px" />
+			</imageobject>
+		</mediaobject>
+	</figure>
+
+	<para>Le menu de gauche est alors remplacé par le menu du projet.
+		Cliquez
+		sur: Administration du projet
+	</para>
+
+	<figure>
+		<title>Menu du projet</title>
+
+		<mediaobject>
+			<imageobject>
+				<imagedata align="center" fileref="04-03-011-ManageApplicationMenu.png"
+					width="250.px" />
+			</imageobject>
+		</mediaobject>
+	</figure>
+
+	<para>L'application d'administration de projet est lancée, suivre les
+		étapes
+		suivantes :
+	</para>
+
+	<sect2>
+		<title>Ajouter un espace</title>
+
+		<para>
+			Un espace est une unité organisationnelle qui permet de regrouper
+			un ensemble d'applications. Pour ajouter un espace, aller dans l'onglet
+			d'administration
+			<emphasis role="bold">Vos Applications</emphasis>
+			et cliquer sur
+			<emphasis role="bold">Créer un espace.</emphasis>
+		</para>
+
+		<figure>
+			<title>Créer un espace</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="04-03-01-ManageApplication.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+		<para>Remplir le nom de l'espace, cliquer sur Ajouter puis valider
+			votre
+			choix.
+		</para>
+
+
+		<para>Les informations de l'espace peuvent être modifiées, il suffit
+			de le sélectionner et
+			cliquer sur Editer l'espace. Dans la section suivante nous allons
+			ajouter une application à l'espace créé.
+		</para>
+	</sect2>
+
+	<sect2 id="applications">
+		<title>Ajouter une application</title>
+
+		<para>Pour ajouter une application à l'espace sélectionner l'espace et
+			cliquer sur Ajouter une application.
+		</para>
+
+		<figure>
+			<title>Ajouter une application à l'espace</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="04-03-03-ManageApplication.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+		<para>
+			Les outils sont disponible sur plusieurs catégories dans la forge.
+			Par exemple l'outil Mantis est sous la catégorie
+			<emphasis role="bold">Gestion des faits techniques.</emphasis>
+			Sélectionner cette
+			catégorie puis les outils de cette catégorie apparaissent dans la liste
+			des Type. Choisir alors l'outil Mantis et donner un nom de votre choix.
+			Ce
+			dernier sert à identifier l'application dans le menu de navigation.
+		</para>
+
+		<para>Associer un rôle par défaut à l'utilisateur créateur du projet
+			dans
+			l'outil, cliquer sur ajouter puis valider le choix.
+		</para>
+
+		<para>
+			<emphasis role="bold">Remarque : un outil peut être ajouté
+				plusieurs
+				fois sous forme d'applications ce qui permet de gérer des instances
+				différentes pour des besoins différents. Ceci est valable pour
+				toutes les applications hormis les applications Jenkins et Sonar qui
+				sont limitées à 1 instance par projet.
+			</emphasis>
+		</para>
+
+		<para>
+			<emphasis role="bold">Remarque : il est possible que lors de la
+				création d'une application, la création du projet dans l'outil
+				échoue par exemple si l'outil n'est plus accessible.
+				Dans ce cas, l'application se retrouvera en erreur et ne sera pas
+				opérationnelle. L'utilisateur pourra contacter par mail
+				l'administrateur de forge afin de l'alerter sur le problème.
+			</emphasis>
+		</para>
+
+	</sect2>
+
+	<sect2>
+		<title>Gestion des applications Sonar et Jenkins</title>
+		<para>
+			Les applications d'intégration continue (Jenkins) et de qualimétrie
+			(Sonar) ont la particularité d'être cloisonnées sur des instances
+			d'outils dédiées par projet.
+			Un certain nombre d'instances Sonar et Jenkins sont fournies au
+			démarrage de la Forge et vont provisionner les premières création
+			d'applications.
+			Il est possible que le seuil d'approvisionnement des instances Sonar ou
+			Jenkins soit atteint et que la création d'une application Sonar ou
+			Jenkins se retrouve en attente d'approvisionnement.
+		</para>
+		<para>
+			Dans ce cas, l'application sera créée avec un statut particulier
+			<emphasis role="bold">Création en attente</emphasis>
+			et ne sera pas utilisable (pas de lien dans la navigation du projet)
+			tant que l'instance de l'outil Sonar ou Jenkins ne sera pas créée.
+		</para>
+
+	</sect2>
+
+	<sect2 id="associations">
+		<title>Lier les applications</title>
+
+		<para>La forge fournit un mécanisme de communication inter-outil qui
+			permet l'échange d'informations entre deux applications au sein d'un
+			projet. Pour comprendre la configuration d'une telle association nous
+			allons prendre l'exemple des deux applications, Mantis et Testlink.
+			Le
+			scénario est le suivant : lorsqu'un test fonctionnel échoue,
+			l'application Testlink envoie une notification à l'application Mantis pour
+			créer automatiquement une anomalie associée à l'échec. Pour se faire il
+			suffit de
+			suivre les étapes suivantes :
+		</para>
+
+		<itemizedlist>
+			<listitem>
+				<para>
+					Aller sur l'onglet
+					<emphasis role="bold">Vos applications</emphasis>
+					et choisissez l'application
+					<emphasis role="bold">Mantis</emphasis>
+				</para>
+			</listitem>
+			<listitem>
+				<para>Cliquer sur Lier l'application.</para>
+			</listitem>
+			<listitem>
+				<para>Sélectionner l'application à lier, dans ce cas "TestLink", en
+					cliquant sur la case à cocher</para>
+			</listitem>
+			<listitem>
+				<para>Cliquer sur "Retourner sur le détail de l'application"</para>
+			</listitem>
+		</itemizedlist>
+
+		<para>Les figures suivantes présentent les écrans de création d'un
+			lien entre applications :</para>
+
+		<figure>
+			<title>Ajout d'un lien entre deux applications.</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="04-03-06-ManageApplication.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+		<figure>
+			<title>Création d'un lien entre deux applications.</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="04-03-07-ManageApplication.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+		
+		<figure>
+			<title>Choix du type de lien entre deux applications.</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="04-03-08-ManageApplication.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+		
+		<para>
+			Dans certains cas, le lien entre les applications peut être plus
+			détaillé. C'est notamment le cas
+			entre Mantis et TestLink où les messages envoyés peuvent être adaptés pour
+			afficher certaines informations supplémentaires
+			comme les identifiants ou les statuts des tests.
+		</para>
+		<figure>
+			<title>Création d'un lien détaillé entre deux applications.</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="04-03-09-ManageApplication.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+	</sect2>
+</sect1>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<chapter version="5.0" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:ns5="http://www.w3.org/2000/svg"
+  xmlns:ns4="http://www.w3.org/1998/Math/MathML" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook" xml:lang="en">
+  
+   <title>Widgets</title>
+   <para>
+	Widgets are User Interface components which allow you to get all your usefull information in the same place.
+    Widgets collect and aggregate information of applications of your project.
+   </para>
+   <!-- common -->
+   <xi:include href="07_widgets_management/widgets_management.xml" />
+   <!-- Widgets -->
+   <xi:include href="7_widget_issuesdivision/widget.xml" />
+   <xi:include href="7_widget_issuestimeline/widget.xml" />
+   <xi:include href="7_widget_codecoveragetimeline/widget.xml" />
+   <xi:include href="7_widget_testsuccess/widget.xml" />
+   <xi:include href="7_widget_violationsevolution/widget.xml" />
+   <xi:include href="7_widget_lastcommits/widget.xml" />
+
+</chapter>
+

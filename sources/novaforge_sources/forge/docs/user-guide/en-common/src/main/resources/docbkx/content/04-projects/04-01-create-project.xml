@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+
+
+<sect1 version="5.0" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+		>
+	<title id="create-project">Creating a project</title>
+
+	<para>
+		Each Forge user can create a project. Simply open the link
+		<emphasis role="bold">My space</emphasis>
+		in the navigation menu and choose
+		<emphasis role="bold">Create project.</emphasis>
+	</para>
+
+	<figure>
+		<title>Create project menu</title>
+
+		<mediaobject>
+			<imageobject>
+				<imagedata align="center" fileref="04-00-CreateProjectMenu.png"
+					width="250px" />
+			</imageobject>
+		</mediaobject>
+	</figure>
+
+	<para>After starting the project creation application, proceed as
+		follows:</para>
+
+	<itemizedlist>
+		<listitem>
+			<para>Enter the project name.</para>
+		</listitem>
+
+		<listitem>
+			<para>Enter the project identifier.</para>
+		</listitem>
+
+		<listitem>
+			<para>Add the project to an existing organization or to a new
+				organization to be created by the user (editable drop-down list in
+				order to add new organizations).</para>
+		</listitem>
+
+		<listitem>
+			<para>Enter a project description.</para>
+		</listitem>
+
+		<listitem>
+			<para>Choose a project license.</para>
+		</listitem>
+
+		<listitem>
+			<para>Enter a project description.</para>
+		</listitem>
+
+		<listitem>
+			<para>Choose whether the project is public or private.</para>
+		</listitem>
+
+		<listitem>
+			<para>You can choose an image to represent the project icon. If no
+				image is provided, a Novaforge image will be used by default.</para>
+		</listitem>
+
+		<listitem>
+			<para>Choose a project template.</para>
+		</listitem>
+
+		<listitem>
+			<para>click on "Add" button then validate your choice.</para>
+		</listitem>
+	</itemizedlist>
+
+	<para>The following figure shows the project creation screen:</para>
+
+	<figure>
+		<title>Create project</title>
+
+		<mediaobject>
+			<imageobject>
+				<imagedata align="center" fileref="04-01-CreateProject.png"
+					width="350px" />
+			</imageobject>
+		</mediaobject>
+	</figure>
+</sect1>

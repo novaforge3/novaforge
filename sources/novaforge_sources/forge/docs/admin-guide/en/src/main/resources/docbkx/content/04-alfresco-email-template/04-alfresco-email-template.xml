@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<chapter version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+		>
+	
+	<title>Email Notification for Alfresco</title>
+
+	<sect1>
+		<title>Create Notification template</title>
+
+		<para>Connect as NovaForge administrator (admin1) on the forge</para>
+
+		<para>Go to https://myforge/alfresco-default/share/page/repository.</para>
+		
+		<para>the select the folder : Entrepôt > Dictionnaire de données > Modèles d'e-mail > Modèles d'e-mail de notification.</para>
+	
+		<para>Create a new document "novaforge_add_document_notify_user_email_en.html.ftl" :</para>
+
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis>Nom : novaforge_add_document_notify_user_email_en.html.ftl</emphasis>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>Titre : novaforge_add_document_notify_user_email_en.html.ftl</emphasis>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>Description : Custom notify user email template, from rule or action for adding a document - English Version</emphasis>
+				</para>
+			</listitem>
+		</itemizedlist>
+
+		<para>The content of this document must have the same format as document “notify_user_email_en.html.ftl” in the same folder, his content can be customized.</para>
+	
+		<para>When document is created, you can use this template in content rules.</para>
+		
+	</sect1>
+
+	<sect2>
+		<title>Create content rules</title>
+
+		<para>In the UI of Alfresco Share, choose a folder and click on "Manage rules".</para>
+
+		<mediaobject>
+			<imageobject>
+				<imagedata align="center" fileref="alfresco_rules_button.png" width="500px" />
+			</imageobject>
+		</mediaobject>
+
+		<para>Create a new one by clicking “Create Rules” :</para>
+
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis>Name : Notification document added</emphasis>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>Description : Notify when a document is added</emphasis>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>When : Elements are added to this folder</emphasis>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>Perform action : Send an e-mail :</emphasis>
+					<itemizedlist>
+						<listitem>
+							<para>
+								<emphasis>To : ****Add users you want***</emphasis>
+							</para>
+						</listitem>
+						<listitem>
+							<para>
+								<emphasis>Subject : Document Added</emphasis>
+							</para>
+						</listitem>
+						<listitem>
+							<para>
+								<emphasis>Template : novaforge_add_document_notify_user_email_en.html.ftl</emphasis>
+							</para>
+						</listitem>
+					</itemizedlist>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>Check : Rule applies to subfolders</emphasis>
+				</para>
+			</listitem>
+		</itemizedlist>
+
+		<para>To be notified at each time a document is added/updated/deleted, you must create 3 rules, with 3 differents templates :</para>
+
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis>novaforge_add_document_notify_user_email_en.html.ftl</emphasis>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>novaforge_remove_document_notify_user_email_en.html.ftl</emphasis>
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>novaforge_update_document_notify_user_email_en.html.ftl</emphasis>
+				</para>
+			</listitem>
+		</itemizedlist>
+		
+		<mediaobject>
+			<imageobject>
+				<imagedata align="center" fileref="alfresco_rules.png" width="500px" />
+			</imageobject>
+		</mediaobject>
+
+	</sect2>
+</chapter>

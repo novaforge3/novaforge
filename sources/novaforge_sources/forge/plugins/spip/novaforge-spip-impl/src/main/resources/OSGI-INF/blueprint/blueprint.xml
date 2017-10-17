@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
+					 xmlns:cxf="http://cxf.apache.org/blueprint/core"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd 
+    http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+
+    http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
+
+	<reference id="webServerConfigurator" interface="org.novaforge.forge.commons.webserver.configuration.services.WebServerConfigurator" />
+	<reference id="normalizeService" interface="org.novaforge.forge.commons.technical.normalize.NormalizeService" />
+	<reference id="spipSoapClient" interface="org.novaforge.forge.plugins.cms.spip.client.SpipSoapClient" />
+	<reference id="spipResourceBuilder" interface="org.novaforge.forge.plugins.cms.spip.datamapper.SpipResourceBuilder" />
+	<reference id="spipConfigurationService" interface="org.novaforge.forge.plugins.cms.spip.services.SpipConfigurationService" />
+	<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/pluginSpip)" />
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+
+	<bean id="instanceConfigurationDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.InstanceConfigurationDAOImpl">
+		<jpa:context unitname="plugins.spip" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="rolesMappingDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.RolesMappingDAOImpl">
+		<jpa:context unitname="plugins.spip" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="toolInstanceDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.ToolInstanceDAOImpl">
+		<jpa:context unitname="plugins.spip" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="uuidDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.UuidDAOImpl">
+		<jpa:context unitname="plugins.spip" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+
+	<bean id="spipRoleMappingService" class="org.novaforge.forge.plugins.cms.spip.internal.services.SpipRoleMappingServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="rolesMappingDAO" ref="rolesMappingDAO" />
+	</bean>
+	<bean id="spipMembershipService" class="org.novaforge.forge.plugins.cms.spip.internal.services.SpipMembershipServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="pluginRoleMappingService" ref="spipRoleMappingService" />
+		<property name="spipSoapClient" ref="spipSoapClient" />
+		<property name="spipResourceBuilder" ref="spipResourceBuilder" />
+		<property name="pluginConfigurationService" ref="spipConfigurationService" />
+	</bean>
+	<bean id="spipProjectService" class="org.novaforge.forge.plugins.cms.spip.internal.services.SpipProjectServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="normalizeService" ref="normalizeService" />
+		<property name="pluginRoleMappingService" ref="spipRoleMappingService" />
+		<property name="spipSoapClient" ref="spipSoapClient" />
+		<property name="spipResourceBuilder" ref="spipResourceBuilder" />
+		<property name="pluginConfigurationService" ref="spipConfigurationService" />
+	</bean>
+	<bean id="spipUserService" class="org.novaforge.forge.plugins.cms.spip.internal.services.SpipUserServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="spipSoapClient" ref="spipSoapClient" />
+		<property name="spipResourceBuilder" ref="spipResourceBuilder" />
+		<property name="pluginConfigurationService" ref="spipConfigurationService" />
+	</bean>
+	<bean id="spipToolInstanceProvider" class="org.novaforge.forge.plugins.commons.services.DefaultToolInstanceProvider">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="pluginConfigurationService" ref="spipConfigurationService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+	<bean id="spipInstanceService" class="org.novaforge.forge.plugins.commons.services.DefaultPluginInstanceService">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+	</bean>
+	<cxf:bus id="spipBus" />
+	<jaxws:endpoint implementor="#spipInstanceService" implementorClass="org.novaforge.forge.core.plugins.services.PluginInstanceService" address="/spipInstance" />
+		
+	<!--  Configuration for Camel JMS Route -->
+	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
+	<!--  Configuration for Camel JMS Route -->
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<argument ref="jmsConfig" />
+	</bean>
+	<bean id="spipMembershipRouteBuilder" class="org.novaforge.forge.plugins.cms.spip.internal.route.SpipMembershipRoute">
+		<property name="pluginMembershipService" ref="spipMembershipService" />
+	</bean>
+	<bean id="spipProjectRouteBuilder" class="org.novaforge.forge.plugins.cms.spip.internal.route.SpipProjectRoute">
+		<property name="pluginProjectService" ref="spipProjectService" />
+	</bean>
+	<bean id="spipRolesMappingRouteBuilder" class="org.novaforge.forge.plugins.cms.spip.internal.route.SpipRolesMappingRoute">
+		<property name="pluginRoleMappingService" ref="spipRoleMappingService" />
+		<property name="pluginMembershipService" ref="spipMembershipService" />
+	</bean>
+	<bean id="spipUserRouteBuilder" class="org.novaforge.forge.plugins.cms.spip.internal.route.SpipUserRoute">
+		<property name="pluginUserService" ref="spipUserService" />
+	</bean>
+	<camelContext id="spipCamelContext" xmlns="http://camel.apache.org/schema/blueprint">
+		<routeBuilder ref="spipMembershipRouteBuilder" />
+		<routeBuilder ref="spipProjectRouteBuilder" />
+		<routeBuilder ref="spipRolesMappingRouteBuilder" />
+		<routeBuilder ref="spipUserRouteBuilder" />
+	</camelContext>
+	<bean id="spipService" class="org.novaforge.forge.plugins.cms.spip.internal.SpipServiceImpl">
+	   <!-- Camel context -->
+		<property name="camelContext" ref="spipCamelContext" />
+	   <!-- Service reference -->
+		<argument ref="uuidDAO" />
+		<property name="pluginConfigurationService" ref="spipConfigurationService" />
+		<property name="pluginRoleMappingService" ref="spipRoleMappingService" />
+		<property name="pluginUserService" ref="spipUserService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="toolInstanceProvisioningService" ref="spipToolInstanceProvider" />
+		<!-- Configuration -->
+		<property name="type" value="Spip" />
+		<property name="version" value="${spip.version}" />
+	</bean>
+	<bean id="spipCategoryService" class="org.novaforge.forge.plugins.cms.spip.internal.SpipCategoryServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="pluginConfigurationService" ref="spipConfigurationService" />
+	</bean>
+	<service id="spipServiceRegistration" ref="spipService" interface="org.novaforge.forge.core.plugins.services.PluginService">
+		<service-properties>
+			<entry key="type" value="Spip"/>
+			<entry key="version" value="${spip.version}"/>
+		</service-properties>
+	</service>
+	<service id="spipCategoryRegistration" ref="spipCategoryService" auto-export="interfaces">
+		<service-properties>
+			<entry key="type" value="Spip"/>
+			<entry key="version" value="${spip.version}"/>
+		</service-properties>
+	</service>
+	<bean id="pluginServiceRegistration" class="org.novaforge.forge.plugins.commons.services.PluginServiceRegistration">
+		<argument ref="blueprintBundleContext" />
+		<argument ref="spipServiceRegistration" />
+		<argument ref="spipCategoryRegistration" />
+	</bean>
+</blueprint>

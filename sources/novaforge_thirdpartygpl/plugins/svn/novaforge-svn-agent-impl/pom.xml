@@ -1,0 +1,139 @@
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this file.  If not, see http://www.gnu.org/licenses/.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+  		<groupId>org.novaforge.thirdparty.plugins</groupId>
+		<artifactId>novaforge-svn</artifactId>
+		<version>3.8.0</version>
+	</parent>
+	<artifactId>novaforge-svn-agent-impl</artifactId>
+	<packaging>bundle</packaging>
+	<name>NovaForge(tm) :: Third Party GPL :: Plugins :: SVN :: Agent :: Impl</name>
+	<description>NovaForge(tm) :: Third Party GPL :: Plugins :: SVN :: Agent :: Impl</description>
+	<dependencies>
+		<dependency>
+			<groupId>org.novaforge.forge.plugins</groupId>
+			<artifactId>novaforge-svn-api</artifactId>
+			<version>${novaforge.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.tmatesoft.svnkit</groupId>
+			<artifactId>svnkit</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.novaforge.forge.modules</groupId>
+			<artifactId>novaforge-commons-technical</artifactId>
+			<version>${novaforge.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-all</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.bsc.maven</groupId>
+				<artifactId>maven-processor-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>openjpa-metamodel-process</id>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>openjpa-metamodel-add-source</id>
+					</execution>
+					<execution>
+						<id>attach-artifacts</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attach-artifact</goal>
+						</goals>
+						<configuration>
+							<artifacts>
+								<artifact>
+									<file>target/classes/datasource/blueprint.xml</file>
+									<type>xml</type>
+									<classifier>datasource</classifier>
+								</artifact>
+								<artifact>
+									<file>target/classes/datasource/datasource.svn.agent.cfg</file>
+									<type>cfg</type>
+									<classifier>datasource</classifier>
+								</artifact>
+								<artifact>
+									<file>target/classes/plugins.svn.agent.cfg</file>
+									<type>cfg</type>
+									<classifier>agent</classifier>
+								</artifact>
+							</artifacts>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.openjpa</groupId>
+				<artifactId>openjpa-maven-plugin</artifactId>
+				<configuration>
+					<includes>org/novaforge/forge/plugins/scm/svn/agent/entity/*.class</includes>
+					<excludes>org/novaforge/forge/plugins/scm/svn/agent/entity/*_.class</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Meta-Persistence>META-INF/persistence.xml</Meta-Persistence>
+					</instructions>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.m2e</groupId>
+				<artifactId>lifecycle-mapping</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>

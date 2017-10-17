@@ -1,0 +1,328 @@
+h1. Maven configuration
+
+p. By default, we use "Maven 3":http://maven.apache.org/download.html. If you are in a European country, we advise you to use the European mirror of Maven repository by adding the following lines in your @settings.xml@:
+
+bc.. 
+<mirrors>
+  ...
+  <mirror>
+    <id>uk</id>
+    <mirrorOf>central</mirrorOf>
+    <url>http://uk.maven.org/maven2/</url>
+  </mirror>
+</mirrors>
+
+h1. Eclipse configuration
+
+h2. Pre-requisites
+
+* "Eclipse JEE (3.6 or higher)":http://eclipse.org/downloads/
+* "m2eclipse":http://m2eclipse.sonatype.org/update/ to manage Maven2/3 projects
+* "JOPE":http://jope.ow2.org/update/jope to run NovaForge(tm) runtime from Eclipse
+* "Workspace Mechanic":http://code.google.com/a/eclipselabs.org/p/workspacemechanic/ to configure your Eclipse workspace with the coding convention for NovaForge(tm) 
+* "Checkstyle":http://eclipse-cs.sf.net/update/ to check coding convention against NovaForge(tm) checkstyle file
+* "Commons4E":http://commons4e.berlios.de/updatesite31 or "Commons4E":http://www.jiayun.org/commons4e/updatesite31/ to generate easily @toString()@, @equals()@ and @hashCode()@ methods
+* "Copyright Wizard":http://www.wdev91.com/update/ (__facultative__ ) to add copyright headers to source files
+* "MoreUnit":http://moreunit.sourceforge.net/update-site/ (__facultative__) to generate junit tests. Be careful, it redefines the Ctrl+J shortcut...
+* a subversion plugin (Subversive or Subclipse for instance) 
+
+There is a folder @eclipse/bookmarks@ under "https://novaforge7.bull.fr/svn/nfsafran/conventions":https://novaforge7.bull.fr/svn/nfsafran/conventions which gathers the plugins sites that are not part of the Eclipse distribution.
+
+h2. Configuring Eclipse workspace
+
+p. First, you need to checkout the coding convention files for Eclipse which are on the svn repository "https://novaforge7.bull.fr/svn/nfsafran/conventions":https://novaforge7.bull.fr/svn/nfsafran/conventions.
+
+p. To configure the Eclipse workspace with the proper configurations for formatting, editing, and so on, we will use the Workspace Mechanic Eclipse plugin (see pre-requisites).
+
+p. Go to Eclipse preferences **Windows → Preferences** and then choose to edit the **Workspace Mechanic** preferences:
+
+!../../images/eclipse-configuration0.png! 
+
+Remove the default configuration location
+
+!../../images/eclipse-configuration1.png!
+
+Add the mechanic directory you've checked out.
+
+!../../images/eclipse-configuration2.png!
+
+!../../images/eclipse-configuration3.png!
+
+Click on the notification tip or on the brown icon ”!” to update your configuration workspace.
+Click on **OK** to accept the settings.
+
+!../../images/eclipse-configuration4.png!
+
+That's it!
+
+If you browse you preferences, for instance the Java Formatter, you will notice it is configured with a NovaForge profile.
+
+!../../images/eclipse-configuration5.png!
+
+h2. Importing team project sets
+
+p. Team project sets are also declared in @eclise/working-sets@ under "https://novaforge7.bull.fr/svn/nfsafran/conventions":https://novaforge7.bull.fr/svn/nfsafran/conventions. Team project sets enable you to checkout the code but also to configure your workspace with pre-defined working sets which help to classify projects.
+
+p. First of all, you need at least to configure the NovaForge(tm) SVN repository ("https://novaforge7.bull.fr/svn/nfsafran/":https://novaforge7.bull.fr/svn/nfsafran/) in order to configure your credentials you have on this repository. Then, you need to checkout the files under the folder @eclipse/working-sets@ of @conventions@ (browse the svn directory to get the exact path).
+
+Once the files checked out, go to the menu *File -> Import...*.
+
+!../../images/eclipse-team-set-configuration0.png!
+
+Select *Team -> Team Project Set* and click on *Next*.
+
+!../../images/eclipse-team-set-configuration1.png!
+
+Browse your file system and choose the preference sets *nf-working-sets.psf* and click on *Finish*.
+
+!../../images/eclipse-team-set-configuration2.png!
+
+This will checked out the different projects. Once the checked out performed, you need to choose the pre-defined working-sets.
+
+!../../images/eclipse-team-set-configuration3.png!
+
+!../../images/eclipse-team-set-configuration4.png!
+  
+And then choose *Working Sets* as the top level elements of your *Package Explorer*.
+
+!../../images/eclipse-team-set-configuration5.png!
+
+That's it!
+
+!../../images/eclipse-team-set-configuration6.png!
+
+h1. Checkout the code
+
+h2. SVN repository
+
+p. Currently, the source code is hosted on NovaForge(tm) at the following location: "https://novaforge7.bull.fr:443/svn/nfsafran/":https://novaforge7.bull.fr:443/svn/nfsafran/
+
+The code of the trunk is under "https://novaforge7.bull.fr:443/svn/nfsafran/forge/trunk":https://novaforge7.bull.fr:443/svn/nfsafran/forge/trunk
+
+h2. svn:ignore
+
+p. Due to OS differences, we don't commit Eclipse configuration files like .classpath and .project: importing projects via m2eclipse should be enough.
+The following files and directories should be ignored recursively (i.e. performs from the top folder of the sources):
+
+pre.. 
+.settings
+target
+.project
+.classpath
+runner
+
+h2. Organization of the code
+
+p. The source code is organized as followed:
+
+* @assemblies@: contains the maven assemblies to build the various NovaForge(tm) runtimes 
+* @docs@: contains the maven projects to build the documentation
+* @itests@: contains the maven projects of integration tests
+* @modules@: contains the source code of the forge
+* @tools@: contains various maven projects used in the other projects. In other words, utility projects
+* @pom.xml@: is the parent pom of the forge which declares all the maven dependencies, maven plugins and profiles. This pom only references the @modules@ as maven modules. The other modules (@assemblies@, @docs@, etc.) need to be built separetely. 
+
+h1. Building the application
+
+h2. Building a runtime
+
+p. Runtimes reside under the module @assemblies@ which is composed of:
+
+* @custom-jonas@: an assembly to build a custom version of JOnAS. This runtime will be used as the base to build the other runtimes. Unlike the other maven projects, the parent of this one is not a novaforge pom but is one of the JOnAS distribution (see description of the pom to get more details).
+* @forge-deploy-repo@: an assembly to package into an archive all the dependencies declared in the deployment plans used in the runtime. 
+* @runtime@: an assembly to build a runtime based upon the @custom-jonas@ and which will include the NovaForge(tm) bundles and all other bundles required to make the forge work.
+
+
+h3. Building all in one command
+
+p. You can build all the needed artifacts in one shots:
+
+* Go to @assemblies@, and run @mvn clean install@.
+
+h3. Building a custom-jonas
+
+* Go to @assemblies/custom-jonas@.
+* Run @mvn clean install@.
+* At the end of the compilation, you should get zip file under the @target/@ directory.
+
+h3. Buiding a complete runtime
+
+* First, you need to build a @custom-jonas@ and you need to compile the forge source code before (see chapter below).
+* Go to @assemblies/runtime@, and run @mvn clean install@.
+
+p. To use this runtime, unzip the package, and perform the following operations:
+
+* in the @jonas-base@ directory:
+** in the file @conf/osgi/gateway.properties@, for the declaration @felix.fileinstall.dir=${jonas.base}/nf-conf@ replace @{jonas.base}@ with the path of your JONAS_BASE
+** in the file @nf-conf/ForgeManagerImpl.cfg@, for the declaration @forgeConfPathFolder=${jonas.base}/nf-conf@, replace  @{jonas.base}@ with the path of your JONAS_BASE
+** in the file @nf-conf/ForgeManagerImpl.cfg@, for the declaration @signingKeyFile=${jonas.base}/nf-conf/oauthprivatekey.pem@, replace @{jonas.base}@ with the path of your JONAS_BASE
+** in the file @conf/initial-repositories.xml@, replace @<url>file:///${jonas.base}/repositories/novaforge/</url>@ with the path of your local maven repository in which you have your NovaForge (tm) bundles (e.g. @<url>file:///C:/Documents%20and%20Settings/xxx/.m2/repository/</url>@)
+
+* if you wish to use the JOnAS script @newjb@, you also need to perform the modifications mentioned above in @jonas-root/template@ directory.
+
+p. To run the runtime:
+
+* you may need to set up additionnal JVM memory if you don't wish to get PermGenSpace exceptions. To do so, you can set up *export JONAS_OPTS="-XX:PermSize=512m"* / *set JONAS_OPTS="-XX:PermSize=512m"* or a higher value
+* you also need to *generate a certificate* to add under @$JONAS_BASE/nf-conf@. By default, there is a dummy one. But to make it fully working you need to generate one:
+
+bc. openssl req -newkey rsa:1024 -days 365 -nodes -x509 -keyout privatekey.pem -out sso_public_certificate.pem -subj '/CN=authenticationKey'
+openssl pkcs8 -in privatekey.pem -out oauthprivatekey.pem -topk8 -nocrypt -outform PEM
+ 
+Then copy the files @oauthprivatekey.pem@ and @sso_public_certificate.pem@ in your @$JONAS_BASE/nf-conf@.
+ 
+* set the environment variable @JONAS_BASE@ to @<jonas_path>/jonas-base@ where @<jonas_path>@ is the path of the unzipped archive 
+* set the environment variable @JONAS_ROOT@ to @<jonas_path>/jonas-root@ where @<jonas_path>@ is the path of the unzipped archive
+* @cd $JONAS_ROOT/bin@
+* @jonas start -tui@ or @jonas start -tui -clean@ if you wish to reset the JOnAS cache
+
+h3. Building a runtime for integration tests
+
+p. Build the runtime artifact with the profile @it@:
+
+@mvn clean install -P it@
+
+and performs the same changes.
+
+
+h2. Anatomy of the runtimes
+
+p. All the JOnAS deployment plans must be declared in the @assemblies/pom.xml@ in the configuration of the @maven-jbuilding@ plugin:
+
+bc.. 
+   <plugin>
+     <groupId>org.ow2.util.maven</groupId>
+     <artifactId>maven-jbuilding-plugin</artifactId>
+     <configuration>
+       <deploymentPlans>...</deploymentPlans>
+      </configuration>
+   </plugin>
+   
+p. These deployment plans are then used by the children pom of @assemblies/pom.xml@ by the @maven-jbuilding@ plugin:
+
+bc.. <plugin>
+        <groupId>org.ow2.util.maven</groupId>
+        <artifactId>maven-jbuilding-plugin</artifactId>
+        <inherited>true</inherited>
+        <configuration>
+          <profile>
+            <include>001-Logging-bundles</include>
+            <include>002-Apache-Commons-bundles</include>
+            <include>003-Apache-Felix-bundles</include>
+            <include>048-Apache-CXF-bundles</include>
+            <include>049-Apache-Shiro-bundles</include>
+            <include>100-NovaForge-Core-Commons-bundles</include>
+            <include>101-NovaForge-Core-bundles</include>
+            <include>150-NovaForge-Plugins-Commons-bundles</include>
+            <include>1090-NovaForge-Initialization-bundles</include>
+            <include>190-NovaForge-WebApps-bundles</include>
+            <include>200-NovaForge-Plugins-Mantis-bundles</include>
+            <include>201-NovaForge-Plugins-SVN-bundles</include>
+            <include>202-NovaForge-Plugins-Nexus-bundles</include>
+            <include>203-NovaForge-Plugins-Alfresco-bundles</include>
+          </profile>
+        </configuration>                
+     </plugin>
+     
+p. If you had new deployment plans with new dependencies, please do update the pom.xml of @assemblies@, @assemblies/runtime@ (if needed) and @assemblies/forge-deploy-repo@ (if needed).
+
+p. If you need to generate only the deployment plans, go to @assemblies/runtime@ and run @mvn jbuilding:generate-maven2-deployment-plans@. This will generate them under @target/configuration-resources/repositories/url-internal@ subdirectory. 
+
+h2. Building the source code
+
+p. As mentioned above, the parent pom only references the @modules@ as maven modules. As matter of fact, if you wish to compile the source code of the forge, just run: @mvn clean install@ against the parent pom.
+
+p. This pom declares several maven profiles:
+
+* @ext-lib@: a profile that includes the compilation of the external libraries that have been turned into OSGi bundles. @mvn clean install -P ext-lib@.
+* @javadoc-with-uml@: a profile to generate the javadoc with uml diagrams. To be able to use it, you need to have "Graphviz":http://www.graphviz.org/ installed and declared in your environment path (see Graphviz installation documentation). Be careful, the installation path must *NOT* contains any space characters. @mvn clean javadoc:aggregate -P javadoc-with-uml@.
+
+
+Note that all the bundles that needs to be deployed in a development runtime must declare a @dvpt@ profile section in their pom.
+
+p. Sources are organized as followed:
+
+* @commons@ that holds the bundles who can be shared via the forge core or the plugins
+* @core@ that holds the bundles of the forge core
+* @plugins@ that holds the plugins artifacts. Under this folder, you will find a commons project that can be shared by the plugins and a folder for each plugin to be integrated within the forge (e.g. @mantis@) that can be sub-divided into sub-projects
+* @portal@ that holds the bundles of the portal
+
+h2. Building the documentation
+
+p. To build the documentation:
+
+* Go to @docs@.
+* Run @mvn clean install@.
+* Get the documentations of the different sub-projects under the folders @target/docbook/publish@.
+
+p. The documentation is written in textile files thanks to the *WikiText* Eclipse plugin. This plugin is part of Mylyn distribution which is provided by default in Eclipse distribution. The documentation is then converted into a "DocBook":http://www.docbook.org/ document, which is then converted in various formats. By default, the output documents are pdf and single html pages.
+The textile files can be merged in one document thanks to an @index.txt@ files that declares in which order the have to be merged (1 file per line).
+
+p. If you wish to add new documentation, you need to follow this folder layout:
+
+* @src/main/doc/en-US@ for the English documentation. 
+* @src/main/doc/fr-FR@ for the French documentation.
+
+Both of these folders follow the DocBook conventions (see Docbook documentation for more information).
+You need also to declare the @index.txt@ file in which you declare the file name of the documentation (even if there is only one).
+Images have to be added into @src/main/images@.
+
+p. If you wish to learn more about *WikiText* and *Textile*, just open the Eclipse help. Just few hints:
+
+* *Ctrl + Space* for completion
+* *F1* to get the textile cheat sheet
+
+h1. Coding conventions
+
+h2. Maven
+
+* pom name: @NovaForge(tm) :: Parent Name :: Sub-Parent Name :: Module Name@
+* artifact name: @novaforge-xxx@
+* for folders of maven projects that do not produce bundles (i.e. jars and wars), do name them as folders (e.g. api, core, etc.) since they are used as classification folders. While folders of maven projects that produce bundles have to be named as the same name as the produced artifact (e.g. @novaforge-commons-persistence@ to produce the artifact @novaforge-commons-persistence.jar@).
+
+h2. Java
+
+p. Most of the coding conventions and formatting are described in the document *Conventions de codage.pdf*. Formatting is also driven by the Eclipse configurations you have imported through Workspace Mechanic.
+Nonetheless, here are a summary of some of them:
+
+* Package naming conventions: all packages shall start with @org.novaforge.forge@.
+* Interfaces are simply named (e.g. @UserService@) while the implementation ends with the suffix @Impl@ (e.g. @UserServiceImpl@).
+* Implementations and interfaces are declared in separate bundles.
+* Implementations, that shall not be exposed in the OSGi framework, shall include the @internal@ keyword in the package name (e.g. @org.novaforge.forge.xxx.internal.yyy@).
+* Formatting follows the ADA-formatting i.e. block of brackets are aligned.
+* Entities ends with the suffix @Entity@ (e.g. @UserEntity@)
+* EJB Beans ends with the suffix @Bean@ (e.g. @UserDAOBean@)
+* EJB Remote Interfaces ends with the suffix @Remote@ (e.g. @UserDaoRemote@)
+* Tests ends with the suffix @Test@ (e.g. @UserServiceTest@)
+
+h1. Good practices
+
+h2. Maven
+
+* Declare the version of your dependency in the section @<dependencyManagement>@ in the parent pom to ease version upgrade. Never in a child pom
+* Declare the version of your maven plugin in the section @<pluginManagement>@ in the parent pom to ease version upgrade. Never in a child pom
+
+h2. Java
+
+* Use "Commons4E":http://wiki.jiayun.org/Commons4E:Documentation to generate @equals()@ and @hashCode()@
+* Use Eclipse to generate simple @toString()@ (user @StringBuilder/StringBuffer - chained calls@ option)
+* Use @String.format(.)@ to create a string with several params:
+
+bc. String.format("Unable to find %s in %s", myVar1, myVar2);
+
+* For JUnit tests, prefer using "Hamcrest":http://code.google.com/p/hamcrest statements (@assertThat(Object value, org.hamcrest.Matcher matcher)@) which improves the readibility of the assertion (cf. "La solution magique":http://blog.xebia.fr/2008/04/02/simplifier-les-assertions-junit-et-ameliorer-vos-tests/#more-252, "assertThat(JUnit4, canHave(betterSyntax));":http://trux.info/2009/03/assertthatjunit4-canhavebettersyntax/, "Flexible JUnit assertions with assertThat()":http://joe.truemesh.com/blog/000511.html ). Static import of Hamcrest classes has been added in your Eclipse configuration as a _Favorites_ in _Content Assist_ in your Workspace Mechanic configuration.
+
+h1. Developping a new module
+
+p. First of all, if it's for a service, you will produce at least two bundles: one for the interfaces (the api) that will be exposed in the OSGi framework to the other services and one for the implementations that will be hidden to the other OSGi bundles. 
+ 
+
+h1. Conception
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,7 @@
+Alias @USERGUIDE_ALIAS@ "@USERGUIDE_HOME@"
+
+<Directory @USERGUIDE_HOME@>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Require all granted
+</Directory>

@@ -1,0 +1,99 @@
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+	version="2.4">
+
+
+
+<!-- 	<filter> -->
+<!-- 		<filter-name>NovaForgeShiroFilter</filter-name> -->
+<!-- 		<filter-class>org.apache.shiro.web.servlet.IniShiroFilter</filter-class> -->
+<!-- 		<init-param> -->
+<!-- 			<param-name>config</param-name> -->
+<!-- 			<param-value> -->
+<!-- 	[main] -->
+<!-- 	authcRealm = org.novaforge.forge.core.security.realms.ForgeJPARealm -->
+<!-- 	sessionManager = org.novaforge.forge.portal.ui.manager.ForgeServletContainerSessionManager -->
+<!-- 	securityManager.sessionManager = $sessionManager -->
+<!-- 	authfBasic = org.novaforge.forge.portal.ui.filter.ForgeAuthentificationFilter -->
+<!-- 	authfBasic.applicationName = FileManager -->
+<!-- 	authfBasic.authcScheme = fBasic -->
+
+<!-- 	[urls] -->
+<!-- 	/** = authfBasic -->
+
+<!-- 	</param-value> -->
+<!-- 		</init-param> -->
+<!-- 	</filter> -->
+
+
+<!-- 	<filter-mapping> -->
+<!-- 		<filter-name>NovaForgeShiroFilter</filter-name> -->
+<!-- 		<url-pattern>/*</url-pattern> -->
+<!-- 	</filter-mapping> -->
+
+	<servlet>
+		<servlet-name>GWTResourceServlet</servlet-name>
+		<servlet-class>com.prt.gwt.file.core.GWTResourceServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>JsonableRemoteServlet</servlet-name>
+		<servlet-class>com.prt.gwt.file.core.JsonableRemoteServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<!-- Standard Action Servlet Mapping -->
+	<servlet-mapping>
+		<servlet-name>GWTResourceServlet</servlet-name>
+		<url-pattern>/com.prt.gwt.file.core.GWTFileManagerApp/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>JsonableRemoteServlet</servlet-name>
+		<url-pattern>/com.prt.gwt.file.core.GWTFileManagerApp/jsonServiceServlet</url-pattern>
+	</servlet-mapping>
+
+	<display-name>Archetype Created Web Application</display-name>
+	<session-config>
+		<session-timeout>720</session-timeout>
+	</session-config>
+
+	<!-- Servlets -->
+	<servlet>
+		<servlet-name>serverProfileService</servlet-name>
+		<servlet-class>com.prt.gwt.file.core.server.service.ServerProfileServiceImpl</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>serverProfileService</servlet-name>
+		<url-pattern>/com.prt.gwt.file.core.GWTFileManagerApp/serverProfileService</url-pattern>
+	</servlet-mapping>
+
+
+	<!-- Default page to serve -->
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+</web-app>

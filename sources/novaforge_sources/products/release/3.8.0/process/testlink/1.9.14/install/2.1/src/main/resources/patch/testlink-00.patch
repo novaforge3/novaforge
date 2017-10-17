@@ -1,0 +1,2015 @@
+diff -rNU5 testlink-1.9.14/gui/templates/execute/inc_exec_show_tc_exec.tpl testlink/gui/templates/execute/inc_exec_show_tc_exec.tpl
+--- testlink-1.9.14/gui/templates/execute/inc_exec_show_tc_exec.tpl	2015-06-20 18:32:12.000000000 +0200
++++ testlink/gui/templates/execute/inc_exec_show_tc_exec.tpl	2016-04-20 17:37:40.253370700 +0200
+@@ -190,10 +190,15 @@
+ 				{if $gui->issueTrackerIntegrationOn}
+           <th style="text-align:left">{$labels.bug_mgmt}</th>
+           {$my_colspan=$my_colspan+1}
+         {/if}
+ 
++				{if $gsmarty_forgeInterfaceOn}
++          <th style="text-align:center">{lang_get s='forge_notif'}</th>
++          {assign var="my_colspan" value=$my_colspan+1}
++        {/if}
++
+ 		{if $can_delete_exec}
+           <th style="text-align:left">&nbsp;</th>
+           {$my_colspan=$my_colspan+1}
+         {/if}
+ 
+@@ -297,10 +302,22 @@
+               {/if}
+             {/if} 
+        		  </td>
+           {/if}
+ 
++          		{*NovaForge notification*}
++		{if $gsmarty_forgeInterfaceOn && $tc_old_exec.build_is_open && $tc_old_exec.status != $tlCfg->results.status_code.passed}
++       		  	<td align="center"><a href="javascript:send_testfailed_notification({$tc_old_exec.execution_id})"> <img src="{$smarty.const.TL_THEME_IMG_DIR}/novaforge.png" title="{lang_get s='img_title_forge_notif'}"
++      			         style="border:none" /></a></td>
++                {else}
++                	{if $gsmarty_forgeInterfaceOn}
++                		<td align="center">
++							<img src="{$smarty.const.TL_THEME_IMG_DIR}/novaforge_gray.png" title="{$labels.closed_build}">
++						</td>
++                	{/if}
++          		{/if}
++
+     			{* if $gui->grants->delete_execution && $tc_old_exec.build_is_open *}
+     			{if $can_delete_exec && $tc_old_exec.build_is_open}
+ 	       		  	<td align="center">
+     	         	<a href="javascript:confirm_and_submit(msg,'execSetResults','exec_to_delete',
+              	                                       {$tc_old_exec.execution_id},'do_delete',1);">
+diff -rNU5 testlink-1.9.14/gui/templates/inc_head.tpl testlink/gui/templates/inc_head.tpl
+--- testlink-1.9.14/gui/templates/inc_head.tpl	2015-03-28 10:04:25.000000000 +0100
++++ testlink/gui/templates/inc_head.tpl	2016-04-20 17:40:51.380615000 +0200
+@@ -54,10 +54,15 @@
+ 	{if $smarty.const.TL_SORT_TABLE_ENGINE == 'kryogenix.org'}
+ 	<script type="text/javascript" src="{$basehref}gui/javascript/sorttable.js" 
+ 		language="javascript"></script>
+ 	{/if}
+ 
++ 	{* ----- NovaForge Notification libraries -------------------------------------------------- *} 
++ 	{if $gsmarty_forgeInterfaceOn}
++ 	<script type="text/javascript" src="{$basehref}gui/javascript/forge_notification.js" 
++ 		language="javascript"></script>
++ 	{/if}
+ 
+   	<link rel="stylesheet" href="{$basehref}third_party/chosen/chosen.css">
+ 	<script type="text/javascript" src="{$basehref}third_party/jquery/jquery-2.0.3.min.js" language="javascript"></script>
+ 	<script type="text/javascript" src="{$basehref}third_party/chosen/chosen.jquery.js"></script>
+ 
+diff -rNU5 testlink-1.9.14/gui/templates/requirements/project_req_spec_mgmt.tpl testlink/gui/templates/requirements/project_req_spec_mgmt.tpl
+--- testlink-1.9.14/gui/templates/requirements/project_req_spec_mgmt.tpl	2015-09-19 08:58:37.000000000 +0200
++++ testlink/gui/templates/requirements/project_req_spec_mgmt.tpl	2016-04-20 17:44:29.662415000 +0200
+@@ -25,25 +25,13 @@
+ <body>
+ <h1 class="title">{$gui->main_descr|escape}</h1>
+ <div class="workBack">
+   <div class="groupBtn">
+     <form method="post">
+-      {if $gui->grants->modify}
+-      <input type="button" id="new_req_spec" name="new_req_spec"
+-             value="{$labels.btn_new_req_spec}"
+-             onclick="location='{$req_spec_new_url}{$gui->tproject_id}'" />
+-      {/if}
+-
+       <input type="button" id="export_all" name="export_all"
+              value="{$labels.btn_export_all_reqspec}"
+              onclick="location='{$req_export_url}{$gui->tproject_id}'" />
+-
+-      {if $gui->grants->modify}
+-      <input type="button" id="import_all" name="import_all"
+-             value="{$labels.btn_import}"
+-             onclick="location='{$req_import_url}{$gui->tproject_id}'" />
+-      {/if}
+     </form>
+   </div>
+ </div>
+ 
+ {if $gui->refresh_tree == "yes"}
+diff -rNU5 testlink-1.9.14/gui/templates/usermanagement/userInfo.tpl testlink/gui/templates/usermanagement/userInfo.tpl
+--- testlink-1.9.14/gui/templates/usermanagement/userInfo.tpl	2015-03-28 10:04:25.000000000 +0100
++++ testlink/gui/templates/usermanagement/userInfo.tpl	2016-04-25 16:03:29.396189800 +0200
+@@ -129,32 +129,44 @@
+       <th width="20%">{$labels.th_login}</th>
+       <td>{$user->login}</td>
+     </tr>
+     <tr>
+       <th>{$labels.th_first_name}</th>
+-      <td><input type="text" name="firstName" value="{$user->firstName|escape}"
++			<td>{if $external_user_mgmt eq 0}
++				<input type="text" name="firstName" value="{$user->firstName|escape}"
+                  size="{#NAMES_SIZE#}" maxlength="{#NAMES_MAXLEN#}" />
+                 {include file="error_icon.tpl" field="firstName"}
++			{else}
++			  	{$user->firstName|escape}
++			{/if}
+       </td>
+     </tr>
+     <tr>
+       <th>{$labels.th_last_name}</th>
+-      <td><input type="text" name="lastName" value="{$user->lastName|escape}"
++			<td>{if $external_user_mgmt eq 0}
++				<input type="text" name="lastName" value="{$user->lastName|escape}"
+                  size="{#NAMES_SIZE#}" maxlength="{#NAMES_MAXLEN#}" />
+                  {include file="error_icon.tpl" field="lastName"}
++		  {else}
++				  {$user->lastName|escape}
++			{/if}
+       </td>
+     </tr>
+     <tr>
+       <th>{$labels.th_email}</th>
+-      <td><input type="text" name="emailAddress" value="{$user->emailAddress|escape}"
++			<td>{if $external_user_mgmt eq 0}
++				<input type="text" name="emailAddress" value="{$user->emailAddress|escape}"
+                  size="{#EMAIL_SIZE#}" maxlength="{#EMAIL_MAXLEN#}" required />
+                  {include file="error_icon.tpl" field="emailAddress"}
++		  {else}
++				  {$user->emailAddress|escape}
++			{/if}
+       </td>
+     </tr>
+     <tr>
+       <th>{$labels.th_locale}</th>
+-      <td>
++			<td>{if $external_user_mgmt eq 0}				
+         <script type="text/javascript">
+         js_locale = new Array();
+         {foreach key=locale item=value from=$gui->optLocale}
+           js_locale['{$locale}'] = "{lang_get s='last_update' locale=$locale}";
+         {/foreach}
+@@ -162,20 +174,25 @@
+         
+         <select name="locale" onchange="javascript:refreshLastUpdate(js_locale[this.options[this.selectedIndex].value]);">
+         {html_options options=$gui->optLocale selected=$user->locale}
+         </select>
+         <span id="last_update">{$labels.last_update}</span>
++			{else}
++				{$user->locale}
++			{/if}
+       </td>
+     </tr>
+   </table>
++	{if $external_user_mgmt eq 0}
+   <div class="groupBtn">
+     {if $tlCfg->demoMode}
+       {$labels.demo_update_user_disabled}
+     {else}
+       <input type="submit" value="{$labels.btn_save}" />
+     {/if} 
+   </div>
++	{/if}
+ </form>
+ 
+ <hr />
+ <h2>{lang_get s="title_personal_passwd"}</h2>
+ {if $external_password_mgmt eq 0}
+diff -rNU5 testlink-1.9.14/index.php testlink/index.php
+--- testlink-1.9.14/index.php	2015-03-28 10:04:25.000000000 +0100
++++ testlink/index.php	2016-04-25 16:18:50.928589800 +0200
+@@ -13,15 +13,33 @@
+ **/
+ require_once('lib/functions/configCheck.php');
+ checkConfiguration();
+ require_once('config.inc.php');
+ require_once('common.php');
++require_once('forge_api.php');
++
+ doSessionStart();
+ 
+ unset($_SESSION['basehref']);  // will be very interesting understand why we do this
+ setPaths();
+ list($args,$gui) = initEnv();
++$params = array_merge($_GET, $_POST);
++// set project context
++if(isset($_GET['cur_project_id'])) {
++        $NFproject_id = $_GET['cur_project_id'];
++        //use by navBar for project context initialisation
++        $_SESSION['testprojectID']=$NFproject_id;
++        $op = doDBConnect($db);
++        setProjectSession($db, $NFproject_id);
++}
++elseif (isset($params[$conf['forge']['instance']['id']])) {
++	$project_id = getProjectId($params[$conf['forge']['instance']['id']]);
++	//use by navBar for project context initialisation
++	$_SESSION['testprojectID']=$project_id;
++	$op = doDBConnect($db);
++	setProjectSession($db, $project_id);
++}
+ 
+ // verify the session during a work
+ $redir2login = true;
+ if( isset($_SESSION['currentUser']) )
+ {
+diff -rNU5 testlink-1.9.14/lib/api/xmlrpc/v1/xmlrpc.class.php testlink/lib/api/xmlrpc/v1/xmlrpc.class.php
+--- testlink-1.9.14/lib/api/xmlrpc/v1/xmlrpc.class.php	2015-09-19 08:58:37.000000000 +0200
++++ testlink/lib/api/xmlrpc/v1/xmlrpc.class.php	2016-08-05 15:43:30.042324800 +0200
+@@ -25,15 +25,17 @@
+  */
+ 
+ /** 
+  * IXR is the class used for the XML-RPC server 
+  */
+-require_once("../../../../config.inc.php");
++require_once(dirname(__FILE__) . "/../../../../config.inc.php");
+ require_once("common.php");
+ require_once("xml-rpc/class-IXR.php");
+ require_once("api.const.inc.php");
+ require_once("APIErrors.php");
++require_once("../functions/novaforge/functions.php");
++require_once("../functions/doAuthorize.php");
+ 
+ /**
+  * The entry class for serving XML-RPC Requests
+  * 
+  * See examples for additional detail
+@@ -198,10 +200,12 @@
+ 
+ 
+   public static $urgencyParamName = "urgency";
+   public static $userParamName = "user";
+   public static $userIDParamName = "userid";
++	public static $userLoginParamName = "adminLogin";
++	public static $userPasswordParamName = "adminPassword";
+   public static $versionNumberParamName = "version";
+   public static $estimatedExecDurationParamName = "estimatedexecduration";
+   public static $executionDurationParamName = "execduration";
+ 
+   public static $prefixParamName = "prefix";
+@@ -357,39 +361,55 @@
+    *
+    * @return boolean
+    * @access protected
+    */
+     protected function authenticate($messagePrefix='')
+-    {   
+-      // check that the key was given as part of the args
+-      if(!$this->_isDevKeyPresent())
+-      {
+-        $this->errors[] = new IXR_ERROR(NO_DEV_KEY, $messagePrefix . NO_DEV_KEY_STR);
+-        $this->authenticated = false;
+-        return false;
+-      }
+-      else
+-      {
+-        $this->devKey = $this->args[self::$devKeyParamName];
+-      }
+-      
+-      // make sure the key we have is valid
+-      if(!$this->_isDevKeyValid($this->devKey))
+-      {
+-        $this->errors[] = new IXR_Error(INVALID_AUTH, $messagePrefix . INVALID_AUTH_STR);
+-        $this->authenticated = false;
+-        return false;      
+-      }
+-      else
+-      {
+-        // Load User
+-        $this->user = tlUser::getByID($this->dbObj,$this->userID);  
+-        $this->authenticated = true; 
+-
+-        $this->tlLogger->startTransaction('DEFAULT',null,$this->userID);
+-        return true;
+-      }        
++    {   		
++	    // check that the key was given as part of the args
++	    if(!$this->_isDevKeyPresent())
++  	    {
++  			if (!$this->_isOAuthKeyPresent())
++  			{				
++  				$this->errors[] = new IXR_ERROR(NO_DEV_KEY, $messagePrefix . NO_DEV_KEY_STR);
++  				$this->authenticated = false;
++  				return false;
++  			}
++  			else
++  			{
++  				if ($this->_doAuthorize($this->dbObj,$this->args[self::$userLoginParamName],$this->args[self::$userPasswordParamName]))
++  				{
++  					$this->authenticated = true;	    	
++  					return true;
++  				}	
++  				else
++  				{
++  					return false;
++  				}		
++  			}	    	
++	    }
++	    else
++	    {
++	    	$this->devKey = $this->args[self::$devKeyParamName];
++			
++  			// make sure the key we have is valid
++  			if(!$this->_isDevKeyValid($this->devKey))
++  			{
++  				$this->errors[] = new IXR_Error(INVALID_AUTH, $messagePrefix . INVALID_AUTH_STR);
++  				$this->authenticated = false;
++  				return false;			
++  			}
++  			else
++  			{
++  				//Load User
++  				$this->user = tlUser::getByID($this->dbObj,$this->userID);	
++  				$this->authenticated = true;	    	
++  
++          $this->tlLogger->startTransaction('DEFAULT',null,$this->userID);
++  				return true;
++  			}
++	    }
++	    				
+     }
+     
+     
+   /**
+    * checks if a user has requested right on test project, test plan pair.
+@@ -919,10 +939,30 @@
+     protected function _isDevKeyPresent()
+     {
+       return (isset($this->args[self::$devKeyParamName]) ? true : false);
+     }
+     
++	  /**
++	 * Helper method to see if a user_login and user_password is given as arguments 
++	 * 	 
++	 * @return boolean
++	 * @access protected
++	 */
++    protected function _isOAuthKeyPresent()
++    {
++		$loginPresent = isset($this->args[self::$userLoginParamName]);
++		$passwordPresent = isset($this->args[self::$userPasswordParamName]);
++		if ($loginPresent && $passwordPresent)
++		{
++			return true;
++		}
++		else
++		{
++			return false;
++		}
++    }
++
+     /**
+    * Helper method to see if a tcid is given as one of the arguments 
+    *   
+    * @return boolean
+    * @access protected
+@@ -1039,10 +1079,40 @@
+             return true;
+           }
+         }                      
+     }    
+ 
++	/**
++	 * authorization function verifies login & password and set xmlrpc's user data  
++	 * 	
++	 * @param string $devKey	 
++	 * @return boolean
++	 * @access protected
++	 */   
++	protected function _doAuthorize(&$db,$login,$pwd)
++	{
++		$result = false;		
++		if (!is_null($pwd) && !is_null($login))
++		{
++			
++			$user = new tlUser();
++			$user->login = $login;
++			$login_exists = ($user->readFromDB($db,tlUser::USER_O_SEARCH_BYLOGIN) >= tl::OK); 
++			if ($login_exists)
++			{
++				$password_check = auth_does_password_match($user,$pwd,true);
++				if ($password_check->status_ok && $user->isActive)
++				{								
++						$this->userID = $user->dbID;			
++						$this->user = $user;
++						$result = true;				
++				}				
++			}
++		}
++		return $result;
++	}	
++
+     /**
+    * Helper method to set the tcVersion
+    * 
+    *      
+    * @return boolean
+@@ -1706,16 +1776,14 @@
+    *   
+    * @return mixed $resultInfo
+    */
+   public function createTestProject($args)
+   {
+-    $this->_setArgs($args);
+-    $msg_prefix = "(" . __FUNCTION__ . ") - ";
+-    $checkRequestMethod='_check' . ucfirst(__FUNCTION__) . 'Request';
+-  
+-    if( $this->$checkRequestMethod($msg_prefix) && 
+-        $this->userHasRight("mgt_modify_product"))
++		$this->_setArgs($args);
++		$status=$this->authenticate();
++
++		if($status && $this->userHasRight("mgt_modify_product"))
+     {
+       $item = new stdClass();
+       $item->options = new stdClass();
+       $item->options->requirementsEnabled = 1;
+       $item->options->testPriorityEnabled = 1;
+@@ -1760,15 +1828,710 @@
+                            "status" => true, "id" => $info, "message" => GENERAL_SUCCESS_STR);
+       return $resultInfo;
+     }
+     else
+     {
+-      return $this->errors;
+-    }    
++			$message = "Connection error.";
++			$resultInfo = array();
++			$resultInfo[]= array(  "STATUS" => "failure", "MESSAGE" => xmlEncodeString ($message));		
++			syslog (LOG_ERR, __FILE__ . " - " . __FUNCTION__ . " - " . $message);
++			
++			return $resultInfo;
++
++		}
++	
++	    
++         
+       
+-  }
++	}
++	
++	/**
++	 * get a test project
++	 * 
++	 * @param struct $argsObj
++	 * @param string $argsObj["testprojectname"]
++     *	 
++	 * @return mixed $resultInfo
++	 */
++	public function getProjectID($argsObj)
++	{
++
++		$this->_setArgs($argsObj);
++		$status=$this->authenticate();
++		
++		if($status && $this->userHasRight("mgt_modify_product"))
++		{		
++			$xml_out = getProjectByName($this->args["testprojectname"]);		
++			return $xml_out;
++		}
++		else
++		{
++			$message = "Connection error.";
++			$resultInfo = array();
++			$resultInfo[]= array(  "STATUS" => "failure", "MESSAGE" => xmlEncodeString ($message));		
++			syslog (LOG_ERR, __FILE__ . " - " . __FUNCTION__ . " - " . $message);
++			
++			return $resultInfo;
++		}
++	
++	}
++	
++	/**
++	 * get a test project by id
++	 * 
++	 * @param struct $argsObj
++	 * @param string $argsObj["projectId"]
++     *	 
++	 * @return mixed $resultInfo
++	 */
++	public function getProjectById($argsObj)
++	{
++
++		$this->_setArgs($argsObj);
++		$status=$this->authenticate();
++		
++		if($status && $this->userHasRight("mgt_modify_product"))
++		{		
++			$xml_out = getProjectById($this->args["projectId"]);		
++			return $xml_out;
++		}
++		else
++		{
++			$message = "Connection error.";
++			$resultInfo = array();
++			$resultInfo[]= array(  "STATUS" => "failure", "MESSAGE" => xmlEncodeString ($message));		
++			syslog (LOG_ERR, __FILE__ . " - " . __FUNCTION__ . " - " . $message);
++			
++			return $resultInfo;
++		}
++	
++	}
++	
++	
++	
++	/**
++	 * update a test project
++	 * 
++	 * @param struct $argsObj
++	 * @param string $argsObj["projectId"]
++	 * @param string $argsObj["description"]
++     *	 
++	 * @return mixed $resultInfo
++	 */
++	public function updateProject($argsObj)
++	{
++		$this->_setArgs($argsObj);
++		$status=$this->authenticate();
++		
++		if($status && $this->userHasRight("mgt_modify_product"))
++		{		
++			$xml_out = updateProject ($this->args["projectId"],$this->args["notes"],$this->args["testprojectname"]);			
++			return $xml_out;
++		}
++		else
++		{
++			$message = "Connection error.";
++			$resultInfo = array();
++			$resultInfo[]= array(  "STATUS" => "failure", "MESSAGE" => xmlEncodeString ($message));		
++			syslog (LOG_ERR, __FILE__ . " - " . __FUNCTION__ . " - " . $message);
++			
++			return $resultInfo;
++		}	
++	}
++
++	public function createProject($argsObj)
++	{
++		$this->_setArgs($argsObj);
++		$status=$this->authenticate();
++		
++		if($status && $this->userHasRight("mgt_modify_product"))
++		{		
++			$xml_out = createProject ($this->args["testprojectname"],$this->args["notes"]);		
++			return $xml_out;
++		}
++		else
++		{
++			$message = "Connection error.";
++			$resultInfo = array();
++			$resultInfo[]= array(  "STATUS" => "failure", "MESSAGE" => xmlEncodeString ($message));		
++			syslog (LOG_ERR, __FILE__ . " - " . __FUNCTION__ . " - " . $message);
++			
++			return $resultInfo;
++		}	
++	}
++	
++	
++	/**
++	 * delete a test project
++	 * 
++	 * @param struct $argsObj
++	 * @param string $argsObj["projectId"]
++     *	 
++	 * @return mixed $resultInfo
++	 */
++	public function deleteProject($argsObj)
++	{
++		
++		$this->_setArgs($argsObj);
++		$status=$this->authenticate();
++		if($status && $this->userHasRight("mgt_modify_product"))
++		{		
++			$xml_out = deleteProject ($this->args["projectId"]);		
++			return $xml_out;
++		}
++		else
++		{
++			$message = "Connection error.";
++			$resultInfo = array();
++			$resultInfo[]= array(  "STATUS" => "failure", "MESSAGE" => xmlEncodeString ($message));		
++			syslog (LOG_ERR, __FILE__ . " - " . __FUNCTION__ . " - " . $message);
++			
++			return $resultInfo;
++		}
++		
++	}
++	
++	/**
++	 * get an user
++	 * 
++	 * @param struct $argsObj
++	 * @param string $argsObj["userName"]
++     *	 
++	 * @return mixed $resultInfo
++	 */
++	public function getUser($argsObj)
++	{		
++		$this->_setArgs($argsObj);
++		$status=$this->authenticate();
++		if($status && $this->userHasRight("mgt_users"))
++		{	
++			$xml_out = getUsers($this->args["userName"]);		
++			return $xml_out;
++		}
++		else
++		{
++			$message = "Connection error.";
++			$resultInfo = array();
++			$resultInfo[]= array(  "STATUS" => "failure", "MESSAGE" => xmlEncodeString ($message));		
++			syslog (LOG_ERR, __FILE__ . " - " . __FUNCTION__ . " - " . $message);
++			
++			return $resultInfo;
++		}
++	}
++	
++	/**
++	 * create an user
++	 * 
++	 * @param struct $argsObj
++	 * @param string $argsObj["userName"]
++	 * @param string $argsObj["password"]
++	 * @param string $argsObj["firstname"]
++	 * @param string $argsObj["lastname"]
++	 * @param string $argsObj["email"]
++	 * @param string $argsObj["language"]     
++	 *
++	 * @return mixed $resultInfo
++	 */
++	public function createUser($argsObj)
++	{
++		
++		$this->_setArgs($argsObj);
++		$status=$this->authenticate();
++		
++		if($status && $this->userHasRight("mgt_users"))
++		{		
++			$role = "";
++			if($this->args["adminrole"]!="")
++			{
++				$role = getRoleID($this->args["adminrole"]);
++			}
++	
++			$xml_out = createUser($this->args["userName"],
++				$this->args["password"],
++				$this->args["firstname"],
++				$this->args["lastname"],
++				$this->args["email"],
++				$this->args["language"],
++                $role);
++
++			return $xml_out;
++		}
++		else
++		{
++			$message = "Connection error.";
++			$resultInfo = array();
++			$resultInfo[]= array(  "STATUS" => "failure", "MESSAGE" => xmlEncodeString ($message));		
++			syslog (LOG_ERR, __FILE__ . " - " . __FUNCTION__ . " - " . $message);
++			
++			return $resultInfo;
++		}
++	}
++
++	/**
++	 * update an user
++	 * 
++	 * @param struct $argsObj
++	 * @param string $argsObj["userName"]
++	 * @param string $argsObj["password"]
++	 * @param string $argsObj["firstname"]
++	 * @param string $argsObj["lastname"]
++	 * @param string $argsObj["email"]
++	 * @param string $argsObj["language"] 
++     *	 
++	 * @return mixed $resultInfo
++	 */
++	public function updateUser($argsObj)
++	{		
++		$this->_setArgs($argsObj);
++		$status=$this->authenticate();
++		
++		if($status && $this->userHasRight("mgt_users"))
++		{	
++			$role = "";
++			if($this->args["adminrole"]!="")
++			{
++				$role = getRoleID($this->args["adminrole"]);
++			}	
++			$xml_out = updateUser($this->args["userName"],
++				$this->args["password"],
++				$this->args["firstname"],
++				$this->args["lastname"],
++				$this->args["email"],
++				$this->args["language"],
++				$role);	
++			return $xml_out;
++		}
++		else
++		{
++			$message = "Connection error.";
++			$resultInfo = array();
++			$resultInfo[]= array(  "STATUS" => "failure", "MESSAGE" => xmlEncodeString ($message));		
++			syslog (LOG_ERR, __FILE__ . " - " . __FUNCTION__ . " - " . $message);
++			
++			return $resultInfo;
++		}
++	}
++	
++	/**
++	 * delete an user
++	 * 
++	 * @param struct $argsObj
++	 * param string $argsObj["userName"]
++	 * @return mixed $resultInfo
++	 */
++	public function deleteUser($argsObj)
++	{
++		$this->_setArgs($argsObj);
++		$status=$this->authenticate();
++		
++		if($status && $this->userHasRight("mgt_users"))
++		{		
++			$xml_out = removeUser($this->args["userName"]);		
++			return $xml_out;
++		}
++		else
++		{
++			$message = "Connection error.";
++			$resultInfo = array();
++			$resultInfo[]= array(  "STATUS" => "failure", "MESSAGE" => xmlEncodeString ($message));		
++			syslog (LOG_ERR, __FILE__ . " - " . __FUNCTION__ . " - " . $message);
++			
++			return $resultInfo;
++		}
++	}
++	
++	/**
++	 * get a role by rolename
++	 * 
++	 * @param struct $argsObj
++	 * param string $argsObj["rolename"]
++	 * @return mixed $resultInfo
++	 */
++	public function getRoleID($argsObj)
++	{		
++		$this->_setArgs($argsObj);
++		$status=$this->authenticate();
++		
++		if($status && $this->userHasRight("role_management"))
++		{		
++			$xml_out = getRoleID($this->args["rolename"]);	
++			return $xml_out;
++		}
++		else
++		{
++			$message = "Connection error.";
++			$resultInfo = array();
++			$resultInfo[]= array(  "STATUS" => "failure", "MESSAGE" => xmlEncodeString ($message));		
++			syslog (LOG_ERR, __FILE__ . " - " . __FUNCTION__ . " - " . $message);
++			
++			return $resultInfo;
++		}
++	}
++	
++	/**
++	 * get a role by roleId
++	 * 
++	 * @param struct $argsObj
++	 * param string $argsObj["roleId"]
++	 * @return mixed $resultInfo
++	 */
++	public function getRoleById($argsObj)
++	{		
++		$this->_setArgs($argsObj);
++		$status=$this->authenticate();
++		
++		if($status && $this->userHasRight("role_management"))
++		{		
++			$xml_out = getRoleByID($this->args["roleId"]);	
++			return $xml_out;
++		}
++		else
++		{
++			$message = "Connection error.";
++			$resultInfo = array();
++			$resultInfo[]= array(  "STATUS" => "failure", "MESSAGE" => xmlEncodeString ($message));		
++			syslog (LOG_ERR, __FILE__ . " - " . __FUNCTION__ . " - " . $message);
++			
++			return $resultInfo;
++		}
++	}
++	
++	/**
++	 * get a role by rolename
++	 * 
++	 * @param struct $argsObj
++	 * param string $argsObj["rolename"]
++	 * @return mixed $resultInfo
++	 */
++	public function getRoles($argsObj)
++	{
++		$this->_setArgs($argsObj);
++		$status=$this->authenticate();
++		if($status && $this->userHasRight("role_management"))
++		{		
++			$xml_out = getRoles();	
++			return $xml_out;
++		}
++		else
++		{
++			$message = "Connection error.";
++			$resultInfo = array();
++			$resultInfo[]= array(  "STATUS" => "failure", "MESSAGE" => xmlEncodeString ($message));		
++			syslog (LOG_ERR, __FILE__ . " - " . __FUNCTION__ . " - " . $message);
++			
++			return $resultInfo;
++		}
++	}
++	
++	/**
++	 * get a project user's role
++	 * 
++	 * @param struct $argsObj
++	 * param string $argsObj["projectName"]
++	 * @param string $argsObj["userName"]
++	 * @return mixed $resultInfo
++	 */
++	public function getRole($argsObj)
++	{				
++		$this->_setArgs($argsObj);
++		$status=$this->authenticate();
++		
++		if($status && $this->userHasRight("role_management"))
++		{		
++			$xml_out = getRole($this->args["projectName"], $this->args["userName"]);
++			return $xml_out;
++		}
++		else
++		{
++			$message = "Connection error.";
++			$resultInfo = array();
++			$resultInfo[]= array(  "STATUS" => "failure", "MESSAGE" => xmlEncodeString ($message));		
++			syslog (LOG_ERR, __FILE__ . " - " . __FUNCTION__ . " - " . $message);
++			
++			return $resultInfo;
++		}
++	}
++	
++	/**
++	 * add an user to a project with a role
++	 * 
++	 * @param struct $argsObj
++	 * param string $argsObj["projectId"]
++	 * @param array $argsObj["userMappingRole"]
++	 * @return mixed $resultInfo
++	 */
++	public function projectAddUser($argsObj)
++	{		
++		$this->_setArgs($argsObj);
++		$status=$this->authenticate();
++		
++		if($status && $this->userHasRight("user_role_assignment"))
++		{		
++			$xml_out = setRoles($this->args["projectId"],$this->args["userMappingRole"]);
++			return $xml_out;
++		}
++		else
++		{
++			$message = "Connection error.";
++			$resultInfo = array();
++			$resultInfo[]= array(  "STATUS" => "failure", "MESSAGE" => xmlEncodeString ($message));		
++			syslog (LOG_ERR, __FILE__ . " - " . __FUNCTION__ . " - " . $message);
++			
++			return $resultInfo;
++		}
++	}
++	
++	/**
++	 * remove an user with from a project
++	 * 
++	 * @param struct $argsObj
++	 * param string $argsObj["projectId"]
++	 * @param string $argsObj["userName"]
++	 * @return mixed $resultInfo
++	 */
++	public function projectRemoveUser($argsObj)
++	{		
++		$this->_setArgs($argsObj);
++		$status=$this->authenticate();
++		
++		if($status && $this->userHasRight("user_role_assignment"))
++		{		
++			$xml_out = removeRole($this->args["projectId"],$this->args["userName"]);
++			return $xml_out;
++		}
++		else
++		{
++			$message = "Connection error.";
++			$resultInfo = array();
++			$resultInfo[]= array(  "STATUS" => "failure", "MESSAGE" => xmlEncodeString ($message));		
++			syslog (LOG_ERR, __FILE__ . " - " . __FUNCTION__ . " - " . $message);
++			
++			return $resultInfo;
++		}
++	}
+   
++   /**
++    *  Create/update requirements from XML 
++    *         
++    * @param struct $argsObj
++    * @param string $argsObj["projectId"]
++    * @param string $argsObj["userId"]
++    * @param string $argsObj["xml"]
++    *
++    */
++   public function requirementsImportFromXML($argsObj)
++   {     
++	$this->_setArgs($argsObj);
++	$status=$this->authenticate();
++	$requirementsXml=$this->args["requirementsXml"];
++	$xml = simplexml_load_string($requirementsXml);
++	$projectId=$this->args["projectId"];
++
++	$user = getUsers($this->args["userName"]);	
++	$userId=$user[0]["id"];
++	$resultInfo = array();
++	$importContext= new stdClass();
++	$importContext->tproject_id = $projectId;
++	$importContext->req_spec_id = '';
++	$importContext->user_id = $userId;
++	$importContext->importType = 'XML';
++
++	$importOptions= array();
++	$importOptions['skipFrozenReq'] = false;
++	$importOptions['hitCriteria'] = 'docid';
++	$importOptions['actionOnHit'] = 'update_last_version';
++	$isReqSpec = property_exists($xml,'req_spec');	
++	if($isReqSpec)
++	{
++		foreach($xml->req_spec as $xkm)
++		{
++			$dummy = $this->reqSpecMgr->createFromXML($xkm,$importContext->tproject_id,$importContext->req_spec_id,
++													$importContext->user_id,null,$importOptions);
++		}
++	}   
++	else
++	{
++		$loop2do = count($xml->requirement);
++		for($kdx=0; $kdx < $loop2do; $kdx++)
++		{		
++			$dummy = $this->reqMgr->createFromXML($xml->requirement[$kdx],$importContext->tproject_id,
++				                            $importContext->req_spec_id,$importContext->user_id,null,$importOptions);
++		}
++	}
++	$resultInfo[]= array("operation" => __FUNCTION__,
++			       "additionalInfo" => null,
++			       "status" => true, "id" => $projectId, "message" => GENERAL_SUCCESS_STR);
++	return $resultInfo;
++   }
++ 
++ 
++   /**
++   *  Create/update requirements from Data 
++   *         
++   * @param struct $argsObj
++   * @param string $argsObj["projectId"]
++   * @param string $argsObj["userId"]
++   * @param string $argsObj["name"]
++   * @param string $argsObj["description"]
++   *
++   */
++   public function updateDirectory($argsObj)
++   {     
++	$this->_setArgs($argsObj);
++	$status=$this->authenticate();
++
++	$projectId=$this->args["projectId"];
++	$docid=$this->args["directoryName"];
++	$title=$this->args["directoryDescription"];
++	$scope=$this->args["directoryScope"];
++	$directoryParentId=$this->args["directoryParentId"];
++	
++	$user = getUsers($this->args["userName"]);	
++	$userId=$user[0]["id"];
++
++	$resultInfo = array();
++	$req_spec_order=0;
++	$req_spec_type=1;
++	$req_total=0;
++	
++	$parentid = (is_null($directoryParentId) || $directoryParentId == 0) ? $projectId : $directoryParentId;
++
++	$check_in_tproject = $this->reqSpecMgr->getByDocID($docid,$projectId,null,null);
++	$reqSpecID = key($check_in_tproject);
++
++	if(is_null($check_in_tproject))
++	{
++		$dummy = $this->reqSpecMgr->create($projectId,$parentid,$docid,$title,
++            		                    $scope,$req_total,$userId,$req_spec_type,$req_spec_order);
++		$check_in_tproject = $this->reqSpecMgr->getByDocID($docid,$projectId,null,null);
++		$reqSpecID = key($check_in_tproject);
++	}
++    	else
++    	{
++		$dummy = $this->reqSpecMgr->update($reqSpecID,$docid,$title,$scope,$req_total,$userId,$req_spec_type,$req_spec_order);
++    	}
++    	$resultInfo[]= array("operation" => __FUNCTION__,
++	               "additionalInfo" => null,
++	               "status" => true, "id" => $projectId, "message" => $reqSpecID);
++				   
++    	return $resultInfo;
++   }
++   
++   /**
++    *  Create/update requirements from Data 
++    *         
++    * @param struct $argsObj
++    * @param string $argsObj["projectId"]
++    * @param string $argsObj["userId"]
++    * @param string $argsObj["reqId"]
++    * @param string $argsObj["reqName"]
++    * @param string $argsObj["reqDescription"]
++    * @param string $argsObj["reqVersion"]
++    * @param string $argsObj["reqParentId"]
++    *
++    */
++   public function updateRequirement($argsObj)
++   {     
++	$this->_setArgs($argsObj);
++	$status=$this->authenticate();
++
++	$projectId=$this->args["projectId"];
++	$docid=$this->args["req_id"];
++	$reqName=$this->args["reqName"];
++	$reqDescription=$this->args["reqDescription"];
++	$reqVersion=$this->args["reqVersion"];
++	$reqParentId=$this->args["reqParentId"];
++	
++	$user = getUsers($this->args["userName"]);	
++	$userId=$user[0]["id"];
++
++	$resultInfo = array();
++	
++	$reqAsMap=array();
++	$reqAsMap['node_order'] = 1;
++	$reqAsMap['title'] = $reqName;
++    	$reqAsMap['docid'] = $docid;
++    	$reqAsMap['description'] = $reqDescription;
++    	$reqAsMap['status'] = 'V';
++    	$reqAsMap['type'] = '1';
++    	$reqAsMap['expected_coverage'] = 1;
++    	$reqAsMap['version'] = $reqVersion;	
++	
++    	$options= array();
++    	$options['skipFrozenReq'] = false;
++    	$options['hitCriteria'] = 'docid';
++    	$options['actionOnHit'] = 'create_new_version';
++	
++	$dummy = $this->reqMgr->createFromMap($reqAsMap,$projectId,$reqParentId,$userId,null,$options);
++   	$resultInfo[]= array("operation" => __FUNCTION__,
++	               "additionalInfo" => null,
++	               "status" => true, "id" => $projectId, "message" => GENERAL_SUCCESS_STR);
++    	return $resultInfo;
++   }
++
++   /**
++    *  Delete requirement from Data 
++    *         
++    * @param struct $argsObj
++    * @param string $argsObj["reqId"]
++    *
++    */
++   public function deleteRequirement($argsObj)
++   {     
++	$this->_setArgs($argsObj);
++	$docid=$this->args["req_id"];
++
++	$resultInfo = array();
++	
++	$id = getRequirementId($docid);
++	if(!is_null($id))
++	{		
++		$dummy = $this->reqMgr->delete($id,0);
++	}
++			 
++   	$resultInfo[]= array("operation" => __FUNCTION__,
++	               "additionalInfo" => null,
++	               "status" => true, "id" => $projectId, "message" => GENERAL_SUCCESS_STR);
++    	return $resultInfo;
++   }
++ 
++    /**
++     * get list of requirements by project
++     * 
++     * @param struct $argsObj
++     * @param string $argsObj["projectId"]
++     *	 
++     * @return list of Requirement object
++     */
++    public function getRequirementsByProject($argsObj)
++    {
++
++	$this->_setArgs($argsObj);
++	$status=$this->authenticate();
++		
++	$xml_out = getRequirementsByProject($this->args["projectId"]);		
++	return $xml_out;	
++    }
++
++    /**
++     * get list of test case by requirement
++     * 
++     * param struct $argsObj
++     * param string $argsObj["req_id"]
++     * param string $argsObj["projectId"]
++     * 
++     * return list of TestCase object
++     */
++    public function getTestsByRequirement($argsObj)
++    {
++	$this->_setArgs($argsObj);
++	$status=$this->authenticate();
++	
++	$xml_out = getTestsByRequirement($this->args["req_id"],$this->args["projectId"]);		
++	return $xml_out;	
++    }	
++	  
+   /**
+    * _checkCreateTestProjectRequest
+    *
+    */
+   protected function _checkCreateTestProjectRequest($msg_prefix)
+@@ -7296,10 +8059,31 @@
+                             'tl.about' => 'this:about',
+                             'tl.testLinkVersion' => 'this:testLinkVersion',
+                             'tl.setTestMode' => 'this:setTestMode',
+                             'tl.ping' => 'this:sayHello', 
+                             'tl.sayHello' => 'this:sayHello',
+-                            'tl.repeat' => 'this:repeat'
++                            'tl.repeat' => 'this:repeat',
++				// new tl function for novaforge propagation
++					'tl.getProjectId' => 'this:getProjectId',
++					'tl.getProjectById' => 'this:getProjectById',
++					'tl.updateProject' => 'this:updateProject',
++					'tl.createProject' => 'this:createProject',
++					'tl.deleteProject' => 'this:deleteProject',
++					'tl.getUser' => 'this:getUser',
++					'tl.createUser' => 'this:createUser',
++					'tl.updateUser' => 'this:updateUser',
++					'tl.deleteUser' => 'this:deleteUser',
++					'tl.projectAddUser' => 'this:projectAddUser',
++					'tl.projectRemoveUser' => 'this:projectRemoveUser',
++					'tl.getRoles' => 'this:getRoles',
++					'tl.getRoleById' => 'this:getRoleById',	
++					'tl.getRole' => 'this:getRole',
++					'tl.requirementsImportFromXML' => 'this:requirementsImportFromXML',     
++					'tl.updateDirectory' => 'this:updateDirectory',     
++					'tl.updateRequirement' => 'this:updateRequirement',     
++					'tl.deleteRequirement' => 'this:deleteRequirement',     
++					'tl.getRequirementsByProject' => 'this:getRequirementsByProject',     
++					'tl.getTestsByRequirement' => 'this:getTestsByRequirement'      
+                         );
+   }
+   
+ } // class end
+\ Pas de fin de ligne à la fin du fichier
+diff -rNU5 testlink-1.9.14/lib/execute/execSetResults.php testlink/lib/execute/execSetResults.php
+--- testlink-1.9.14/lib/execute/execSetResults.php	2015-08-08 11:14:49.000000000 +0200
++++ testlink/lib/execute/execSetResults.php	2016-08-03 10:59:51.175782600 +0200
+@@ -1064,10 +1064,11 @@
+ {
+     $cfg = new stdClass();
+     $cfg->exec_cfg = config_get('exec_cfg');
+     $cfg->gui_cfg = config_get('gui');
+     // $cfg->bts_type = config_get('interface_bugs');
++    $cfg->forge_type = config_get('interface_forge');
+     
+     $results = config_get('results');
+     $cfg->tc_status = $results['status_code'];
+     $cfg->testcase_cfg = config_get('testcase_cfg'); 
+     $cfg->editorCfg = getWebEditorCfg('execution');
+diff -rNU5 testlink-1.9.14/lib/functions/common.php testlink/lib/functions/common.php
+--- testlink-1.9.14/lib/functions/common.php	2015-09-09 22:47:05.000000000 +0200
++++ testlink/lib/functions/common.php	2016-08-05 09:42:56.332527400 +0200
+@@ -12,10 +12,11 @@
+  *
+  * @filesource  common.php
+  * @package     TestLink
+  * @author      TestLink community
+  * @Copyright   2005,2014 TestLink community 
++ * @copyright 	2011-2014, BULL SAS, NovaForge Version 3 and above.
+  * @link        http://www.testlink.org
+  * @since       1.5
+  *
+  * @internal revisions
+  * @since 1.9.12
+@@ -58,10 +59,13 @@
+ 
+ 
+ // 20130526 checks need to be done in order to understand if this class is really needed
+ require_once("exec_cfield_mgr.class.php");   
+ 
++/** forge api */
++include(dirname(__FILE__) . "/../../forge_api.php");
++
+ /**
+  * Automatic loader for PHP classes
+  * See PHP Manual for details 
+  */
+ function tlAutoload($class_name) 
+@@ -448,10 +452,17 @@
+   
+   if ($userRightsCheckFunction)
+   {
+     checkUserRightsFor($db,$userRightsCheckFunction,$onFailureGoToLogin);
+   }
++
++	// set project context
++  if(isset($_GET['cur_project_id'])) {
++    $NFproject_id = $_GET['cur_project_id'];
++    $_SESSION['testprojectID']=$NFproject_id;
++    setProjectSession($db, $NFproject_id);
++  }
+     
+   // adjust Product and Test Plan to $_SESSION
+   if ($initProject)
+   {
+     initProject($db,$_REQUEST);
+diff -rNU5 testlink-1.9.14/lib/functions/configCheck.php testlink/lib/functions/configCheck.php
+--- testlink-1.9.14/lib/functions/configCheck.php	2015-06-20 18:32:39.000000000 +0200
++++ testlink/lib/functions/configCheck.php	2016-08-03 10:54:58.586393500 +0200
+@@ -8,10 +8,11 @@
+  * 
+  * @filesource  configCheck.php
+  * @package     TestLink
+  * @author      Martin Havlat
+  * @copyright   2007-2014, TestLink community 
++ * @copyright 	2011-2014, BULL SAS, NovaForge Version 3 and above.
+  * @link        http://www.testlink.org/
+  * @see         sysinfo.php
+  *
+  * @internal revisions
+  * @since 1.9.9
+@@ -55,11 +56,20 @@
+     $t_protocol = 'https';
+   }
+   $t_protocol = $opt['force_https'] ? 'https' : $t_protocol;
+ 
+   // $_SERVER['SERVER_PORT'] is not defined in case of php-cgi.exe
+-  if ( isset( $_SERVER['SERVER_PORT'] ) ) 
++  if (isset($_SERVER['HTTP_X_FORWARDED_PORT'])) 
++  {
++		$t_port = ':' . $_SERVER['HTTP_X_FORWARDED_PORT'];
++		if ( ( ':80' == $t_port && 'http' == $t_protocol )
++		  || ( ':443' == $t_port && 'https' == $t_protocol )) 
++    {
++			$t_port = '';
++		}
++  }
++  else if ( isset( $_SERVER['SERVER_PORT'] ) ) 
+   {
+     $t_port = ':' . $_SERVER['SERVER_PORT'];
+     if ( ( ':80' == $t_port && 'http' == $t_protocol ) || 
+        ( ':443' == $t_port && 'https' == $t_protocol )) 
+     {
+@@ -69,11 +79,15 @@
+   else 
+   {
+     $t_port = '';
+   }
+ 
+-  if ( isset( $_SERVER['HTTP_X_FORWARDED_HOST'] ) ) 
++	if ( isset($_SERVER['HTTP_X_FORWARDED_SERVER']) ) 
++  {
++    $t_host = $_SERVER['HTTP_X_FORWARDED_SERVER'];
++  }
++  else if ( isset( $_SERVER['HTTP_X_FORWARDED_HOST'] ) ) 
+   {   // Support ProxyPass
+     $t_hosts = explode( ',', $_SERVER['HTTP_X_FORWARDED_HOST'] );
+     $t_host = $t_hosts[0];
+   }
+   else if ( isset( $_SERVER['HTTP_HOST'] ) ) 
+diff -rNU5 testlink-1.9.14/lib/functions/doAuthorize.php testlink/lib/functions/doAuthorize.php
+--- testlink-1.9.14/lib/functions/doAuthorize.php	2015-07-09 20:47:09.000000000 +0200
++++ testlink/lib/functions/doAuthorize.php	2016-08-05 11:33:54.500451200 +0200
+@@ -7,10 +7,11 @@
+  *
+  * @filesource  doAuthorize.php
+  * @package     TestLink
+  * @author      Chad Rosen, Martin Havlat,Francisco Mancardi
+  * @copyright   2003-2015, TestLink community 
++ * @copyright 	2011-2014, BULL SAS, NovaForge Version 3 and above.
+  * @link        http://www.testlink.org
+  *
+  *
+  * @internal revisions
+  * @since 1.9.14
+@@ -198,11 +199,11 @@
+ /** 
+  * @return array
+  *         obj->status_ok = true/false
+  *         obj->msg = message to explain what has happened to a human being.
+  */
+-function auth_does_password_match(&$userObj,$cleartext_password)
++function auth_does_password_match(&$userObj,$cleartext_password,$proxy=false)
+ {
+   $authCfg = config_get('authentication');
+   $ret = new stdClass();
+   $ret->status_ok = false;
+   $ret->msg = sprintf(lang_get('unknown_authentication_method'),$authCfg['method']);
+@@ -232,10 +233,22 @@
+       
+       $xx = ldap_authenticate($userObj->login, $cleartext_password);
+       $ret->status_ok = $xx->status_ok;
+       $ret->msg = $xx->status_ok ? 'ok' : $msg[$xx->status_code]; 
+     break;
++
++    case 'CAS':
++      $ret->status_ok = true;
++  		if ($proxy == true)
++  		{	
++   			$pwd = sha1($cleartext_password);
++  			if ($userObj->getPassword($pwd) != md5($pwd))
++  			{
++  				$ret->status_ok = false;
++  			}
++  		}
++    break;   
+     
+     case 'MD5':
+     case 'DB':
+     default:
+       $ret->status_ok = ($userObj->comparePassword($cleartext_password) == tl::OK);
+diff -rNU5 testlink-1.9.14/lib/functions/requirement_mgr.class.php testlink/lib/functions/requirement_mgr.class.php
+--- testlink-1.9.14/lib/functions/requirement_mgr.class.php	2015-08-10 20:09:00.000000000 +0200
++++ testlink/lib/functions/requirement_mgr.class.php	2016-04-26 14:39:38.631205400 +0200
+@@ -5,10 +5,11 @@
+  *
+  * @package     TestLink
+  * @filesource  requirement_mgr.class.php
+  * @author      Francisco Mancardi <francisco.mancardi@gmail.com>
+  * @copyright   2007-2014, TestLink community 
++ * @copyright 	2011-2014, BULL SAS, NovaForge Version 3 and above.
+  *
+  * Manager for requirements.
+  * Requirements are children of a requirement specification (requirements container)
+  *
+  * @internal revisions
+@@ -372,11 +373,11 @@
+ 
+   @internal revision
+   */
+ function create($srs_id,$reqdoc_id,$title, $scope, $user_id,
+                 $status = TL_REQ_STATUS_VALID, $type = TL_REQ_TYPE_INFO,
+-                $expected_coverage=1,$node_order=0,$tproject_id=null, $options=null)
++                $expected_coverage=1,$node_order=0,$tproject_id=null,$options=null,$versionNumber=null)
+ {
+   // This kind of saving is important when called in a loop in situations like
+   // copy test project
+   static $debugMsg;
+   static $log_message;
+@@ -413,11 +414,12 @@
+       if ($this->internal_links->enable )
+       {
+         $scope = req_link_replace($this->db, $scope, $tproject_id);
+       }
+ 
+-      $op = $this->create_version($result['id'],1,$scope,$user_id,
++			$version_number = is_null($versionNumber) ? 1 : $versionNumber;
++      $op = $this->create_version($result['id'],$version_number,$scope,$user_id,
+                                   $status,$type,intval($expected_coverage));
+       $result['msg'] = $op['status_ok'] ? $result['msg'] : $op['msg'];
+       $result['version_id'] = $op['status_ok'] ? $op['id'] : -1;
+       
+       if( $op['status_ok'] )
+@@ -1531,11 +1533,11 @@
+     $check_in_tproject = $this->getByAttribute($target,$tproject_id,null,$getByAttributeOpt);
+     if(is_null($check_in_tproject))
+     {
+       $newReq = $this->create($parent_id,$req['docid'],$req['title'],$req['description'],
+                          $author_id,$req['status'],$req['type'],$req['expected_coverage'],
+-                         $req['node_order'],$tproject_id,array('quickAndDirty' => true));
++                         $req['node_order'],$tproject_id,array('quickAndDirty' => true),$req['version']);
+     
+       if( ($status_ok = ($newReq['status_ok'] == 1)) )
+       {
+         $msgID = 'import_req_created';
+       }
+@@ -1583,11 +1585,11 @@
+             $msgID = 'import_req_update_last_version_failed';
+           }  
+         break;
+       
+         case 'create_new_version':
+-          $newItem = $this->create_new_version($reqID,$author_id);
++          $newItem = $this->create_new_version($reqID,$author_id,null,null,$req['version']);
+                 
+           // Set always new version to NOT Frozen
+           $this->updateOpen($newItem['id'],1);        
+           
+           // hmm wrong implementation
+@@ -2228,11 +2230,11 @@
+                   version: version number (i.e. 5)
+                   msg
+   
+     @internal revisions
+   */
+-  function create_new_version($id,$user_id,$reqVersionID=null,$log_msg=null)
++  function create_new_version($id,$user_id,$reqVersionID=null,$log_msg=null,$versionNumber=null)
+   {
+     $debugMsg = 'Class:' . __CLASS__ . ' - Method: ' . __FUNCTION__;
+   
+     // get a new id
+     $version_id = $this->tree_mgr->new_node($id,$this->node_types_descr_id['requirement_version']);
+@@ -2241,11 +2243,11 @@
+     $sourceVersionInfo =  $this->get_last_child_info($id,  array('child_type' => 'version'));
+     if( is_null($sourceVersionInfo) )
+     {
+       throw new Exception($debugMsg . ' $this->get_last_child_info() RETURNED NULL !!! - WRONG - Open Issue on mantis.testlink.org');
+     }
+-    $newVersionNumber = $sourceVersionInfo['version']+1; 
++	  $newVersionNumber = is_null($versionNumber) ? $sourceVersionInfo['version']+1 : $versionNumber;
+ 
+     $ret = array();
+     $ret['id'] = $version_id;
+     $ret['version'] = $newVersionNumber;
+     $ret['msg'] = 'ok';
+diff -rNU5 testlink-1.9.14/lib/functions/testproject.class.php testlink/lib/functions/testproject.class.php
+--- testlink-1.9.14/lib/functions/testproject.class.php	2015-06-20 18:32:12.000000000 +0200
++++ testlink/lib/functions/testproject.class.php	2016-08-08 14:30:31.521117900 +0200
+@@ -4,10 +4,11 @@
+  * This script is distributed under the GNU General Public License 2 or later.
+  * 
+  * @filesource  testproject.class.php
+  * @package     TestLink
+  * @copyright   2005-2015, TestLink community 
++ * @copyright 	2011-2014, BULL SAS, NovaForge Version 3 and above.
+  * @link        http://testlink.sourceforge.net/
+  *
+  * @internal revisions
+  * @since 1.9.14
+  * 
+@@ -23,11 +24,11 @@
+ class testproject extends tlObjectWithAttachments
+ {
+   const RECURSIVE_MODE = true;
+   const EXCLUDE_TESTCASES = true;
+   const INCLUDE_TESTCASES = false;
+-  const TESTCASE_PREFIX_MAXLEN = 16; // must be changed if field dimension changes
++  const TESTCASE_PREFIX_MAXLEN = 50; // must be changed if field dimension changes
+   const GET_NOT_EMPTY_REQSPEC = 1;
+   const GET_EMPTY_REQSPEC = 0;
+   
+   /** @var database handler */
+   var $db;
+@@ -705,13 +706,15 @@
+       {
+         $noteActive = '';
+         if (!$row['active'])
+         {
+          $noteActive = TL_INACTIVE_MARKUP;
+-        }
+-        $items[$id] = $noteActive . 
+-                      ( ($my['opt']['field_set'] =='prefix') ? ($row['prefix'] . ':') : '' ) . $row['name'];
++        }       
++//        $items[$id] = $noteActive . 
++//                      ( ($my['opt']['field_set'] =='prefix') ? ($row['prefix'] . ':') : '' ) . $row['name'];
++        // To have project name displayed without prefix (as for 1.9.3 release) on main page (top right)
++        $items[$id] = $noteActive . $row['name'];         
+       }
+       break;
+       
+       case 'map_of_map':
+       foreach($arrTemp as $id => $row)
+diff -rNU5 testlink-1.9.14/lib/functions/tlRole.class.php testlink/lib/functions/tlRole.class.php
+--- testlink-1.9.14/lib/functions/tlRole.class.php	2015-03-28 10:04:27.000000000 +0100
++++ testlink/lib/functions/tlRole.class.php	2016-04-26 14:19:23.329860000 +0200
+@@ -3,10 +3,11 @@
+  * TestLink Open Source Project - http://testlink.sourceforge.net/ 
+  * This script is distributed under the GNU General Public License 2 or later. 
+  *
+  * @package     TestLink
+  * @copyright   2004-2013, TestLink community 
++ * @copyright 	2011-2014, BULL SAS, NovaForge Version 3 and above.
+  * @filesource  tlRole.class.php
+  * @link        http://www.teamst.org/index.php
+  *
+  * @internal revisions
+  * @since 1.9.9
+@@ -46,10 +47,11 @@
+    * @var integer the replacement roleID, if assigned roles get deleted
+    */
+   protected $replacementRoleID;
+   
+   const ROLE_O_SEARCH_BYNAME = 2;
++	const TLOBJ_O_SEARCH_BY_ID = 1;
+   const TLOBJ_O_GET_DETAIL_RIGHTS = 1;
+ 
+   // some error code
+   const E_DBERROR = -2; 
+   const E_NAMELENGTH = -3;
+diff -rNU5 testlink-1.9.14/lib/functions/tlsmarty.inc.php testlink/lib/functions/tlsmarty.inc.php
+--- testlink-1.9.14/lib/functions/tlsmarty.inc.php	2015-04-20 22:36:03.000000000 +0200
++++ testlink/lib/functions/tlsmarty.inc.php	2016-04-26 14:16:45.250053600 +0200
+@@ -8,10 +8,11 @@
+  * 
+  * @filesource	tlsmarty.inc.php
+  * @package 	  TestLink
+  * @author 		  Martin Havlat
+  * @copyright 	2005-2015, TestLink community 
++ * @copyright 	2011-2014, BULL SAS, NovaForge Version 3 and above.
+  * @link 		    http://www.testlink.org/
+  * @link 		    http://www.smarty.net/ 
+  *
+  * @internal revisions
+  * @since 1.9.14
+@@ -195,10 +196,11 @@
+     $this->assign('session',isset($_SESSION) ? $_SESSION : null);
+     $this->assign('tlCfg',$tlCfg);
+     $this->assign('gsmarty_gui',$tlCfg->gui);
+     $this->assign('gsmarty_spec_cfg',config_get('spec_cfg'));
+     $this->assign('gsmarty_attachments',config_get('attachments'));
++    $this->assign('gsmarty_forgeInterfaceOn',config_get('forgeInterfaceOn'));
+     
+     $this->assign('pageCharset',$tlCfg->charset);
+     $this->assign('tlVersion',TL_VERSION);
+     $this->assign('testproject_coloring',null);
+     
+diff -rNU5 testlink-1.9.14/lib/functions/tlUser.class.php testlink/lib/functions/tlUser.class.php
+--- testlink-1.9.14/lib/functions/tlUser.class.php	2015-05-09 12:27:21.000000000 +0200
++++ testlink/lib/functions/tlUser.class.php	2016-08-08 11:47:23.566047600 +0200
+@@ -4,10 +4,11 @@
+  * This script is distributed under the GNU General Public License 2 or later.
+  * 
+  * @filesource  tlUser.class.php
+  * @package     TestLink
+  * @copyright   2007-2014, TestLink community 
++ * @copyright 	2011-2014, BULL SAS, NovaForge Version 3 and above.
+  * @link        http://www.testlink.org
+  *
+  * @internal revisions
+  * @since 1.9.10
+  * 20140322 - franciscom - TICKET 6258: User cannot login after change Authentication method from LDAP to DB
+@@ -205,20 +206,32 @@
+       $target = $authCfg['method'];
+     }  
+     switch($target)
+     {
+       case 'LDAP':
++      case 'CAS':
+         return true;
+       break;
+ 
+       case 'DB':
+       case 'MD5':
+       default:
+         return false;
+       break;
+     }
+   }
++
++	/** 
++	 * Checks if user management is external (like CAS)...
++	 * 
++	 * @return boolean return true if user management is external, else false
++	 */
++	static public function isUserMgtExternal()
++	{
++		$authCfg = config_get('authentication');
++		return ($authCfg['method'] != '' && $authCfg['method'] == 'CAS') ? true : false;
++	}
+   
+   /**
+    *  Obtain a secure password. 
+    *  You can choose the number of alphanumeric characters to add and 
+    *  the number of non-alphanumeric characters. 
+@@ -497,10 +510,38 @@
+       $result = $this->deleteTestProjectRoles($db);
+     }
+     return $result;
+   }
+ 
++  	/** 
++	 * 
++	 *  
++	 **/	
++	public function unactiveFromDBAndReleaseLogin(&$db)
++	{
++		$result = $this->checkDetails($db);
++		if ($result >= tl::OK)
++		{		
++			if($this->dbID)
++			{
++				$sql = "UPDATE {$this->tables['users']} " .
++			       	   "SET first = '" . $db->prepare_string($this->firstName) . "'" .
++			       	   ", login = '" .  $db->prepare_string($this->login."_deleted_".time()) . "'" .
++				   ", last = '" .  $db->prepare_string($this->lastName)    . "'" .
++			       	   ", email = '" . $db->prepare_string($this->emailAddress)   . "'" .
++				   	   ", locale = ". "'" . $db->prepare_string($this->locale) . "'" . 
++				   	   ", password = ". "'" . $db->prepare_string($this->password) . "'" .
++				   	   ", role_id = ". $db->prepare_string($this->globalRoleID) . 
++				   	   ", active = ". $db->prepare_string(0);
++				$sql .= " WHERE id = " . $this->dbID;
++				$result = $db->exec_query($sql);
++			}
++			$result = $result ? tl::OK : self::E_DBERROR;
++		}
++		return $result;
++	}
++
+   /**
+    * Deletes all testproject related role assignments for a given user
+    *
+    * @param resource &$db reference to database handler
+    * @param integer $userID the user ID
+diff -rNU5 testlink-1.9.14/lib/requirements/reqSpecView.php testlink/lib/requirements/reqSpecView.php
+--- testlink-1.9.14/lib/requirements/reqSpecView.php	2015-09-17 21:41:46.000000000 +0200
++++ testlink/lib/requirements/reqSpecView.php	2016-08-03 14:41:05.971561300 +0200
+@@ -61,12 +61,11 @@
+   $gui->req_spec_cfg = config_get('req_spec_cfg');
+   $gui->req_cfg = config_get('req_cfg');
+   $gui->external_req_management = ($gui->req_cfg->external_req_management == ENABLED) ? 1 : 0;
+   
+   $gui->grants = new stdClass();
+-  $gui->grants->req_mgmt = has_rights($db,"mgt_modify_req");
+-
++  
+   $gui->req_spec = $req_spec_mgr->get_by_id($argsObj->req_spec_id);
+   $gui->revCount = $req_spec_mgr->getRevisionsCount($argsObj->req_spec_id);
+   
+   $gui->req_spec_id = intval($argsObj->req_spec_id);
+   $gui->parentID = $argsObj->req_spec_id;
+diff -rNU5 testlink-1.9.14/lib/requirements/reqView.php testlink/lib/requirements/reqView.php
+--- testlink-1.9.14/lib/requirements/reqView.php	2015-03-28 10:04:28.000000000 +0100
++++ testlink/lib/requirements/reqView.php	2016-04-26 13:52:04.441134400 +0200
+@@ -103,11 +103,10 @@
+   if( ($isAlien = ($tproject_id != $argsObj->tproject_id)) )
+   {
+     $target_id = $tproject_id;
+   } 
+   $gui->grants = new stdClass();
+-  $gui->grants->req_mgmt = $argsObj->user->hasRight($dbHandler,"mgt_modify_req",$target_id);
+   $gui->grants->unfreeze_req = $argsObj->user->hasRight($dbHandler,"mgt_unfreeze_req",$target_id);
+   
+   $gui->tcasePrefix = $tproject_mgr->getTestCasePrefix($argsObj->tproject_id);
+   
+   $gui->req = current($gui->req_versions);
+diff -rNU5 testlink-1.9.14/lib/testcases/testcaseCommands.class.php testlink/lib/testcases/testcaseCommands.class.php
+--- testlink-1.9.14/lib/testcases/testcaseCommands.class.php	2015-05-03 11:03:20.000000000 +0200
++++ testlink/lib/testcases/testcaseCommands.class.php	2016-08-03 11:41:19.136464800 +0200
+@@ -7,10 +7,11 @@
+  *
+  * @filesource  testcaseCommands.class.php
+  * @package     TestLink
+  * @author      Francisco Mancardi - francisco.mancardi@gmail.com
+  * @copyright   2007-2014, TestLink community 
++ * @copyright 	2011-2016, BULL SAS, NovaForge Version 3 and above.
+  * @link        http://testlink.sourceforge.net/
+  *
+  *
+  * @internal revisions
+  * @since 1.9.13
+@@ -94,11 +95,11 @@
+     {
+       $obj->$p2check = !is_null($argsObj->$p2check) ? $argsObj->$p2check : 'show'; 
+     }
+ 
+     // need to check where is used
+-    $obj->loadOnCancelURL = "archiveData.php?edit=testcase&show_mode={$obj->show_mode}&id=%s&version_id=%s";
++    $obj->loadOnCancelURL = "lib/testcases/archiveData.php?edit=testcase&show_mode={$obj->show_mode}&id=%s&version_id=%s";
+     return $obj;
+   }
+    
+   /**
+    * initialize common test case information, useful when working on steps
+@@ -740,11 +741,11 @@
+     $guiObj = $this->initGuiBean($argsObj);
+     $guiObj->main_descr = lang_get('test_case');
+     $this->tcaseMgr->set_step_number($argsObj->step_set);
+     $this->tcaseMgr->update_last_modified($argsObj->tcversion_id,$argsObj->user_id);
+     $this->initTestCaseBasicInfo($argsObj,$guiObj);
+-    $guiObj->template="archiveData.php?version_id={$argsObj->tcversion_id}&" . 
++		$guiObj->template="lib/testcases/archiveData.php?version_id={$argsObj->tcversion_id}&" . 
+                       "edit=testcase&id={$argsObj->tcase_id}&show_mode={$guiObj->show_mode}";
+     return $guiObj;
+   }
+ 
+ 
+@@ -762,11 +763,11 @@
+ 
+     $tcversion_node = $this->tcaseMgr->tree_manager->get_node_hierarchy_info($step_node['parent_id']);
+     $argsObj->tcversion_id = $step_node['parent_id'];
+     $argsObj->tcase_id = $tcversion_node['parent_id'];
+     
+-    $guiObj->template="archiveData.php?version_id={$argsObj->tcversion_id}&" . 
++		$guiObj->template="lib/testcases/archiveData.php?version_id={$tcversion_id}&" . 
+                       "edit=testcase&id={$argsObj->tcase_id}&show_mode={$guiObj->show_mode}";
+ 
+     $guiObj->user_feedback = '';
+     $op = $this->tcaseMgr->delete_step_by_id($argsObj->step_id);
+     $this->tcaseMgr->update_last_modified($argsObj->tcversion_id,$argsObj->user_id);
+@@ -931,11 +932,11 @@
+     {
+       $renumbered[$stepSet[$idx]['id']] = $idx+1; 
+     }
+     $this->tcaseMgr->set_step_number($renumbered);
+ 
+-   $guiObj->template = "archiveData.php?version_id={$guiObj->tcversion_id}&" . 
++   $guiObj->template = "lib/testcases/archiveData.php?version_id={$guiObj->tcversion_id}&" . 
+                        "edit=testcase&id={$guiObj->tcase_id}&show_mode={$guiObj->show_mode}";
+ 
+     $guiObj->user_feedback = '';
+     $this->tcaseMgr->update_last_modified($argsObj->tcversion_id,$argsObj->user_id);
+     return $guiObj;
+@@ -958,11 +959,11 @@
+ 
+     $this->tcaseMgr->setImportance($argsObj->tcversion_id,$argsObj->importance);
+     $this->tcaseMgr->update_last_modified($argsObj->tcversion_id,$argsObj->user_id);
+ 
+     // set up for rendering
+-    $guiObj->template = "archiveData.php?version_id={$guiObj->tcversion_id}&" . 
++    $guiObj->template = "lib/testcases/archiveData.php?version_id={$guiObj->tcversion_id}&" . 
+                         "edit=testcase&id={$guiObj->tcase_id}&show_mode={$guiObj->show_mode}";
+ 
+     $guiObj->user_feedback = '';
+     return $guiObj;
+   }
+@@ -983,11 +984,11 @@
+ 
+     $this->tcaseMgr->setStatus($argsObj->tcversion_id,$argsObj->status);
+     $this->tcaseMgr->update_last_modified($argsObj->tcversion_id,$argsObj->user_id);
+ 
+     // set up for rendering
+-    $guiObj->template = "archiveData.php?version_id={$guiObj->tcversion_id}&" . 
++    $guiObj->template = "lib/testcases/archiveData.php?version_id={$guiObj->tcversion_id}&" . 
+                         "edit=testcase&id={$guiObj->tcase_id}&show_mode={$guiObj->show_mode}";
+ 
+     $guiObj->user_feedback = '';
+     return $guiObj;
+   }
+@@ -1008,11 +1009,11 @@
+ 
+     $this->tcaseMgr->setExecutionType($argsObj->tcversion_id,$argsObj->exec_type);
+     $this->tcaseMgr->update_last_modified($argsObj->tcversion_id,$argsObj->user_id);
+ 
+     // set up for rendering
+-    $guiObj->template = "archiveData.php?version_id={$guiObj->tcversion_id}&" . 
++    $guiObj->template = "lib/testcases/archiveData.php?version_id={$guiObj->tcversion_id}&" . 
+                         "edit=testcase&id={$guiObj->tcase_id}&show_mode={$guiObj->show_mode}";
+ 
+     $guiObj->user_feedback = '';
+     return $guiObj;
+   }
+@@ -1033,11 +1034,11 @@
+ 
+     $this->tcaseMgr->setEstimatedExecDuration($argsObj->tcversion_id,$argsObj->estimatedExecDuration);
+     $this->tcaseMgr->update_last_modified($argsObj->tcversion_id,$argsObj->user_id);
+ 
+     // set up for rendering
+-    $guiObj->template = "archiveData.php?version_id={$guiObj->tcversion_id}&" . 
++    $guiObj->template = "lib/testcases/archiveData.php?version_id={$guiObj->tcversion_id}&" . 
+                         "edit=testcase&id={$guiObj->tcase_id}&show_mode={$guiObj->show_mode}";
+ 
+     $guiObj->user_feedback = '';
+     return $guiObj;
+   }
+@@ -1139,11 +1140,11 @@
+       $guiObj->user_feedback = sprintf(lang_get('testcase_doesnot_exists'), $argsObj->relation_destination_tcase);
+     } 
+ 
+     // set up for rendering
+     // It's OK put fixed 0 on version_id other functions on the chain to do the display know how to manage this
+-    $guiObj->template = "archiveData.php?version_id=0&" . 
++    $guiObj->template = "lib/testcases/archiveData.php?version_id=0&" . 
+                         "edit=testcase&id={$guiObj->tcase_id}&show_mode={$guiObj->show_mode}";
+     
+     if($guiObj->user_feedback != '')
+     {
+       $guiObj->template .= "&add_relation_feedback_msg=" . urlencode($guiObj->user_feedback);
+@@ -1166,11 +1167,11 @@
+     {
+       $this->tcaseMgr->deleteRelationByID($argsObj->relation_id);
+     } 
+ 
+     // set up for rendering
+-    $guiObj->template = "archiveData.php?edit=testcase&id={$guiObj->tcase_id}&show_mode={$guiObj->show_mode}" .
++    $guiObj->template = "lib/testcases/archiveData.php?edit=testcase&id={$guiObj->tcase_id}&show_mode={$guiObj->show_mode}" .
+                         "&caller=delRel";
+ 
+     return $guiObj;
+   }
+ 
+@@ -1202,11 +1203,11 @@
+     {
+       $this->tcaseMgr->deleteKeywords($guiObj->tcase_id,array($argsObj->keyword_id),testcase::AUDIT_ON);
+     } 
+ 
+     // set up for rendering
+-    $guiObj->template = "archiveData.php?edit=testcase&id={$guiObj->tcase_id}&show_mode={$guiObj->show_mode}" .
++    $guiObj->template = "lib/testcases/archiveData.php?edit=testcase&id={$guiObj->tcase_id}&show_mode={$guiObj->show_mode}" .
+                         "&caller=removeKeyword";
+     return $guiObj;
+   }
+ 
+ 
+diff -rNU5 testlink-1.9.14/lib/usermanagement/userInfo.php testlink/lib/usermanagement/userInfo.php
+--- testlink-1.9.14/lib/usermanagement/userInfo.php	2015-05-09 12:27:41.000000000 +0200
++++ testlink/lib/usermanagement/userInfo.php	2016-04-26 13:47:52.404278400 +0200
+@@ -7,10 +7,11 @@
+  *
+  * @filesource  userInfo.php
+  * @package     TestLink
+  * @author      -
+  * @copyright   2007-2014, TestLink community 
++ * @copyright 	2011-2014, BULL SAS, NovaForge Version 3 and above.
+  * @link        http://www.testlink.org
+  *
+  *
+  * @internal revisions
+  * @since 1.9.10
+@@ -90,10 +91,11 @@
+ $gui->optLocale = config_get('locales');
+ 
+ $smarty = new TLSmarty();
+ $smarty->assign('gui',$gui);
+ $smarty->assign('external_password_mgmt',tlUser::isPasswordMgtExternal($user->authentication));
++$smarty->assign('external_user_mgmt',tlUser::isUserMgtExternal());
+ $smarty->assign('user',$user);
+ $smarty->assign('api_ui_show',$user);
+ $smarty->assign('mgt_view_events',$user->hasRight($db,"mgt_view_events"));
+ $smarty->assign('loginHistory', $loginHistory);
+ $smarty->assign('user_feedback', $op->user_feedback);
+diff -rNU5 testlink-1.9.14/login.php testlink/login.php
+--- testlink-1.9.14/login.php	2015-05-02 12:02:50.000000000 +0200
++++ testlink/login.php	2016-08-03 15:08:27.352646300 +0200
+@@ -7,10 +7,11 @@
+  *
+  * @filesource  login.php
+  * @package     TestLink
+  * @author      Martin Havlat
+  * @copyright   2006,2015 TestLink community 
++ * @copyright 	2011-2014, BULL SAS, NovaForge Version 3 and above.
+  * @link        http://www.testlink.org
+  * 
+  * @internal revisions
+  * @since 1.9.14
+  *              
+@@ -19,27 +20,72 @@
+ require_once('lib/functions/configCheck.php');
+ checkConfiguration();
+ require_once('config.inc.php');
+ require_once('common.php');
+ require_once('doAuthorize.php');
++require_once('CAS/CAS.php');
+ 
+ $templateCfg = templateConfiguration();
+ $doRenderLoginScreen = false;
+ $doAuthPostProcess = false;
+ 
+ doDBConnect($db, database::ONERROREXIT);
++
++$authCfg = config_get('authentication');
++if ($authCfg['method'] == 'CAS')
++{
++	phpCAS::client(CAS_VERSION_2_0, $authCfg['cas_server_name'], $authCfg['cas_server_port'], $authCfg['cas_server_path']);
++	phpCAS::handleLogoutRequests(false);    
++	phpCAS::setServerProxyValidateURL($authCfg['cas_validation_url']);
++	if (method_exists('phpCAS', 'setNoCasServerValidation')) {
++     // no SSL validation for the CAS server
++     phpCAS::setNoCasServerValidation();
++  }
++}
++
+ $args = init_args();
+ $gui = init_gui($db,$args);
+ 
+ // if these checks fail => we will redirect to login screen with some message
+ doBlockingChecks($db,$gui);
+ 
+ switch($args->action) 
+ {
++	case 'loginform':
++		if ($authCfg['method'] != 'CAS')
++		{
++      $doRenderLoginScreen = true;
++      // unfortunatelly we use $args->note in order to do some logic.
++      if( (trim($args->note) == "") &&
++          $gui->authCfg['SSO_enabled'] && $gui->authCfg['SSO_method'] == 'CLIENT_CERTIFICATE')
++      {
++        doSessionStart(true);
++        $op = doSSOClientCertificate($db,$_SERVER,$gui->authCfg);
++        $doAuthPostProcess = true;
++      }
++			break;
++		}
++		else
++		{
++			$doRender = false;
++			$args->action = 'doLogin';
++		}
+   case 'doLogin':
+   case 'ajaxlogin':
+     doSessionStart(true);
++
++		if ($authCfg['method'] == 'CAS'){
++			if(phpCAS::isAuthenticated())
++			{
++				$args->login = phpCAS::getUser();
++        $args->pwd = $args->login;
++			}
++			else
++			{
++				phpCAS::forceAuthentication();
++			}
++		}
+      
+     // When doing ajax login we need to skip control regarding session already open
+     // that we use when doing normal login.
+     // If we do not proceed this way we will enter an infinite loop
+     $options = array('doSessionExistsCheck' => ($args->action=='doLogin'));
+@@ -48,22 +94,10 @@
+   break;
+ 
+   case 'ajaxcheck':
+     processAjaxCheck($db);
+   break;
+-  
+-  case 'loginform':
+-    $doRenderLoginScreen = true;
+-    // unfortunatelly we use $args->note in order to do some logic.
+-    if( (trim($args->note) == "") &&
+-        $gui->authCfg['SSO_enabled'] && $gui->authCfg['SSO_method'] == 'CLIENT_CERTIFICATE')
+-    {
+-      doSessionStart(true);
+-      $op = doSSOClientCertificate($db,$_SERVER,$gui->authCfg);
+-      $doAuthPostProcess = true;
+-    }
+-  break;
+ }
+ 
+ 
+ if( $doAuthPostProcess ) 
+ {
+@@ -139,24 +173,26 @@
+   }  
+ 
+   $gui->authCfg = config_get('authentication');
+   $gui->user_self_signup = config_get('user_self_signup');
+ 
+-  $gui->external_password_mgmt = false;
+-  $gui->login_disabled = (('LDAP' == $gui->authCfg['method']) && !checkForLDAPExtension()) ? 1 : 0;
++	$gui->external_password_mgmt = ('LDAP' == $authCfg['method'] || 'CAS' == $authCfg['method']) ? 1 : 0;
++	$gui->login_disabled = ($gui->external_password_mgmt && !checkForLDAPExtension()) ? 1 : 0;
+ 
+   switch($args->note)
+   {
+     case 'expired':
+-      if(!isset($_SESSION))
+-      {
+-        session_start();
+-      }
+-      session_unset();
+-      session_destroy();
+-      $gui->note = lang_get('session_expired');
+-      $gui->reqURI = null;
++			if ( ($authCfg['method'] == 'CAS') && (!phpCAS::isAuthenticated()) ) {
++        if(!isset($_SESSION))
++        {
++          session_start();
++        }
++        session_unset();
++        session_destroy();
++        $gui->note = lang_get('session_expired');
++        $gui->reqURI = null;
++			}
+     break;
+         
+     case 'first':
+       $gui->note = lang_get('your_first_login');
+       $gui->reqURI = null;
+diff -rNU5 testlink-1.9.14/logout.php testlink/logout.php
+--- testlink-1.9.14/logout.php	2015-03-28 10:04:29.000000000 +0100
++++ testlink/logout.php	2016-04-26 11:16:55.830281800 +0200
+@@ -9,19 +9,31 @@
+  * @since 1.9.4
+  *
+ **/
+ require_once('config.inc.php');
+ require_once('common.php');
++require_once('CAS/CAS.php');
+ testlinkInitPage($db);
+ 
+ $args = init_args();
+ if ($args->userID)
+ {
+ 	logAuditEvent(TLS("audit_user_logout",$args->userName),"LOGOUT",$args->userID,"users");  
+ }
+ session_unset();
+ session_destroy();
++
++$authCfg = config_get('authentication');
++if ($authCfg['method'] == 'CAS') {
++	phpCAS::client(CAS_VERSION_2_0, $authCfg['cas_server_name'], $authCfg['cas_server_port'], $authCfg['cas_server_path'] );
++	phpCAS::setServerProxyValidateURL($authCfg['cas_validation_url']);
++	if (method_exists('phpCAS', 'setNoCasServerValidation')) {
++        // no SSL validation for the CAS server
++    	phpCAS::setNoCasServerValidation();
++    }
++	phpCAS::logout();
++}
+ redirect("login.php?note=logout");
+ exit();
+ 
+ 
+ function init_args()

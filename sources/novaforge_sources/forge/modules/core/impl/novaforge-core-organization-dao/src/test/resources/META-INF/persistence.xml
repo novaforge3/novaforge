@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/persistence"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+	version="1.0">
+
+	<persistence-unit name="core.organization.test" transaction-type="RESOURCE_LOCAL">
+		<non-jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=jdbc/novaforge)</non-jta-data-source>
+		<class>org.novaforge.forge.core.organization.entity.ActorEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.ApplicationEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.BinaryFileEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.BlacklistedUserEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.CompositionEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.GroupEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.LanguageEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.MembershipEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.MembershipEntityId</class>
+		<class>org.novaforge.forge.core.organization.entity.MembershipRequestEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.NodeEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.OrganizationEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.PermissionEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.ProjectApplicationEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.ProjectApplicationRequestEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.ProjectElementEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.ProjectEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.ProjectRoleEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.RecoveryPasswordEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.RoleEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.SpaceEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.TemplateApplicationEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.TemplateEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.TemplateInstanceEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.UserEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.UserProfileEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.UserProfileWorkEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.UserProfileContactEntity</class>
+		<class>org.novaforge.forge.core.organization.entity.AttributeEntity</class>
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+
+		<properties>
+			<property name="openjpa.jdbc.MappingDefaults" value="ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict" />
+			<property name="openjpa.jdbc.SchemaFactory" value="native(ForeignKeys=true)" />
+			<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true,Indexes=true)" />
+			<property name="openjpa.jdbc.DBDictionary" value="derby" />
+			<property name="openjpa.BrokerImpl" value="EvictFromDataCache=true" />
+			<!-- The property below is used by openjpa to handle enumerations -->
+			<property name="openjpa.Compatibility" value="QuotedNumbersInQueries=true" />
+			<property name="openjpa.DataCache" value="true" />
+      		<!-- Uncomment to enable sql log -->
+<!-- 			<property name="openjpa.Log" value="DefaultLevel=WARN, Runtime=INFO, Tool=INFO, SQL=TRACE" /> -->
+<!-- 			<property name="openjpa.ConnectionFactoryProperties" value="PrintParameters=true" /> -->
+		</properties>
+	</persistence-unit>
+
+</persistence>

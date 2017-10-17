@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+
+
+
+<section version="5.0" xml:lang="en" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+  <title>Manage your dashboards</title>
+
+  <para>The dashboard is a tool developed internally to help you to see all your important information in one place. It collect and merge, with widget, information of your projects.
+  </para>
+  <para>
+    Dashboard offers the following features:
+    <itemizedlist>
+      <listitem>
+        <para>Merge information of all your projects</para>
+      </listitem>
+      <listitem>
+        <para>Create as many tabs you want to organize your widgets</para>
+      </listitem>
+      <listitem>
+        <para>Add as many widgets you want, and configure each one independently from other</para>
+      </listitem>
+    </itemizedlist>
+  </para>
+  
+  <para>There are 2 kind of dashboard in NovaForge, <xref linkend="dashboardUser" endterm="dashboardUserXref" />, which is specific to each user, and <xref linkend="dashboardProject" endterm="dashboardProjectXref" />, which is specific to each project. 
+  </para>
+
+  <section id="dashboardUser">
+    <title id="dashboardUserXref">Dashboard User</title>
+    <para>
+      Every user has one, and can only see its own.
+      It's the first page you see, once you are loggued in. You can go to your dashboard, in left menu, in entry "My space".
+    </para>
+    <figure>
+        <title>Dashboard Overview</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" fileref="05-05g-01-DashboardOverview.png"/>
+          </imageobject>
+        </mediaobject>
+    </figure>
+    <section id="DashboardTabBar">
+    	<title id="DashboardTabBarXref">Configure dashboard tabs</title>
+    	<figure>
+        	<title>Dashboard tabs bar</title>
+        	<mediaobject>
+        		<imageobject>
+        			<imagedata align="center" fileref="05-05g-02-DashboardTab.png" width="204px" />
+        		</imageobject>
+        	</mediaobject>
+    	</figure>
+    	<para>
+    		The button "+" of dashboard tabs bar, allow you to add a new tab to your dashboard.
+    	</para>
+    	<para>
+    		On each tab, the button "triangle", on the right of the tab, allow you to open the tab configuration. Same button, when configuration menu is open, to close this menu.
+    	</para>
+    </section>
+    <section id="DashboardTabConf">
+    	<title id="DashboardTabConfXref">Configure dashboard tabs</title>
+    	<figure>
+        	<title>Configuration tab menu</title>
+        	<mediaobject>
+        		<imageobject>
+        			<imagedata align="center" fileref="05-05g-03-DashboardTabConfig.png"/>
+        		</imageobject>
+        	</mediaobject>
+    	</figure>
+    	<para>
+    		Configuration menu, allow you to define tab name, icon and layout. To define tab layout, you first have to choose how many area you want in this tab, and then how they are placed. To help you to identify where areas are, they are colored in blue, once the configuration menu is open.
+    		You can delete the current tab from the configuration menu (Widgets of this tab will be removed, and their configuration lost).
+    	</para>
+    	<para>
+    		The last button, on right, allow to <xref linkend="dashboardAddWidget" endterm="dashboardAddWidgetXref" />.
+    	</para>
+    </section>
+    <section id="dashboardAddWidget">
+    	<title id="dashboardAddWidgetXref">Add a widget</title>
+    	<figure>
+        	<title>Add widget menu</title>
+        	<mediaobject>
+        		<imageobject>
+        			<imagedata align="center" fileref="05-05g-04-DashboardAddWidget.png"/>
+        		</imageobject>
+        	</mediaobject>
+    	</figure>
+    	<para>
+    		From the add widget menu, you can go back to <xref linkend="DashboardTabConf" endterm="DashboardTabConfXref" />.
+    	</para>
+    	<para>
+    		you have the list of all availables widgets. You can search in this list, or filter by widget category. These categories are the same as application categories, a widget is linked, or not, to one or many categories.
+    	</para>
+    	<para>
+    		You can add a widget to your dashboard by clicking on the "+" button on the bottom right corner of the widget thumbnail.
+    		By clicking on the widget thumbnail, you will get the widget description, and a preview, if there is one.
+    	</para>
+    	<para>
+    		Once the widget is added to your dashboard, you can move it from one area to another, by dragging and dropping it.
+    	</para>
+    	<para>
+    		The widget width is fit to the area width.
+    	</para>
+    </section>
+    <section id="dashboardCommonWidgetActions">
+    	<title>Commons widget actions</title>
+    	<figure>
+        	<title>widget actions</title>
+        	<mediaobject>
+        		<imageobject>
+        			<imagedata align="center" fileref="05-05g-05-DashboardCommonWidgetActions.png" width="412px"/>
+        		</imageobject>
+        	</mediaobject>
+    	</figure>
+    	<para>
+    		On every widget you have an action bar, with these available actions (from left to right):
+    		<itemizedlist>
+      			<listitem>
+        			<para>Refresh the widget</para>
+      			</listitem>
+      			<listitem>
+        			<para>Go to widget configuration</para>
+      			</listitem>
+      			<listitem>
+        			<para>Expand or collapse the widget</para>
+      			</listitem>
+      			<listitem>
+        			<para>Remove the widget from your dashboard (configuration will be lost)</para>
+      			</listitem>
+      		</itemizedlist>
+    	</para>
+    </section>  
+  </section>
+
+  <section id="dashboardProject">
+    <title id="dashboardProjectXref">Dashboard Project</title>
+    <para>
+      Each project have one, it's the homepage of the project, when you open it.
+    </para>
+    <para>
+    	It's exactly the same behaviour of dashboard user, but only a project administrator can add/edit/remove and configure the tabs and the widgets.
+    </para>
+    <para>
+    	A project member, will see only widgets that are linked with applications that he can see. For example, a widget linked with a svn, will be saw only by member who have the right to see the svn.
+    </para>
+  </section>
+</section>

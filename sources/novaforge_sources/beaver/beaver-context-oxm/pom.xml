@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.novaforge.beaver</groupId>
+		<artifactId>parent</artifactId>
+		<version>3.6</version>
+	</parent>
+	<artifactId>beaver-context-oxm</artifactId>
+	<name>NovaForge(tm) :: Beaver :: Persistence Context :: OXM</name>
+	<description>NovaForge(tm) :: Beaver :: Persistence Context :: (O)bject (X)ml (M)apping</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.jibx</groupId>
+			<artifactId>jibx-run</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jibx</groupId>
+			<artifactId>jibx-extras</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.jibx</groupId>
+				<artifactId>maven-jibx-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-java-code-from-schema</id>
+						<goals>
+							<goal>schema-codegen</goal>
+						</goals>
+						<configuration>
+							<directory>${basedir}/src/main/resources</directory>
+							<includes>
+								<include>*.xsd</include>
+							</includes>
+							<options>
+								<package>org.novaforge.beaver.context.oxm.marshaller</package>
+							</options>
+						</configuration>
+					</execution>
+					<execution>
+						<id>compile-binding</id>
+						<goals>
+							<goal>bind</goal>
+						</goals>
+						<configuration>
+							<directory>target/generated-sources</directory>
+							<load>true</load>
+							<validate>true</validate>
+							<verbose>false</verbose>
+							<verify>false</verify>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<includes>
+									<include>org.jibx:jibx-run</include>
+									<include>org.jibx:jibx-extras</include>
+								</includes>
+							</artifactSet>
+							<relocations>
+								<relocation>
+									<pattern>org.jibx</pattern>
+									<shadedPattern>org.novaforge.beaver.jibx</shadedPattern>
+								</relocation>
+							</relocations>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.jibx</groupId>
+										<artifactId>maven-jibx-plugin</artifactId>
+										<versionRange>[1.2.5,)</versionRange>
+										<goals>
+											<goal>schema-codegen</goal>
+											<goal>bind</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>integration-tests</id>
+
+			<activation>
+				<property>
+					<name>it</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-invoker-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>integration-test</id>
+								<goals>
+									<goal>install</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+</project>

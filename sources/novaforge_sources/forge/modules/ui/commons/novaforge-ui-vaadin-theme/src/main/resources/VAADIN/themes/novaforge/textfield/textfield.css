@@ -1,0 +1,100 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+/* Default & white background */
+.v-textfield,
+.white .v-textfield {
+	border: 1px solid #83B257;
+	border-top-color: #83B257;
+	border-bottom-color: #83B257;
+	background: #fff;
+	background-image: none;
+	-moz-border-radius: 6px 6px 6px 6px;
+	-webkit-border-radius: 6px 6px 6px 6px;
+	border-radius: 6px 6px 6px 6px;
+	margin: 0;
+	height: 28px !important;
+	line-height: normal;
+}
+.v-textarea,
+.white .v-textarea {
+	border: 1px solid #83B257;
+	border-top-color: #83B257;
+	border-bottom-color: #83B257;
+	background: #fff;
+	background-image: none;
+	-moz-border-radius: 6px 6px 6px 6px;
+	-webkit-border-radius: 6px 6px 6px 6px;
+	border-radius: 6px 6px 6px 6px;
+	margin: 0;
+	line-height: normal;
+}
+.v-textfield:focus,
+.v-app .v-textfield:focus,
+.v-window .v-textfield:focus,
+.v-app .v-textfield-focus,
+.v-window .v-textfield-focus,
+.v-popupview-popup .v-textfield-focus,
+.v-app .v-textarea-focus,
+.v-window .v-textarea-focus,
+.v-popupview-popup .v-textarea-focus {
+	border: 1px solid #79bbff;
+	border-top-color: #79bbff;
+	border-bottom-color: #79bbff;
+	outline: none;
+	background-color: #fff;
+}
+
+/* Textfield on black background */
+.black .v-textfield,
+.black .v-textarea {
+	border-color: #6C0;
+	border-top-color: #6C0;
+	border-bottom-color: #6C0;
+	background: #151717;
+	background-image: url(img/bg-black.png); /** sprite-ref: black-verticals; sprite-alignment: repeat; sprite-margin-bottom: 22px */
+	color: #c9ccce;
+	text-shadow: #000 0 0 1px;
+	behavior: url(/portal/VAADIN/themes/novaforge/PIE.htc);
+}
+
+.v-app .black .v-textfield-focus,
+.v-window-black .v-textfield-focus,
+.v-window .black .v-textfield-focus,
+.v-popupview-popup .black .v-textfield-focus,
+.v-app .black .v-textarea-focus,
+.v-window-black .v-textarea-focus,
+.v-window .black .v-textarea-focus,
+.v-popupview-popup .black .v-textarea-focus {
+	border-color: #79bbff;
+	border-top-color: #79bbff;
+	border-bottom-color: #79bbff;
+	background-color: #151717;
+}
+
+
+.nf-textfield-validation > .v-embedded-image > img {
+	width: 30px;
+	padding-top: 13px;
+}

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<section version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+	<title>General Information</title>
+	<para>This chapter gathers some global informations related to the utilisation of the Forge tools.
+    It enables to centralise some occured issues and to suggest some workarounds to them.  
+	</para>
+
+	<sect2>
+		<title>Ineffective button from the integrated application</title>
+
+		<para>For some applications, the action to clic on one of the displayed buttons from NovaForge Portal 
+    doesn't lead to the expected result.
+		</para>
+    
+    <para>For example, for Nexus application, a clic on the "Add" button available in the "Scheduled Tasks" administration menu 
+    does not trigger the display of the related contextual menu.
+		</para>
+    
+    <para>The workaround to this issue consists in performing this action from a page opened in a new tab.
+    In the above example, you just have to clic, with the mouse right button, on the "Scheduled Tasks" menu and to then select 
+    the option "Open the link in a new tab" in the contextual menu.  
+    </para>
+
+		<para>This dysfunction has been observed on several applications.
+		</para>
+	</sect2>
+</section>

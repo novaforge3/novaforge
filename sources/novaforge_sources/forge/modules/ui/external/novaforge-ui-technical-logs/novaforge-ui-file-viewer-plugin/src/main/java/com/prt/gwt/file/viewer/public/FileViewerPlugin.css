@@ -1,0 +1,72 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+.glv-main-panel {
+	width: 100%;
+	height: 100%;
+}
+
+.glv-toolbar-panel {
+	width: 26px;
+	height: 100%;
+}
+
+.glv-toolbar-panel td {
+	background-color: #5F5A59;
+}
+
+.glv-toolbar-tool,.glv-toolbar-tool-active,.glv-toolbar-tool-passive {
+	padding: 1px;
+	margin: 2px;
+	background-color: #4E4848;
+	white-space: nowrap;
+	text-align: center;
+	cursor: pointer;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
+.glv-toolbar-tool-vertical {
+	writing-mode: tb-rl;
+	filter: flipv fliph;
+}
+
+.glv-toolbar-tool-vertical-GeckoWebkit {
+	position: absolute;
+	height: 14px;
+	left: 19px;
+	-moz-transform: rotate(90deg);
+	-moz-transform-origin: 0% 0%;
+	-webkit-transform: rotate(90deg);
+	-webkit-transform-origin: 0% 0%;
+}
+
+.glv-toolbar-tool-collapse-active,.glv-toolbar-tool-collapse-passive {
+	color: #E6E6E6;
+	border: 1px solid #E6E6E6;
+}
+
+.glv-file-list-panel {
+	height: 100%;
+}

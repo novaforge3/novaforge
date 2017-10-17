@@ -1,0 +1,74 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+.v-tree-node {
+   background: transparent url(img/arrows.png) no-repeat 6px -10px;
+}
+
+.v-tree-node-root > .v-tree-node-caption {
+	font-weight: bold;
+}
+
+.v-ie6 .v-tree-node {
+   background-image: url(img/arrows-ie6.png);
+   background-repeat: no-repeat;
+}
+.v-tree-node-label-strike {
+	color: grey;
+}
+.v-tree-node-label-grey {
+	color: grey;
+}
+.v-tree-node-label-orange {
+	color: #db8c0f;
+}
+.v-tree-node-label-green {
+	color: #83b257;
+}
+.v-tree-node-label-red {
+	color: rgb(233, 37, 37);
+}
+.v-tree-node-expanded {
+   background-position: -7px 5px;
+}
+.v-tree-node .v-icon {
+	width: 30px;
+	height: 30px;
+}
+
+.v-tree-node-selected span,
+.v-tree-node-focused span {
+	/* background: #83b257 repeat-x;
+	background-image: url(../common/img/sel-bg.png); */
+	background: transparent !important;
+	color: #222;
+	padding: 1px 2px !important;
+	border: none !important;
+/* 	border-radius:  2px 2px 2px 2px; */
+/* 	-webkit-border-radius: 2px 2px 2px 2px; */
+/* 	-moz-border-radius: 2px 2px 2px 2px; */
+	/* text-shadow: #83b257 0 1px 0; */
+	text-shadow: none;
+	display: inline-block;
+}

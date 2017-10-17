@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.2.0" name="novaforge-@NOVAFORGE_VERSION@">
+	<repository>mvn:org.novaforge.forge.features/novaforge-features/@NOVAFORGE_VERSION@/xml</repository>
+
+	<feature name="hot-features" install="auto">
+		<feature version="@NOVAFORGE_VERSION@">novaforge-plugins-svn-agent</feature>
+		<feature version="@NOVAFORGE_VERSION@">novaforge-log</feature>
+	</feature>
+</features>

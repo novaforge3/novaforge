@@ -1,0 +1,16 @@
+diff -rNU5 spip-007/ecrire/nf_config_inc.php spip/ecrire/nf_config_inc.php
+--- spip-007/ecrire/nf_config_inc.php	2013-08-06 15:28:36.000000000 +0200
++++ spip/ecrire/nf_config_inc.php	2013-08-06 15:28:53.182098037 +0200
+@@ -3,11 +3,11 @@
+ define('_NF_SAFRAN', "nfsafran_");
+ 
+ define('_SCHEME', "http");
+ define('_HOSTNAME', "@HOSTSPIP");
+ 
+-define('_G_INSTANCE_WSDL', "http://127.0.0.1:9000/services/spipInstance?wsdl");
++define('_G_INSTANCE_WSDL', "http://127.0.0.1:8181/cxf/spipInstance?wsdl");
+ define('_G_INSTANCE_METHOD', "getToolProjectId");
+ 
+ // spip statuts
+ define('_SPIP_1comite', "1comite");
+ define('_SPIP_0minirezo', "0minirezo");

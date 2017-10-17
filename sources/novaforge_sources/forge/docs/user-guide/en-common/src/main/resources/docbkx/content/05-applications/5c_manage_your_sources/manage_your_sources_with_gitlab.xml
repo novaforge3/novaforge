@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+
+
+<section version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+  <title>Manage your sources with Gitlab CE</title>
+
+  <para>Gitlab is a user interface for repositories administration and visualization based on the distributed revision control software Git</para>
+
+  <para>Characteristics and advantages : </para>
+
+  <itemizedlist>
+    <listitem>
+      <para>Gitlab is an GitHub-like Open Source that provides some features as :</para>
+      <itemizedlist>
+        <listitem>
+          <para>Git repositories management with all Git features</para>
+        </listitem>
+        <listitem>
+          <para>a user interface providing allowing code source browsing, activity report generation, getting visual diff between branches</para>
+        </listitem>
+        <listitem>
+          <para>merge request management between branches</para>
+        </listitem>
+        <listitem>
+          <para>deployment key management for technical users (PIC, delivery, etc.. )</para>
+        </listitem>
+      </itemizedlist>
+    </listitem>
+
+    <listitem>
+      <para>Allow repositories and branches synchronization (pull/push) using HTTPS or SSH</para>
+    </listitem>
+
+    <listitem>
+      <para>Well documented features : </para>
+      <itemizedlist>
+        <listitem>
+          <para><ulink url="http://www.git-scm.com/">Git scm Documentation</ulink></para>
+        </listitem>
+        <listitem>
+          <para><ulink url="http://doc.gitlab.com/ce/">Gitlab CE Documentation</ulink></para>
+        </listitem>
+      </itemizedlist>  
+    </listitem>
+  </itemizedlist>
+  
+  <section>
+    <title>Integration of Gitlab into Novaforge</title>
+    
+    <para>The version of Gitlab integrated in NovaForge is 7.3.1. By default, some feature as wiki et bugtracking are desactivated because NovaForge provide similar features.</para>
+    
+    <para>Repositories and branches synchronization between a remote repositories and NovaForge can be realized by : </para>
+    <itemizedlist>
+      <listitem>
+        <para>the SSH protocol, ex.:</para>
+        <programlisting language="shell">ssh://git@novaforge:projet-gitrepository/gitrepository.git</programlisting>
+      </listitem>
+      <listitem>
+        <para>the HTTPS protocol, ex.:</para>
+        <programlisting language="shell">https://novaforge/gitlab-default/gitlab/projet-gitrepository/gitrepository.git</programlisting>
+      </listitem>
+    </itemizedlist>
+    
+    <para>NovaForge team advise the SSL synchronization method. It is better to HTTPS synchronization which would be slower.</para>
+  </section>
+  
+  <section>
+    <title>HTTPS synchronization</title>
+    
+    <para>For a Linux station user, three difficulties could be encountered when synchronizing in HTTPS :  </para>
+    <itemizedlist>
+      <listitem>
+        <para>It exists a proxy server between the user and the HTTPS server that hosts Git repository :</para>
+        <programlisting language="shell">A TLS packet with unexpected length was received. while accessing ... 
+        fatal: HTTP request failed</programlisting>
+        <para>The solution is to re-compile Git with OpenSSL, ex .:</para>
+        <programlisting language="shell">
+        # sudo apt-get install build-essential fakeroot dpkg-dev
+        # mkdir ~/git-openssl
+        # cd ~/git-openssl
+        # sudo apt-get source git
+        # sudo apt-get build-dep git
+        # sudo apt-get install libcurl4-openssl-dev
+        # sudo dpkg-source -x git_1.7.9.5-1.dsc       # adapt version
+        # cd git_1.7.9.5
+        # sudo sed -ri 's/libcurl4-gnutls-dev/libcurl4-openssl-dev/' 
+          ./debian/control
+        #
+        # # if it's failing on test, remove the line TEST=test from ./debian/rules
+        # sudo dpkg-buildpackage -rfakeroot -b 
+        # sudo dpkg -i ../git_1.7.9.5-1_amd64.deb # adapt i386/amd64
+        </programlisting>
+      </listitem>
+      <listitem>
+        <para>The proxy server don't know the Gitlab server :</para>
+        <programlisting language="shell">Unknown SSL protocol error in connection to novaforge:443</programlisting>
+        <para>The workaround is to redirect directly to the Gitlab server by-passing the proxy using the variable no_proxy, ex.: :</para>
+        <programlisting language="shell">no_proxy=localhost,127.0.0.0/8,::1,novaforge</programlisting>
+      </listitem>
+      <listitem>
+        <para>The certificat is not known when SSL certificat validation :</para>
+        <programlisting language="shell">SSL certificate problem: self signed certificate</programlisting>
+        <para>Workaround :</para>
+        <itemizedlist>
+          <listitem>
+            <para>Firstly, clone your repository with the parameter GIT_SSL_NO_VERIFY=true</para>
+          </listitem>
+          <listitem>
+            <para>Secondly add for this repository the configuration configuration : git config http.sslVerify false</para>
+          </listitem>
+          <listitem>
+            <para>Use the repository normaly</para>
+          </listitem>
+        </itemizedlist>
+      </listitem>
+    </itemizedlist>
+  </section>
+    
+  <section>
+    <title>SSH Synchronization</title>
+    <para>To synchronize repositories using SSH protocol a <ulink url="http://doc.gitlab.com/ce/ssh/README.html">SSH key should be uploaded</ulink> into user configuration of Gitlab.</para>
+    
+    <para>If SSH synchronization do not work on port 22, GitLab might be hosted on a remote machine so use port 2222 instead : </para>
+    <programlisting language="shell">ssh://git@novaforge:2222/projet-gitrepository/gitrepository.git</programlisting>
+  </section>
+
+  <section>
+    <title>Initialize a Git repository</title>
+    <para>To initialize a Git repository, push a new branch or an existing one from a remote repository following instructions given by the project homepage of Gitlab :</para>
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center" fileref="05-05c-1-create-repo.png" width="600px"/>
+      </imageobject>
+    </mediaobject>
+  </section>
+  <section>
+    <title>Configure a Git repository</title>
+    <para>Before pushing on the remote repository, <ulink url="http://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration#main">personalize user and email</ulink> that will be associated to the push into GitLab GUI using these commands :</para>
+    <programlisting>
+<![CDATA[
+  $ git config --global user.name "surname.name"
+  $ git config --global user.email surname.name@bull.net
+]]>
+   </programlisting>
+  </section>
+
+  <section>
+    <title>Using Git on Windows</title>
+    <para>In order to use Git on Windows, some possible alternatives might be to use one of these tools, each embed a GUI and a Shell :</para>
+    <itemizedlist>
+      <listitem>
+        <ulink url="https://windows.github.com/">GitHub for Windows</ulink> is a tool developped for GitHub. It works with GitLab.
+      </listitem>
+      <listitem>
+        <ulink url="https://msysgit.github.io/">Mysysgit</ulink> is the main Git project for Windows.
+      </listitem>
+      <listitem>
+        <ulink url="https://code.google.com/p/tortoisegit/">TurtoiseGit</ulink> is an project attempting to port TortoiseSVN to Git.
+      </listitem>
+    </itemizedlist>
+  </section>
+
+
+</section>

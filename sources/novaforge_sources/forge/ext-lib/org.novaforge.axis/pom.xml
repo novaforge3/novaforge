@@ -1,0 +1,108 @@
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.novaforge.forge.ext-libs</groupId>
+		<artifactId>novaforge-external-libraries</artifactId>
+		<version>3.8.0</version>
+	</parent>
+	<groupId>org.apache.axis</groupId>
+	<artifactId>org.novaforge.axis</artifactId>
+	<version>1.4_1</version>
+	<name>NovaForge(tm) :: External-Libraries :: Apache Axis</name>
+	<description>NovaForge(tm) :: External-Libraries :: Apache Axis</description>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.axis</groupId>
+			<artifactId>com.springsource.org.apache.axis</artifactId>
+			<version>1.4.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-discovery</groupId>
+			<artifactId>commons-discovery</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.rpc</groupId>
+			<artifactId>com.springsource.javax.xml.rpc</artifactId>
+			<version>1.1.0.v20110517</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.4</source>
+					<target>1.4</target>
+					<optimize>true</optimize>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack-axis</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.apache.axis</groupId>
+									<artifactId>com.springsource.org.apache.axis</artifactId>
+									<version>1.4.0</version>
+									<type>jar</type>
+									<overWrite>true</overWrite>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${basedir}/target/classes</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestFile>${basedir}/target/classes/META-INF/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

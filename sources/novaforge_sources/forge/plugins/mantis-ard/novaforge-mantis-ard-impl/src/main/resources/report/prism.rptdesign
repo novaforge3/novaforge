@@ -1,0 +1,2592 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.2.2.v201301221637 Build &lt;4.2.2.v20130206-1509></property>
+    <list-property name="propertyBindings">
+        <structure>
+            <property name="name">queryText</property>
+            <property name="id">222</property>
+        </structure>
+        <structure>
+            <property name="name">queryTimeOut</property>
+            <property name="id">222</property>
+        </structure>
+        <structure>
+            <property name="name">rowFetchSize</property>
+            <property name="id">222</property>
+        </structure>
+    </list-property>
+    <property name="units">in</property>
+    <method name="initialize"><![CDATA[var green = "#45DB2B";
+
+function calculateSuccesChance(val){
+	var result;
+	if (val == null) {
+	   result = '';
+	}
+	else if(val<7){
+	  result = 6;
+	}
+	else if(val<13)
+	{
+	  result = 5;
+	} 
+	else if(val<15)
+	{
+	  result = 4,5;
+	} 
+	else if(val<16)
+	{
+	  result = 4+(15-val)/2;
+	}
+	else if(val<17)
+	{
+	  result = 3,5+(16-val)*3/2;
+	} 
+	else if(val<22)
+	{
+	  result = 2;
+	} 
+	else if(val<=23)
+	{
+	  result = 2,5;
+	} 
+	else if(val<=28)
+	{
+	  result = 1;
+	}
+	else
+	{
+	  result = 0;
+	}
+	return result;
+}
+
+function calculateColor(val){
+	var result;
+	if (val == null) {
+	   result = "";
+	}else if (val < 2.0){
+		result = green;
+	}else if (val <= 3.0){
+		result = "orange";
+	}else {
+		result = "red";
+	}
+	return result;
+}
+
+function calculateTotalColor(val){
+	var result;
+	if (val == "") {
+	   result = "";
+	}else if (val < 2.0){
+		result = "red";
+	}else if (val < 4.0){
+		result = "orange";
+	}else {
+		result = green;
+	}
+	return result;
+}
+
+function showCurrentDate(){
+	var date = new Date();
+	
+	return showDate(date);
+}
+
+function showSQLDate(date){
+	var retour = "";
+	if (date != null) {
+		var stringDate = date.toString();
+		var y = stringDate.substr(0,4);
+	    var m = stringDate.substr(5,2);
+	    var d = stringDate.substr(8,2);
+	    retour = '' + d +'/'+ m +'/'+ y;
+    }
+    else {
+       retour = '-';
+    }
+    return retour;
+}
+
+function showDate(date){
+    var retour = "";
+	if (date != null) {
+		var stringDate = date.toString();
+		var d = stringDate.getDate();
+	    var m = stringDate.getMonth()+1;
+	    var y = stringDate.getFullYear();
+	    retour = '' + (d<=9?'0'+d:d) +'/'+ (m<=9?'0'+m:m) +'/'+ y;
+    }
+    return retour;
+}
+
+function getFrenchName(label){
+	var result = label;
+
+	switch (label) {
+		 case 'duration':
+		 	result = 'durée';
+		 	break;
+		 case 'integrity':
+		 	result = 'intégrité';
+		 	break;
+		 case 'management_commitment':
+		 	result = 'engagement management';
+		 	break;
+		 case 'team_commitment':
+		 	result = 'engagement équipe';
+		 	break;
+ 		 case 'effort':
+		 	result = 'effort';
+		 	break;
+ 		 case 'others':
+		 	result = 'autre';
+		 	break;
+		 default: 
+		 	break;
+	}
+	return result;
+}
+
+
+]]></method>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <parameters>
+        <scalar-parameter name="projectId" id="242">
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">1</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="PrismDataSource" id="7">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">org.mariadb.jdbc.Driver</property>
+            <property name="odaURL">jdbc:mysql://localhost:3306/mantis_ard</property>
+            <property name="odaUser">root</property>
+            <encrypted-property name="odaPassword" encryptionID="base64">cm9vdA==&#13;</encrypted-property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="IndicateurGlobalDataSet" id="8">
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">project_id</property>
+                    <property name="paramName">projectId</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">project_id_2</property>
+                    <property name="paramName">projectId</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">project_id_3</property>
+                    <property name="paramName">projectId</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">actual</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">previous</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">date_modified</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">PrismDataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">name</property>
+                    <property name="nativeName">name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">actual</property>
+                    <property name="nativeName">actual</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">previous</property>
+                    <property name="nativeName">previous</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">date_modified</property>
+                    <property name="nativeName">date_modified</property>
+                    <property name="dataType">date</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select name,
+(select ROUND(histoLast.evaluation, 2)  from mantis_risk_evaluation_history_table histoLast where cat.id = histoLast.category_id and histoLast.project_id = ? order by histoLast.date_modified Desc limit 1) as actual,
+(select ROUND(histoPrev.evaluation, 2) from mantis_risk_evaluation_history_table histoPrev where cat.id = histoPrev.category_id and histoPrev.project_id = ? order by histoPrev.date_modified Desc limit 1,1) as previous,
+histo.date_modified
+from mantis_risk_evaluation_history_table histo
+left outer join mantis_category_table cat on cat.id = histo.category_id and cat.project_id = -1
+where histo.category_id <> 0 and histo.project_id = ?
+group by histo.date_modified, histo.category_id
+order by histo.date_modified DESC
+limit 6 ]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>id</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>id</design:label>
+            <design:formattingHints>
+              <design:displaySize>10</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>category_id</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>category_id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>category_id</design:label>
+            <design:formattingHints>
+              <design:displaySize>10</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>evaluation</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>7</design:nativeDataTypeCode>
+            <design:precision>12</design:precision>
+            <design:scale>31</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>evaluation</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>evaluation</design:label>
+            <design:formattingHints>
+              <design:displaySize>12</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>date_modified</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>date_modified</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>date_modified</design:label>
+            <design:formattingHints>
+              <design:displaySize>10</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>id</design:name>
+              <design:position>5</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>id</design:label>
+            <design:formattingHints>
+              <design:displaySize>10</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>project_id</design:name>
+              <design:position>6</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>project_id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>project_id</design:label>
+            <design:formattingHints>
+              <design:displaySize>10</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>user_id</design:name>
+              <design:position>7</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>user_id</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>user_id</design:label>
+            <design:formattingHints>
+              <design:displaySize>10</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>name</design:name>
+              <design:position>8</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>128</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>name</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>name</design:label>
+            <design:formattingHints>
+              <design:displaySize>128</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>status</design:name>
+              <design:position>9</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>status</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>status</design:label>
+            <design:formattingHints>
+              <design:displaySize>10</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="TotalDataSet" id="182">
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">project_id</property>
+                    <property name="paramName">projectId</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">project_id_2</property>
+                    <property name="paramName">projectId</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">2</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">project_id_3</property>
+                    <property name="paramName">projectId</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">3</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">project_id_4</property>
+                    <property name="paramName">projectId</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">4</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+                <structure>
+                    <property name="name">project_id_5</property>
+                    <property name="paramName">projectId</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">5</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">currentTotal</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">currentDate</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">previousTotal</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">previousDate</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">PrismDataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">currentTotal</property>
+                    <property name="nativeName">currentTotal</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">currentDate</property>
+                    <property name="nativeName">currentDate</property>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">previousTotal</property>
+                    <property name="nativeName">previousTotal</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">previousDate</property>
+                    <property name="nativeName">previousDate</property>
+                    <property name="dataType">date</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select 
+(select ROUND(histoLast.evaluation, 2) from mantis_risk_evaluation_history_table histoLast where histoLast.category_id = 0 and histoLast.project_id = ? order by histoLast.date_modified Desc limit 1) as currentTotal,
+(select histoLast.date_modified from mantis_risk_evaluation_history_table histoLast where histoLast.category_id = 0 and histoLast.project_id = ? order by histoLast.date_modified Desc limit 1) as currentDate,
+(select ROUND(histoPrev.evaluation, 2) from mantis_risk_evaluation_history_table histoPrev where histoPrev.category_id = 0 and histoPrev.project_id = ? order by histoPrev.date_modified Desc limit 1,1) as previousTotal,
+(select histoPrev.date_modified from mantis_risk_evaluation_history_table histoPrev where histoPrev.category_id = 0 and histoPrev.project_id = ? order by histoPrev.date_modified Desc limit 1,1) as previousDate
+from mantis_risk_evaluation_history_table histo
+where histo.category_id = 0 and histo.project_id = ?
+group by histo.date_modified, histo.category_id
+order by histo.date_modified DESC
+limit 1 ]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>currentTotal</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>2</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>currentTotal</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>currentTotal</design:label>
+            <design:formattingHints>
+              <design:displaySize>19</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>currentDate</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>currentDate</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>currentDate</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>previousTotal</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>8</design:nativeDataTypeCode>
+            <design:precision>19</design:precision>
+            <design:scale>2</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>previousTotal</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>previousTotal</design:label>
+            <design:formattingHints>
+              <design:displaySize>19</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>previousDate</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>11</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>previousDate</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>previousDate</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="HistogrammeDataSet" id="222">
+            <property name="nullsOrdering">nulls lowest</property>
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">project_id</property>
+                    <property name="paramName">projectId</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">date_modified</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">val</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">PrismDataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">date_modified</property>
+                    <property name="nativeName">date_modified</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">val</property>
+                    <property name="nativeName">val</property>
+                    <property name="dataType">float</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select CAST((date_format(histo.date_modified,'%d/%m/%Y')) AS char) as date_modified, ROUND(histo.evaluation, 2) as val 
+from mantis_risk_evaluation_history_table histo 
+where histo.category_id = 0 and histo.project_id = ?
+order by histo.date_modified ]]></xml-property>
+        </oda-data-set>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="GetNameProjectDataSet" id="272">
+            <list-property name="parameters">
+                <structure>
+                    <property name="name">project_id</property>
+                    <property name="paramName">projectId</property>
+                    <property name="dataType">integer</property>
+                    <property name="position">1</property>
+                    <property name="isInput">true</property>
+                    <property name="isOutput">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">projectname</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">PrismDataSource</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">projectname</property>
+                    <property name="nativeName">projectname</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[select project.name as projectname
+from `mantis_project_table` project
+where project.id = ?]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">sans-serif</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2"/>
+    </page-setup>
+    <body>
+        <grid id="244">
+            <property name="width">7.906in</property>
+            <column id="245"/>
+            <column id="247"/>
+            <row id="248">
+                <cell id="249">
+                    <label id="263">
+                        <property name="fontWeight">bold</property>
+                        <property name="paddingRight">10pt</property>
+                        <property name="textAlign">right</property>
+                        <text-property name="text">Projet</text-property>
+                    </label>
+                </cell>
+                <cell id="251">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <data id="273">
+                        <property name="fontWeight">bold</property>
+                        <property name="textAlign">center</property>
+                        <property name="dataSet">GetNameProjectDataSet</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">projectname</property>
+                                <text-property name="displayName">projectname</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["projectname"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">projectname</property>
+                    </data>
+                </cell>
+            </row>
+            <row id="252">
+                <cell id="253"/>
+                <cell id="255">
+                    <label id="270">
+                        <text-property name="text"> </text-property>
+                    </label>
+                </cell>
+            </row>
+            <row id="256">
+                <cell id="257">
+                    <label id="264">
+                        <property name="fontWeight">bold</property>
+                        <property name="paddingRight">10pt</property>
+                        <property name="textAlign">right</property>
+                        <text-property name="text">Date de révision</text-property>
+                    </label>
+                </cell>
+                <cell id="259">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <text-data id="271">
+                        <property name="fontWeight">bold</property>
+                        <property name="textAlign">center</property>
+                        <property name="dataSet">TotalDataSet</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">currentTotal</property>
+                                <text-property name="displayName">currentTotal</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["currentTotal"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">currentDate</property>
+                                <text-property name="displayName">currentDate</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["currentDate"]</expression>
+                                <property name="dataType">date</property>
+                            </structure>
+                            <structure>
+                                <property name="name">previousTotal</property>
+                                <text-property name="displayName">previousTotal</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["previousTotal"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">previousDate</property>
+                                <text-property name="displayName">previousDate</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["previousDate"]</expression>
+                                <property name="dataType">date</property>
+                            </structure>
+                        </list-property>
+                        <expression name="valueExpr">showSQLDate(row["currentDate"])</expression>
+                        <property name="contentType">html</property>
+                    </text-data>
+                </cell>
+            </row>
+            <row id="260">
+                <cell id="261"/>
+                <cell id="262">
+                    <label id="269">
+                        <text-property name="text"> </text-property>
+                    </label>
+                </cell>
+            </row>
+        </grid>
+        <table id="154">
+            <property name="borderBottomColor">#000000</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderLeftColor">#000000</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderRightColor">#000000</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderTopColor">#000000</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="width">7.90625in</property>
+            <property name="dataSet">IndicateurGlobalDataSet</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">name</property>
+                    <text-property name="displayName">name</text-property>
+                    <expression name="expression" type="javascript">getFrenchName(dataSetRow["name"]);</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">actual</property>
+                    <text-property name="displayName">actual</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["actual"]</expression>
+                    <property name="dataType">float</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">previous</property>
+                    <text-property name="displayName">previous</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["previous"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">date_modified</property>
+                    <text-property name="displayName">date_modified</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["date_modified"]</expression>
+                    <property name="dataType">date</property>
+                    <property name="allowExport">true</property>
+                </structure>
+            </list-property>
+            <column id="178">
+                <property name="width">3.8854166666666665in</property>
+            </column>
+            <column id="179">
+                <property name="width">2.0104166666666665in</property>
+            </column>
+            <column id="180">
+                <property name="width">2.0104166666666665in</property>
+            </column>
+            <header>
+                <row id="155">
+                    <property name="fontWeight">bold</property>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <cell id="156">
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <label id="157">
+                            <text-property name="text">Facteurs</text-property>
+                        </label>
+                    </cell>
+                    <cell id="158">
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <text-data id="186">
+                            <property name="dataSet">TotalDataSet</property>
+                            <list-property name="boundDataColumns">
+                                <structure>
+                                    <property name="name">currentTotal</property>
+                                    <text-property name="displayName">currentTotal</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["currentTotal"]</expression>
+                                    <property name="dataType">float</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">currentDate</property>
+                                    <text-property name="displayName">currentDate</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["currentDate"]</expression>
+                                    <property name="dataType">date</property>
+                                    <property name="allowExport">true</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">previousTotal</property>
+                                    <text-property name="displayName">previousTotal</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["previousTotal"]</expression>
+                                    <property name="dataType">float</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">previousDate</property>
+                                    <text-property name="displayName">previousDate</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["previousDate"]</expression>
+                                    <property name="dataType">date</property>
+                                    <property name="allowExport">true</property>
+                                </structure>
+                            </list-property>
+                            <expression name="valueExpr">"Actuel("+ showSQLDate(row["currentDate"]) +")"</expression>
+                            <property name="contentType">html</property>
+                        </text-data>
+                    </cell>
+                    <cell id="160">
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <text-data id="187">
+                            <property name="dataSet">TotalDataSet</property>
+                            <list-property name="boundDataColumns">
+                                <structure>
+                                    <property name="name">currentTotal</property>
+                                    <text-property name="displayName">currentTotal</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["currentTotal"]</expression>
+                                    <property name="dataType">float</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">currentDate</property>
+                                    <text-property name="displayName">currentDate</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["currentDate"]</expression>
+                                    <property name="dataType">date</property>
+                                    <property name="allowExport">true</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">previousTotal</property>
+                                    <text-property name="displayName">previousTotal</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["previousTotal"]</expression>
+                                    <property name="dataType">float</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">previousDate</property>
+                                    <text-property name="displayName">previousDate</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["previousDate"]</expression>
+                                    <property name="dataType">date</property>
+                                    <property name="allowExport">true</property>
+                                </structure>
+                            </list-property>
+                            <expression name="valueExpr">"Précédent("+showSQLDate(row["previousDate"])+")"</expression>
+                            <property name="contentType">html</property>
+                        </text-data>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="164">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <cell id="165">
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <data id="166">
+                            <property name="resultSetColumn">name</property>
+                        </data>
+                    </cell>
+                    <cell id="167">
+                        <method name="onCreate"><![CDATA[this.getStyle().backgroundColor = calculateColor(row["actual"]);]]></method>
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <data id="168">
+                            <property name="textAlign">center</property>
+                            <property name="resultSetColumn">actual</property>
+                        </data>
+                    </cell>
+                    <cell id="169">
+                        <method name="onCreate"><![CDATA[this.getStyle().backgroundColor = calculateColor(row["previous"]);]]></method>
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <data id="170">
+                            <property name="textAlign">center</property>
+                            <property name="resultSetColumn">previous</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+            <footer>
+                <row id="173">
+                    <property name="fontWeight">bold</property>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderLeftColor">#000000</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderRightColor">#000000</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <cell id="174">
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderTopColor">#000000</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="paddingTop">0pt</property>
+                        <property name="paddingLeft">0pt</property>
+                        <property name="paddingBottom">0pt</property>
+                        <property name="paddingRight">0pt</property>
+                        <grid id="201">
+                            <property name="height">0.9583333333333334in</property>
+                            <column id="202"/>
+                            <row id="203">
+                                <property name="height">0.1875in</property>
+                                <cell id="204">
+                                    <property name="borderBottomColor">#000000</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="paddingTop">0pt</property>
+                                    <property name="paddingLeft">0pt</property>
+                                    <property name="paddingBottom">0pt</property>
+                                    <property name="paddingRight">0pt</property>
+                                    <label id="188">
+                                        <property name="paddingTop">1pt</property>
+                                        <property name="paddingLeft">1pt</property>
+                                        <property name="paddingBottom">1pt</property>
+                                        <property name="paddingRight">1pt</property>
+                                        <text-property name="text">Total score</text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                            <row id="205">
+                                <cell id="206">
+                                    <label id="219">
+                                        <text-property name="text">Chance de succès :&#13;
+5: Forte chance de succès&#13;
+3: Mitigé&#13;
+1:Forte chance d'échec</text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                    <cell id="175">
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderTopColor">#000000</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="paddingTop">0pt</property>
+                        <property name="paddingLeft">0pt</property>
+                        <property name="paddingBottom">0pt</property>
+                        <property name="paddingRight">0pt</property>
+                        <grid id="207">
+                            <property name="height">0.9583333333333334in</property>
+                            <property name="dataSet">TotalDataSet</property>
+                            <list-property name="boundDataColumns">
+                                <structure>
+                                    <property name="name">currentTotal</property>
+                                    <text-property name="displayName">currentTotal</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["currentTotal"]</expression>
+                                    <property name="dataType">float</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">currentDate</property>
+                                    <text-property name="displayName">currentDate</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["currentDate"]</expression>
+                                    <property name="dataType">date</property>
+                                    <property name="allowExport">true</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">previousTotal</property>
+                                    <text-property name="displayName">previousTotal</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["previousTotal"]</expression>
+                                    <property name="dataType">float</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">previousDate</property>
+                                    <text-property name="displayName">previousDate</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["previousDate"]</expression>
+                                    <property name="dataType">date</property>
+                                    <property name="allowExport">true</property>
+                                </structure>
+                            </list-property>
+                            <column id="208"/>
+                            <row id="209">
+                                <property name="height">0.1875in</property>
+                                <cell id="210">
+                                    <property name="borderBottomColor">#000000</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="paddingTop">0pt</property>
+                                    <property name="paddingLeft">0pt</property>
+                                    <property name="paddingBottom">0pt</property>
+                                    <property name="paddingRight">0pt</property>
+                                    <text-data id="184">
+                                        <property name="paddingTop">1pt</property>
+                                        <property name="paddingLeft">1pt</property>
+                                        <property name="paddingBottom">1pt</property>
+                                        <property name="paddingRight">1pt</property>
+                                        <property name="textAlign">center</property>
+                                        <property name="dataSet">TotalDataSet</property>
+                                        <list-property name="boundDataColumns">
+                                            <structure>
+                                                <property name="name">currentTotal</property>
+                                                <text-property name="displayName">currentTotal</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["currentTotal"]</expression>
+                                                <property name="dataType">float</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">currentDate</property>
+                                                <text-property name="displayName">currentDate</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["currentDate"]</expression>
+                                                <property name="dataType">date</property>
+                                                <property name="allowExport">true</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">previousTotal</property>
+                                                <text-property name="displayName">previousTotal</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["previousTotal"]</expression>
+                                                <property name="dataType">float</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">previousDate</property>
+                                                <text-property name="displayName">previousDate</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["previousDate"]</expression>
+                                                <property name="dataType">date</property>
+                                                <property name="allowExport">true</property>
+                                            </structure>
+                                        </list-property>
+                                        <method name="onCreate"><![CDATA[this.getStyle().backgroundColor = calculateTotalColor(calculateSuccesChance(row["currentTotal"]));]]></method>
+                                        <expression name="valueExpr" type="javascript">row["currentTotal"]</expression>
+                                        <property name="contentType">html</property>
+                                    </text-data>
+                                </cell>
+                            </row>
+                            <row id="211">
+                                <property name="height">0.7708333333333334in</property>
+                                <cell id="212">
+                                    <method name="onCreate"><![CDATA[this.getStyle().backgroundColor = calculateTotalColor(calculateSuccesChance(row["currentTotal"]));]]></method>
+                                    <text-data id="220">
+                                        <property name="textAlign">center</property>
+                                        <property name="dataSet">TotalDataSet</property>
+                                        <list-property name="boundDataColumns">
+                                            <structure>
+                                                <property name="name">currentTotal</property>
+                                                <text-property name="displayName">currentTotal</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["currentTotal"]</expression>
+                                                <property name="dataType">float</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">currentDate</property>
+                                                <text-property name="displayName">currentDate</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["currentDate"]</expression>
+                                                <property name="dataType">date</property>
+                                                <property name="allowExport">true</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">previousTotal</property>
+                                                <text-property name="displayName">previousTotal</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["previousTotal"]</expression>
+                                                <property name="dataType">float</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">previousDate</property>
+                                                <text-property name="displayName">previousDate</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["previousDate"]</expression>
+                                                <property name="dataType">date</property>
+                                                <property name="allowExport">true</property>
+                                            </structure>
+                                        </list-property>
+                                        <expression name="valueExpr">calculateSuccesChance(row["currentTotal"]);</expression>
+                                        <property name="contentType">html</property>
+                                    </text-data>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                    <cell id="176">
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderLeftColor">#000000</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderTopColor">#000000</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="paddingTop">0pt</property>
+                        <property name="paddingLeft">0pt</property>
+                        <property name="paddingBottom">0pt</property>
+                        <property name="paddingRight">0pt</property>
+                        <grid id="213">
+                            <property name="height">0.9583333333333334in</property>
+                            <property name="dataSet">TotalDataSet</property>
+                            <list-property name="boundDataColumns">
+                                <structure>
+                                    <property name="name">currentTotal</property>
+                                    <text-property name="displayName">currentTotal</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["currentTotal"]</expression>
+                                    <property name="dataType">float</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">currentDate</property>
+                                    <text-property name="displayName">currentDate</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["currentDate"]</expression>
+                                    <property name="dataType">date</property>
+                                    <property name="allowExport">true</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">previousTotal</property>
+                                    <text-property name="displayName">previousTotal</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["previousTotal"]</expression>
+                                    <property name="dataType">float</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">previousDate</property>
+                                    <text-property name="displayName">previousDate</text-property>
+                                    <expression name="expression" type="javascript">dataSetRow["previousDate"]</expression>
+                                    <property name="dataType">date</property>
+                                    <property name="allowExport">true</property>
+                                </structure>
+                            </list-property>
+                            <column id="214"/>
+                            <row id="215">
+                                <property name="height">0.1875in</property>
+                                <cell id="216">
+                                    <method name="onCreate"><![CDATA[this.getStyle().backgroundColor = calculateTotalColor(calculateSuccesChance(row["previousTotal"]));]]></method>
+                                    <property name="borderBottomColor">#000000</property>
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">thin</property>
+                                    <text-data id="185">
+                                        <property name="textAlign">center</property>
+                                        <property name="dataSet">TotalDataSet</property>
+                                        <list-property name="boundDataColumns">
+                                            <structure>
+                                                <property name="name">currentTotal</property>
+                                                <text-property name="displayName">currentTotal</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["currentTotal"]</expression>
+                                                <property name="dataType">float</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">currentDate</property>
+                                                <text-property name="displayName">currentDate</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["currentDate"]</expression>
+                                                <property name="dataType">date</property>
+                                                <property name="allowExport">true</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">previousTotal</property>
+                                                <text-property name="displayName">previousTotal</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["previousTotal"]</expression>
+                                                <property name="dataType">float</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">previousDate</property>
+                                                <text-property name="displayName">previousDate</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["previousDate"]</expression>
+                                                <property name="dataType">date</property>
+                                                <property name="allowExport">true</property>
+                                            </structure>
+                                        </list-property>
+                                        <expression name="valueExpr">row["previousTotal"]</expression>
+                                        <property name="contentType">html</property>
+                                    </text-data>
+                                </cell>
+                            </row>
+                            <row id="217">
+                                <property name="height">0.7708333333333334in</property>
+                                <cell id="218">
+                                    <method name="onCreate"><![CDATA[this.getStyle().backgroundColor = calculateTotalColor(calculateSuccesChance(row["previousTotal"]));]]></method>
+                                    <text-data id="221">
+                                        <property name="textAlign">center</property>
+                                        <property name="dataSet">TotalDataSet</property>
+                                        <list-property name="boundDataColumns">
+                                            <structure>
+                                                <property name="name">currentTotal</property>
+                                                <text-property name="displayName">currentTotal</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["currentTotal"]</expression>
+                                                <property name="dataType">float</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">currentDate</property>
+                                                <text-property name="displayName">currentDate</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["currentDate"]</expression>
+                                                <property name="dataType">date</property>
+                                                <property name="allowExport">true</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">previousTotal</property>
+                                                <text-property name="displayName">previousTotal</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["previousTotal"]</expression>
+                                                <property name="dataType">float</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">previousDate</property>
+                                                <text-property name="displayName">previousDate</text-property>
+                                                <expression name="expression" type="javascript">dataSetRow["previousDate"]</expression>
+                                                <property name="dataType">date</property>
+                                                <property name="allowExport">true</property>
+                                            </structure>
+                                        </list-property>
+                                        <expression name="valueExpr">calculateSuccesChance(row["previousTotal"]);</expression>
+                                        <property name="contentType">html</property>
+                                    </text-data>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                </row>
+            </footer>
+        </table>
+        <extended-item extensionName="Chart" id="267">
+            <xml-property name="xmlRepresentation"><![CDATA[<model:ChartWithAxes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:attribute="http://www.birt.eclipse.org/ChartModelAttribute" xmlns:data="http://www.birt.eclipse.org/ChartModelData" xmlns:layout="http://www.birt.eclipse.org/ChartModelLayout" xmlns:model="http://www.birt.eclipse.org/ChartModel" xmlns:type="http://www.birt.eclipse.org/ChartModelType">
+  <Version>2.5.3</Version>
+  <Type>Bar Chart</Type>
+  <SubType>Side-by-side</SubType>
+  <Block>
+    <Children xsi:type="layout:TitleBlock">
+      <Bounds>
+        <Left>0.0</Left>
+        <Top>0.0</Top>
+        <Width>0.0</Width>
+        <Height>0.0</Height>
+      </Bounds>
+      <Insets>
+        <Top>3.0</Top>
+        <Left>3.0</Left>
+        <Bottom>3.0</Bottom>
+        <Right>3.0</Right>
+      </Insets>
+      <Row>-1</Row>
+      <Column>-1</Column>
+      <Rowspan>-1</Rowspan>
+      <Columnspan>-1</Columnspan>
+      <Outline>
+        <Style>Solid</Style>
+        <Thickness>1</Thickness>
+        <Color>
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>0</Green>
+          <Blue>0</Blue>
+        </Color>
+        <Visible>false</Visible>
+      </Outline>
+      <Visible>true</Visible>
+      <Label>
+        <Caption>
+          <Value>Historique des Total Scores</Value>
+          <Font>
+            <Size>16.0</Size>
+            <Bold>true</Bold>
+            <Alignment>
+              <horizontalAlignment>Center</horizontalAlignment>
+              <verticalAlignment>Center</verticalAlignment>
+            </Alignment>
+          </Font>
+        </Caption>
+        <Background xsi:type="attribute:ColorDefinition">
+          <Transparency>0</Transparency>
+          <Red>255</Red>
+          <Green>255</Green>
+          <Blue>255</Blue>
+        </Background>
+        <Outline>
+          <Style>Solid</Style>
+          <Thickness>1</Thickness>
+          <Color>
+            <Transparency>255</Transparency>
+            <Red>0</Red>
+            <Green>0</Green>
+            <Blue>0</Blue>
+          </Color>
+        </Outline>
+        <Insets>
+          <Top>0.0</Top>
+          <Left>2.0</Left>
+          <Bottom>0.0</Bottom>
+          <Right>3.0</Right>
+        </Insets>
+        <Visible>true</Visible>
+      </Label>
+    </Children>
+    <Children xsi:type="layout:Plot">
+      <Bounds>
+        <Left>0.0</Left>
+        <Top>0.0</Top>
+        <Width>0.0</Width>
+        <Height>0.0</Height>
+      </Bounds>
+      <Insets>
+        <Top>3.0</Top>
+        <Left>3.0</Left>
+        <Bottom>3.0</Bottom>
+        <Right>3.0</Right>
+      </Insets>
+      <Row>-1</Row>
+      <Column>-1</Column>
+      <Rowspan>-1</Rowspan>
+      <Columnspan>-1</Columnspan>
+      <Outline>
+        <Style>Solid</Style>
+        <Thickness>1</Thickness>
+        <Color>
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>0</Green>
+          <Blue>0</Blue>
+        </Color>
+        <Visible>false</Visible>
+      </Outline>
+      <Visible>true</Visible>
+      <HorizontalSpacing>5</HorizontalSpacing>
+      <VerticalSpacing>5</VerticalSpacing>
+      <ClientArea>
+        <Outline>
+          <Style>Solid</Style>
+          <Thickness>0</Thickness>
+          <Color>
+            <Transparency>255</Transparency>
+            <Red>0</Red>
+            <Green>0</Green>
+            <Blue>0</Blue>
+          </Color>
+          <Visible>false</Visible>
+        </Outline>
+        <Insets>
+          <Top>0.0</Top>
+          <Left>0.0</Left>
+          <Bottom>0.0</Bottom>
+          <Right>0.0</Right>
+        </Insets>
+      </ClientArea>
+    </Children>
+    <Children xsi:type="layout:Legend">
+      <Bounds>
+        <Left>0.0</Left>
+        <Top>0.0</Top>
+        <Width>0.0</Width>
+        <Height>0.0</Height>
+      </Bounds>
+      <Insets>
+        <Top>3.0</Top>
+        <Left>3.0</Left>
+        <Bottom>3.0</Bottom>
+        <Right>3.0</Right>
+      </Insets>
+      <Row>-1</Row>
+      <Column>-1</Column>
+      <Rowspan>-1</Rowspan>
+      <Columnspan>-1</Columnspan>
+      <Outline>
+        <Style>Solid</Style>
+        <Thickness>1</Thickness>
+        <Color>
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>0</Green>
+          <Blue>0</Blue>
+        </Color>
+        <Visible>false</Visible>
+      </Outline>
+      <Visible>false</Visible>
+      <ClientArea>
+        <Outline>
+          <Style>Solid</Style>
+          <Thickness>0</Thickness>
+          <Color>
+            <Transparency>255</Transparency>
+            <Red>0</Red>
+            <Green>0</Green>
+            <Blue>0</Blue>
+          </Color>
+          <Visible>false</Visible>
+        </Outline>
+        <Insets>
+          <Top>2.0</Top>
+          <Left>2.0</Left>
+          <Bottom>2.0</Bottom>
+          <Right>2.0</Right>
+        </Insets>
+      </ClientArea>
+      <Text>
+        <Value></Value>
+        <Font>
+          <Alignment/>
+        </Font>
+      </Text>
+      <Orientation>Vertical</Orientation>
+      <Direction>Top_Bottom</Direction>
+      <Separator>
+        <Style>Solid</Style>
+        <Thickness>1</Thickness>
+        <Color>
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>0</Green>
+          <Blue>0</Blue>
+        </Color>
+        <Visible>true</Visible>
+      </Separator>
+      <Position>Right</Position>
+      <ItemType>Series</ItemType>
+      <Title>
+        <Caption>
+          <Value></Value>
+          <Font>
+            <Alignment/>
+          </Font>
+        </Caption>
+        <Background xsi:type="attribute:ColorDefinition">
+          <Transparency>0</Transparency>
+          <Red>255</Red>
+          <Green>255</Green>
+          <Blue>255</Blue>
+        </Background>
+        <Outline>
+          <Style>Solid</Style>
+          <Thickness>1</Thickness>
+          <Color>
+            <Transparency>255</Transparency>
+            <Red>0</Red>
+            <Green>0</Green>
+            <Blue>0</Blue>
+          </Color>
+          <Visible>false</Visible>
+        </Outline>
+        <Insets>
+          <Top>0.0</Top>
+          <Left>2.0</Left>
+          <Bottom>0.0</Bottom>
+          <Right>3.0</Right>
+        </Insets>
+        <Visible>false</Visible>
+      </Title>
+      <TitlePosition>Above</TitlePosition>
+    </Children>
+    <Bounds>
+      <Left>0.0</Left>
+      <Top>0.0</Top>
+      <Width>212.0</Width>
+      <Height>130.0</Height>
+    </Bounds>
+    <Insets>
+      <Top>3.0</Top>
+      <Left>3.0</Left>
+      <Bottom>3.0</Bottom>
+      <Right>3.0</Right>
+    </Insets>
+    <Row>-1</Row>
+    <Column>-1</Column>
+    <Rowspan>-1</Rowspan>
+    <Columnspan>-1</Columnspan>
+    <Outline>
+      <Style>Solid</Style>
+      <Thickness>1</Thickness>
+      <Color>
+        <Transparency>255</Transparency>
+        <Red>0</Red>
+        <Green>0</Green>
+        <Blue>0</Blue>
+      </Color>
+      <Visible>false</Visible>
+    </Outline>
+    <Visible>true</Visible>
+  </Block>
+  <Dimension>Two_Dimensional</Dimension>
+  <Units>Points</Units>
+  <SeriesThickness>10.0</SeriesThickness>
+  <ExtendedProperties>
+    <Name>enable.area.alt</Name>
+    <Value>false</Value>
+  </ExtendedProperties>
+  <SampleData>
+    <BaseSampleData>
+      <DataSetRepresentation>01/05/2000,02/01/2000,04/12/2000,03/12/2000,02/29/2000</DataSetRepresentation>
+    </BaseSampleData>
+    <OrthogonalSampleData>
+      <DataSetRepresentation>5,4,12</DataSetRepresentation>
+      <SeriesDefinitionIndex>0</SeriesDefinitionIndex>
+    </OrthogonalSampleData>
+  </SampleData>
+  <Interactivity/>
+  <EmptyMessage>
+    <Caption>
+      <Value>This chart contains no data.</Value>
+      <Font>
+        <Alignment>
+          <horizontalAlignment>Center</horizontalAlignment>
+          <verticalAlignment>Center</verticalAlignment>
+        </Alignment>
+      </Font>
+    </Caption>
+    <Background xsi:type="attribute:ColorDefinition">
+      <Transparency>64</Transparency>
+      <Red>127</Red>
+      <Green>127</Green>
+      <Blue>127</Blue>
+    </Background>
+    <Outline>
+      <Color>
+        <Transparency>128</Transparency>
+        <Red>127</Red>
+        <Green>127</Green>
+        <Blue>127</Blue>
+      </Color>
+      <Visible>true</Visible>
+    </Outline>
+    <Insets>
+      <Top>10.0</Top>
+      <Left>10.0</Left>
+      <Bottom>10.0</Bottom>
+      <Right>10.0</Right>
+    </Insets>
+    <Visible>false</Visible>
+  </EmptyMessage>
+  <Axes>
+    <Type>string</Type>
+    <Title>
+      <Caption>
+        <Value>X-Axis Title</Value>
+        <Font>
+          <Size>14.0</Size>
+          <Bold>true</Bold>
+          <Alignment>
+            <horizontalAlignment>Center</horizontalAlignment>
+            <verticalAlignment>Center</verticalAlignment>
+          </Alignment>
+        </Font>
+      </Caption>
+      <Background xsi:type="attribute:ColorDefinition">
+        <Transparency>0</Transparency>
+        <Red>255</Red>
+        <Green>255</Green>
+        <Blue>255</Blue>
+      </Background>
+      <Outline>
+        <Style>Solid</Style>
+        <Thickness>1</Thickness>
+        <Color>
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>0</Green>
+          <Blue>0</Blue>
+        </Color>
+      </Outline>
+      <Insets>
+        <Top>0.0</Top>
+        <Left>2.0</Left>
+        <Bottom>0.0</Bottom>
+        <Right>3.0</Right>
+      </Insets>
+      <Visible>false</Visible>
+    </Title>
+    <TitlePosition>Below</TitlePosition>
+    <AssociatedAxes>
+      <Type>Linear</Type>
+      <Title>
+        <Caption>
+          <Value>Y-Axis Title</Value>
+          <Font>
+            <Size>14.0</Size>
+            <Bold>true</Bold>
+            <Alignment>
+              <horizontalAlignment>Center</horizontalAlignment>
+              <verticalAlignment>Center</verticalAlignment>
+            </Alignment>
+          </Font>
+        </Caption>
+        <Background xsi:type="attribute:ColorDefinition">
+          <Transparency>0</Transparency>
+          <Red>255</Red>
+          <Green>255</Green>
+          <Blue>255</Blue>
+        </Background>
+        <Outline>
+          <Style>Solid</Style>
+          <Thickness>1</Thickness>
+          <Color>
+            <Transparency>255</Transparency>
+            <Red>0</Red>
+            <Green>0</Green>
+            <Blue>0</Blue>
+          </Color>
+        </Outline>
+        <Insets>
+          <Top>0.0</Top>
+          <Left>2.0</Left>
+          <Bottom>0.0</Bottom>
+          <Right>3.0</Right>
+        </Insets>
+        <Visible>false</Visible>
+      </Title>
+      <TitlePosition>Left</TitlePosition>
+      <SeriesDefinitions>
+        <Query>
+          <Definition></Definition>
+        </Query>
+        <SeriesPalette>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>80</Red>
+            <Green>166</Green>
+            <Blue>218</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>242</Red>
+            <Green>88</Green>
+            <Blue>106</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>232</Red>
+            <Green>172</Green>
+            <Blue>57</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>128</Red>
+            <Green>255</Green>
+            <Blue>128</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>64</Red>
+            <Green>128</Green>
+            <Blue>128</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>128</Red>
+            <Green>128</Green>
+            <Blue>192</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>170</Red>
+            <Green>85</Green>
+            <Blue>85</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>128</Red>
+            <Green>128</Green>
+            <Blue>0</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>192</Red>
+            <Green>192</Green>
+            <Blue>192</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>255</Red>
+            <Green>255</Green>
+            <Blue>128</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>128</Red>
+            <Green>192</Green>
+            <Blue>128</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>7</Red>
+            <Green>146</Green>
+            <Blue>94</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>0</Red>
+            <Green>128</Green>
+            <Blue>255</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>255</Red>
+            <Green>128</Green>
+            <Blue>192</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>0</Red>
+            <Green>255</Green>
+            <Blue>255</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>255</Red>
+            <Green>128</Green>
+            <Blue>128</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>0</Red>
+            <Green>128</Green>
+            <Blue>192</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>128</Red>
+            <Green>128</Green>
+            <Blue>192</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>255</Red>
+            <Green>0</Green>
+            <Blue>255</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>128</Red>
+            <Green>64</Green>
+            <Blue>64</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>255</Red>
+            <Green>128</Green>
+            <Blue>64</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>80</Red>
+            <Green>240</Green>
+            <Blue>120</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>0</Red>
+            <Green>64</Green>
+            <Blue>128</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>128</Red>
+            <Green>0</Green>
+            <Blue>64</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>255</Red>
+            <Green>0</Green>
+            <Blue>128</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>128</Red>
+            <Green>128</Green>
+            <Blue>64</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>128</Red>
+            <Green>128</Green>
+            <Blue>128</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>255</Red>
+            <Green>128</Green>
+            <Blue>255</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>0</Red>
+            <Green>64</Green>
+            <Blue>0</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>0</Red>
+            <Green>0</Green>
+            <Blue>0</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>255</Red>
+            <Green>255</Green>
+            <Blue>255</Blue>
+          </Entries>
+          <Entries xsi:type="attribute:ColorDefinition">
+            <Transparency>255</Transparency>
+            <Red>255</Red>
+            <Green>128</Green>
+            <Blue>0</Blue>
+          </Entries>
+        </SeriesPalette>
+        <Series xsi:type="type:BarSeries">
+          <Visible>true</Visible>
+          <Label>
+            <Caption>
+              <Value></Value>
+              <Font>
+                <Alignment/>
+              </Font>
+            </Caption>
+            <Background xsi:type="attribute:ColorDefinition">
+              <Transparency>0</Transparency>
+              <Red>255</Red>
+              <Green>255</Green>
+              <Blue>255</Blue>
+            </Background>
+            <Outline>
+              <Style>Solid</Style>
+              <Thickness>1</Thickness>
+              <Color>
+                <Transparency>255</Transparency>
+                <Red>0</Red>
+                <Green>0</Green>
+                <Blue>0</Blue>
+              </Color>
+              <Visible>false</Visible>
+            </Outline>
+            <Insets>
+              <Top>0.0</Top>
+              <Left>2.0</Left>
+              <Bottom>0.0</Bottom>
+              <Right>3.0</Right>
+            </Insets>
+            <Visible>false</Visible>
+          </Label>
+          <DataDefinition>
+            <Definition>row[&quot;val&quot;]</Definition>
+            <Grouping>
+              <GroupType>Text</GroupType>
+              <AggregateExpression>Sum</AggregateExpression>
+            </Grouping>
+          </DataDefinition>
+          <SeriesIdentifier>Series 1</SeriesIdentifier>
+          <DataPoint>
+            <Components>
+              <Type>Orthogonal_Value</Type>
+            </Components>
+            <Separator>, </Separator>
+          </DataPoint>
+          <LabelPosition>Outside</LabelPosition>
+          <Stacked>false</Stacked>
+          <Triggers>
+            <Condition>onmouseover</Condition>
+            <Action>
+              <Type>Show_Tooltip</Type>
+              <Value xsi:type="attribute:TooltipValue">
+                <Text></Text>
+                <Delay>200</Delay>
+              </Value>
+            </Action>
+          </Triggers>
+          <Riser>Rectangle</Riser>
+        </Series>
+        <Grouping>
+          <GroupType>Text</GroupType>
+          <AggregateExpression>Sum</AggregateExpression>
+        </Grouping>
+      </SeriesDefinitions>
+      <Orientation>Vertical</Orientation>
+      <LineAttributes>
+        <Style>Solid</Style>
+        <Thickness>1</Thickness>
+        <Color>
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>0</Green>
+          <Blue>0</Blue>
+        </Color>
+        <Visible>true</Visible>
+      </LineAttributes>
+      <Label>
+        <Caption>
+          <Value></Value>
+          <Font>
+            <Alignment/>
+          </Font>
+        </Caption>
+        <Background xsi:type="attribute:ColorDefinition">
+          <Transparency>0</Transparency>
+          <Red>255</Red>
+          <Green>255</Green>
+          <Blue>255</Blue>
+        </Background>
+        <Outline>
+          <Style>Solid</Style>
+          <Thickness>1</Thickness>
+          <Color>
+            <Transparency>255</Transparency>
+            <Red>0</Red>
+            <Green>0</Green>
+            <Blue>0</Blue>
+          </Color>
+        </Outline>
+        <Insets>
+          <Top>0.0</Top>
+          <Left>2.0</Left>
+          <Bottom>0.0</Bottom>
+          <Right>3.0</Right>
+        </Insets>
+        <Visible>true</Visible>
+      </Label>
+      <LabelPosition>Left</LabelPosition>
+      <MajorGrid>
+        <LineAttributes>
+          <Style>Solid</Style>
+          <Thickness>1</Thickness>
+          <Color>
+            <Transparency>255</Transparency>
+            <Red>196</Red>
+            <Green>196</Green>
+            <Blue>196</Blue>
+          </Color>
+          <Visible>false</Visible>
+        </LineAttributes>
+        <TickStyle>Across</TickStyle>
+        <TickAttributes>
+          <Style>Solid</Style>
+          <Thickness>1</Thickness>
+          <Color>
+            <Transparency>255</Transparency>
+            <Red>196</Red>
+            <Green>196</Green>
+            <Blue>196</Blue>
+          </Color>
+          <Visible>true</Visible>
+        </TickAttributes>
+      </MajorGrid>
+      <MinorGrid>
+        <LineAttributes>
+          <Style>Solid</Style>
+          <Thickness>1</Thickness>
+          <Color>
+            <Transparency>255</Transparency>
+            <Red>225</Red>
+            <Green>225</Green>
+            <Blue>225</Blue>
+          </Color>
+          <Visible>false</Visible>
+        </LineAttributes>
+        <TickStyle>Across</TickStyle>
+        <TickAttributes>
+          <Style>Solid</Style>
+          <Thickness>1</Thickness>
+          <Color>
+            <Transparency>255</Transparency>
+            <Red>225</Red>
+            <Green>225</Green>
+            <Blue>225</Blue>
+          </Color>
+          <Visible>false</Visible>
+        </TickAttributes>
+      </MinorGrid>
+      <Scale>
+        <MinorGridsPerUnit>5</MinorGridsPerUnit>
+      </Scale>
+      <Origin>
+        <Type>Min</Type>
+        <Value xsi:type="data:NumberDataElement">
+          <Value>0.0</Value>
+        </Value>
+      </Origin>
+      <PrimaryAxis>true</PrimaryAxis>
+      <Percent>false</Percent>
+    </AssociatedAxes>
+    <SeriesDefinitions>
+      <Query>
+        <Definition></Definition>
+      </Query>
+      <SeriesPalette>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>80</Red>
+          <Green>166</Green>
+          <Blue>218</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>242</Red>
+          <Green>88</Green>
+          <Blue>106</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>232</Red>
+          <Green>172</Green>
+          <Blue>57</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>128</Red>
+          <Green>255</Green>
+          <Blue>128</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>64</Red>
+          <Green>128</Green>
+          <Blue>128</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>128</Red>
+          <Green>128</Green>
+          <Blue>192</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>170</Red>
+          <Green>85</Green>
+          <Blue>85</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>128</Red>
+          <Green>128</Green>
+          <Blue>0</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>192</Red>
+          <Green>192</Green>
+          <Blue>192</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>255</Red>
+          <Green>255</Green>
+          <Blue>128</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>128</Red>
+          <Green>192</Green>
+          <Blue>128</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>7</Red>
+          <Green>146</Green>
+          <Blue>94</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>128</Green>
+          <Blue>255</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>255</Red>
+          <Green>128</Green>
+          <Blue>192</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>255</Green>
+          <Blue>255</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>255</Red>
+          <Green>128</Green>
+          <Blue>128</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>128</Green>
+          <Blue>192</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>128</Red>
+          <Green>128</Green>
+          <Blue>192</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>255</Red>
+          <Green>0</Green>
+          <Blue>255</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>128</Red>
+          <Green>64</Green>
+          <Blue>64</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>255</Red>
+          <Green>128</Green>
+          <Blue>64</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>80</Red>
+          <Green>240</Green>
+          <Blue>120</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>64</Green>
+          <Blue>128</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>128</Red>
+          <Green>0</Green>
+          <Blue>64</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>255</Red>
+          <Green>0</Green>
+          <Blue>128</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>128</Red>
+          <Green>128</Green>
+          <Blue>64</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>128</Red>
+          <Green>128</Green>
+          <Blue>128</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>255</Red>
+          <Green>128</Green>
+          <Blue>255</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>64</Green>
+          <Blue>0</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>0</Green>
+          <Blue>0</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>255</Red>
+          <Green>255</Green>
+          <Blue>255</Blue>
+        </Entries>
+        <Entries xsi:type="attribute:ColorDefinition">
+          <Transparency>255</Transparency>
+          <Red>255</Red>
+          <Green>128</Green>
+          <Blue>0</Blue>
+        </Entries>
+      </SeriesPalette>
+      <Series>
+        <Visible>true</Visible>
+        <Label>
+          <Caption>
+            <Value></Value>
+            <Font>
+              <Alignment/>
+            </Font>
+          </Caption>
+          <Background xsi:type="attribute:ColorDefinition">
+            <Transparency>0</Transparency>
+            <Red>255</Red>
+            <Green>255</Green>
+            <Blue>255</Blue>
+          </Background>
+          <Outline>
+            <Style>Solid</Style>
+            <Thickness>1</Thickness>
+            <Color>
+              <Transparency>255</Transparency>
+              <Red>0</Red>
+              <Green>0</Green>
+              <Blue>0</Blue>
+            </Color>
+            <Visible>false</Visible>
+          </Outline>
+          <Insets>
+            <Top>0.0</Top>
+            <Left>2.0</Left>
+            <Bottom>0.0</Bottom>
+            <Right>3.0</Right>
+          </Insets>
+          <Visible>false</Visible>
+        </Label>
+        <DataDefinition>
+          <Definition>row[&quot;date_modified&quot;]</Definition>
+        </DataDefinition>
+        <SeriesIdentifier></SeriesIdentifier>
+        <DataPoint>
+          <Components>
+            <Type>Orthogonal_Value</Type>
+          </Components>
+          <Separator>, </Separator>
+        </DataPoint>
+        <LabelPosition>Outside</LabelPosition>
+        <Stacked>false</Stacked>
+      </Series>
+      <Grouping>
+        <Enabled>false</Enabled>
+        <GroupingUnit>Years</GroupingUnit>
+        <GroupType>DateTime</GroupType>
+        <AggregateExpression>Sum</AggregateExpression>
+      </Grouping>
+      <Sorting>Ascending</Sorting>
+      <SortKey>
+        <Definition>row[&quot;date_modified&quot;]</Definition>
+      </SortKey>
+    </SeriesDefinitions>
+    <Orientation>Horizontal</Orientation>
+    <LineAttributes>
+      <Style>Solid</Style>
+      <Thickness>1</Thickness>
+      <Color>
+        <Transparency>255</Transparency>
+        <Red>0</Red>
+        <Green>0</Green>
+        <Blue>0</Blue>
+      </Color>
+      <Visible>true</Visible>
+    </LineAttributes>
+    <Label>
+      <Caption>
+        <Value></Value>
+        <Font>
+          <Alignment/>
+          <Rotation>45.0</Rotation>
+        </Font>
+      </Caption>
+      <Background xsi:type="attribute:ColorDefinition">
+        <Transparency>0</Transparency>
+        <Red>255</Red>
+        <Green>255</Green>
+        <Blue>255</Blue>
+      </Background>
+      <Outline>
+        <Style>Solid</Style>
+        <Thickness>1</Thickness>
+        <Color>
+          <Transparency>255</Transparency>
+          <Red>0</Red>
+          <Green>0</Green>
+          <Blue>0</Blue>
+        </Color>
+      </Outline>
+      <Insets>
+        <Top>0.0</Top>
+        <Left>2.0</Left>
+        <Bottom>0.0</Bottom>
+        <Right>3.0</Right>
+      </Insets>
+      <Visible>true</Visible>
+    </Label>
+    <FormatSpecifier xsi:type="attribute:DateFormatSpecifier">
+      <Type>Short</Type>
+      <Detail>Date</Detail>
+    </FormatSpecifier>
+    <LabelPosition>Below</LabelPosition>
+    <Staggered>false</Staggered>
+    <MajorGrid>
+      <LineAttributes>
+        <Style>Solid</Style>
+        <Thickness>1</Thickness>
+        <Color>
+          <Transparency>255</Transparency>
+          <Red>196</Red>
+          <Green>196</Green>
+          <Blue>196</Blue>
+        </Color>
+        <Visible>false</Visible>
+      </LineAttributes>
+      <TickStyle>Across</TickStyle>
+      <TickAttributes>
+        <Style>Solid</Style>
+        <Thickness>1</Thickness>
+        <Color>
+          <Transparency>255</Transparency>
+          <Red>196</Red>
+          <Green>196</Green>
+          <Blue>196</Blue>
+        </Color>
+        <Visible>true</Visible>
+      </TickAttributes>
+    </MajorGrid>
+    <MinorGrid>
+      <LineAttributes>
+        <Style>Solid</Style>
+        <Thickness>1</Thickness>
+        <Color>
+          <Transparency>255</Transparency>
+          <Red>225</Red>
+          <Green>225</Green>
+          <Blue>225</Blue>
+        </Color>
+        <Visible>false</Visible>
+      </LineAttributes>
+      <TickStyle>Across</TickStyle>
+      <TickAttributes>
+        <Style>Solid</Style>
+        <Thickness>1</Thickness>
+        <Color>
+          <Transparency>255</Transparency>
+          <Red>225</Red>
+          <Green>225</Green>
+          <Blue>225</Blue>
+        </Color>
+        <Visible>false</Visible>
+      </TickAttributes>
+    </MinorGrid>
+    <Scale>
+      <MinorGridsPerUnit>5</MinorGridsPerUnit>
+    </Scale>
+    <Origin>
+      <Type>Min</Type>
+      <Value xsi:type="data:NumberDataElement">
+        <Value>0.0</Value>
+      </Value>
+    </Origin>
+    <PrimaryAxis>true</PrimaryAxis>
+    <CategoryAxis>true</CategoryAxis>
+    <Percent>false</Percent>
+  </Axes>
+  <Orientation>Vertical</Orientation>
+  <UnitSpacing>50.0</UnitSpacing>
+  <Rotation>
+    <Angles>
+      <XAngle>-20.0</XAngle>
+      <YAngle>45.0</YAngle>
+      <ZAngle>0.0</ZAngle>
+      <Type>None</Type>
+    </Angles>
+  </Rotation>
+</model:ChartWithAxes>
+]]></xml-property>
+            <property name="outputFormat">SVG</property>
+            <property name="inheritColumns">false</property>
+            <property name="dataSet">HistogrammeDataSet</property>
+            <property name="height">4.604166666666667in</property>
+            <property name="width">7.9375in</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">date_modified</property>
+                    <expression name="expression" type="javascript">dataSetRow["date_modified"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">val</property>
+                    <expression name="expression" type="javascript">dataSetRow["val"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+            </list-property>
+        </extended-item>
+    </body>
+</report>

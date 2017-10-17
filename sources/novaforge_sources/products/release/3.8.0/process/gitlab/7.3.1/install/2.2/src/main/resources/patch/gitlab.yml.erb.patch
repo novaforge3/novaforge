@@ -1,0 +1,15 @@
+--- gitlab.yml.erb	2014-09-24 10:01:19.000000000 +0200
++++ gitlab-patched.yml.erb	2014-10-27 11:34:57.000000000 +0100
+@@ -19,11 +19,11 @@
+     # Otherwise, ssh host will be set to the `host:` value above
+     ssh_host: <%= @gitlab_ssh_host %>
+ 
+     # WARNING: See config/application.rb under "Relative url support" for the list of
+     # other files that need to be changed for relative url support
+-    # relative_url_root: /gitlab
++    relative_url_root: <%= @gitlab_relative_url_root %>
+ 
+     # Uncomment and customize if you can't use the default user to run GitLab (default: 'git')
+     user: <%= node['gitlab']['user']['username'] %>
+ 
+     ## Email settings

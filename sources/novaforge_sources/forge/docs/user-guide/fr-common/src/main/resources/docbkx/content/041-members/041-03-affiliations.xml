@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<sect1 version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+       xmlns:xlink="http://www.w3.org/1999/xlink"
+       xmlns:xi="http://www.w3.org/2001/XInclude"
+       xmlns:ns5="http://www.w3.org/2000/svg"
+       xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+       xmlns:ns3="http://www.w3.org/1999/xhtml"
+       xmlns:db="http://docbook.org/ns/docbook">
+  <title>Gestion des affiliations</title>
+
+  <para>Un ou plusieurs rôles permettent l'association d'un utilisateur ou d'un groupe à un projet.</para>
+
+  <sect2>
+    <title>Affiliation des groupes</title>
+
+    <para>Un groupe peut être affilié à travers plusieurs rôles.</para>
+     <sect3>
+     <title>Groupe de forge</title>
+     <para>L'administrateur de la forge rattache un groupe au projet de forge avec un ou des rôle(s) donnés, ceci à travers la rubrique <emphasis role="bold">«Administration du projet/Vos affiliations/Vos groupes»</emphasis>, éditer l'action <emphasis role="bold">«Editer les rôles»</emphasis>.</para>
+     <para>Il peut rendre le groupe public à tous les autres projets ou non. Ce rattachement n'engendre pas un héritage des rôles associés à ce groupe de forge vers un autre projet spécifique, c’est-à-dire que c'est à l'administrateur projet de rattacher ce groupe avec les rôles spécifiques du projet.</para>
+     <para>Donc si le groupe de forge est à visibilité « public », l'administrateur projet peut rajouter le groupe au projet en sélectionnant les rôles à attribuer au groupe sous la rubrique <emphasis role="bold">«Administration du projet/Vos affiliations/Vos groupes»</emphasis>, éditer l'action <emphasis role="bold">«Editer les rôles»</emphasis>.</para>
+     <para>NB : Un utilisateur associé à un groupe de projet de forge n'hérite pas d'éventuel rôle générique, par exemple un utilisateur associé à un groupe «validation» du projet de forge n'hérite pas d'un rôle validation lorsqu'il est associé séparément à un projet.</para>
+     </sect3>
+     <sect3>
+     <title>Groupe de Projet</title>
+     <para>Après avoir créé le groupe, et dans la rubrique <emphasis role="bold">«Administration du projet/Vos affiliations/Vos groupes»</emphasis>, éditer l'action <emphasis role="bold">«Editer les rôles»</emphasis>.</para>
+
+     </sect3>
+    </sect2>
+    <sect2>
+    <title>Affiliation des utilisateurs</title>
+    <para>Un utilisateur peut être affilié à travers plusieurs rôles. Sous la rubrique <emphasis role="bold">«Administration du projet/Vos affiliations/Vos utilisateurs»</emphasis>, actionner le bouton <emphasis role="bold">«Affilier de nouveaux utilisateurs»</emphasis>  puis sélectionner l'utilisateur à ajouter et ensuite cliquer sur le bouton <emphasis role="bold">«Choisir les rôles»</emphasis>.</para>
+    
+    </sect2>
+    
+   
+</sect1>

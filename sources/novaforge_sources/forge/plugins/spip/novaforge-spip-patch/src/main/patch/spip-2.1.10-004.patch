@@ -1,0 +1,81 @@
+diff -rNU5 spip-003/extensions/cicas/action/logout.php spip/extensions/cicas/action/logout.php
+--- spip-003/extensions/cicas/action/logout.php	2013-05-22 15:09:37.574094203 +0200
++++ spip/extensions/cicas/action/logout.php	2013-05-22 15:19:26.273468624 +0200
+@@ -56,11 +56,13 @@
+ //------- Debut ajout CI -----
+ 		if ($ciauthcas) {
+ 	
+ 			include_spip('inc/cicas_commun');
+ 			// import phpCAS lib
+-			include_spip('CAS');
++			//*** patch NF ****
++			//include_spip('CAS');
++			require_once('CAS/CAS.php');
+ 
+ 			// Pour la solution hybride utilisation d'un cookie
+ 			if(isset($_COOKIE['cicas_sso']))
+ 				spip_setcookie('cicas_sso', '', time() - 3600);
+ 			
+@@ -108,6 +110,6 @@
+ //------- Debut ajout CI -----
+ 	}
+ //------- Fin ajout CI -----
+ }
+ 
+-?>
+\ Pas de fin de ligne à la fin du fichier.
++?>
+diff -rNU5 spip-003/extensions/cicas/cicas_erreur2_fonctions.php spip/extensions/cicas/cicas_erreur2_fonctions.php
+--- spip-003/extensions/cicas/cicas_erreur2_fonctions.php	2013-05-22 15:09:37.614093968 +0200
++++ spip/extensions/cicas/cicas_erreur2_fonctions.php	2013-05-22 15:20:08.554581494 +0200
+@@ -14,11 +14,13 @@
+ 	global $visiteur_session;
+ 
+ 	include_spip('inc/cicas_commun');
+ 	
+ 	// import phpCAS lib
+-	include_spip('CAS');
++	//*** patch NF ****
++	//include_spip('CAS');
++	require_once('CAS/CAS.php');
+ 
+ 	// Pour la solution hybride utilisation d'un cookie
+ 	if(isset($_COOKIE['cicas_sso']))
+ 		spip_setcookie('cicas_sso', '', time() - 3600);
+ 	
+@@ -54,6 +56,6 @@
+ 	}
+ 	
+ 	return '';
+       	
+ }	            	
+-?>
+\ Pas de fin de ligne à la fin du fichier.
++?>
+diff -rNU5 spip-003/extensions/cicas/inc/cicas_login.php spip/extensions/cicas/inc/cicas_login.php
+--- spip-003/extensions/cicas/inc/cicas_login.php	2013-05-22 15:09:37.614093968 +0200
++++ spip/extensions/cicas/inc/cicas_login.php	2013-05-22 15:17:56.763467898 +0200
+@@ -18,11 +18,13 @@
+ include_spip('inc/headers');
+ 
+ include_spip('inc/cicas_commun');
+ 
+ // import phpCAS lib
+-include_spip('CAS');
++//*** patch NF ****
++//include_spip('CAS');
++require_once('CAS/CAS.php');
+ 
+ 
+ // redirection par defaut
+ $ciredirect = generer_url_public('');
+ 
+@@ -201,6 +203,6 @@
+ 
+ 			}
+ 		}
+ 	}
+ }
+-?>
+\ Pas de fin de ligne à la fin du fichier.
++?>

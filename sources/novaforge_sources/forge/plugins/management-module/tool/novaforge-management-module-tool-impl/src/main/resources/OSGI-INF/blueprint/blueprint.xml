@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd">
+    
+    <!-- References services used -->
+    <reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/toolManagementModule)" />
+    
+    <reference id="reportingService" interface="org.novaforge.forge.commons.reporting.services.ReportingService" />
+    <reference id="managementModulePluginService" interface="org.novaforge.forge.plugins.management.managementmodule.services.ManagementModulePluginService" availability="optional"/>
+    <reference id="CDOPerimeterUnitConnector" interface="org.novaforge.forge.tools.managementmodule.connectors.CDOPerimeterUnitConnector"/>
+
+	<!-- DAO's beans -->
+	<bean id="adjustFactorDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.AdjustFactorDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="adjustFactorJointureDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.AdjustFactorJointureDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="adjustWeightDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.AdjustWeightDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="applicativeFunctionDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.ApplicativeFunctionDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="applicativeRightsDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.ApplicativeRightsDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="bugDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.BugDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="CDOParametersDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.CDOParametersDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>		
+	<bean id="disciplineDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.DisciplineDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="estimationComponentDetailDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.EstimationComponentDetailDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>		
+	<bean id="estimationComponentSimpleDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.EstimationComponentSimpleDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>		
+	<bean id="estimationDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.EstimationDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>		
+	<bean id="iterationDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.IterationDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="iterationTaskDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.IterationTaskDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>		
+	<bean id="languageDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.LanguageDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>		
+	<bean id="loadDistributionDisciplineDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.LoadDistributionDisciplineDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<property ref="businessObjectFactory" name="businessObjectFactory" />
+		<tx:transaction method="*" value="Required" />
+	</bean>		
+	<bean id="lotDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.LotDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="markerDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.MarkerDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="markerTypeDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.MarkerTypeDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>		
+	<bean id="membershipDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.MembershipDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="phaseTypeDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.PhaseTypeDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>		
+	<bean id="projectDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.ProjectDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>		
+	<bean id="projectPlanDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.ProjectPlanDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="refCalendarDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.RefCalendarDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>		
+	<bean id="refScopeUnitDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.RefScopeUnitDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>			
+	<bean id="roleDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.RoleDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>		
+	<bean id="scopeTypeDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.ScopeTypeDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>			
+	<bean id="scopeUnitDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.ScopeUnitDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="scopeUnitDisciplineDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.ScopeUnitDisciplineDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="scopeUnitDisciplineStatusDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.ScopeUnitDisciplineStatusDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>			
+	<bean id="statusProjectPlanDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.StatusProjectPlanDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="statusScopeDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.StatusScopeDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>			
+	<bean id="statusTaskDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.StatusTaskDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="steeringParamDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.SteeringParamDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>		
+	<bean id="taskCategoryDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.TaskCategoryDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>		
+	<bean id="taskDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.TaskDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="taskTypeDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.TaskTypeDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="transformationDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.TransformationDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>		
+	<bean id="unitTimeDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.UnitTimeDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="userDAO" class="org.novaforge.forge.tools.managementmodule.internal.dao.UserDAOImpl">
+		<jpa:context unitname="tools.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>		
+	
+	<!-- Business beans -->	
+	<bean id="businessObjectFactory" class="org.novaforge.forge.tools.managementmodule.internal.BusinessObjectFactoryImpl" />														
+	<bean id="indicatorsManager" class="org.novaforge.forge.tools.managementmodule.internal.business.IndicatorsManagerImpl" >
+		<tx:transaction method="*" value="Required" />
+		<property ref="iterationManager" name="iterationManager" />
+		<property ref="projectPlanManager" name="projectPlanManager" />
+		<property ref="taskManager" name="taskManager" />
+		<property ref="businessObjectFactory" name="businessObjectFactory" />
+	</bean>	
+	<bean id="iterationManager" class="org.novaforge.forge.tools.managementmodule.internal.business.IterationManagerImpl" >
+		<tx:transaction method="*" value="Required" />
+		<property ref="projectPlanManager" name="projectPlanManager" />
+		<property ref="iterationDAO" name="iterationDAO" />
+		<property ref="referentielManager" name="referentielManager" />
+		<property ref="taskManager" name="taskManager" />
+		<property ref="businessObjectFactory" name="businessObjectFactory" />
+	</bean>		
+	<bean id="managementModuleManager" class="org.novaforge.forge.tools.managementmodule.internal.business.ManagementModuleManagerImpl" >
+		<tx:transaction method="*" value="Required" />
+		<property ref="projectDAO" name="projectDAO" />
+		<property ref="userDAO" name="userDAO" />
+		<property ref="languageDAO" name="languageDAO" />
+		<property ref="roleDAO" name="roleDAO" />
+		<property ref="membershipDAO" name="membershipDAO" />
+		<property ref="applicativeFunctionDAO" name="applicativeFunctionDAO" />
+		<property ref="applicativeRightsDAO" name="applicativeRightsDAO" />
+		<property ref="projectPlanManager" name="projectPlanManager" />
+		<property ref="managementModulePluginService" name="managementModulePluginService" />
+		<property ref="reportingService" name="reportingService" />
+		<property ref="businessObjectFactory" name="businessObjectFactory" />
+		<property ref="blueprintBundleContext" name="bundleContext" />
+	</bean>		
+	<bean id="projectPlanManager" class="org.novaforge.forge.tools.managementmodule.internal.business.ProjectPlanManagerImpl" >
+		<tx:transaction method="*" value="Required" />
+		<property ref="projectPlanDAO" name="projectPlanDAO" />
+		<property ref="lotDAO" name="lotDAO" />
+		<property ref="markerDAO" name="markerDAO" />
+		<property ref="estimationComponentDetailDAO" name="estimationComponentDetailDAO" />
+		<property ref="scopeUnitDAO" name="scopeUnitDAO" />
+		<property ref="refScopeUnitDAO" name="refScopeUnitDAO" />
+		<property ref="adjustWeightDAO" name="adjustWeightDAO" />
+		<property ref="loadDistributionDisciplineDAO" name="loadDistributionDisciplineDAO" />
+		<property ref="estimationDAO" name="estimationDAO" />
+		<property ref="refCalendarDAO" name="refCalendarDAO" />
+		<property ref="statusProjectPlanDAO" name="statusProjectPlanDAO" />
+		<property ref="scopeUnitDisciplineDAO" name="scopeUnitDisciplineDAO" />
+		<property ref="scopeUnitDisciplineStatusDAO" name="scopeUnitDisciplineStatusDAO" />
+		<property ref="CDOParametersDAO" name="CDOParametersDAO" />
+		<property ref="managementModuleManager" name="managementModuleManager" />
+		<property ref="referentielManager" name="referentielManager" />
+		<property ref="taskManager" name="taskManager" />
+		<property ref="CDOPerimeterUnitConnector" name="connectorCDO" />
+		<property ref="businessObjectFactory" name="businessObjectFactory" />
+	</bean>	
+	<bean id="referentielManager" class="org.novaforge.forge.tools.managementmodule.internal.business.ReferentielManagerImpl" >
+		<tx:transaction method="*" value="Required" />
+		<property ref="unitTimeDAO" name="unitTimeDAO" />
+		<property ref="disciplineDAO" name="disciplineDAO" />
+		<property ref="markerTypeDAO" name="markerTypeDAO" />
+		<property ref="statusProjectPlanDAO" name="statusProjectPlanDAO" />
+		<property ref="scopeTypeDAO" name="scopeTypeDAO" />
+		<property ref="statusScopeDAO" name="statusScopeDAO" />
+		<property ref="adjustFactorDAO" name="adjustFactorDAO" />
+		<property ref="steeringParamDAO" name="steeringParamDAO" />
+		<property ref="transformationDAO" name="transformationDAO" />
+		<property ref="phaseTypeDAO" name="phaseTypeDAO" />
+		<property ref="estimationComponentSimpleDAO" name="estimationComponentSimpleDAO" />
+		<property ref="adjustWeightDAO" name="adjustWeightDAO" />
+		<property ref="languageDAO" name="languageDAO" />
+		<property ref="businessObjectFactory" name="businessObjectFactory" />
+	</bean>		
+	<bean id="taskManager" class="org.novaforge.forge.tools.managementmodule.internal.business.TaskManagerImpl" >
+		<tx:transaction method="*" value="Required" />
+		<property ref="taskDAO" name="taskDAO" />
+		<property ref="taskCategoryDAO" name="taskCategoryDAO" />
+		<property ref="taskTypeDAO" name="taskTypeDAO" />
+		<property ref="statusTaskDAO" name="statusTaskDAO" />
+		<property ref="iterationDAO" name="iterationDAO" />
+		<property ref="iterationTaskDAO" name="iterationTaskDAO" />
+		<property ref="bugDAO" name="bugDAO" />
+		<property ref="iterationManager" name="iterationManager" />
+		<property ref="managementModulePluginService" name="managementModulePluginService" />
+		<property ref="businessObjectFactory" name="businessObjectFactory" />
+	</bean>		
+	<bean id="managementModuleResourceMapper" class="org.novaforge.forge.tools.managementmodule.internal.services.ManagementModuleResourceMapperImpl"/>			
+		
+	<!-- Birt Report Beans -->
+	<bean id="burnDownDataProvider" class="org.novaforge.forge.tools.managementmodule.report.dataProvider.burnDown.BurnDownDataProvider" >
+		<property ref="blueprintBundleContext" name="bundleContext" />
+	</bean>
+	<bean id="chargePlanDataProvider" class="org.novaforge.forge.tools.managementmodule.report.dataProvider.chargePlan.ChargePlanDataProvider" >
+		<property ref="blueprintBundleContext" name="bundleContext" />
+	</bean>
+	<bean id="focusingFactorDataProvider" class="org.novaforge.forge.tools.managementmodule.report.dataProvider.focusingFactor.FocusingFactorProvider" >
+		<property ref="blueprintBundleContext" name="bundleContext" />
+	</bean>
+	<bean id="ganttDiagramOfLotsDataProvider" class="org.novaforge.forge.tools.managementmodule.report.dataProvider.ganttDiagram.GanttDiagramOfLotsDataProvider" >
+		<property ref="blueprintBundleContext" name="bundleContext" />
+	</bean>
+	<bean id="idealWorkingPoint" class="org.novaforge.forge.tools.managementmodule.report.dataProvider.idealWorkingPoint.IdealWorkingPointDataProvider" >
+		<property ref="blueprintBundleContext" name="bundleContext" />
+	</bean>
+	<bean id="standardDeviationProvider" class="org.novaforge.forge.tools.managementmodule.report.dataProvider.standardDeviation.StandardDeviationProvider" >
+		<property ref="blueprintBundleContext" name="bundleContext" />
+	</bean>
+	<bean id="taskCategoriesPie" class="org.novaforge.forge.tools.managementmodule.report.dataProvider.taskCategoriesPie.TaskCategoriesPieDataProvider" >
+		<property ref="blueprintBundleContext" name="bundleContext" />
+	</bean>
+	
+	
+	<!-- Exposed services -->	
+	<service ref="businessObjectFactory" interface="org.novaforge.forge.tools.managementmodule.business.BusinessObjectFactory" />						
+	<service ref="indicatorsManager" interface="org.novaforge.forge.tools.managementmodule.business.IndicatorsManager" />		
+	<service ref="iterationManager" interface="org.novaforge.forge.tools.managementmodule.business.IterationManager" />	
+	<service ref="managementModuleManager" interface="org.novaforge.forge.tools.managementmodule.business.ManagementModuleManager" />	
+	<service ref="projectPlanManager" interface="org.novaforge.forge.tools.managementmodule.business.ProjectPlanManager" />	
+	<service ref="referentielManager" interface="org.novaforge.forge.tools.managementmodule.business.ReferentielManager" />	
+	<service ref="taskManager" interface="org.novaforge.forge.tools.managementmodule.business.TaskManager" />	
+	<service ref="managementModuleResourceMapper" interface="org.novaforge.forge.tools.managementmodule.services.ManagementModuleResourceMapper" />	
+		
+	
+</blueprint>

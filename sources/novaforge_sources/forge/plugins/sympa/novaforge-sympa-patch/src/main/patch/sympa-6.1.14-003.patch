@@ -1,0 +1,213 @@
+diff -rNU5 sympa-6.1.14-002/wwsympa/SympaSession.pm sympa-6.1.14/wwsympa/SympaSession.pm
+--- sympa-6.1.14-002/wwsympa/SympaSession.pm	2012-07-03 14:32:48.000000000 +0200
++++ sympa-6.1.14/wwsympa/SympaSession.pm	2013-02-12 18:50:07.299583106 +0100
+@@ -390,10 +390,56 @@
+ 	}    
+     }
+     return $total;
+ }
+ 
++
++## remove session from a particular data content
++## 
++sub delete_sessions {
++
++    my $data = shift;
++    do_log('info', 'SympaSession::delete_sessions(%s)',$data);
++
++    my @tickets ;
++    my $sth;
++
++    my $dbh = &List::db_get_handler();
++
++    my $robot_condition = 'data_session like "%' . $data . '%"';
++    my $count_statement = sprintf "SELECT count(*) FROM session_table WHERE $robot_condition";
++    my $statement = sprintf "DELETE FROM session_table WHERE $robot_condition";
++
++    ## Check database connection
++    unless ($dbh and $dbh->ping) {
++	return undef unless &List::db_connect();
++    }	   
++    unless ($sth = $dbh->prepare($count_statement)) {
++	do_log('err','Unable to prepare SQL statement %s : %s',$count_statement, $dbh->errstr);
++	return undef;
++    }
++    
++    unless ($sth->execute) {
++	do_log('err','Unable to execute SQL statement "%s" : %s', $statement, $dbh->errstr);
++	return undef;
++    }    
++    my $total =  $sth->fetchrow;
++    if ($total == 0) {
++	do_log('debug','SympaSession::delete_sessions no session found');
++    }else{
++	unless ($sth = $dbh->prepare($statement)) {
++	    do_log('err','Unable to prepare SQL statement : %s', $dbh->errstr);
++	    return undef;
++	}
++	unless ($sth->execute) {
++	    do_log('err','Unable to execute SQL statement "%s" : %s', $statement, $dbh->errstr);
++	    return undef;
++	}    
++    }
++    return $total;
++
++}
+ # list sessions for $robot where last access is newer then $delay. List is limited to connected users if $connected_only
+ sub list_sessions {
+     my $delay = shift;
+     my $robot = shift;
+     my $connected_only = shift;
+diff -rNU5 sympa-6.1.14-002/wwsympa/wwsympa.fcgi.in sympa-6.1.14/wwsympa/wwsympa.fcgi.in
+--- sympa-6.1.14-002/wwsympa/wwsympa.fcgi.in	2013-02-12 18:58:24.215599010 +0100
++++ sympa-6.1.14/wwsympa/wwsympa.fcgi.in	2013-02-12 18:51:51.235586430 +0100
+@@ -1214,11 +1214,20 @@
+ 		 $param->{'ssl_client_i_dn'} =  $ENV{'SSL_CLIENT_I_DN'};
+ 		 $param->{'ssl_cipher_usekeysize'} =  $ENV{'SSL_CIPHER_USEKEYSIZE'};
+ 	     }
+ 	     
+ 	 }elsif (($session->{'email'}) && ($session->{'email'} ne 'nobody')) {
+-	     $param->{'user'}{'email'} = $session->{'email'};	     	     
++	     $param->{'user'}{'email'} = $session->{'email'};	     	       	     
++	 }elsif($in{'logoutRequest'}=~/<samlp:SessionIndex>(ST-[0-9]+-[^<]+)<\/samlp:SessionIndex>/){ # the request contain a CAS named logout ticket
++             my $data = $1;
++    	     do_log ('notice',"CAS logoutRequest is detected for 'ticket'=$data");
++	     my $removed = &SympaSession::delete_sessions($data);
++	     unless(defined $removed) {
++	     	&do_log('err','&SympaSession::delete_sessions(): Failed to remove sessions');
++	     	return undef;
++	     }
++	     &do_log('notice','CAS logoutRequest: %s row removed in session_table',$removed);
+ 	 }elsif($in{'ticket'}=~/(S|P)T\-/){ # the request contain a CAS named ticket that use CAS ticket format
+ 	     delete $session->{'do_not_use_cas'}; #reset do_not_use_cas because this client probably use CAS
+ 	     # select the cas server that redirect the user to sympa and check the ticket
+ 	     do_log ('notice',"CAS ticket is detected. in{'ticket'}=$in{'ticket'} checked_cas=$session->{'checked_cas'}");
+ 
+@@ -1231,12 +1240,12 @@
+ 	     }
+ 	     if ($cas_id ne '') { 
+ 		 		 
+ 		 my $ticket = $in{'ticket'};
+ 		 my $cas_server = $Conf{'auth_services'}{$robot}[$cas_id]{'cas_server'};
+-		 
+-		 my $service_url = &wwslib::get_my_url();
++	         my $service_url = &get_service_url();
++		 do_log('notice',"validate cas ticket service url=$service_url" );
+ 		 $service_url =~ s/(\?|&)ticket\=.+$//; 
+ 
+ 		 my $net_id = $cas_server->validateST($service_url, $ticket);
+ 		 
+ 		 if(defined $net_id) { # the ticket is valid net-id
+@@ -1244,10 +1253,11 @@
+ 		     $param->{'user'}{'email'} = lc(&Auth::get_email_by_net_id($robot, $cas_id, {'uid' => $net_id}));
+ 		     $session->{'auth'} = 'cas';
+ 		     $session->{'email'}= $param->{user}{email} ;
+ 		     
+ 		     $session->{'cas_server'} = $cas_id;
++		     $session->{'cas_ticket'} = $ticket;
+ 		     
+ 		     
+ 		 }else{
+ 		     do_log('err',"CAS ticket validation failed : %s", &AuthCAS::get_errors()); 
+ 		 }
+@@ -1743,16 +1753,26 @@
+     ## HTTP_X_ header fields set when using a proxy
+     if ($field eq 'SERVER_NAME') {
+ 	return $ENV{'HTTP_X_FORWARDED_SERVER'} || $ENV{'SERVER_NAME'};
+     }elsif ($field eq 'HTTP_HOST') {
+ 	return $ENV{'HTTP_X_FORWARDED_HOST'} || $ENV{'HTTP_HOST'};
++    }elsif ($field eq 'HTTPS') {
++	return $ENV{'HTTP_X_FORWARDED_PROTO'} || $ENV{'HTTPS'};
+     }else {
+ 	return $ENV{$field};
+     }
+ }
+ 
+-
++sub get_service_url {
++    my $path = '';
++    if ($param->{'nomenu'}) {
++        $path = "/nomenu";
++    }
++    $path .= "/sso_login_succeeded/$in{'auth_service_name'}";
++    return "$param->{'base_url'}$param->{'path_cgi'}".$path;
++    
++}
+ 
+ # _split_params is used by get_parameters to split path info in the appropriate parameters list.
+ # It is used also by action ticket to prepare the context stored in the one_time_ticket table in string like path_info
+ # input ENV{'PATH_INFO'} like string, output in the global $param hash
+ sub _split_params {
+@@ -1826,11 +1846,11 @@
+ 
+ sub get_parameters {
+     #    &wwslog('debug3', 'get_parameters');
+     
+     ## CGI URL
+-    if ($ENV{'HTTPS'} eq 'on') {
++    if ((&get_header_field('HTTPS') eq 'on') || (&get_header_field('HTTPS') eq 'https')) {
+ 	$param->{'base_url'} = sprintf 'https://%s', &get_header_field('HTTP_HOST');
+ 	$param->{'use_ssl'} = 1;
+     }else {
+ 	$param->{'base_url'} = sprintf 'http://%s', &get_header_field('HTTP_HOST');
+ 	$param->{'use_ssl'} = 0;
+@@ -1883,11 +1903,11 @@
+ 
+ 	 ## Skip empty parameters
+  	 next if ($in{$p} =~ /^$/);
+ 	
+      	 ## Skip NovaForge parameters
+-	 next if ( $p eq 'xdm_c' || $p eq 'xdm_p' || $p eq 'xdm_e');
++	 next if ( $p eq 'xdm_c' || $p eq 'xdm_p' || $p eq 'xdm_e') || $p eq 'logoutRequest';
+ 
+ 	 ## Remove DOS linefeeds (^M) that cause problems with Outlook 98, AOL, and EIMS:
+ 	 $in{$p} =~ s/\015//g;	 
+ 
+ 	 #XXX## Convert from the web encoding to unicode string
+@@ -2009,11 +2029,11 @@
+ 
+ sub get_parameters_old {
+     #    &wwslog('debug3', 'get_parameters');
+     
+     ## CGI URL
+-    if ($ENV{'HTTPS'} eq 'on') {
++    if ((&get_header_field('HTTPS') eq 'on') || (&get_header_field('HTTPS') eq 'https')) {
+ 	$param->{'base_url'} = sprintf 'https://%s', &get_header_field('HTTP_HOST');
+ 	$param->{'use_ssl'} = 1;
+     }else {
+ 	$param->{'base_url'} = sprintf 'http://%s', &get_header_field('HTTP_HOST');
+ 	$param->{'use_ssl'} = 0;
+@@ -3157,19 +3177,13 @@
+     
+     
+     ## This is a CAS service
+     if (defined (my $cas_id = $Conf{'cas_id'}{$robot}{$in{'auth_service_name'}})) {
+ 	my $cas_server = $Conf{'auth_services'}{$robot}[$cas_id]{'cas_server'};
+-	
+-	my $path = '';
+-	if ($param->{'nomenu'}) {
+-	    $path = "/nomenu";
+-	}
+-	$path .= "/sso_login_succeeded/$in{'auth_service_name'}";
+ 
+ 	$session->{'checked_cas'} = $cas_id;
+-	my $service = "$param->{'base_url'}$param->{'path_cgi'}".$path;
++	my $service = &get_service_url();
+ 	
+ 	my $redirect_url = $cas_server->getServerLoginURL($service);
+ 	&wwslog('info', 'do_sso_login: redirect_url(%s)', $redirect_url);
+ 	if ($redirect_url =~ /http(s)+\:\//i) {
+ 	    $in{'action'} = 'redirect';
+@@ -3643,11 +3657,11 @@
+      if (defined $session->{'cas_server'} && (defined $Conf{'auth_services'}{$robot}[$session->{'cas_server'}])) {
+ 	 # this user was logged using CAS
+ 	 my $cas_server = $Conf{'auth_services'}{$robot}[$session->{'cas_server'}]{'cas_server'};
+ 
+ 	 $in{'action'} = 'redirect';
+-	 my $return_url = &wwslib::get_my_url();
++	 my $return_url = "$param->{'base_url'}$param->{'path_cgi'}";
+ 	 $return_url =~ s/\/logout//;
+ 	 
+ 	 $param->{'redirect_to'} = $cas_server->getServerLogoutURL($return_url);
+ 
+ 	 delete $session->{'cas_server'};

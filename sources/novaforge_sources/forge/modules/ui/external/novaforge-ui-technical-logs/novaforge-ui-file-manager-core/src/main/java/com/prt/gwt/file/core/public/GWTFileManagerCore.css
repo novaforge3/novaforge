@@ -1,0 +1,155 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+body,table td,select, input, button {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12;
+	color: #5F5A59;
+}
+
+body {
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+	background: #4d4d4d;
+	direction: ltr;
+}
+
+.tail-monitor {
+/*
+		position: absolute;
+	top: 0;
+	right: 0;
+*/	
+	color: white;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	text-indent: 3px;
+}
+
+.tail-monitor .gwt-Label {
+	background: red;
+	color: white;
+}
+
+.tail-monitor .tail-active-image {
+	width: 14px;
+	height: 14px;
+	border: 0;
+	background: transparent url(img/loader.gif) no-repeat center;
+}
+
+.gwt-StackPanel .gwt-StackPanelItem {
+	background-color: #EAEAE6;
+	border: 1px solid #D1D1CD;
+}
+
+
+/* Erro panel */
+.gwt-logger-error-panel {
+	border: 1px solid #5F5A59;
+	background-color: #E6E6E6; 
+}
+
+/* Common tool style */
+.tool-active,.tool-passive {
+	padding: 1px;
+	margin: 2px;
+	background-color: #4E4848;
+	white-space: nowrap;
+	text-align: center;
+	cursor: pointer;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
+.tool-active {
+	color: #E6E6E6;
+	border: 1px solid #E6E6E6;
+}
+
+.tool-passive {
+	color: #808080;
+	border: 1px solid #808080;
+}
+
+/* Context menu */
+.gwt-logger-context-menu {
+	background-color: #E6E6E6;
+	border: 1px solid #5F5A59;
+}
+
+/* Pager */
+.gwt-logger-file-data-pager {
+	
+}
+
+.gwt-logger-file-data-pager td {
+	width: 20px;
+}
+
+/* File data */
+.gwt-logger-file-content-wrapper {
+	border: 1px solid #5F5A59;
+}
+
+.gwt-logger-file-lines {
+	padding-right: 15px;
+	text-align: right;
+}
+
+/* File list */
+.gwt-logger-file-list {
+	padding: 4px;
+	width: 100%;
+	height: 100%;
+}
+
+.gwt-logger-file-list-table {
+	border: 1px solid #5F5A59;
+}
+
+.gwt-logger-file-list-entry {
+	white-space: nowrap;
+	text-align: left;
+	cursor: pointer;
+}
+
+.entry-active {
+	background-color: #4E4848 !important;
+	color: #E6E6E6;
+	border: 1px solid #E6E6E6;
+}
+
+.entry-passive {
+	
+}
+
+.entry-even {
+	background-color: white;
+}
+
+.entry-odd {
+	background-color: #E6E6E6;
+}

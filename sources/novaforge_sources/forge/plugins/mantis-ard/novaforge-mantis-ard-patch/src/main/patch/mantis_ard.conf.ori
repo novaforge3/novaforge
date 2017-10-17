@@ -1,0 +1,7 @@
+Alias /mantis_ard "ForgeHome/engines/mantis_ard/"
+
+<Directory ForgeHome/engines/mantis_ard>
+        Options Indexes
+        Order Allow,Deny
+        Allow from all
+</Directory>

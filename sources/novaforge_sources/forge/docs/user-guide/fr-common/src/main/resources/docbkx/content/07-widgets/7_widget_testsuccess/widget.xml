@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+
+
+
+<section version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+
+		<title>Widget Succès des tests</title>
+		<section>
+			<title>Règle de liaison</title>
+			<para>
+				Toutes les Applications de gestion de qualimétrie de tous
+						vos projets peuvent être liées au widget. 
+				Pour configurer les applications liées, veuillez vous référer à la section <xref linkend="widgetCommonSetting" endterm="widgetCommonSettingXref" />.
+			</para>
+		</section>
+		<section>
+			<title>Aperçu</title>
+			<para>Ce widget permet d'afficher l'évolution des succès d'exécution des tests pour vos ressources suivant le
+						critère
+						"état" sous forme de bâtonnet.
+						Vous pouvez cacher ou afficher
+						l'état des issues, en
+						sélectionnant les cases "états" dans la légende.</para>
+					<figure>
+						<title>Exemple du widget Succès des tests
+						</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata align="center" fileref="07-Widget-TestsSuccess-Overview.png" />
+							</imageobject>
+						</mediaobject>
+					</figure>
+					
+		</section>
+		<section>
+			<title>Paramètres du widget</title>
+			<figure>
+				<title>Aperçu des paramètres du widget</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="07-Widget-TestsSuccess-Setting.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+			<para>
+				Ce menu vous permet de :
+				<itemizedlist>
+					<listitem>
+						<para>Modifier le titre du widget affiché dans votre tableau de bord en éditant le champ "Nom"
+						</para>
+					</listitem>
+					<listitem>
+						<para>Sélectionner une ressource ainsi que son numéro de build Sonar que vous
+									souhaitez utiliser dans le widget ;
+						</para>
+					</listitem>
+					<listitem>
+						<para>Sauvegarder les modifications apportées</para>
+					</listitem>
+					<listitem>
+						<para>Retourner vers le tableau de bord en cliquant sur le
+									bouton retour en haut à droite.
+						</para>
+					</listitem>
+				</itemizedlist>
+			</para>
+		</section>
+</section>

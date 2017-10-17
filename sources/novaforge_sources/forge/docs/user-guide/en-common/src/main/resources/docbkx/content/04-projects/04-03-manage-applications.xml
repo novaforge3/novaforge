@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+
+<sect1 version="5.0" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+	<title>Managing applications</title>
+
+	<para>
+		Once the project has been validated by the forge administrator, the
+		user who created the project can access it in order to manage it. This
+		section explains how to add a technical event management application
+		(Mantis). Simply go to the project navigation menu and choose
+		<emphasis role="bold">Project administration.</emphasis>
+	</para>
+
+	<para>First select the project from the projects quick menu</para>
+
+	<figure>
+		<title>Select a project</title>
+
+		<mediaobject>
+			<imageobject>
+				<imagedata align="center"
+					fileref="04-03-010-ManageApplicationSelectProject.png" width="200.px" />
+			</imageobject>
+		</mediaobject>
+	</figure>
+
+	<para>The left menu is then replaced by the project menu. Click:
+		Project administration</para>
+
+	<figure>
+		<title>Project menu</title>
+
+		<mediaobject>
+			<imageobject>
+				<imagedata align="center" fileref="04-03-011-ManageApplicationMenu.png"
+					width="250.px" />
+			</imageobject>
+		</mediaobject>
+	</figure>
+
+	<para>The project administration application starts, proceed as
+		follows:</para>
+
+	<sect2>
+		<title>Adding a space</title>
+
+		<para>
+			A domain is an organizational unit used to group a set of
+			applications. To add a space, go to the
+			<emphasis role="bold">Project administration/Your applications</emphasis>
+			tab and click on
+			<emphasis role="bold">Create a space.</emphasis>
+		</para>
+
+		<figure>
+			<title>Create a space</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="04-03-01-ManageApplication.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+		<para>Enter the space name and description, click on "Create the space" to add the space.</para>
+
+
+
+		<para>To modify the space, select it and click "Edit the space". In
+			the next section, we will add an application to the space created.
+		</para>
+	</sect2>
+
+	<sect2 id="applications">
+		<title>Adding an application</title>
+
+		<para>To add an application to the space, select the space and click
+			on "Add an application".</para>
+
+		<figure>
+			<title>Add an application to the space</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="04-03-03-ManageApplication.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+		<para>
+			The tools are available on several categories in the forge. For
+			example, Mantis is in category
+			<emphasis role="bold">Bugtracker Management.</emphasis>
+			Select this category to display its tools in the Type list. Now
+			choose Mantis and enter a name. This name will be used to identify
+			the application in the navigation menu.
+		</para>
+
+		<para>Associate a default role to the user who created the project in
+			the tool, click on Add then validate the choice.</para>
+
+		
+
+		<para>
+			<emphasis role="bold">Remark: a tool can be added several times as
+				applications to manage different instances for different
+				requirements. This is not valid for Jenkins and Sonar applications
+				which are limited to one instance by project.</emphasis>
+		</para>
+
+		<para>
+			<emphasis role="bold">Remark : it is possible that when creating an
+				application, the project creation in the tool fails, for example if
+				the tool is no longer available. In this case, the application will
+				end up in error and will not be operational. The user can send a
+				mail to the forge administrator to alert him about the problem.
+			</emphasis>
+		</para>
+
+	</sect2>
+
+	<sect2>
+		<title>Sonar and Jenkins applications management</title>
+		<para>
+			Applications continuous integration (Jenkins) and quality metrics
+			(Sonar) have the distinction of being partitioned on instances of
+			dedicated tools for each project. A number of instances Sonar and
+			Jenkins are provided at the start of the Forge and will provision the
+			first building applications.
+			It is possible that the provisioning threshold procurement of Jenkins
+			or Sonar instances is reached and the creation of an application
+			Sonar or Jenkins becomes awaiting supply.
+			In this case, the application will be created with a status
+			<db:emphasis> Creation pending </db:emphasis>
+			and will not be operational (no link in the navigation project) as
+			the instance of the tool Sonar or Jenkins is created.
+		</para>
+
+
+	</sect2>
+
+	<sect2 id="associations">
+		<title>Inter-tool association</title>
+
+		<para>The forge provides an inter-tool communication mechanism in
+			order to exchange information between two applications within a
+			project. To understand the configuration of this type of association,
+			we will take the example of two applications, Mantis and Testlink.
+			The scenario is as follows: when a functional test fails, Testlink
+			sends a notification to Mantis to automatically create a bug
+			associated with the failure. Proceed as follows:</para>
+
+		<itemizedlist>
+			<listitem>
+				<para>
+					Go to the
+					<emphasis role="bold">Your applications tab and select <emphasis role="bold">Mantis</emphasis> application
+					</emphasis>
+				</para>
+			</listitem>
+			<listitem>
+				<para>Click on "Link the application".</para>
+			</listitem>
+			<listitem>
+				<para>Choose the association to link (e.g. Testlink-Mantis) by the chekbox.</para>
+			</listitem>
+			<listitem>
+				<para>click on "Return to application details" to leave</para>
+			</listitem>
+		</itemizedlist>
+
+		<para>The following figures show the inter-tool association creation
+			screens:</para>
+
+		<figure>
+			<title>Add an inter-tool association.</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="04-03-06-ManageApplication.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+		<figure>
+			<title>Create an inter-tool association.</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="04-03-07-ManageApplication.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+		
+		
+		<figure>
+			<title>Choix du type de lien entre deux applications.</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="04-03-08-ManageApplication.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+		
+		
+		<para>
+			in some cases, the inter-tool association can be more detailed. this is the case between Mantis and Testlink where the messages sent can be customized to display more informations (e.g Id and Status of test case).
+		</para>
+		<figure>
+			<title>Creation of detailled inter-tool association.</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="04-03-09-ManageApplication.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+	</sect2>
+</sect1>

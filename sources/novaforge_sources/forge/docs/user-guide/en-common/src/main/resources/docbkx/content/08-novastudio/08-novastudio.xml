@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<chapter version="5.0" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+		>
+  <title>NovaStudio</title>
+
+	<para>NovaStudio is a plugin or rather a set of Eclipse plugins
+		allowing a developer to connect to the remote services provided by
+		Novaforge.</para>
+
+	<para>
+		NovaStudio offers the following features:
+		<itemizedlist>
+			<listitem>
+				<para>List all Novaforge projects accessible by the user.</para>
+			</listitem>
+
+			<listitem>
+				<para>List the user tasks for a project and a given control
+					application.</para>
+			</listitem>
+
+			<listitem>
+				<para>Change a task (todo, time spent).</para>
+			</listitem>
+
+			<listitem>
+				<para>Close a task.</para>
+			</listitem>
+		</itemizedlist>
+	</para>
+
+	<sect1>
+		<title>Architecture</title>
+
+		<para>NovaStudio is an Eclipse plugin based on Mylyn. NovaStudio
+			therefore contains one or more Mylyn connectors.</para>
+
+		<figure>
+			<title>NovaStudio architecture</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="08-100-NovaStudioArchitecture.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+	</sect1>
+
+	<sect1>
+		<title>Installation</title>
+
+		<para>NovaStudio complies with the Eclipse standards and can be
+			installed from a traditional Eclipse extension installation menu.
+			NovaStudio is available as archive containing an Eclipse site, itself
+			composed of a feature and two plugins.</para>
+
+		<sect2>
+			<title>Prerequisites</title>
+
+			<para>
+				<itemizedlist>
+					<listitem>
+						<para>Eclipse Indigo SR2: Download site:
+							http://www.eclipse.org/downloads/</para>
+					</listitem>
+
+					<listitem>
+						<para>Mylyn Feature 3.7 or equivalent. Update site:
+							http://download.eclipse.org/mylyn/releases/latest/</para>
+					</listitem>
+
+					<listitem>
+						<para>Mylyn Mantis: optional, to benefit from direct access to
+							Mantis bugs. Update site:
+							http://mylyn-mantis.sourceforge.net/eclipse/update/</para>
+					</listitem>
+				</itemizedlist>
+			</para>
+
+			<para>If Mylyn is not available, the Mylyn features required to run
+				NovaStudio will be installed automatically. However, the
+				Mylyn-Mantis connector must be installed separately.</para>
+		</sect2>
+
+		<sect2>
+			<title>NovaStudio download</title>
+			<para>NovaStudio can be downloaded through the forge project (the
+				first page after login). To download it open the "User Tools"
+				application available in the "Shared Tools" menu.
+				du menu de gauche.
+			</para>
+		</sect2>
+		<sect2>
+			<title>Installing NovaStudio</title>
+
+			<para>Check that the Mylyn and Mylyn-Mantis update sites are present,
+				otherwise add them: FIXME Preferences menu -&gt;</para>
+
+			<figure>
+				<title>Available Software Sites</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="08-200-AvailableSoftwareSites.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>Install NovaStudio: menu -&gt; FIXME Help -&gt; FIXME Install
+				New Software
+			</para>
+			
+	
+			<para>First add the &quot;NovaStudio&quot; site from the zip
+				supplied:</para>
+
+			<figure>
+				<title>Add the NovaStudio site</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="08-202-InstallNSSite1.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>Now select the &quot;NovaStudio&quot; category and tick
+				&quot;Contact all update sites during install ...&quot;, to
+				automatically install the Mylyn dependencies if Mylyn is not already
+				installed. Follow the installation wizard.</para>
+
+			<figure>
+				<title>Install NovaStudio</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="08-203-InstallNS1.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</sect2>
+
+		<sect2>
+			<title>Installing the Mylyn-Mantis connector</title>
+
+			<para>Prerequisites the Mylyn-Mantis connector has an undeclared but
+				necessary dependency to the Mylyn Wiki Text feature. If this Mylyn
+				feature is not installed (not included in NovaStudio installation),
+				install it before installing the Mylyn-Mantis connector :</para>
+
+			<figure>
+				<title>Install Mylyn Wiki Text</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="08-204-InstallMylynMantis1.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>As indicated on
+				<ulink
+					url="http://sourceforge.net/apps/mediawiki/mylyn-mantis/index.php">the Mylyn-Mantis Wiki</ulink>, the
+				best way of installing the Mylyn-Mantis connector is to use the
+				Mylyn &quot;Discovery&quot; module to install new connectors.
+				</para>
+				<para>
+ 				from
+				the &quot;Task Repositories&quot; view, give a right click:
+				&quot;Add Task repository...&quot;, then click the &quot;Install
+				more connectors&quot; button. Now select in the &quot;Mantis&quot;
+				list.</para>
+
+			<figure>
+				<title>Install Mylyn Wiki Text</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="08-205-InstallMylynMantis2.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>You can also install the Mylyn-Mantis connector manually from
+				<ulink url="http://mylyn-mantis.sourceforge.net/eclipse/update/">the update site</ulink>
+				or download the update site as archive from 
+				<ulink url="http://sourceforge.net/projects/mylyn-mantis/files/">Sourceforge.</ulink>
+			</para>
+		</sect2>
+	</sect1>
+
+	<sect1>
+		<title>User guide</title>
+
+		<para>This section explains which features are offered by the
+			Mylyn-NovaStudio connector. Only features specific to NovaStudio are
+			explained here. Other Mylyn features such as user context management
+			are not described in detail in this document.</para>
+
+		<para>
+			Prerequisites for this section:
+			<itemizedlist>
+				<listitem>
+					<para>NovaStudio is installed (with Mylyn-Mantis to access the
+						Mantis features)</para>
+
+					<para>A Novaforge server is accessible and the user is a member of
+						at least one project on this forge. This project contains at least
+						one &quot;Control&quot; type application and one
+						&quot;Mantis&quot; type application.</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+
+		<sect2>
+			<title>Listing the Forge projects</title>
+
+			<para>First show the Mylyn &quot;Task Repository&quot; and &quot;Task
+				List&quot; views: Menu -&gt; Show views... -&gt; Other...</para>
+
+			<figure>
+				<title>Show Mylyn views</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="08-300-ShowTaskViews.png"
+							width="250px" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>On the &quot;Task Repository&quot; view, right click &quot;Add
+				Task Repository...&quot; and select "NovaStudio Repository" categorie</para>
+
+			<para>Click
+				&quot;Next&quot; and enter the settings for connection to the Forge
+				remote services:
+				<itemizedlist>
+					<listitem>
+						<para>Select &quot;Novaforge projects&quot; in the
+							&quot;Server&quot; choice list and update the field with this URL
+							<ulink url="https://www.myforge.com/cxf/RemoteProjectService">next</ulink> and replace
+							"www.myforge.com" by the right hostname.</para>
+
+						<para>Enter the user ID and password.</para>
+					</listitem>
+				</itemizedlist>
+			</para>
+
+			<figure>
+				<title>Novaforge connection settings.</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="08-302-EnterRepoSettings.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>Test the validity of the connection settings by clicking
+				&quot;Validate settings&quot;</para>
+
+			<figure>
+				<title>Validate Novaforge connection settings.</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="08-303-ValidateSettings.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>Click &quot;Finish&quot;. A window is displayed with the
+				message &quot;Would you like to add a query to the Task List for
+				this repository&quot;.</para>
+				<para>Answer &quot;Yes&quot;.</para>
+				<para>A window is then
+				displayed with the following message: &quot;There is only one
+				default query for this repository as it will always fetch all
+				projects for the given forge.&quot; This means that for this
+				Repository, no other Mylyn &quot;Queries&quot; can be added: by
+				default, the user retrieves all projects which he can access.</para>
+				<para>Lastly, click &quot;Finish&quot;.</para>
+
+			<para>The list of projects is displayed in the &quot;Task List&quot;
+				view:</para>
+
+			<figure>
+				<title>Task List: Forge projects.</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="08-304-ProjectsList.png"
+							width="350px" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</sect2>
+
+		<sect2>
+			<title>Displaying the applications of a Forge project.</title>
+
+			<para>From the &quot;Task List&quot; view, double-click the project
+				concerned. The &quot;NovaStudio&quot; view is displayed:</para>
+
+			<figure>
+				<title>Project view</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="08-305-ProjectView.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</sect2>
+
+		<sect2>
+			<title>Listing the tasks of a Forge project.</title>
+
+			<para>In order to list the tasks of a Forge project, the project must
+				contain a "Control" type application.</para>
+
+			<para>From the &quot;NovaStudio&quot; view of a project, click the
+				&quot;Add Project tasks&quot; button of the "Control" application concerned. The list of tasks is added to
+				the &quot;Task List&quot; view.</para>
+
+			<figure>
+				<title>Project view</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="08-306-TaskList.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<note>
+				<para>Since the Mylyn NovaStudio tasks are Mylyn task, they inherit
+					the conditional display in the &quot;Task List&quot; view. To see
+					the legend of this display, from the &quot;Task List&quot; view, in
+					the menu select &quot;Show UI Legend&quot;</para>
+
+				<para>NovaStudio tasks can be sorted according to various fields:
+					from the &quot;Task List&quot; view, in the menu select
+					&quot;Sort&quot;</para>
+			</note>
+
+			<figure>
+				<title>&quot;Task List&quot; view menu</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="08-309-ShowUiLegend.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</sect2>
+
+		<sect2>
+			<title>Listing the tasks of an iteration</title>
+
+			<para>From the &quot;NovaStudio&quot; view of a project, click the
+				&quot;Add Iteration tasks&quot; button of the &quot;FIXME
+				Control&quot; application concerned. A window is displayed to select
+				the current iteration or a specific iteration. If you click
+				&quot;Finish&quot;, the list of tasks for this iteration is added to
+				the &quot;Task List&quot; view.</para>
+
+			
+
+			<figure>
+				<title>Iteration tasks</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="08-308-TaskListForIteration.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</sect2>
+
+		<sect2>
+			<title>Displaying, changing a task</title>
+
+			<para>From
+				the task list, double-click a task: the &quot;NovaStudio&quot; view
+				of a task is displayed. The view consists of two separate sections :
+			</para>
+				<itemizedlist>
+					<listitem>
+						<para>The task section which contains information about the task.
+						</para>
+					</listitem>
+					<listitem>
+						<para>The bug section which contains in read only information
+							about the bug associated with the task if the task if
+							&apos;Bug&quot; type and if a bug is actually attached.
+						</para>
+					</listitem>
+				</itemizedlist>
+			
+
+			<para>
+				From this view you can :</para>
+				<itemizedlist>
+					<listitem>
+						<para>Change the Time spent and the Todo. To apply the changes,
+							click the &quot;Apply Changes&quot; button.</para>
+						</listitem>
+						<listitem>
+						<para>Close a task. You must then refresh the screen to update the
+							task information.</para>
+					</listitem>
+				</itemizedlist>
+			
+
+			<figure>
+				<title>Display, change a task.</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="08-310-ViewTask.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<note>
+				<para>As with all Mylyn tasks, a &quot;Private&quot; view is
+					available. In this view, you can enter local information only (user
+					specific). This data (scheduled date, due date, estimate, Note)
+					allows the user to manage tasks more precisely. Only the &quot;Due
+					Date&quot; is pre-completed with the task &quot;end-date&quot;.
+				</para>
+
+				<figure>
+					<title>Private space of a task view</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="08-311-ViewTaskPrivate.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</note>
+		</sect2>
+
+		<sect2>
+			<title>Displaying, changing the bugs of a Forge project.</title>
+
+			<para>In order to display the bugs of a Forge project, the project
+				must contain a &quot;Mantis&quot; type application and the
+				Mylyn-Mantis connector must be installed.</para>
+
+			<para>Since integration of Mylyn-Mantis is relatively easy,
+				NovaStudio can be used to start and pre-complete Mantis server
+				connection settings. The rest is managed directly by the
+				Mylyn-Mantis connector.</para>
+
+			<para>From the &quot;NovaStudio&quot; view of a project, click the
+				&quot;Add Issues&quot; button of the &quot;Mantis&quot; application
+				concerned. The Mantis server connection wizard is started. The
+				connection URL as well as the user ID and password are also
+				pre-completed.</para>
+
+			<figure>
+				<title>Connection to a Mantis Repository.</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="08-312-ViewIssues.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</sect2>
+	</sect1>
+</chapter>

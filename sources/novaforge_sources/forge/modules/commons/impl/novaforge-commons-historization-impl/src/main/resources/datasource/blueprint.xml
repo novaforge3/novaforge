@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+           xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" default-activation="lazy">
+
+  <!-- Property place holder -->
+  <cm:property-placeholder persistent-id="datasource.historization"
+                           update-strategy="reload">
+    <cm:default-properties>
+      <cm:property name="driverClass" value="org.mariadb.jdbc.Driver"/>
+      <cm:property name="url" value="jdbc:mysql://localhost:3306/novaforge_histo"/>
+      <cm:property name="username" value="root"/>
+      <cm:property name="password" value="root"/>
+
+      <!-- C3P0 default: 3 -->
+      <cm:property name="initialPoolSize" value="3"/>
+      <!-- C3P0 default: 15 -->
+      <cm:property name="maxPoolSize" value="20"/>
+      <!-- C3P0 default: 3 -->
+      <cm:property name="minPoolSize" value="3"/>
+      <!-- C3P0 default: 0 -->
+
+      <cm:property name="maxIdleTime" value="7200"/>
+      <!-- C3P0 default: 0 -->
+      <cm:property name="maxIdleTimeExcessConnections" value="0"/>
+      <!-- C3P0 default: 0 -->
+      <cm:property name="maxStatements" value="0"/>
+      <!-- C3P0 default: 0 -->
+      <cm:property name="maxStatementsPerConnection" value="20"/>
+
+      <!-- C3P0 default: 0 -->
+      <cm:property name="checkoutTimeout" value="0"/>
+      <!-- C3P0 default: ""  -->
+      <cm:property name="preferredTestQuery" value="SELECT 1"/>
+      <!-- C3P0 default: false -->
+      <cm:property name="testConnectionOnCheckout" value="false"/>
+      <!-- C3P0 default: false -->
+      <cm:property name="testConnectionOnCheckin" value="true"/>
+      <!-- C3P0 default: 0 -->
+      <cm:property name="idleConnectionTestPeriod" value="120"/>
+
+      <!-- C3P0 default: 3 -->
+      <cm:property name="acquireIncrement" value="3"/>
+      <!-- C3P0 default: 3 -->
+      <cm:property name="numHelperThreads" value="8"/>
+
+      <!-- To debug failed close connection -->
+      <!-- C3P0 default: false -->
+      <cm:property name="debugUnreturnedConnectionStackTraces" value="false"/>
+      <!-- C3P0 default: 0 -->
+      <cm:property name="unreturnedConnectionTimeout" value="0"/>
+    </cm:default-properties>
+  </cm:property-placeholder>
+
+  <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+    <property name="driverClass" value="${driverClass}"/>
+    <property name="jdbcUrl" value="${url}"/>
+    <property name="user" value="${username}"/>
+    <property name="password" value="${password}"/>
+    <property name="initialPoolSize" value="${initialPoolSize}"/>
+    <property name="maxPoolSize" value="${maxPoolSize}"/>
+    <property name="minPoolSize" value="${minPoolSize}"/>
+    <property name="maxIdleTime" value="${maxIdleTime}"/>
+    <property name="maxStatements" value="${maxStatements}"/>
+    <property name="maxStatementsPerConnection" value="${maxStatementsPerConnection}"/>
+    <property name="maxIdleTimeExcessConnections" value="${maxIdleTimeExcessConnections}"/>
+    <property name="checkoutTimeout" value="${checkoutTimeout}"/>
+    <property name="preferredTestQuery" value="${preferredTestQuery}"/>
+    <property name="testConnectionOnCheckout" value="${testConnectionOnCheckout}"/>
+    <property name="testConnectionOnCheckin" value="${testConnectionOnCheckin}"/>
+    <property name="idleConnectionTestPeriod" value="${idleConnectionTestPeriod}"/>
+    <property name="acquireIncrement" value="${acquireIncrement}"/>
+    <property name="numHelperThreads" value="${numHelperThreads}"/>
+    <property name="debugUnreturnedConnectionStackTraces" value="${debugUnreturnedConnectionStackTraces}"/>
+    <property name="unreturnedConnectionTimeout" value="${unreturnedConnectionTimeout}"/>
+  </bean>
+
+  <service id="xaDataSource" ref="dataSource" interface="javax.sql.DataSource">
+    <service-properties>
+      <entry key="osgi.jndi.service.name" value="jdbc/historization"/>
+    </service-properties>
+  </service>
+</blueprint>

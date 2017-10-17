@@ -1,0 +1,27 @@
+[Unit]
+Description=NovaForge Server
+Requires=@MARIADB_SERVICE@.service
+Wants=@JIRA_SERVICE@.service
+After=@MARIADB_SERVICE@.service @JIRA_SERVICE@.service 
+
+[Service]
+Type=oneshot
+
+## User configuration
+User=@NOVAFORGE_USER@
+Group=@NOVAFORGE_GROUP@
+
+## Scripts
+ExecStart=@KARAF_BIN@ start clean
+ExecStop=@KARAF_BIN@ stop
+RemainAfterExit=yes
+
+## Give a reasonable amount of time for the server to start up/shut down
+TimeoutSec=300
+
+## Place temp files in a secure directory, not /tmp
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+

@@ -1,0 +1,211 @@
+diff -rNU5 activerecord-session_store-0.1.0/lib/active_record/session_store/session_ticket.rb activerecord-session_store-0.1.0-patched/lib/active_record/session_store/session_ticket.rb
+--- activerecord-session_store-0.1.0/lib/active_record/session_store/session_ticket.rb	1970-01-01 01:00:00.000000000 +0100
++++ activerecord-session_store-0.1.0-patched/lib/active_record/session_store/session_ticket.rb	2014-12-17 08:53:55.579646446 +0100
+@@ -0,0 +1,172 @@
++module ActiveRecord
++  module SessionStore
++    class SessionTicket
++      extend ClassMethods
++
++      ##
++      # :singleton-method:
++      # The table name defaults to 'sessions'.
++      cattr_accessor :table_name
++      @@table_name = 'sessions'
++
++      ##
++      # :singleton-method:
++      # The session id field defaults to 'session_id'.
++      cattr_accessor :session_id_column
++      @@session_id_column = 'session_id'
++
++      ##
++      # :singleton-method:
++      # The data field defaults to 'data'.
++      cattr_accessor :data_column
++      @@data_column = 'data'
++
++      ##
++      # :singleton-method:
++      # The data field defaults to 'service_ticket'.
++      cattr_accessor :service_ticket_column
++      @@service_ticket_column = 'service_ticket'
++
++      ##
++      # :singleton-method:
++      # The data field defaults to 'created_at'.
++      cattr_accessor :created_at_column
++      @@created_at_column = 'created_at'
++
++      ##
++      # :singleton-method:
++      # The data field defaults to 'updated_at'.
++      cattr_accessor :updated_at_column
++      @@updated_at_column = 'updated_at'
++
++      class << self
++        alias :data_column_name :data_column
++
++        # Use the ActiveRecord::Base.connection by default.
++        attr_writer :connection
++
++        # Use the ActiveRecord::Base.connection_pool by default.
++        attr_writer :connection_pool
++
++        def connection
++          @connection ||= ActiveRecord::Base.connection
++        end
++
++        def connection_pool
++          @connection_pool ||= ActiveRecord::Base.connection_pool
++        end
++
++        # Look up a session by id and unmarshal its data if found.
++        def find_by_session_id(session_id)
++          if record = connection.select_one("SELECT 	#{connection.quote_column_name(service_ticket_column)} AS service_ticket, 
++							#{connection.quote_column_name(data_column)} AS data, 
++							#{connection.quote_column_name(created_at_column)} AS created_at, 
++							#{connection.quote_column_name(updated_at_column)} AS updated_at 
++						FROM #{@@table_name} 
++						WHERE #{connection.quote_column_name(@@session_id_column)}=#{connection.quote(session_id.to_s)}")
++            new(:session_id => session_id, :service_ticket => record['service_ticket'], :marshaled_data => record['data'], :created_at => record['created_at'], :updated_at=> record['updated_at'])
++          end
++        end 
++        
++	# Look up a session by service ticket and unmarshal its data if found.
++        def find_by_service_ticket(service_ticket)
++          if record = connection.select_one("SELECT 	#{connection.quote_column_name(session_id_column)} AS session_id, 
++							#{connection.quote_column_name(data_column)} AS data, 
++							#{connection.quote_column_name(created_at_column)} AS created_at, 
++							#{connection.quote_column_name(updated_at_column)} AS updated_at 
++						FROM #{@@table_name} 
++						WHERE #{connection.quote_column_name(@@service_ticket_column)}=#{connection.quote(service_ticket.to_s)}")
++            new(:session_id => record['session_id'], :service_ticket => service_ticket, :marshaled_data => record['data'], :created_at => record['created_at'], :updated_at=> record['updated_at'])
++          end
++        end
++      end
++
++      delegate :connection, :connection=, :connection_pool, :connection_pool=, :to => self
++
++      attr_reader :session_id, :service_ticket, :created_at, :updated_at, :new_record
++      alias :new_record? :new_record
++
++      attr_writer :data
++
++      # Look for normal and marshaled data, self.find_by_session_id's way of
++      # telling us to postpone unmarshaling until the data is requested.
++      # We need to handle a normal data attribute in case of a new record.
++      def initialize(attributes)
++        @session_id     = attributes[:session_id]
++        @data           = attributes[:data]
++        @service_ticket = attributes[:service_ticket]
++        @marshaled_data = attributes[:marshaled_data]
++        @created_at 	= attributes[:created_at]
++        @updated_at 	= attributes[:updated_at]
++        @new_record     = @marshaled_data.nil?
++      end
++
++      # Returns true if the record is persisted, i.e. it's not a new record
++      def persisted?
++        !@new_record
++      end
++
++      # Lazy-unmarshal session state.
++      def data
++        unless @data
++          if @marshaled_data
++            @data, @marshaled_data = self.class.unmarshal(@marshaled_data) || {}, nil
++          else
++            @data = {}
++          end
++        end
++        @data
++      end
++
++      def loaded?
++        @data
++      end
++
++      def save
++        return false unless loaded?
++        marshaled_data = self.class.marshal(data)
++	service_ticket = data['service_ticket']
++        connect        = connection
++
++        if @new_record
++	  @created_at	=  DateTime.now 
++	  @updated_at 	=  DateTime.now 
++          @new_record 	= false
++          connect.update <<-end_sql, 'Create session'
++            INSERT INTO #{table_name} (
++              #{connect.quote_column_name(session_id_column)},
++              #{connect.quote_column_name(data_column)},
++              #{connect.quote_column_name(service_ticket_column)},
++              #{connect.quote_column_name(created_at_column)},
++              #{connect.quote_column_name(updated_at_column)} )
++            VALUES (
++              #{connect.quote(session_id)},
++              #{connect.quote(marshaled_data)},
++              #{connect.quote(service_ticket)},
++              #{connect.quote(created_at)},
++              #{connect.quote(updated_at)} )
++          end_sql
++        else
++	  @updated_at 	=  DateTime.now 
++          connect.update <<-end_sql, 'Update session'
++            UPDATE #{table_name}
++            SET #{connect.quote_column_name(data_column)}=#{connect.quote(marshaled_data)}, 
++		#{connect.quote_column_name(service_ticket_column)}=#{connect.quote(service_ticket)}, 
++		#{connect.quote_column_name(updated_at_column)}=#{connect.quote(updated_at)}
++            WHERE #{connect.quote_column_name(session_id_column)}=#{connect.quote(session_id)}
++          end_sql
++        end
++      end
++
++      def destroy
++        return if @new_record
++
++        connect = connection
++        connect.delete <<-end_sql, 'Destroy session'
++          DELETE FROM #{table_name}
++          WHERE #{connect.quote_column_name(session_id_column)}=#{connect.quote(session_id.to_s)}
++        end_sql
++      end
++    end
++  end
++end
+diff -rNU5 activerecord-session_store-0.1.0/lib/active_record/session_store.rb activerecord-session_store-0.1.0-patched/lib/active_record/session_store.rb
+--- activerecord-session_store-0.1.0/lib/active_record/session_store.rb	1970-01-01 01:00:00.000000000 +0100
++++ activerecord-session_store-0.1.0-patched/lib/active_record/session_store.rb	2014-12-16 16:48:31.005792852 +0100
+@@ -29,8 +29,12 @@
+ end
+ 
+ require 'active_record/session_store/session'
+ require 'active_record/session_store/sql_bypass'
+ require 'active_record/session_store/railtie' if defined?(Rails)
++## NovaForge :: Add session_ticket used by CAS Omniauth
++require 'active_record/session_store/session_ticket'
+ 
+ 
+-ActionDispatch::Session::ActiveRecordStore.session_class = ActiveRecord::SessionStore::Session
++## NovaForge :: Replace default session by SessionTicket used to store CAS Service Ticket
++#ActionDispatch::Session::ActiveRecordStore.session_class = ActiveRecord::SessionStore::Session
++ActionDispatch::Session::ActiveRecordStore.session_class = ActiveRecord::SessionStore::SessionTicket
+diff -rNU5 activerecord-session_store-0.1.0/lib/generators/active_record/templates/migration.rb activerecord-session_store-0.1.0-patched/lib/generators/active_record/templates/migration.rb
+--- activerecord-session_store-0.1.0/lib/generators/active_record/templates/migration.rb	1970-01-01 01:00:00.000000000 +0100
++++ activerecord-session_store-0.1.0-patched/lib/generators/active_record/templates/migration.rb	2014-12-16 16:56:48.657808777 +0100
+@@ -1,12 +1,14 @@
+ class <%= migration_class_name %> < ActiveRecord::Migration
+   def change
+     create_table :<%= session_table_name %> do |t|
+       t.string :session_id, :null => false
++      t.string :service_ticket
+       t.text :data
+       t.timestamps
+     end
+ 
+     add_index :<%= session_table_name %>, :session_id, :unique => true
++    add_index :<%= session_table_name %>, :service_ticket, :unique => true
+     add_index :<%= session_table_name %>, :updated_at
+   end
+ end

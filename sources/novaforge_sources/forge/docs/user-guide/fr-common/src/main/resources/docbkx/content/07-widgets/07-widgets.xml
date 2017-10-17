@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<chapter xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xmlns="http://docbook.org/ns/docbook"
+         xml:lang="fr">
+  
+   <title>Widgets</title>
+        <para>Les Widgets sont des composants graphiques qui vous permettent d'obtenir des informations utiles dans une seule interface.</para>
+        <para>Les Widgets permettent donc la collecte et l'aggrégation des informations des applications de votre projet.</para>
+        <para>L'ajout et l'administration des widgets sont disponibles dans le tableau de bord.</para> 
+   
+   <!-- common -->
+   <xi:include href="07_widgets_management/widgets_management.xml" />
+   <!-- Widgets -->
+   <xi:include href="7_widget_issuesdivision/widget.xml" />
+   <xi:include href="7_widget_issuestimeline/widget.xml" />
+   <xi:include href="7_widget_codecoveragetimeline/widget.xml" />
+   <xi:include href="7_widget_testsuccess/widget.xml" />
+   <xi:include href="7_widget_violationsevolution/widget.xml" />
+   <xi:include href="7_widget_lastcommits/widget.xml" />
+
+</chapter>
+

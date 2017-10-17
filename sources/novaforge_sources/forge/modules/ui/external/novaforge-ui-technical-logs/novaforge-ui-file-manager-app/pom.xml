@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<parent>
+		<artifactId>novaforge-ui-technical-logs</artifactId>
+		<groupId>org.novaforge.forge.modules</groupId>
+		<version>3.8.0</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>novaforge-ui-file-manager-app</artifactId>
+	<packaging>war</packaging>
+	<name>NovaForge(tm) :: Modules :: UI :: External :: Technical logs :: File Manager App</name>
+	<description>NovaForge(tm) :: Modules :: UI :: External :: Technical logs :: File Manager App</description>
+
+	<properties>
+		<alias>technical-logs</alias>
+		<target>/index.html</target>
+		<module>com.prt.gwt.file.core.GWTFileManagerApp</module>
+	</properties>
+
+	<dependencies>
+      <!-- GWT dependencies -->
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+	    <dependency>
+	      <groupId>org.ow2.asm</groupId>
+	      <artifactId>asm</artifactId>
+	      <version>5.0.3</version>
+	      <scope>provided</scope>
+	    </dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-all</artifactId>
+			<version>5.0.3</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.novaforge.forge.modules</groupId>
+			<artifactId>novaforge-ui-file-manager-core</artifactId>
+			<version>${novaforge.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.novaforge.forge.modules</groupId>
+			<artifactId>novaforge-ui-file-analyser-plugin</artifactId>
+			<version>${novaforge.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.novaforge.forge.modules</groupId>
+			<artifactId>novaforge-ui-file-viewer-plugin</artifactId>
+			<version>${novaforge.version}</version>
+		</dependency>
+	</dependencies>
+	
+		<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<supportedProjectTypes>
+						<supportedProjectType>war</supportedProjectType>
+					</supportedProjectTypes>
+					<instructions>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-ClassPath>.,WEB-INF/classes</Bundle-ClassPath>
+					    
+						<!-- Add Embed lib -->
+						<Embed-Directory>WEB-INF/lib</Embed-Directory>
+						<Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+
+						<Export-Package>!.*</Export-Package>
+						<Import-Package>*;resolution:=optional
+						</Import-Package>
+						<!-- OSGi war spec config -->
+						<Web-ContextPath>${alias}</Web-ContextPath>
+					</instructions>
+				</configuration>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>manifest</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+</project>

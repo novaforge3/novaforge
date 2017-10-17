@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above. 
+	* * This file is free software: you may redistribute and/or * modify it under 
+	the terms of the GNU Affero General Public License * as published by the 
+	Free Software Foundation, version 3 of the License. * * This file is distributed 
+	in the hope that it will be useful, * but WITHOUT ANY WARRANTY; without even 
+	the implied warranty * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+	* See the GNU Affero General Public License for more details. * You should 
+	have received a copy of the GNU Affero General Public License * along with 
+	this program. If not, see http://www.gnu.org/licenses. * * Additional permission 
+	under GNU AGPL version 3 (AGPL-3.0) section 7 * * If you modify this Program, 
+	or any covered work, * by linking or combining it with libraries listed * 
+	in COPYRIGHT file at the top-level directof of this * distribution (or a 
+	modified version of that libraries), * containing parts covered by the terms 
+	of licenses cited * in the COPYRIGHT file, the licensors of this Program 
+	* grant you additional permission to convey the resulting work. -->
+<chapter version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+
+	<title>Gestion des News</title>
+		<para>Vous pouvez gérer 4 types d'élément :
+		</para>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis>News</emphasis>
+					: Contenue internationnalisé (titre, résumé et texte), visible en bas de la page publique. Peuvent être filtrées par l'utilisateur.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>Annonce</emphasis>
+					: Contenue internationnalisé (titre, résumé et texte), visible au milieu de la page publique.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>Information</emphasis>
+					: Informations internationnalisées, affichées de manière permanent, en haut de la page public.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>Catégorie</emphasis>
+					: Catégoriser les news et annonces, définit par un nom internationnalisé et une couleur.
+				</para>
+			</listitem>
+		</itemizedlist>
+
+		<sect1>
+			<title>Public</title>
+			<sect2>
+			<title>Page d'acceuil</title>
+			<figure>
+				<title>Page public des news</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="News-Public.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+			<para>La page public est découpée en 3 zones, en haut la zone information (avec la bordure), au milien la zone annonce avec la couleur de fondet la zone du bas qui contient les news et les filtres sur les news. </para>
+			<para>Les news, annonces, informations et catégories sont affichées dans la langue de l'utilisateur, si elle a été remplie, sinon dans la langue par defaut (obligatoire pour tous les éléments) de la forge.</para>
+			<para>L'utilisateur peut cliquer sur une news et une annonce pour voir tout le contenue (c.a.d. le texte en plus) sur la page détails.</para>
+			<para>En haut de la page public, pour les administrateurs de la forge, il y a le bouton pour accéder à la partie administration.
+			</para>
+			</sect2>
+			<sect2>
+			<title>Page détails</title>
+			<para>Sur la page des détails, l'utilisateur voit tout le contenue de la news/annonce (le titre, le résumé et le texte).</para>
+			<figure>
+				<title>Page détails</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="News-details.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+			</sect2>
+		</sect1>
+		<sect1>
+			<title>Administration</title>
+			<para>La page d'administration contient un menu a gauche, avec 4 boutons qui permettent de gérer les 4 éléments (news, annonces, informations et
+				catégories) et un 5ième bouton en bas, qui permet de revenir à la page public. </para>
+			<figure>
+				<title>Page d'administration</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="News-Admin-home.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+			<para>Sur chaque page d'administration (sauf pour la page information), il y a la liste des éléments, avec pour chaque élément les actions possibles : publier, éditer et supprimer, dans la dernière colonne du tableau.
+			 Un bouton pour créer un élément est disponible en haut.</para>
+			<sect2>
+				<title>News et Annonces</title>
+				<para>Pour créer une news et une annonce, vous devez remplir une date de publication (permet de pre ou post dater), cocher si elle doit être publiée (permet de faire des brouillons), un titre/résumé/texte (au minimum pour la langue par defaut de la forge, représenté par une étoile rouge). Le titre et le résumé sont affichés sur la page public, le contenue sera visible uniquement sur la page détails.</para>
+				<para>Vou spouvez lier une news/annonce avec une catégorie.</para>
+				<figure>
+					<title>Créer une news/annonce</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="News-create-news.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</sect2>
+			<sect2>
+				<title>Informations</title>
+				<para>Remplir le titre et le texte des informations, au moins pour la langue par defaut de la forge (représenté par une étoile rouge).</para>
+				<figure>
+					<title>Mise à jour des informations</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="News-create-infos.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</sect2>
+			<sect2>
+				<title>Catégories</title>
+				<para>Pour créer une catégorie, vous devez donner un nom, au moins dans la langue par defaut de la forge (représenté par une étoile rouge), et choisir une couleur à associer à la catégorie (vous pouvez associer la même couleur à plusieurs catégories).</para>
+				<figure>
+					<title>Créer une catégorie</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="News-create-category.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</sect2>
+		</sect1>
+</chapter>

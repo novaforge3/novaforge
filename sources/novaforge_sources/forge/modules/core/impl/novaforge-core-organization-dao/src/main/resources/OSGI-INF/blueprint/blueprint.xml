@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd">
+	<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/novaforge)"/>
+	<service id="compositionDAO" interface="org.novaforge.forge.core.organization.dao.CompositionDAO">
+		<bean class="org.novaforge.forge.core.organization.internal.dao.CompositionDAOImpl">
+			<jpa:context unitname="core.organization" property="entityManager" />
+			<tx:transaction method="*" value="Required" />
+		</bean>
+	</service>
+	<service id="groupDAO" interface="org.novaforge.forge.core.organization.dao.GroupDAO">
+		<bean class="org.novaforge.forge.core.organization.internal.dao.GroupDAOImpl">
+			<jpa:context unitname="core.organization" property="entityManager" />
+			<tx:transaction method="*" value="Required" />
+		</bean>
+	</service>
+	<service id="languageDAO" interface="org.novaforge.forge.core.organization.dao.LanguageDAO">
+		<bean class="org.novaforge.forge.core.organization.internal.dao.LanguageDAOImpl">
+			<jpa:context unitname="core.organization" property="entityManager" />
+			<tx:transaction method="*" value="Required" />
+		</bean>
+	</service>
+	<service id="membershipDAO" interface="org.novaforge.forge.core.organization.dao.MembershipDAO">
+		<bean class="org.novaforge.forge.core.organization.internal.dao.MembershipDAOImpl">
+			<jpa:context unitname="core.organization" property="entityManager" />
+			<tx:transaction method="*" value="Required" />
+		</bean>
+	</service>
+	<service id="nodeDAO" interface="org.novaforge.forge.core.organization.dao.NodeDAO">
+		<bean class="org.novaforge.forge.core.organization.internal.dao.NodeDAOImpl">
+			<jpa:context unitname="core.organization" property="entityManager" />
+			<tx:transaction method="*" value="Required" />
+		</bean>
+	</service>
+	<service id="organizationDAO" interface="org.novaforge.forge.core.organization.dao.OrganizationDAO">
+		<bean class="org.novaforge.forge.core.organization.internal.dao.OrganizationDAOImpl">
+			<jpa:context unitname="core.organization" property="entityManager" />
+			<tx:transaction method="*" value="Required" />
+		</bean>
+	</service>
+	<service id="projectApplicationRequestDAO" interface="org.novaforge.forge.core.organization.dao.ProjectApplicationRequestDAO">
+		<bean class="org.novaforge.forge.core.organization.internal.dao.ProjectApplicationRequestDAOImpl">
+			<jpa:context unitname="core.organization" property="entityManager" />
+			<tx:transaction method="*" value="Required" />
+		</bean>
+	</service>
+	<service id="projectDAO" interface="org.novaforge.forge.core.organization.dao.ProjectDAO">
+		<bean class="org.novaforge.forge.core.organization.internal.dao.ProjectDAOImpl">
+			<jpa:context unitname="core.organization" property="entityManager" />
+			<tx:transaction method="*" value="Required" />
+		</bean>
+	</service>
+	<service id="projectElementDAO" interface="org.novaforge.forge.core.organization.dao.ProjectElementDAO">
+		<bean class="org.novaforge.forge.core.organization.internal.dao.ProjectElementDAOImpl">
+			<jpa:context unitname="core.organization" property="entityManager" />
+			<tx:transaction method="*" value="Required" />
+		</bean>
+	</service>
+	<service id="roleDAO" interface="org.novaforge.forge.core.organization.dao.RoleDAO">
+		<bean class="org.novaforge.forge.core.organization.internal.dao.RoleDAOImpl">
+			<jpa:context unitname="core.organization" property="entityManager" />
+			<tx:transaction method="*" value="Required" />
+		</bean>
+	</service>
+	<service id="templateDAO" interface="org.novaforge.forge.core.organization.dao.TemplateDAO">
+		<bean class="org.novaforge.forge.core.organization.internal.dao.TemplateDAOImpl">
+			<jpa:context unitname="core.organization" property="entityManager" />
+			<tx:transaction method="*" value="Required" />
+		</bean>
+	</service>
+	<service id="userDAO" interface="org.novaforge.forge.core.organization.dao.UserDAO">
+		<bean class="org.novaforge.forge.core.organization.internal.dao.UserDAOImpl">
+			<jpa:context unitname="core.organization" property="entityManager" />
+			<tx:transaction method="*" value="Required" />
+		</bean>
+	</service>
+</blueprint>

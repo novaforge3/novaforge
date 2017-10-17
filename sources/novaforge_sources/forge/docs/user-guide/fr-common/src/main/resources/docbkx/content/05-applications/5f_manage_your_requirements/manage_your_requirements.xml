@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+
+
+
+<section version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+       xmlns:xlink="http://www.w3.org/1999/xlink"
+       xmlns:xi="http://www.w3.org/2001/XInclude"
+       xmlns:ns5="http://www.w3.org/2000/svg"
+       xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+       xmlns:ns3="http://www.w3.org/1999/xhtml"
+       xmlns:db="http://docbook.org/ns/docbook">
+	 
+	 <title>Manage Requirements</title>
+
+ 	<para>Le gestionnaire d'exigences intégré est un outil développé en
+		interne dans le but d'optimiser et de
+		simplifier le processus de
+		validation des exigences.
+		Il se base sur un référentiel d'exigences
+		(ici Obeo ou Excel) et permet
+		de faire le lien avec un gestionnaire de
+		tests (ici Testlink) et un gestionnaire de sources (ici SVN).
+	</para>
+	<para>
+		Le gestionnaire d'exigences fournit les fonctionnalités suivantes:
+		<itemizedlist>
+			<listitem>
+				<para>Visualisation et recherche des exigences des dépôts configurés
+					dans l'application
+				</para>
+			</listitem>
+			<listitem>
+				<para>Visualisation et recherche des exigences et de leur statut par
+					rapport au code de l'application
+				</para>
+			</listitem>
+			<listitem>
+				<para>Visualisation et recherche des exigences et de leur statut par
+					rapport aux tests de l'application
+				</para>
+			</listitem>
+			<listitem>
+				<para>Configuration des dépôts des exigences</para>
+			</listitem>
+			<listitem>
+				<para>Visualiser les exigences</para>
+			</listitem>
+		</itemizedlist>
+	</para>
+
+	<sect2>
+		<title>Pour commencer ...</title>
+		<para>
+			Vous devez ajouter l'application exigences à votre projet. Pour ce
+			faire, utiliser
+			<xref linkend="applications" />
+			et ajoutez "requirementManagement" de la catégorie "Gestionnaire
+			d'exigences".
+		</para>
+	</sect2>
+
+	<sect2>
+		<title>Créer votre application d'exigences</title>
+		<para>
+			Afin d'expliquer au mieux comment créer votre application
+			d'exigences, nous allons partir d'un cas
+			d'exemple.
+			Notre projet se
+			nomme "projet-exigence" et nous souhaitons avoir les rapports des
+			exigences
+			appliquées sur le code et les
+			tests implémentés pour le projet. Pour
+			ce faire nous allons suivre les
+			étapes suivantes (Vous pouvez aller
+			directement à
+			<xref linkend="requirements-associations" />
+			si les applications sont déjà présentes dans votre projet):
+			<orderedlist>
+				<listitem>
+					<para>Ajouter les applications nécessaires au projet</para>
+				</listitem>
+				<listitem>
+					<para>Configurer les liens avec le gestionnaire d'exigences</para>
+				</listitem>
+				<listitem>
+					<para>Configurer les dépôts d'exigences</para>
+				</listitem>
+				<listitem>
+					<para>Visualiser les exigences</para>
+				</listitem>
+			</orderedlist>
+		</para>
+		</sect2>
+		<sect2>
+			<title>Ajouter les applications nécessaires</title>
+			<para>
+				Pour utiliser pleinement l'outil d'exigences, il faut associer le gestionnaire d'exigences à un gestionnaire de source et
+				un gestionnaire de test.
+				Utilisez
+				<xref linkend="applications" />
+				pour ajouter un SVN et un TestLink à votre projet.
+			</para>
+		</sect2>
+		<sect2 id="requirements-associations">
+			<title>Configuration des associations</title>
+			<para>
+				Afin de pouvoir utiliser les informations stockées dans les
+				applications, NovaForge met à disposition un
+				mécanisme appelé
+				<emphasis role="bold">Liens entre applications</emphasis>
+				.
+				Vous pouvez utiliser
+				<xref linkend="associations" />
+				afin d'ajouter des liens de l'application Exigence vers les
+				applications SVN et TestLink.
+
+				<figure>
+					<title>Ecran de création du lien entre Exigence et SVN/TestLink
+					</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05f-03-AddRequirements.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</para>
+		</sect2>
+		<sect2>
+			<title>Configurer les dépôts d'exigences</title>
+			<para>
+				Vous pouvez accéder à l'application exigences via l'élément en rouge
+				dans le menu de gauche :
+				<figure>
+					<title>Ouverture de votre outil de gestion d'exigences</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05f-06-RequirementRepository.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+				Veuillez cliquer sur l'onglet "Dépôts d'exigences" pour configurer
+				les dépots d'exigences pour le projet.
+				Vous pouvez ajouter 2 types de
+				dépots :
+				<itemizedlist>
+					<listitem>
+						Dépôt OBEO:
+						<emphasis>Configurer le chemin du dépôt à synchroniser</emphasis>
+					</listitem>
+					<listitem>
+						Dépôt Excel:
+						<emphasis>Fournir un fichier excel d'exigences à synchroniser
+						</emphasis>
+					</listitem>
+				</itemizedlist>
+				<figure>
+					<title>Type de dépots d'exigences</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05f-05-AddRepository.png" width="400px" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</para>
+		</sect2>
+		<sect2>
+			<title>Synchroniser les dépôts d'exigences</title>
+			<para>
+				<figure>
+					<title>Synchronisation des dépots</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05f-14-RequirementSynchro.png" width="447px" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+				Chaque système peut être sélectionné pour être synchronisé avec
+				Novaforge. Le
+				bouton "Synchroniser" lance donc la synchronisation, le
+				résultat peut être
+				visible dans le journal applicatif de Novaforge. :
+				<itemizedlist>
+					<listitem>
+						Exigences:
+						<emphasis>Synchronise les dépots d'exigences configurés (Obeo et
+							Excel)
+						</emphasis>
+					</listitem>
+				</itemizedlist>
+				<itemizedlist>
+					<listitem>
+						Tests:
+						<emphasis>Synchronise les exigences avec Testlink, c.a.d. pousse
+							les exigences sur TestLink et récupère celles qui sont reliées
+							avec des tests.
+						</emphasis>
+					</listitem>
+				</itemizedlist>
+				<itemizedlist>
+					<listitem>
+						Codes:
+						<emphasis>Récupère les exigences qui sont trouvées dans le code.
+						</emphasis>
+					</listitem>
+				</itemizedlist>
+			</para>
+		</sect2>
+		<sect2>
+			<title>Configuration du gestionnaire d'exigence</title>
+			<para>
+				<figure>
+					<title>Configuration</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center"
+								fileref="05-05f-10-RequirementConfiguration.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+				Dans le gestionnaire d'exigences, vous pouvez configurer :
+				<itemizedlist>
+					<listitem>
+						Chemin du code à synchroniser :
+						<emphasis>permet de ne synchroniser qu'une sous-partie du dépôt
+							SVN lié au gestionnaire d'exigence.
+						</emphasis>
+					</listitem>
+					<listitem>
+						Synchronisation automatique
+						<itemizedlist>
+							<listitem>
+								Activée:
+								<emphasis>permet d'activer ou pas la programmation de la
+									synchronisation automatique
+								</emphasis>
+							</listitem>
+							<listitem>
+								Heure de lancement:
+								<emphasis>permet de régler l'heure du premier lancement de la
+									synchronisation
+								</emphasis>
+							</listitem>
+							<listitem>
+								Période entre deux lancements en heures:
+								<emphasis>permet de régler la période entre le premier
+									lancement et le lancement suivant
+								</emphasis>
+							</listitem>
+						</itemizedlist>
+					</listitem>
+				</itemizedlist>
+
+			</para>
+		</sect2>
+		<sect2>
+			<title>Visualiser les exigences</title>
+			<para>
+				L'application d'exigences propose trois vues pour accéder aux
+				exigences :
+				<para>
+					<itemizedlist>
+						<listitem>
+							Vue fonctionnelle :
+							<emphasis>permet de visualiser les arbres des exigences (et le
+								détail de chaque exigence) pour tous les dépôts configurés
+							</emphasis>
+						</listitem>
+					</itemizedlist>
+					<figure>
+						<title>Vue fonctionnelle</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata align="center" fileref="05-05f-07-RequirementsList.png" />
+							</imageobject>
+						</mediaobject>
+					</figure>
+				</para>
+
+				<para>
+					<itemizedlist>
+						<listitem>
+							Vue par le code :
+							<emphasis>permet de visualiser les exigences implémentées dans le
+								code source du projet
+							</emphasis>
+						</listitem>
+					</itemizedlist>
+					<figure>
+						<title>Vue par le code</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata align="center" fileref="05-05f-08-CodeView.png" />
+							</imageobject>
+						</mediaobject>
+					</figure>
+				</para>
+			</para>
+
+			<para>
+				<itemizedlist>
+					<listitem>
+						Vue par les tests :
+						<emphasis>permet de visualiser les exigences liées à des cas de
+							tests dans Testlink
+						</emphasis>
+					</listitem>
+				</itemizedlist>
+				<figure>
+					<title>Vue par le test</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05f-09-TestView.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</para>
+			<para>
+				Légende de couverture des exigences appliquée aux vues par code et
+				par tests :
+				<para>
+					<inlinemediaobject>
+						<imageobject>
+							<imagedata fileref="05-05f-11-PuceRed.png"
+								width="27px" />
+						</imageobject>
+					</inlinemediaobject>
+					L'exigence n'est pas couverte par les tests ou par le code (pour la
+					vue correspondante).
+				</para>
+				<para>
+					<inlinemediaobject>
+						<imageobject>
+							<imagedata fileref="05-05f-12-PuceGreen.png"
+								width="27px" />
+						</imageobject>
+					</inlinemediaobject>
+					L'exigence est couverte par les tests ou par le code (pour la vue
+					correspondante).
+				</para>
+				<para>
+					<inlinemediaobject>
+						<imageobject>
+							<imagedata fileref="05-05f-13-PuceYellow.png"
+								width="27px" />
+						</imageobject>
+					</inlinemediaobject>
+					L'exigence est couverte par les tests ou par le code dans une
+					version antérieure à la version courante.
+				</para>
+			</para>
+
+		</sect2>
+		<sect2>
+			<title>Important!</title>
+			<para>
+				Nous avons supposé dans l'exemple ci-dessus qu'un gestionnaire de
+				code et un gestionnaire de tests sont présents pour le projet,
+				mais
+				l'application peut quand même fonctionner sans un ou tous ces
+				gestionnaires. Il
+				ne sera
+				alors possible que de synchroniser les dépots d'exigences configurés
+				pour le
+				projet. Une alerte sera alors affichée
+				dans le
+				panneau de synchronisation de l'application.
+			</para>
+			<para>
+				Si l'application Testlink est configurée dans l'application
+				d'exigences, veuillez prendre en compte la liste des rôles dans
+				Testlink et les permissions de création d'exigences nécessaires pour
+				faire des synchronisations testlink :
+				<itemizedlist>
+					<listitem>
+						Guest : NO
+					</listitem>
+				</itemizedlist>
+				<itemizedlist>
+					<listitem>
+						Tester : NO
+					</listitem>
+				</itemizedlist>
+				<itemizedlist>
+					<listitem>
+						Senior Tester : NO
+					</listitem>
+				</itemizedlist>
+				<itemizedlist>
+					<listitem>
+						TestDesigner : YES
+					</listitem>
+				</itemizedlist>
+				<itemizedlist>
+					<listitem>
+						Leader : YES
+					</listitem>
+				</itemizedlist>
+				<itemizedlist>
+					<listitem>
+						Admin : YES
+					</listitem>
+				</itemizedlist>
+			</para>
+		</sect2>
+</section>

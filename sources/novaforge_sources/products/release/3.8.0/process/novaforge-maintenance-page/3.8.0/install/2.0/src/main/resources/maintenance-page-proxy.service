@@ -1,0 +1,2 @@
+ProxyPass / http://127.0.0.1@MAINTENANCE_PAGE_ALIAS@
+ProxyPassReverse / http://127.0.0.1@MAINTENANCE_PAGE_ALIAS@

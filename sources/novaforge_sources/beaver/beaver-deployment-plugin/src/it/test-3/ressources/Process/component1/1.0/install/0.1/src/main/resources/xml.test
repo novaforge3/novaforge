@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
+
+<Configure id="sonar" class="org.mortbay.jetty.webapp.WebAppContext">
+<!-- Ensure Jetty Plus features are enabled for this webapp                      -->
+  <Set name="configurationClasses">
+    <Array type="java.lang.String">
+      <Item>org.mortbay.jetty.webapp.WebInfConfiguration</Item>
+      <Item>org.mortbay.jetty.plus.webapp.EnvConfiguration</Item>
+      <Item>org.mortbay.jetty.plus.webapp.Configuration</Item>
+      <Item>org.mortbay.jetty.webapp.JettyWebXmlConfiguration</Item>
+      <Item>org.mortbay.jetty.webapp.TagLibConfiguration</Item>
+    </Array>
+  </Set>
+  <Set name="contextPath">/sonar</Set>
+  <Set name="war"><SystemProperty name="jetty.home" default="."/>@sonarcontexts@</Set>
+  <Set name="extractWAR">false</Set>
+  <Set name="copyWebDir">false</Set>
+</Configure>

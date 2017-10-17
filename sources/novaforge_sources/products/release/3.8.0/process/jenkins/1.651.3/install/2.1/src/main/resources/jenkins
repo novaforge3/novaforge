@@ -1,0 +1,67 @@
+#!/bin/sh
+
+## Variables
+export JENKINS_HOME=@JENKINS_DATAS@
+export JAVA_HOME=@JAVA_HOME@
+export PATH=${JAVA_HOME}/bin:${PATH}
+export JAVA_OPTS=""
+
+DESC="Jenkins CI Server"
+PROCESS=jenkins.war
+
+start() {
+	local _PROCESS_NUMBER=`ps -ef | grep $PROCESS | grep -v grep | wc -l`
+	if [ $_PROCESS_NUMBER -eq 0 ]; then
+		exec nohup java -XX:MaxPermSize=512m -Djavax.net.ssl.keyStore=@JKS_PATH@ -Djavax.net.ssl.keyStorePassword=@JKS_PWD@ -Djavax.net.ssl.trustStore=@JKS_PATH@ -Djavax.net.ssl.trustStorePassword=@JKS_PWD@ -jar @JENKINS_HOME@/$PROCESS --httpPort=@JENKINS_PORT@ --prefix=/@DEFAULT_ALIAS@ -Djava.io.tmpdir=@JENKINS_TMP@ >> "@JENKINS_LOGS@/jenkins.log" 2>&1 &	
+	else
+		echo -e "$DESC: \033[32mOK\033[0m"
+	fi
+}
+
+stop() {
+	local _PID=$(ps -ef | grep $PROCESS | grep -v grep | awk '{ print $2 }')
+    if [ -n "$_PID" ]; then
+		kill $_PID
+	else
+		echo -e "$DESC: \033[31mKO\033[0m"
+	fi
+}
+
+status() {
+	local _PROCESS_NUMBER=`ps -ef | grep $PROCESS | grep -v grep | wc -l`
+	if [ $_PROCESS_NUMBER -ne 0 ]; then
+		echo -e "$DESC: \033[32mOK\033[0m"
+	else
+		echo -e "$DESC: \033[31mKO\033[0m"
+	fi
+	RETVAL=0
+}
+
+case $1 in
+	start)
+		echo "Starting '$DESC'"
+		start
+		RETVAL=$?
+		;;
+	stop)
+		echo "Stopping '$DESC'"
+		stop
+		RETVAL=$?
+		;;
+	restart)
+		echo "Restarting '$DESC'"
+		stop
+		sleep 1
+		start
+		;;
+	status)
+		status
+		RETVAL=$?
+		;;
+   	*)
+		echo "Usage: jenkins {start|stop|restart|status}"
+		RETVAL=1
+		;;
+esac
+
+exit $RETVAL

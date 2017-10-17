@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this file.  If not, see http://www.gnu.org/licenses/.
+-->
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:xsi="http://www.w3.org/301/XMLSchema-instance"
+	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0">
+ 
+  <!-- Property place holder -->
+	<cm:property-placeholder persistent-id="datasource.svn.agent"
+		update-strategy="reload">
+		<cm:default-properties>
+			<cm:property name="driverClass" value="org.mariadb.jdbc.Driver" />
+			<cm:property name="url" value="jdbc:mysql://localhost:3306/plugin_svn_agent?autoReconnect=true" />
+			<cm:property name="username" value="root" />
+			<cm:property name="password" value="root" />
+
+			<cm:property name="initialPoolSize" value="3" /><!-- C3P0 default: true-->
+			<cm:property name="maxPoolSize" value="15" /><!-- C3P0 default: 15-->
+			<cm:property name="minPoolSize" value="3" /><!-- C3P0 default: 3-->
+			<cm:property name="maxIdleTime" value="3600" /><!-- C3P0 default: 0-->
+			<cm:property name="maxIdleTimeExcessConnections" value="300" /><!-- C3P0 default: 0-->
+			<cm:property name="unreturnedConnectionTimeout" value="3600" /><!-- C3P0 default: 0-->
+
+			<cm:property name="checkoutTimeout" value="0" /><!-- C3P0 default: 0-->
+			<cm:property name="preferredTestQuery" value="SELECT 1" /><!-- C3P0 default: true-->
+			<cm:property name="testConnectionOnCheckout" value="false" /> <!-- C3P0 default: true-->
+			<cm:property name="testConnectionOnCheckin" value="true" /><!-- C3P0 default: true-->
+			<cm:property name="idleConnectionTestPeriod" value="1800" /><!-- C3P0 default: 0-->
+
+			<cm:property name="acquireIncrement" value="5" /><!-- C3P0 default: 3-->
+			<cm:property name="numHelperThreads" value="6" /><!-- C3P0 default: 3-->
+		</cm:default-properties>
+	</cm:property-placeholder>
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${driverClass}" />
+		<property name="jdbcUrl" value="${url}" />
+		<property name="user" value="${username}" />
+		<property name="password" value="${password}" />
+		<property name="initialPoolSize" value="${initialPoolSize}"/>
+		<property name="maxPoolSize" value="${maxPoolSize}"/>
+		<property name="minPoolSize" value="${minPoolSize}"/>
+		<property name="maxIdleTime" value="${maxIdleTime}"/>
+		<property name="maxIdleTimeExcessConnections" value="${maxIdleTimeExcessConnections}"/>
+		<property name="unreturnedConnectionTimeout" value="${unreturnedConnectionTimeout}"/>
+		<property name="checkoutTimeout" value="${checkoutTimeout}"/>
+		<property name="preferredTestQuery" value="${preferredTestQuery}"/>
+		<property name="testConnectionOnCheckout" value="${testConnectionOnCheckout}"/>
+		<property name="testConnectionOnCheckin" value="${testConnectionOnCheckin}"/>
+		<property name="idleConnectionTestPeriod" value="${idleConnectionTestPeriod}"/>
+		<property name="acquireIncrement" value="${acquireIncrement}"/>
+		<property name="numHelperThreads" value="${numHelperThreads}"/>
+	</bean>
+
+	<service id="xaDataSource" ref="dataSource" interface="javax.sql.DataSource">
+		<service-properties>
+			<entry key="osgi.jndi.service.name" value="jdbc/pluginSVNAgent" />
+		</service-properties>
+	</service>
+
+</blueprint>

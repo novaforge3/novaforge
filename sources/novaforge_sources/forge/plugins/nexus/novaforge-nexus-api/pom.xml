@@ -1,0 +1,66 @@
+<!-- * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above. 
+	* * This file is free software: you may redistribute and/or modify it under 
+	* the terms of the GNU Affero General Public License as published by the 
+	* Free Software Foundation, version 3 of the License. * * This file is distributed 
+	in the hope that it will be useful, * but WITHOUT ANY WARRANTY; without even 
+	the implied warranty * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+	* See the GNU Affero General Public License for more details. * You should 
+	have received a copy of the GNU Affero General Public License * along with 
+	this program. If not, see http://www.gnu.org/licenses. * * Additional permission 
+	under GNU AGPL version 3 (AGPL-3.0) section 7. * * If you modify this Program, 
+	or any covered work, by linking or combining * it with libraries listed in 
+	COPYRIGHT file at the top-level directory of * this distribution (or a modified 
+	version of that libraries), containing parts * covered by the terms of licenses 
+	cited in the COPYRIGHT file, the licensors * of this Program grant you additional 
+	permission to convey the resulting work. -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>novaforge-nexus</artifactId>
+		<groupId>org.novaforge.forge.plugins</groupId>
+		<version>3.8.0</version>
+	</parent>
+	<artifactId>novaforge-nexus-api</artifactId>
+	<packaging>bundle</packaging>
+	<name>NovaForge(tm) :: Plugins :: Nexus :: API</name>
+	<description>NovaForge(tm) :: Plugins :: Nexus :: API</description>
+	<dependencies>
+		<dependency>
+			<groupId>org.novaforge.forge.modules</groupId>
+			<artifactId>novaforge-core-plugins</artifactId>
+			<version>${novaforge.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.novaforge.forge.modules</groupId>
+			<artifactId>novaforge-plugins-commons</artifactId>
+			<version>${novaforge.version}</version>
+		</dependency>
+
+		<!-- Nexus resources -->
+
+		<!-- remove dependencies compiled on JDK 1.8 - source of the classes imported 
+			from dependencies are directly embedded in nexus plugin project to be compiled 
+			on JDK 1.7 In a future version of the plugin running on JRE 1.8 these dependencies 
+			can be restored and the replacement classes removed -->
+		<!-- <dependency> <groupId>org.sonatype.nexus</groupId> <artifactId>nexus-core</artifactId> 
+			</dependency> <dependency> <groupId>org.sonatype.nexus</groupId> <artifactId>nexus-script</artifactId> 
+			</dependency> <dependency> <groupId>org.sonatype.nexus</groupId> <artifactId>nexus-repository</artifactId> 
+			</dependency> <dependency> <groupId>org.sonatype.nexus.plugins</groupId> 
+			<artifactId>nexus-repository-maven</artifactId> </dependency> <dependency> 
+			<groupId>org.sonatype.nexus</groupId> <artifactId>nexus-security</artifactId> 
+			</dependency> <dependency> <groupId>org.sonatype.nexus.plugins</groupId> 
+			<artifactId>nexus-script-plugin</artifactId> </dependency> 
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+		</dependency>-->
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.8.4</version>
+		</dependency>
+	</dependencies>
+</project>

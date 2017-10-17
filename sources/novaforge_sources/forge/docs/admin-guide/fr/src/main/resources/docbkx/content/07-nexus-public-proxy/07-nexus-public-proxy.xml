@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<chapter version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+    >
+ <title>La gestion des proxys publics Nexus</title>
+ <para>Nexus permet d'être utilisé comme proxy et d'agir comme un cache local pour les artéfacts des dépôts publics tiers.
+ Par défaut dans Nexus, les dépôts suivants sont configurés en tant que proxy : </para>
+ <itemizedlist>
+   <listitem>
+      <para><emphasis>Apache Snapshots</emphasis> pour le dépôt distant : <emphasis>http://repository.apache.org/snapshots/</emphasis></para>
+   </listitem>
+   <listitem>
+      <para><emphasis>Central</emphasis> pour le dépôt distant : <emphasis>http://repo1.maven.org/maven2/</emphasis></para>
+   </listitem>
+   <listitem>
+      <para><emphasis>Codehaus Snapshots</emphasis> pour le dépôt distant : <emphasis>http://nexus.codehaus.org/snapshots/</emphasis></para>
+   </listitem>  
+</itemizedlist>
+<para>Il est possible d'ajouter d'autres proxys via l'interface d'administration suivant les besoins utilisateurs.</para>
+<para>L'utilisateur anonyme est utilisé pour permettre l'accès public aux dépôts.</para>
+<figure>
+	<title>Utilisation de l'utilisateur anonyme</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center" fileref="nexus_anonymous_user.png"/>
+      </imageobject>
+    </mediaobject>
+ </figure>
+<sect2>
+<para>Afin de permettre d'accéder aux proxys nexus et de pouvoir télécharger sans authentification des artéfacts issus de ces dépôts, l'utilisateur anonyme doit avoir le rôle suivant : <emphasis>Anonymous Proxy Role</emphasis></para>
+<para>Ce rôle est configuré dans Nexus avec les permissions "view" and "read" pour chacun des proxys par défaut cités ci-dessus</para>
+<para>Si l'on rajoute un nouveau proxy, il ne faut pas oublier de rajouter les permissions associées pour le Rôle "Anonymous Proxy Role"</para>
+ <figure>
+	<title>Utilisation du rôle "Anonymous Proxy Role"</title>
+	 <mediaobject>
+      <imageobject>
+        <imagedata align="center" fileref="nexus_anonymous_proxy_role.png"/>
+      </imageobject>
+    </mediaobject>
+ </figure>
+</sect2>
+<sect2>
+<para>Pour que Nexus puisse accéder au dépôt distant dont le Nexus servira de proxy, il vous sera peut-être nécessaire de configurer un proxy http : </para>
+ <figure>
+	<title>Configuration du proxy http</title>
+	<mediaobject>
+      <imageobject>
+        <imagedata align="center" fileref="nexus_http_proxy_config.png"/>
+      </imageobject>
+    </mediaobject>
+</figure>
+</sect2>
+<sect2>
+<para>Attention à la configuration par défaut du proxy qui peut-être bloquée lorsque le dépôt distant est inaccessible.</para>
+ <para>Il peut être utile de désactiver cette propriété si par exemple le proxy HTTP avait été omis lors de la première tentative de connexion.</para>
+  <figure>
+	<title>Configuration du proxy nexus</title>
+	 <mediaobject>
+      <imageobject>
+        <imagedata align="center" fileref="nexus_proxy_configuration.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+   <itemizedlist>
+   <listitem>
+   <para>Certaines opérations de maintenance peuvent être utiles comme :</para>
+  <para>Vérifier la connexion au dépôt distant via l'onglet "Routing"....</para>
+  </listitem>
+  <para>Surveiller l'espace disque associé au stockage du cache du proxy</para>
+  <listitem>
+  <para>Vérifier les conditions d'expiration du cache</para>
+  </listitem>
+  <para>Créér des tâches de synchronisation périodique avec le dépôt distant.</para>
+  <listitem>
+  <para>Forcer, côté utilisateur, la mise à jour des artéfacts avec l'option -U dans la commande Maven</para>
+  </listitem>
+  </itemizedlist>
+</sect2>
+</chapter>

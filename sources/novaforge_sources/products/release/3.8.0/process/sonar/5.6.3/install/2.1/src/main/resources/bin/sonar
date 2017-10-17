@@ -1,0 +1,71 @@
+#!/bin/sh
+
+## Variables
+export JAVA_HOME=@JAVA_HOME@
+export SONAR_HOME=@SONAR_HOME@
+export PATH=$SONAR_HOME/bin/linux-x86-64:${JAVA_HOME}/bin:${PATH}
+
+JAVA_OPTS="-Xms512m -Xmx1024m -Djava.io.tmpdir=@SONAR_TMP@"
+JAVA_OPTS="$JAVA_OPTS -Djavax.net.ssl.trustStore=@JKS_PATH@ -Djavax.net.ssl.trustStorePassword=@JKS_PWD@"
+export JAVA_OPTS="$JAVA_OPTS -Djavax.net.ssl.keyStore=@JKS_PATH@ -Djavax.net.ssl.keyStorePassword=@JKS_PWD@"
+
+DESC="Sonar Quality Server"
+PROCESS=$SONAR_HOME/bin/linux-x86-64
+
+start() {
+	local _PROCESS_NUMBER=`ps -ef | grep $PROCESS | grep -v grep | wc -l`
+	if [ $_PROCESS_NUMBER -eq 0 ]; then
+		$SONAR_HOME/bin/linux-x86-64/sonar.sh start
+	else
+		echo -e "$DESC: \033[32mOK\033[0m"
+	fi
+}
+
+stop() {
+	local _PROCESS_NUMBER=`ps -ef | grep $PROCESS | grep -v grep | wc -l`
+	if [ $_PROCESS_NUMBER -ne 0 ]; then
+		$SONAR_HOME/bin/linux-x86-64/sonar.sh stop
+	else
+		echo -e "$DESC: \033[31mKO\033[0m"
+	fi
+}
+
+status() {
+	local _PROCESS_NUMBER=$(ps -ef | grep $PROCESS | grep -v grep | wc -l)
+	if [ $_PROCESS_NUMBER -ne 0 ]; then
+		echo -e "$DESC: \033[32mOK\033[0m"
+	else
+		echo -e "$DESC: \033[31mKO\033[0m"
+	fi
+	RETVAL=0
+}
+
+case $1 in
+	start)
+		echo "Starting '$DESC'"
+		start
+		RETVAL=$?
+		;;
+	stop)
+		echo "Stopping '$DESC'"
+		stop
+		RETVAL=$?
+		;;
+	restart)
+		echo "Restarting '$DESC'"
+		stop
+		sleep 1
+		start
+		RETVAL=$?
+		;;
+	status)
+		status
+		RETVAL=0
+		;;
+	*)
+		echo "usage: sonar {start|stop|restart|status}"
+		RETVAL=1
+		;;
+esac
+
+exit $RETVAL

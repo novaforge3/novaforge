@@ -1,0 +1,135 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+/**
+** NovaForge light Menubar (ex: myaccount,etc.)
+**/
+.v-menubar-light {
+	background: transparent !important;
+	text-shadow: none !important;
+	border: 0 !important;
+	height: 23px;
+	color: #d1d3d6;
+	text-shadow: rgba(0, 0, 0, .9) 0 1px 0;
+	height: 23px;
+}
+
+.v-menubar-light .v-menubar-menuitem {
+	height: 17px;
+	line-height: 18px;
+	cursor: pointer;
+}
+
+.v-menubar .v-menubar-menuitem-caption .v-icon {
+	height: 20px;
+	width: 20px;
+}
+
+.v-caption-light .v-icon {
+	width: 40px;
+	height: 40px;
+}
+
+.v-menubar-light .v-menubar-menuitem-selected {
+	background: transparent !important;
+	color: #66A3C7;
+	text-shadow: 0 0px 0 #3b5a7a;
+}
+
+.v-menubar-light .v-menubar-menuitem:hover {
+	color: #fff;
+}
+
+.v-menubar-submenu-light {
+	background: #f8f8f9;
+	border: none;
+	border-radius: 3px 3px 3px 3px;
+	-webkit-border-radius: 3px 3px 3px 3px;
+	-moz-border-radius: 3px 3px 3px 3px;
+	-o-border-radius: 3px 3px 3px 3px;
+	overflow: hidden;
+	padding: 4px 0;
+}
+
+.v-menubar-submenu-light .v-menubar-menuitem {
+	padding: 1px 26px 1px 10px;
+	line-height: 16px;
+}
+
+.v-menubar-submenu-light .v-menubar-menuitem-caption .v-icon {
+	vertical-align: middle;
+	width: 30px;
+}
+
+.v-menubar-submenu-light .v-menubar-menuitem-selected
+	{
+	background: #66A3C7 repeat-x;
+	color: #fff;
+	text-shadow: 0 1px 0 #66A3C7;
+}
+
+.v-menubar-light .v-menubar-menuitem-selected {
+	background-image: url(img/menu-sel-bg.png);
+}
+
+.v-menubar-submenu-light .v-menubar-submenu-indicator {
+	background: transparent url(img/submenu-icon.png) no-repeat right 70%;
+	width: 26px;
+	height: 16px;
+	text-indent: -9999px;
+}
+
+.v-menubar-submenu-light .v-menubar-menuitem-selected .v-menubar-submenu-indicator
+	{
+	background-image: url(img/submenu-icon-hover.png);
+}
+
+/* Checkboxes for checkable/checked menu items */
+.v-menubar-submenu-check-column .v-menubar-menuitem {
+	padding-left: 6px;
+}
+
+.v-menubar-submenu-check-column .v-menubar-menuitem-caption {
+	padding-left: 18px;
+}
+
+.v-menubar-submenu .v-menubar-menuitem-checked .v-menubar-menuitem-caption
+	{
+	background: transparent url(img/checked.png) no-repeat left;
+}
+
+.v-menubar-submenu .v-menubar-menuitem-unchecked .v-menubar-menuitem-caption
+	{
+	background: transparent url(img/unchecked.png) no-repeat left;
+}
+
+.v-menubar-submenu .v-menubar-menuitem-selected-checked .v-menubar-menuitem-caption
+	{
+	background: transparent url(img/checked-selected.png) no-repeat left;
+}
+
+.v-menubar-submenu .v-menubar-menuitem-selected-unchecked .v-menubar-menuitem-caption
+	{
+	background: transparent url(img/unchecked-selected.png) no-repeat left;
+}

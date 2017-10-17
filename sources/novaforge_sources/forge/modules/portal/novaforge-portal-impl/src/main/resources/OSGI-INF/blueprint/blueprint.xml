@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+	<reference id="projectPresenter" interface="org.novaforge.forge.core.organization.presenters.ProjectPresenter" />
+	<reference id="userPresenter" interface="org.novaforge.forge.core.organization.presenters.UserPresenter" />
+	<reference id="spacePresenter" interface="org.novaforge.forge.core.organization.presenters.SpacePresenter" />
+	<reference id="applicationPresenter" interface="org.novaforge.forge.core.organization.presenters.ApplicationPresenter" />
+	<reference id="userService" interface="org.novaforge.forge.core.organization.services.UserService" />
+	<reference id="pluginsManager" interface="org.novaforge.forge.core.plugins.services.PluginsManager" />
+	<reference id="authentificationService" interface="org.novaforge.forge.core.security.authentification.AuthentificationService" />
+	<reference id="authorizationService" interface="org.novaforge.forge.core.security.authorization.AuthorizationService" />
+
+
+	<bean id="portalService" class="org.novaforge.forge.portal.internal.services.PortalServiceImpl">
+		<!-- Service reference -->
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+		<property name="projectPresenter" ref="projectPresenter" />
+		<property name="userPresenter" ref="userPresenter" />
+		<property name="pluginsManager" ref="pluginsManager" />
+		<property name="spacePresenter" ref="spacePresenter" />
+		<property name="authentificationService" ref="authentificationService" />
+		<!-- Bean reference -->
+		<property name="portalNavigation" ref="portalNavigation" />
+	</bean>
+	<service ref="portalService" interface="org.novaforge.forge.portal.services.PortalService" />
+
+	<bean id="portalNavigation" class="org.novaforge.forge.portal.internal.services.PortalNavigationImpl"
+		init-method="init">
+		<!-- Service reference -->
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+		<property name="authentificationService" ref="authentificationService" />
+		<property name="userService" ref="userService" />
+		<property name="pluginsManager" ref="pluginsManager" />
+		<!-- Bean reference -->
+		<property name="navigationToken" ref="navigationToken" />
+		<property name="navigationXML" ref="navigationXML" />
+		<property name="navigationMessage" ref="navigationMessage" />
+		<property name="navigationSecurity" ref="navigationSecurity" />
+	</bean>
+	<service ref="portalNavigation" interface="org.novaforge.forge.portal.services.PortalNavigation" />
+	<bean id="portalMessages" class="org.novaforge.forge.portal.internal.services.PortalMessagesImpl"
+		init-method="init" destroy-method="destroy">
+		<!-- Service reference -->
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+	<service ref="portalMessages" interface="org.novaforge.forge.portal.services.PortalMessages" />
+	
+	<bean id="navigationToken" class="org.novaforge.forge.portal.internal.services.navigation.NavigationTokenImpl" />
+	<bean id="navigationMessage" class="org.novaforge.forge.portal.internal.services.navigation.NavigationMessageImpl">
+		<!-- Service reference -->
+		<property name="portalMessages" ref="portalMessages" />
+	</bean>
+	<bean id="navigationXML" class="org.novaforge.forge.portal.internal.services.navigation.NavigationXMLImpl" />
+	<bean id="navigationSecurity" class="org.novaforge.forge.portal.internal.services.navigation.NavigationSecurityImpl">
+		<!-- Service reference -->
+		<property name="authorizationService" ref="authorizationService" />
+	</bean>
+
+	<reference-list id="portalModule" interface="org.novaforge.forge.portal.models.PortalModule"
+		availability="optional">
+		<reference-listener ref="portalModuleService" bind-method="registerModule" unbind-method="unregisterModule" />
+	</reference-list>
+	<bean id="portalModuleService" class="org.novaforge.forge.portal.internal.services.PortalModuleServiceImpl" init-method="init" destroy-method="destroy">
+	</bean>
+
+	<service ref="portalModuleService" interface="org.novaforge.forge.portal.services.PortalModuleService" />
+
+</blueprint>

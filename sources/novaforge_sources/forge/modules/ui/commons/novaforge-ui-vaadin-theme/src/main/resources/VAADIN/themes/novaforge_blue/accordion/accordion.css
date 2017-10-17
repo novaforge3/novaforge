@@ -1,0 +1,39 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+
+.v-accordion-item-caption,
+.v-accordion-item-first .v-accordion-item-caption,
+.v-accordion-item-open .v-accordion-item-caption {
+	background: #0066a1; /* Old browsers */
+	background: -moz-linear-gradient(top,  #0066a1 0%, #66a3c7 50%, #0066a1 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0066a1), color-stop(50%,#66a3c7), color-stop(100%,#0066a1)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #0066a1 0%,#66a3c7 50%,#0066a1 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #0066a1 0%,#66a3c7 50%,#0066a1 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #0066a1 0%,#66a3c7 50%,#0066a1 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #0066a1 0%,#66a3c7 50%,#0066a1 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0066a1', endColorstr='#0066a1',GradientType=0 ); /* IE6-9 */
+	color: white;
+	text-shadow: none;
+}

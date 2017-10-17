@@ -1,0 +1,184 @@
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.novaforge.forge.plugins</groupId>
+        <artifactId>novaforge-jira</artifactId>
+        <version>3.8.0</version>
+    </parent>
+    <artifactId>novaforge-jira-library</artifactId>
+    <packaging>bundle</packaging>
+    <name>NovaForge(tm) :: Plugins :: Jira :: Libraries</name>
+    <description>NovaForge(tm) :: Plugins :: Jira :: Libraries</description>
+    <dependencies>
+        <dependency>
+            <groupId>axis</groupId>
+            <artifactId>axis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.jira</groupId>
+            <artifactId>jira-rest-java-client-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>stax</groupId>
+                    <artifactId>stax-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.jira</groupId>
+            <artifactId>jira-rest-java-client-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.util.concurrent</groupId>
+            <artifactId>atlassian-util-concurrent</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.httpclient</groupId>
+            <artifactId>atlassian-httpclient-api</artifactId>
+            <version>0.13.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.event</groupId>
+            <artifactId>atlassian-event</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.sal</groupId>
+            <artifactId>sal-api</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.httpclient</groupId>
+            <artifactId>atlassian-httpclient-apache-httpcomponents</artifactId>
+            <version>0.13.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore-osgi</artifactId>
+            <version>4.2.2-atlassian1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpasyncclient-osgi</artifactId>
+            <version>4.0-beta3-atlassian-1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient-osgi</artifactId>
+            <version>4.2.1-atlassian-2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.httpclient</groupId>
+            <artifactId>atlassian-httpclient-spi</artifactId>
+            <version>0.13.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient-cache</artifactId>
+            <version>4.2.1-atlassian-2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpasyncclient-cache</artifactId>
+            <version>4.0-beta3-atlassian-1</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>axistools-maven-plugin</artifactId>
+                <configuration>
+                    <sourceDirectory>src/main/resources/</sourceDirectory>
+                    <packageSpace>org.novaforge.forge.plugins.bugtracker.jira.soap</packageSpace>
+                    <testCases>false</testCases>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>wsdl2java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Embed-Transitive>true</Embed-Transitive>
+                        <Embed-Directory>dependencies</Embed-Directory>
+                        <Embed-Dependency>
+                            jira-rest-java-client-api,
+                            jira-rest-java-client-core,
+                            atlassian-util-concurrent,
+                            atlassian-httpclient-api,
+                            atlassian-event,
+                            sal-api,
+                            atlassian-httpclient-apache-httpcomponents,
+                            httpmine,
+                            atlassian-httpclient-spi,
+                            httpclient-cache,
+                            httpasyncclient-cache
+                        </Embed-Dependency>
+                        <Import-Package>
+                            com.sun.jersey.api.client,
+                            com.sun.jersey.client.apache,
+                            org.springframework.beans.factory;version="[2.5,3.5)",
+                            org.joda.time;version="[2,3)",
+                            org.joda.time.format;version="[2,3)",
+                            *;resolution:=optional
+                        </Import-Package>
+                        <_exportcontents>
+                            com.atlassian.jira.rest.client.*;version="${jira.rest.client.version}",
+                            com.atlassian.jira.rest.client.api.*;version="${jira.rest.client.version}",
+                            com.atlassian.util.concurrent.*;version="${atlassian.util.concurrent.version}",
+                            com.atlassian.httpclient.*;version=0.13.2,
+                            com.atlassian.event.*;version=2.2.0,
+                            com.atlassian.sal.*;version=2.7.0,
+                            org.apache.httpcomponents.*;version="[4.0-beta3-atlassian-1],[4.1.2],[4.2.1-atlassian-2]"
+                        </_exportcontents>
+                        <_nouses>true</_nouses>
+                        <Export-Package>
+                            org.novaforge.forge.plugins.bugtracker.jira.soap;version="${project.version}",
+                            org.novaforge.forge.plugins.bugtracker.jira.rest;version="${project.version}"
+                        </Export-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

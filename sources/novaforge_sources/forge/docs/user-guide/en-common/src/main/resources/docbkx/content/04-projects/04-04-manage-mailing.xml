@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<sect1 version="5.0" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+       xmlns:xlink="http://www.w3.org/1999/xlink"
+       xmlns:xi="http://www.w3.org/2001/XInclude"
+       xmlns:ns5="http://www.w3.org/2000/svg"
+       xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+       xmlns:ns3="http://www.w3.org/1999/xhtml"
+       xmlns:db="http://docbook.org/ns/docbook">
+  <title>Manage mailing lists</title>
+
+  <para>NovaForge allows the project manager to create and manage mailing lists.
+  In this section we will see how to add and manage a mailing list.
+   To do this, simply select the menu <emphasis role="bold">My project space</emphasis>
+   and then select the application : <emphasis role="bold">Your mailing lists</emphasis>. </para>
+
+  <figure>
+    <title>Administration of mailing lists</title>
+
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center"
+                   fileref="04-04-01-ManageMailingListMenu.png"
+                   width="200.px"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>The application "Your Mailing Lists" is displayed.</para>
+
+  <figure>
+    <title>Menu of project mailing lists</title>
+
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center"
+                   fileref="04-04-02-DisplayMailingListMenu.png"
+                   width="500.px" heigh="200.px"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>The private mailing list <emphasis role="bold">projectname-team@hostname</emphasis> is created by default for the project. It contains all project users. It can not be deleted or modified</para>
+
+  <sect2>
+    <title>Create a mailing list</title>
+
+    <para>The project administrator can create a mailing list by activating the button
+    <emphasis role="bold">Create a mailing list</emphasis> and filling in the following fields :</para>
+
+    <figure>
+      <title>Mailing List field</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="04-04-03-CreationMailingList.png" width="300.px"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>A mailing list has two types : private (visible only to the members of this list) or public (visible to all members of the project, they can subscribe / unsubscribe to this list).
+    </para>
+    </sect2>
+   <sect2>
+    <title>Actions on a mailing list</title>
+   
+    <para>The project administrator can on the "ACTION" column below <emphasis role="bold">: View mailing list informations, Subscribe/Unsubscribe to the mailing list, Manage subscribers and Delete mailing list</emphasis>.</para>
+    <para>The project user subscribed to a public list can only <emphasis role="bold">: View mailing list informations, Subscribe/Unsubscribe to the mailing list</emphasis>.</para>
+    <para>The project user subscribed to a private list can only <emphasis role="bold">: View mailing list informations, Unsubscribe to the mailing list</emphasis>.</para>
+   <figure>
+      <title>Actions</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="04-04-04-ActionMailingList.png" width="500.px" heigh="200.px"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </sect2>
+
+  <sect2>
+    <title>Manage subscribers</title>
+
+    <para>The action <emphasis role="bold">Manage subscribers</emphasis> in the "ACTION" column allows the project manager to add/remove emails of project and forge users also external emails.</para>
+
+    <figure>
+      <title>Manage subscribers window</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="04-04-05-manageUserMailingList.png" width="500.px" heigh="200.px"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>The button <emphasis role="bold">Add a new subscriber</emphasis> opens a popup that displays four categories of email to subscribe.</para>
+    <figure>
+      <title>Type of email to subscribe</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="04-04-06-popupeUserMailingList.png" width="300.px"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    
+    <para>A table displays the forge or project users to subscribe if the choice type is  <emphasis role="bold">Project Users</emphasis> or <emphasis role="bold">Forge Users</emphasis></para>
+     <figure>
+      <title>Subscribe projet/forge users</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="04-04-06-01-popupeUserMailingListUsers.png" width="300.px"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>An input field will be displayed if the selection type is <emphasis role="bold">External Emails</emphasis></para>
+
+    <figure>
+      <title>Subscribe external emails</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="04-04-06-02-popupeUserMailingListExterne.png" width="300.px"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    
+     <para>A table displays the available groups in the project (with hertited groups from forge project) if the selection type is <emphasis role="bold">Groups</emphasis></para>
+
+    <figure>
+      <title>Subscribe groups</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="04-04-06-03-popupeUserMailingListGroups.png" width="300.px"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    
+  </sect2>
+  
+ 
+</sect1>

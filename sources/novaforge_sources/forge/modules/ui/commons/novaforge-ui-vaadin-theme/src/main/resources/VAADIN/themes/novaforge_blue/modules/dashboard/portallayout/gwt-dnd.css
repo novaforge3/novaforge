@@ -1,0 +1,96 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+@CHARSET "UTF-8";
+
+@external .tabcontent .dragdrop-dropTarget;
+@external .tabcontent .dragdrop-dropTarget-engage;
+@external .tabcontent .dragdrop-flow-panel-positioner;
+@external .tabcontent .dragdrop-positioner;
+@external .tabcontent .dragdrop-boundary;
+@external .tabcontent .dragdrop-handle;
+@external .tabcontent .dragdrop-draggable;
+@external .tabcontent .dragdrop-selected;
+@external .tabcontent .dragdrop-dragging;
+@external .tabcontent .dragdrop-proxy;
+@external .tabcontent .dragdrop-selected 
+@external .tabcontent .dragdrop-movable-panel;
+	
+HTML { /* Workaround for GWT issue 1932 */
+	margin: 0px !important;
+	border: none !important;
+}
+
+.tabcontent .dragdrop-boundary {
+}
+
+.tabcontent .dragdrop-dropTarget-engage {
+}
+
+.tabcontent .dragdrop-dropTarget {
+}
+
+.tabcontent .dragdrop-handle {
+	cursor: move;
+	user-select: none;
+	\-khtml-user-select: none;
+	\-moz-user-select: none;
+}
+
+.tabcontent .dragdrop-draggable {
+	zoom: 1; /* IE gain hasLayout */
+}
+
+.tabcontent .dragdrop-dragging {
+	zoom: normal; /* remove artifacts */
+}
+
+.tabcontent .dragdrop-positioner {
+	border: 1px dashed #83B257; /* green */
+	margin: 0px !important;
+	zoom: 1; /* IE gain hasLayout */
+	z-index: 100;
+}
+
+.tabcontent .dragdrop-flow-panel-positioner {
+	color: #83B257; /* green */
+	display: inline;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.tabcontent .dragdrop-proxy {
+	background-color: #83B257; /* light green */
+}
+
+.tabcontent .dragdrop-selected,.tabcontent .dragdrop-dragging,.tabcontent .dragdrop-proxy {
+	filter: alpha(opacity \= 30);
+	opacity: 0.3;
+}
+
+.tabcontent .dragdrop-movable-panel {
+	z-index: 200;
+	margin: 0px !important;
+	border: none !important;
+}

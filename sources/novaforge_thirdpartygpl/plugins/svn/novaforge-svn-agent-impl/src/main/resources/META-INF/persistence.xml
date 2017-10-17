@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this file.  If not, see http://www.gnu.org/licenses/.
+-->
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+	<persistence-unit name="plugins.svn-agent" transaction-type="JTA">
+	    <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+		<jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=jdbc/pluginSVNAgent)
+		</jta-data-source>
+		<class>org.novaforge.forge.plugins.scm.svn.agent.entity.GroupEntity</class>
+		<class>org.novaforge.forge.plugins.scm.svn.agent.entity.GroupMembershipEntity</class>
+		<class>org.novaforge.forge.plugins.scm.svn.agent.entity.GroupPermissionEntity</class>
+		<class>org.novaforge.forge.plugins.scm.svn.agent.entity.RepositoryEntity</class>
+		<class>org.novaforge.forge.plugins.scm.svn.agent.entity.RepositoryPathEntity</class>
+		<class>org.novaforge.forge.plugins.scm.svn.agent.entity.UserEntity</class>
+		<class>org.novaforge.forge.plugins.scm.svn.agent.entity.UserPermissionEntity</class>
+		<class>org.novaforge.forge.plugins.scm.svn.agent.entity.UserPermissionEntityId</class>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<validation-mode>AUTO</validation-mode>
+		<properties>
+			<property name="openjpa.jdbc.MappingDefaults" value="ForeignKeyDeleteAction=restrict, JoinForeignKeyDeleteAction=restrict" />
+			<property name="openjpa.jdbc.SchemaFactory" value="native(ForeignKeys=true)" />
+			<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true,Indexes=true)" />
+			<property name="openjpa.jdbc.DBDictionary" value="mysql" />
+			<property name="openjpa.DataCache" value="true" />
+		</properties>
+	</persistence-unit>
+</persistence>

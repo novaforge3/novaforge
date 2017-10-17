@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<requirement:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:requirement="http://www.obeonetwork.org/dsl/requirement/1.0" xmi:id="_Re8JwBpoEeGaVbRpowrC6g" name="safran">
+  <mainCategories xmi:id="_Ubqv4DVfEeGUarZ1nKomqg" name="Gerer le referentiel" id="M6">
+    <subCategories xmi:id="_g_IQcDVfEeGUarZ1nKomqg" name="Gerer le referentiel de la forge" id="UC35">
+      <subCategories xmi:id="_HaEssEKjEeGhOeqTIW6DGA" name="Gérer le projet référentiel" id="UC35T23">
+        <subCategories xmi:id="_V0S6kEKjEeGhOeqTIW6DGA" name="Initialiser le projet référentiel" id="UC35T25">
+          <requirements xmi:id="_qMTDkEKlEeGhOeqTIW6DGA" name="Initialisation du référentiel de la forge : Bonnes pratiques" id="SFN_G_3351_01_20" statement="La plateforme doit fournir un recueil de bonnes pratiques: Wiki&#xD;&#xA;&#xD;&#xA;" rationale="SFN_G_3351_01_20" status=""/>
+          <requirements xmi:id="_9FXbUEKlEeGhOeqTIW6DGA" name="Initialisation du référentiel de la forge : méthodologie phare" id="SFN_G_3351_01_21" statement="La plateforme doit fournir un site méthodologique phare" rationale="SFN_IC_334_01_1&#xD;&#xA;"/>
+          <requirements xmi:id="_CJBicEKmEeGhOeqTIW6DGA" name="Initialisation du référentiel de la forge : guides méthodologiques" id="SFN_G_3351_01_23" statement="" rationale="SFN_G_3351_01_23"/>
+          <requirements xmi:id="_JFOfkEKmEeGhOeqTIW6DGA" name="Partage des informations entre les projets " id="NVF_UC35T25_01" statement="Le projet référentiel est dédié au partage des informations entre les projets (contenant les documents sur la forge): GED " rationale="SFN_G_3351_01_18" status=""/>
+          <requirements xmi:id="_Qc_XUEKmEeGhOeqTIW6DGA" name="Listes de diffusion" id="NVF_UC35T25_02" statement="- Liste &quot;Administrateur de la forge&quot;&#xD;&#xA;- Liste &quot;Chef de Projet&quot;&#xD;&#xA;- Liste &quot;Développeur&quot;&#xD;&#xA;- Liste &quot;Recetteur&quot;&#xD;&#xA;- Liste &quot;Equipe&quot;" rationale="SFN_G_3351_01_18"/>
+          <requirements xmi:id="_c1lEoEKmEeGhOeqTIW6DGA" name="Liste outils projet référentiel" id="NVF_UC35T25_03" statement="La liste des outils du projet référentiel: GED, Wiki, Sympa&#xD;&#xA;" rationale="SFN_G_3351_01_18"/>
+          <requirements xmi:id="_7AH4sGFHEeGbDKocCbckNA" name="La plateforme doit fournir un référentiel" id="SFN_G_3351_01_18" statement="" rationale="SFN_G_3351_01_18"/>
+          <requirements xmi:id="_hEnjgGFIEeGbDKocCbckNA" name="L'outil Nexus peut être ajouté comme outil à la liste des outils du projet référentiel" id="NVF_UC35T25_04" statement="" rationale="SFN_G_3351_01_19"/>
+          <requirements xmi:id="_Zm5e4GznEeGsmccXJNYRng" name="Le projet &quot;référentiel&quot; devra contenir les informations relative au STC et au framework SPI4J" id="NVF_UC35T25_05" statement="Dans le référentiel de Novaforge, on trouvera en particulier les informations relatives au STC (Socle Technique Commun) et au framework de composants SAFR@N Spi4j.&#xD;&#xA;" rationale="SFN_IC_334_01_4&#xD;&#xA;">
+            <referencedObject href="SAFRAN_M6.graal#_qSwWUFMLEeG3ZavNRuoWzA"/>
+          </requirements>
+          <requirements xmi:id="_VBT3AGzrEeGsmccXJNYRng" name="Le projet &quot;référentiel&quot; devra pouvoir bénéficier des mêmes outils qu'un projet standard" id="NVF_UC35T25_06" statement="Ce projet pouvant bénéficier des mêmes outils qu’un projet standard : • l’outillage Mantis de la forge centrale peut être utilisé pour gérer les anomalies sur les composants communs, &#xD;&#xA;• l’outillage Forum de la forge peut être utilisé pour les gérer discussions transverses aux projets&#xD;&#xA;" rationale="SFN_IC_334_01_5&#xD;&#xA;">
+            <referencedObject href="SAFRAN_M6.graal#_qSwWUFMLEeG3ZavNRuoWzA"/>
+          </requirements>
+        </subCategories>
+        <subCategories xmi:id="_mANvkEKjEeGhOeqTIW6DGA" name="Mettre à jour le projet référentiel" id="UC35T26">
+          <requirements xmi:id="_74CQEEKmEeGhOeqTIW6DGA" name="Modification contenu projet référentiel" id="NVF_UC35T26_01" statement="Seul l'administrateur de la forge centrale peut modifier le contenu du projet référentiel sur la forge centrale.&#xD;&#xA;" rationale="IC_334_04"/>
+          <requirements xmi:id="__y0qoEKmEeGhOeqTIW6DGA" name="Mise à jour de la GED dans le projet référentiel" id="NVF_UC35T26_02" statement="Seul l'administrateur de la forge centrale peut modifier le contenu de la GED sur la forge centrale.&#xD;&#xA;" rationale="IC_334_04"/>
+          <requirements xmi:id="_EtiRIEKnEeGhOeqTIW6DGA" name="Mise à jour du wiki  dans le projet référentiel" id="NVF_UC35T26_03" statement="Seul l'administrateur de la forge centrale peut modifier le contenu du wiki sur la forge centrale.&#xD;&#xA;" rationale="IC_334_04" status=""/>
+          <requirements xmi:id="_PXG34EKnEeGhOeqTIW6DGA" name="Mise à jour des listes de diffusion  dans le projet référentiel" id="NVF_UC35T26_04" statement="Seul l'administrateur de la forge centrale peut modifier les listes diffusions sur la forge centrale." rationale="IC_334_04"/>
+        </subCategories>
+        <subCategories xmi:id="_sVOw4EKjEeGhOeqTIW6DGA" name="Accèder au projet référentiel" id="UC35T24">
+          <requirements xmi:id="_oxHCgEKmEeGhOeqTIW6DGA" name="Accès référentiel forge centrale" id="NVF_UC35T24_01" statement="L'accès au projet référentiel est possible en lecture pour tous les utilisateurs de la forge centrale.&#xD;&#xA;&#xD;&#xA;" rationale="SFN_IC_334_04_3"/>
+          <requirements xmi:id="_sSQ1EEKmEeGhOeqTIW6DGA" name="Modifier contenu projet référentiel  " id="NVF_UC35T24_02" statement="Seul l'administrateur de la forge centrale peut modifier le contenu du projet référentiel sur la forge centrale." rationale="SFN_IC_334_04_3"/>
+          <requirements xmi:id="_xAmzgEKmEeGhOeqTIW6DGA" name="Distribution projet référentiel" id="NVF_UC35T24_03" statement="Le projet référentiel est descendu vers toute la grappe des forges pour un accès en lecture au contenu du projet référentiel." rationale="SFN_IC_334_04_3"/>
+        </subCategories>
+        <subCategories xmi:id="_6KM8oEKjEeGhOeqTIW6DGA" name="Mettre à disposition les outils du projet référentiel" id="UC35T19">
+          <subCategories xmi:id="_FP768EKkEeGhOeqTIW6DGA" name="Déposer outils/IDEs" id="UC35T20">
+            <requirements xmi:id="_kcr1YEKlEeGhOeqTIW6DGA" name="Déposer outil référentiel forge" id="NVF_UC35T20_01" statement="Seul l'administrateur de la forge centrale peut déposer un outil dans l'espace outils du référentiel de la forge centrale.&#xD;&#xA;" rationale="SFN_IC_334_04_3"/>
+            <requirements xmi:id="_golYMFPpEeG3ZavNRuoWzA" name="Dépôt via connexion ftp authentifiée." id="NVF_UC35T20_02" statement="Le dépôt d'un outil ou fichier se fera via ftp authentifié." rationale="SFN_IC_334_04_3"/>
+            <requirements xmi:id="_nKaGcFPpEeG3ZavNRuoWzA" name="Notification forges filles" id="NVF_UC35T20_03" statement="Les administrateurs des forges filles seront notifiés par email au sujet des mises à jour disponibles." rationale="">
+              <referencedObject href="SAFRAN_M6.graal#_JwWbEFMLEeG3ZavNRuoWzA"/>
+            </requirements>
+          </subCategories>
+          <subCategories xmi:id="_NE6TIEKkEeGhOeqTIW6DGA" name="Récupérer outils/IDEs" id="UC35T21">
+            <requirements xmi:id="_UKNscEKlEeGhOeqTIW6DGA" name="Récupérer outil dépôt" id="NVF_UC35T21_01" statement="Les administrateurs de chaque forge fille récupèrent les outils via FTP authentifié.&#xD;&#xA;&#xD;&#xA;" rationale="SFN_IC_334_04_3"/>
+            <requirements xmi:id="_nzbN8EamEeGM89_GjjgmSg" name="IHM récupération des  IDEs" id="NVF_UC35T21_02" statement="Les administrateurs de chaque forge fille disposent d'une IHM pour récupérer les dernières versions d'IDEs.&#xD;&#xA;&#xD;&#xA;"/>
+          </subCategories>
+        </subCategories>
+        <subCategories xmi:id="_TkzHsEKkEeGhOeqTIW6DGA" name="Synchronisation projet référentiel" id="UC35T36">
+          <requirements xmi:id="_ECKq0EKlEeGhOeqTIW6DGA" name="Mise à jour contenu référentiel forges filles" id="NVF_UC35T36_01" statement="L'administrateur de la forge centrale décide de l'envoie du contenu du projet référentiel vers la grappe des forge&#xD;&#xA;" rationale="SFN_IC_334_04_3"/>
+          <requirements xmi:id="_SuXDkFPqEeG3ZavNRuoWzA" name="Référence projet référentiel centrale" id="NVF_UC35T36_02" statement="C'est le contenu du projet référentiel de la forge centrale qui fait référence. Il n'y a pas d'envoie du projet référentiel des forge filles vers la forge centrale&#xD;&#xA;" rationale="SFN_IC_334_05_2" acceptanceCriteria=""/>
+        </subCategories>
+      </subCategories>
+      <subCategories xmi:id="_jSK-QEgwEeGM89_GjjgmSg" name="Gérer les templates projet" id="UC35T2">
+        <requirements xmi:id="_kmoS8Eg0EeGM89_GjjgmSg" name="Confirmation suppression template" id="NVF_UC35T11_001" statement="Une demande de confirmation de suppression est demandée pour la suppression d'un template" rationale="" status="">
+          <referencedObject href="SAFRAN_M6.graal#_t--A0FfWEeGGKrmzTGQGJg"/>
+        </requirements>
+        <requirements xmi:id="_ERxCsGxKEeGaIYmCTV3mXw" name="Template de projet : Groupes / Rôles PHARE" id="NVF_UC35T01_001" statement="L'outil doit supporter la méthode en fournissant des utilisateurs correspondants aux rôles et profils de la méthode PHARE&#xD;&#xA;" rationale="SFN_PP_33521_01_2&#xD;&#xA;">
+          <referencedObject href="SAFRAN_M6.graal#_Zgfk8FfrEeGSH_1iSIFASw"/>
+        </requirements>
+        <subCategories xmi:id="_0RDhQEgwEeGM89_GjjgmSg" name="Créer un template projet" id="UC35T9">
+          <requirements xmi:id="_huqHoEgxEeGM89_GjjgmSg" name="Champs obligatoires création template" id="NVF_UC35T9_001" statement="Les champs Libellé (unique)  et  Description sont obligatoires pour la création d'un template&#xD;&#xA;" rationale=""/>
+          <requirements xmi:id="_rg9IIEgxEeGM89_GjjgmSg" name="Liste des  templates prédéfinis" id="NVF_UC35T9_002" statement="La liste des templates fournis par défaut sont :&#xD;&#xA;- template Forfait de TMA&#xD;&#xA;- template Forfait classique&#xD;&#xA;- template Agile&#xD;&#xA;- template Interne" rationale="">
+            <referencedObject href="SAFRAN_M6.graal#_Zgfk8FfrEeGSH_1iSIFASw"/>
+          </requirements>
+          <requirements xmi:id="_yGNk4EgxEeGM89_GjjgmSg" name="Liste des états pour les templates" id="NVF_UC35T9_003" statement="Les états possible pour un template sont: en cours de création, validé."/>
+          <requirements xmi:id="_iZwdoEgyEeGM89_GjjgmSg" name="Arborescence GED pour les templates [ADU pour spec ARTEFACT]" id="NVF_UC35T9_008" statement="Liste des répertoires par default dans l'arborescence GED"/>
+          <requirements xmi:id="_o33JgEgyEeGM89_GjjgmSg" name="Liste des catégories Mantis [ADU pour spec ARTEFACT]" id="NVF_UC35T9_009" statement="Les catégories Mantis prédéfinis pour un template.&#xD;&#xA;"/>
+          <requirements xmi:id="_XZM9cEg2EeGM89_GjjgmSg" name="Etat template en cours de création." id="NVF_UC35T9_010" statement="Le template n'est pas encore disponible dans la liste des templates à utiliser pour la création d'un projet."/>
+          <requirements xmi:id="_tuOesEg2EeGM89_GjjgmSg" name="Etat template validé." id="NVF_UC35T9_011" statement="Le template est disponible dans la liste des templates à utiliser pour la création d'un projet.&#xD;&#xA;"/>
+          <subCategories xmi:id="_Zsx1YEwiEeGMzPFItRtRhQ" name="Création template TMA" id="UC35T32">
+            <requirements xmi:id="_i1g7gEwiEeGMzPFItRtRhQ" name="Chargement outil Mantis" id="NVF_UC35T32_001" statement="L'outil Mantis doit être disponible pour l'ajout au template TMA">
+              <referencedObject href="SAFRAN_M6.graal#_Zgfk8FfrEeGSH_1iSIFASw"/>
+            </requirements>
+            <requirements xmi:id="_rDFZ4EwiEeGMzPFItRtRhQ" name="Accès référentiel exigences" id="NVF_UC35T32_002" statement="Le gestionnaire du référentiel d'exigences doit être disponible pour l'ajout au template TMA&#xD;&#xA;&#xD;&#xA;">
+              <referencedObject href="SAFRAN_M6.graal#_Zgfk8FfrEeGSH_1iSIFASw"/>
+            </requirements>
+            <requirements xmi:id="_ymfg8EwiEeGMzPFItRtRhQ" name="Liste des rôles template TMA" id="NVF_UC35T32_003" statement="Liste de rôles:  développeur, chef de projet, validator, responsable fonctionnel, responsable technique&#xD;&#xA;" rationale="SFN_G_3351_12_1&#xD;&#xA;">
+              <referencedObject href="SAFRAN_M6.graal#_Zgfk8FfrEeGSH_1iSIFASw"/>
+            </requirements>
+            <requirements xmi:id="_4nZTcEwiEeGMzPFItRtRhQ" name="Liste des catégories Mantis" id="NVF_UC35T32_004" statement="Les catégories Mantis prédéfinis pour un template TMA.&#xD;&#xA;Mineur, Majeur, Bloquant&#xD;&#xA;">
+              <referencedObject href="SAFRAN_M6.graal#_Zgfk8FfrEeGSH_1iSIFASw"/>
+            </requirements>
+          </subCategories>
+          <subCategories xmi:id="_BlsrMEwjEeGMzPFItRtRhQ" name="Création template forfait" id="UC35T33">
+            <requirements xmi:id="_GvTpUEwjEeGMzPFItRtRhQ" name="Chargement liste outils template Forfait" id="NVF_UC35T33_001" statement="Liste des outils nécessaires pour la création d'un  template Forfait: Mantis, TestLink, Alfresco, SVN">
+              <referencedObject href="SAFRAN_M6.graal#_Zgfk8FfrEeGSH_1iSIFASw"/>
+            </requirements>
+            <requirements xmi:id="_PZekIEwjEeGMzPFItRtRhQ" name="Accès référentiel exigences" id="NVF_UC35T33_002" statement="Le gestionnaire du référentiel d'exigences doit être disponible pour l'ajout au template Forfait&#xD;&#xA;&#xD;&#xA;">
+              <referencedObject href="SAFRAN_M6.graal#_Zgfk8FfrEeGSH_1iSIFASw"/>
+            </requirements>
+            <requirements xmi:id="_VBDQoEwjEeGMzPFItRtRhQ" name="Liste des rôles template Forfait" id="NVF_UC35T33_003" statement="Liste de rôles:  développeur, chef de projet, validator, responsable fonctionnel, responsable technique&#xD;&#xA;" rationale="SFN_G_3351_12_1&#xD;&#xA;">
+              <referencedObject href="SAFRAN_M6.graal#_Zgfk8FfrEeGSH_1iSIFASw"/>
+            </requirements>
+            <requirements xmi:id="_bIzSAEwjEeGMzPFItRtRhQ" name="Arborescence GED" id="NVF_UC35T33_004" statement="Liste des répertoires pre definis dans l'arborescence GED  [ADU pour spec ARTEFACT]&#xD;&#xA;">
+              <referencedObject href="SAFRAN_M6.graal#_Zgfk8FfrEeGSH_1iSIFASw"/>
+            </requirements>
+          </subCategories>
+          <subCategories xmi:id="_i7GJoEwjEeGMzPFItRtRhQ" name="Création template Agile" id="UC35T34">
+            <requirements xmi:id="_nMiJoEwjEeGMzPFItRtRhQ" name="Chargement liste outils template Agile" id="NVF_UC35T34_001" statement="Liste des outils nécessaires pour la création d'un  template Forfait: Pilotage, TestLink, Mantis, Wiki" status="">
+              <referencedObject href="SAFRAN_M6.graal#_Zgfk8FfrEeGSH_1iSIFASw"/>
+            </requirements>
+            <requirements xmi:id="_ujQfkEwjEeGMzPFItRtRhQ" name="Accès référentiel exigences" id="NVF_UC35T34_002" statement="Le gestionnaire du référentiel d'exigences doit être disponible pour l'ajout au template Agile">
+              <referencedObject href="SAFRAN_M6.graal#_Zgfk8FfrEeGSH_1iSIFASw"/>
+            </requirements>
+            <requirements xmi:id="_0n4UcEwjEeGMzPFItRtRhQ" name="Liste des rôles template Forfait" id="NVF_UC35T34_003" statement="Liste de rôles:  développeur, chef de projet, validator, responsable fonctionnel, responsable technique&#xD;&#xA;" rationale="SFN_G_3351_12_1&#xD;&#xA;">
+              <referencedObject href="SAFRAN_M6.graal#_Zgfk8FfrEeGSH_1iSIFASw"/>
+            </requirements>
+            <requirements xmi:id="_6LtwcEwjEeGMzPFItRtRhQ" name="Arborescence GED " id="NVF_UC35T34_004" statement="Liste des répertoires pre definis dans l'arborescence GED [ADU pour spec ARTEFACT]&#xD;&#xA;">
+              <referencedObject href="SAFRAN_M6.graal#_Zgfk8FfrEeGSH_1iSIFASw"/>
+            </requirements>
+          </subCategories>
+        </subCategories>
+        <subCategories xmi:id="_4H-IcEgwEeGM89_GjjgmSg" name="Modifier un template projet" id="UC35T10">
+          <requirements xmi:id="_VJjBQEgxEeGM89_GjjgmSg" name="Modification template référentiel " id="NVF_UC35T10_001" statement="La modification des templates du référentiel est autorisée sur    la for centrale pour  l'administrateur de la forge et l'administrateur fonctionnel.">
+            <referencedObject href="SAFRAN_M6.graal#_4axlgEEmEeGhOeqTIW6DGA"/>
+          </requirements>
+          <requirements xmi:id="_aqjywEgxEeGM89_GjjgmSg" name="Modification template forge zonale/locale" id="NVF_UC35T10_002" statement="La modification d'un template sur une forge zonale/locale est autorisée sur   pour  l'administrateur de la forge et l'administrateur fonctionnel. Ces modifications seront valables que sur la forge ou la modification a été faite. Elle ne seront pas remontés vers le référentiel de la forge centrale.&#xD;&#xA;">
+            <referencedObject href="SAFRAN_M6.graal#_4axlgEEmEeGhOeqTIW6DGA"/>
+          </requirements>
+          <requirements xmi:id="_H-7LoFfrEeGSH_1iSIFASw" name="Valider / dévalider un template projet" id="NVF_UC35T9_015" statement="Permettre de valider / dévalider un template projet et le rendre ainsi accessible inaccessible dans la liste des templates disponibles pour création." status="">
+            <referencedObject href="SAFRAN_M6.graal#_3XhmcFfoEeGGKrmzTGQGJg"/>
+          </requirements>
+          <requirements xmi:id="_CeOmgGxgEeGaIYmCTV3mXw" name="Gestion des droits : Paramètrer les permissions" id="NVF_UC35T10_01" statement="Une configuration particulière des profils par défaut doit être possible.&#xD;&#xA;" rationale="SFN_G_3351_12_2&#xD;&#xA;&#xD;&#xA;">
+            <referencedObject href="SAFRAN_M6.graal#_UagmwFfkEeGGKrmzTGQGJg"/>
+          </requirements>
+          <requirements xmi:id="_ozSK8GxiEeGaIYmCTV3mXw" name="Template de projet : Liste des applications et mapping des rôles" id="NVF_UC35T9_017" statement="La liste des rôles ainsi que les artefacts à produire pour chaque rôle doivent être définis par PHARE, selon le type de projet, et ce, en fonction de la phase du projet&#xD;&#xA;" rationale="SFN_PP_33521_01_3">
+            <referencedObject href="SAFRAN_M6.graal#_YZlrcFfkEeGGKrmzTGQGJg"/>
+          </requirements>
+        </subCategories>
+      </subCategories>
+    </subCategories>
+    <subCategories xmi:id="_umsSUDVfEeGUarZ1nKomqg" name="Gerer le referentiel des exigences" id="UC36">
+      <subCategories xmi:id="_w7OOwDYlEeGUarZ1nKomqg" name="Mettre à jour le référentiel de Forge à partir du référentiel OBEO  (partie CRUD Exigence)" id="UC36T22">
+        <requirements xmi:id="_SwdkEDaYEeGUarZ1nKomqg" name="Transmission des informations de création de nouveau cas de test du gestionnaire de test à l'outil de gestion du référentiel" id="NVF_FCT_362201" statement="Le système doit transmettre les informations de création de nouveau cas de test :&#xD;&#xA;- Id cas de test&#xD;&#xA;- Version&#xD;&#xA;- liste des exigences associées" rationale="SFN_PP_33524_04_15;SFN_G_3351_01_11">
+          <referencedObject href="SAFRAN_M6.graal#_Yv6BQDXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_R1etEDaZEeGUarZ1nKomqg" name="Transmission des informations de modification d'un cas de test du gestionnaire de test à l'outil de gestion du référentiel" id="NVF_FCT_362202" statement="Le système doit transmettre les informations de modification de cas de test existant :&#xD;&#xA;- Id cas de test&#xD;&#xA;- Version&#xD;&#xA;- Liste des exigences associées&#xD;&#xA;S'il y a et par campagne de test :&#xD;&#xA;&#x9;- Campagne de test associée (Id et nom)&#xD;&#xA;&#x9;- Résultat de test voir date si possible s'il y a démarrage campagne" rationale="SFN_PP_33524_04_16">
+          <referencedObject href="SAFRAN_M6.graal#_Yv6BQDXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_4HBw4DajEeGUarZ1nKomqg" name="Evénement qui doivent déclencher la transmission des informations liées aux cas de test" id="NVF_FCT_362203" statement="Le système doit transmettre au gestionnaire du référentiel d'exigence sur les évenements suivants :&#xD;&#xA;- création d'un cas de test, &#xD;&#xA;- montée de version d'un cas de test, &#xD;&#xA;- démarrage camapagne pour un cas de test,&#xD;&#xA;- résultat de test renseigné,&#xD;&#xA;- maj à jour des exigences d'un cas de test." rationale="SFN_PP_33524_04_16;SFN_G_3351_01_11" status="">
+          <referencedObject href="SAFRAN_M6.graal#_Yv6BQDXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_fT2JIDa5EeGUarZ1nKomqg" name="Enregistrer date de mise à jour du référentiel d'exigences" id="NVF_FCT_362204" statement="Le système doit enregistrer le date de mise à jour du référentiel d'exigences : &lt;JJ/MM/AAAA:HH:MM>." rationale="SFN_PP_33524_04_13;SFN_G_3351_01_11" status="">
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_VUGQkDa7EeGUarZ1nKomqg" name="Unicité du processus de synchronisation du référentiel d'exigence" id="NVF_TEC_362205" statement="Le système ne doit pas permettre l'exécution de plus d'un processus de synchronisation de référentiel d'exigence par projet." rationale="SFN_PP_33524_04_13">
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_nVg0oDfZEeGlouIALIGdsw" name="Suppression exigence dans référentiel des exigences" id="NVF_FCT_362206" statement="Si une exigence existait dans le référentiel d'exigences de la forge et n'existe plus dans l'entrée (fichier &quot;.requirement&quot;) à synchroniser, alors l'exigence passe dans l'état &quot;obsolète&quot;." rationale="SFN_PP_33524_04_13">
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_GY4mEDfaEeGlouIALIGdsw" name="Création exigence dans référentiel des exigences" id="NVF_FCT_362207" statement="Sur création d'une exigence dans le référentiel d'exigences de la forge par le processus de synchronisation l'exigence passe dans l'état &quot;valide&quot; et les information suivante sont renseignées :&#xD;&#xA;- Type,&#xD;&#xA;- SubType,&#xD;&#xA;- Id,&#xD;&#xA;- Name,&#xD;&#xA;- Status,&#xD;&#xA;- Statement,&#xD;&#xA;- Rationale,&#xD;&#xA;- Date de création,&#xD;&#xA;- et Version." rationale="SFN_PP_33524_04_13">
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_cyE1oDfaEeGlouIALIGdsw" name="Mise à jour exigence dans référentiel des exigences" id="NVF_FCT_362208" statement="Sur mise à jour d'une exigence dans le référentiel d'exigences de la forge par le processus de synchronisation l'exigence est mise à jour avec les informations suivantes :&#xD;&#xA;- Type,&#xD;&#xA;- SubType,&#xD;&#xA;- Id,&#xD;&#xA;- Name,&#xD;&#xA;- Status,&#xD;&#xA;- Statement,&#xD;&#xA;- Rationale,&#xD;&#xA;- Date de modification,&#xD;&#xA;- et Version." rationale="SFN_PP_33524_04_13">
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_15wrwDfaEeGlouIALIGdsw" name="Mise à jour cas de test dans référentiel des exigences" id="NVF_FCT_362209" statement="Sur mise à jour d'une association cas de test exigence dans le référentiel d'exigences de la forge par le processus de synchronisation le système mets à jour pour chaque concerné par chaque cas de test les informations suivantes :&#xD;&#xA;- Campagne (Id, nom si existe),&#xD;&#xA;- cas de test (Id, version) et si campagne lancée (date, résultat si existe).&#xD;&#xA;Dès lors qu'un cas de test est associé à une exigence, l'exigence est liée et son attribut &quot;EstLieeACasDeTest&quot; vaut VRAI." rationale="SFN_PP_33524_04_15" acceptanceCriteria="">
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="__ueRoDfbEeGlouIALIGdsw" name="Synchronisation journalière" id="NVF_FCT_362210" statement="Le système doit permettre de lancer la synchronisation de manière automatique une fois par jour." rationale="SFN_PP_33524_04_13;SFN_G_3351_01_17">
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_u3D98DwgEeG0QJHBpfKeRw" name="Synchronisation - historisation" id="NVF_FCT_362211" statement="Le système doit conserver la trace de chaque montée de version que ce soit d'une exigence ou d'un cas de test dans le couple exigence - cas de test.&#xD;&#xA;On pourra ainsi avoir par exigence l'historique de ses montées de version, avec sur chacune de ces montées de version un lien vers un éventuel cas de test ou une évolution de ce cas de test." rationale="SFN_PP_33524_04_13">
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_PS_BQDwiEeG0QJHBpfKeRw" name="Synchronisation - Vérifier qu'une exigence à créer ne reprend pas l'identifiant d'une exigence obsolète" id="NVF_FCT_362212" statement="Traitement des doublons par remise de l'état précédent à l'exigence et génération d'un message d'erreur (MSG_ERR_Logging_maj_exigences)." rationale="SFN_PP_33524_04_13">
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_ZlDl0DxVEeG0QJHBpfKeRw" name="Synchronisation - Vérifier qu'une la liste des exigences peut être chargée" id="NVF_FCT_362213" statement="Suite à lecture des fichiers &quot;.requirement&quot; dans l'arborescence de spécification, vérifier non seulement qu'il y a en a au moins un qui existe mais aussi qu'il y a au moins une exigence à traiter lors du processus de synchronisation (NVF_ERR_loading_exigences)." rationale="SFN_PP_33524_04_13">
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_RONaMDxWEeG0QJHBpfKeRw" name="Synchronisation - Vérifier que la récupération des cas des test du gestionnaire de test se passe correctement" id="NVF_FCT_362214" statement="C'est la remontée des informations lors de la communication entre les plugins &quot;Gestion du Référentiel d'Exigences&quot; et &quot;Gestion des tests&quot;." rationale="SFN_PP_33524_04_13">
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_Vy7tIDxXEeG0QJHBpfKeRw" name="Suppression d'une association d'une exigence vers un cas de test" id="NVF_FCT_362215" statement="Lors de la synchronisation du gestionnaire de test vers le référentiel d'exigence, si l'assoction d'une exigence vers un test case est supprimée alors :&#xD;&#xA;- s'il reste une association vers au moins un test case alors ne rien faire&#xD;&#xA;- par contre s'il ne reste plus d'association vers aucun test case alors positionner l'attribut &quot;EstLieeACasDeTest&quot; de cette exigence à VRAI." rationale="SFN_PP_33524_04_15">
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_ccX64FDSEeGFAN5Ao94FFg" name="Préparer les vue par le code" id="NVF_FCT_362220" statement="Le système doit transmettre parser le code afin de retrouver les deux TAG (ou référence) : req_generee=ID(Exigence),Version et gen_codee=ID(Exigence),Version afin de permettre le calcul des indicateurs des vues liées au code et mettre à jour le référentiel d'exigence avec." rationale="SFN_PP_33524_04_14">
+          <referencedObject href="SAFRAN_M6.graal#_Yv6BQDXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_5ZkCMDfUEeGlouIALIGdsw" name="Condition de passage dans l'état Non couverte par Cas de Test" id="NVF_FCT_3622050" statement="Une exigence doit être dans l'état &quot;Non couverte par Cas de Test&quot; à l'initialisation (création) ou sur reprise de donnée (cas COSI) ou bien lorsque plus aucun cas de test ne trace une exigence non obsolète." rationale="SFN_PP_33524_04_16" acceptanceCriteria="" status="">
+          <referencedObject href="SAFRAN_M6.uml#_trdY8DerEeGxf7iHgAnvUw"/>
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_7stpMDfXEeGlouIALIGdsw" name="Condition de passage dans l'état Couverte par Cas de Test non à jour" id="NVF_FCT_3622051" statement="Une exigence doit être dans l'état &quot;Couverte par Cas de Test non à jour&quot; lorsqu'à une version donnée de l'exigence ne correspond pas ou plus à une version donnée d'un cas de test. &#xD;&#xA;Ce qui implique que lorsqu'une exigence monte de version, tant que son cas de test n'a pas monté de version ou qu'un nouveau cas de test ne lui a pas été affecté elle est dans cet état.&#xD;&#xA;On retombe dans cet état sur suppression d'un cas de test (cas d'un exigence désallouée par exemple)." rationale="SFN_PP_33524_04_16" acceptanceCriteria="" status="">
+          <referencedObject href="SAFRAN_M6.uml#_1XfQgDerEeGxf7iHgAnvUw"/>
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_K41DgDfXEeGlouIALIGdsw" name="Condition de passage dans l'état Couverte par Cas de Test à jour" id="NVF_FCT_3622052" statement="Une exigence doit être dans l'état &quot;Couverte par Cas de Test à jour&quot; lorsqu'à une version donnée de l'exigence correspond à une version donnée d'un cas de test. &#xD;&#xA;Ce qui implique que lorsqu'une exigence monte de version, elle deviend dans cet état dès la première affectation d'un cas de test, dès que l'on ajoute un cas de test de version supérieure à la précédente ou dès que l'on affecte un nouveau cas de test." rationale="SFN_PP_33524_04_16" acceptanceCriteria="" status="">
+          <referencedObject href="SAFRAN_M6.uml#_7UNtoDerEeGxf7iHgAnvUw"/>
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_Px2fIFDJEeGFAN5Ao94FFg" name="Condition de passage dans l'état Non couverte par le code" id="NVF_FCT_3622060" statement="Une exigence doit être dans l'état &quot;Non couverte parle code&quot; à l'initialisation (création) ou bien lorsque plus aucunsource ne trace une exigence non obsolète (pas de balise de type &quot;exigence codée&quot;)." rationale="SFN_PP_33524_04_16" acceptanceCriteria="" status="">
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+          <referencedObject href="SAFRAN_M6.uml#_YjswEFCZEeGFAN5Ao94FFg"/>
+        </requirements>
+        <requirements xmi:id="_Px2fIVDJEeGFAN5Ao94FFg" name="Condition de passage dans l'état Couverte par le code non à jour" id="NVF_FCT_3622061" statement="Une exigence doit être dans l'état &quot;Couverte par le code non à jour&quot; lorsqu'à une version donnée de l'exigence ne correspond pas ou plus à une version codée. &#xD;&#xA;Ce qui implique que lorsqu'une exigence monte de version, tant que les sources n'e sont pas monté de version ou qu'un nouveau source ne lui a pas été affecté elle est dans cet état.&#xD;&#xA;On retombe dans cet état sur suppression du source qui couvrait cette exigence (cas d'un exigence désallouée par exemple)." rationale="SFN_PP_33524_04_16" acceptanceCriteria="" status="">
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+          <referencedObject href="SAFRAN_M6.uml#_e762YFCZEeGFAN5Ao94FFg"/>
+        </requirements>
+        <requirements xmi:id="_Px2fIlDJEeGFAN5Ao94FFg" name="Condition de passage dans l'état Couverte par le code à jour" id="NVF_FCT_3622062" statement="Une exigence doit être dans l'état &quot;Couverte par le code à jour&quot; lorsqu'à une version donnée de l'exigence correspond à une version codée dans le source (version codée correspond à version en base). &#xD;&#xA;Ce qui implique que lorsqu'une exigence monte de version, elle deviend dans cet état dès la première affectation à au moins un source, dès que l'on ajoute un source codé de version égale ou dès que l'on affecte un nouveau source avec la bonne version de l'exigence codée." rationale="SFN_PP_33524_04_16" acceptanceCriteria="" status="">
+          <referencedObject href="SAFRAN_M6.uml#_7UNtoDerEeGxf7iHgAnvUw"/>
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_9KnSQHhcEeGaFIl5BVsxPg" name="Mise à jour lien exigence / unité de périmètre dans référentiel des exigences" id="NVF_FCT_362265" statement="Sur mise à jour d'une exigence dans le référentiel d'exigences de la forge par le processus de mise à jour de l'exigence, le lien ou les liens éventuels de l'exigence et des unités de périmètre doit être maintenu (les cas d'erreur sont à loguer)." rationale="SFN_PP_33524_04_13">
+          <referencedObject href="SAFRAN_M6.graal#_Rqzm0DXYEeGUarZ1nKomqg"/>
+        </requirements>
+      </subCategories>
+      <subCategories xmi:id="_9tm8IDYlEeGUarZ1nKomqg" name="Gérer le référentiel des exigences" id="UC36T7">
+        <requirements xmi:id="_cLDBoDa4EeGUarZ1nKomqg" name="Présentation de la dernière date de mise à jour du référentiel d'exigences" id="NVF_FCT_360701" statement="Le système doit présenter le message suivant à l'utilisateur : &quot;Dernière date de synchronisation du référentiel d'exigences :  &lt;JJ/MM/AAAA:HH:MM>&quot;." rationale="">
+          <referencedObject href="SAFRAN_M6.graal#_wqOMsDXVEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_a2748Da5EeGUarZ1nKomqg" name="Récupérer la dernière date de mise à jour du référentiel d'exigences" id="NVF_TEC_360702" statement="Le système doit récupérer la date de dernière synchronisation du référentiel : &lt;JJ/MM/AAAA:HH:MM>." rationale="">
+          <referencedObject href="SAFRAN_M6.graal#_0gil0Da4EeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_EDwxMDa7EeGUarZ1nKomqg" name="Désactivation du bouton pendant le traitement de la demande de synchronisation manuelle" id="NVF_FCT_360703" statement="Le système doit désactiver le bouton pendant le traitement de la demande de synchronisation manuelle et ne pas permettre le lancementde de plus d'un synchronisation en même temps." rationale="">
+          <referencedObject href="SAFRAN_M6.graal#_2Tap0DXVEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_-64WYDa7EeGUarZ1nKomqg" name="Vue fonctionnelle - Récupérer la liste des exigences" id="NVF_TEC_360704" statement="Récupérer la liste des exigences ainsi que les informations d'arborescence fonctionnelle (Modules, CU, tâches...) et les champs suivants :&#xD;&#xA;- Type,&#xD;&#xA;- SubType,&#xD;&#xA;- Id,&#xD;&#xA;- Name,&#xD;&#xA;- Status,&#xD;&#xA;- Statement,&#xD;&#xA;- Rationale,&#xD;&#xA;- Date de création,&#xD;&#xA;- Date de modification,&#xD;&#xA;- et Version." rationale="">
+          <referencedObject href="SAFRAN_M6.graal#_AAcv0DXWEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_6S-k4DbAEeGUarZ1nKomqg" name="Liens vers description de l'exigence fonctionnelle (depuis la vue par le code)" id="NVF_FCT_362705" statement="Le système doit permettre sur sélection d'une exigence (depuis la vue par le code) de positionner l'utilisateur dans la vue fonctionnelle afin qu'il ait accès à sa description fonctionnelle (de la vue fonctionnelle)." rationale="" status="">
+          <referencedObject href="SAFRAN_M6.graal#_1odL0DXWEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_L_VR4DbBEeGUarZ1nKomqg" name="Liens vers description de l'exigence fonctionnelle (depuis la vue par les tests)" id="NVF_FCT_362706" statement="Le système doit permettre sur sélection d'une exigence (depuis la vue par les tests) de positionner l'utilisateur dans la vue fonctionnelle afin qu'il ait accès à sa description fonctionnelle (de la vue fonctionnelle)." rationale="" status="">
+          <referencedObject href="SAFRAN_M6.graal#_ExBGYDXXEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_m0sx0DbBEeGUarZ1nKomqg" name="Vue par le code - Récupérer la liste des exigences codées" id="NVF_FCT_360707" statement="Récupérer la liste des exigencesavec les informations d'arborescence fonctionnelle (Modules, CU, tâches),  les descriptions issues du code suivantes :&#xD;&#xA;- Package,&#xD;&#xA;- Classe,&#xD;&#xA;Et les attributs suivants des exigences :&#xD;&#xA;- Id,&#xD;&#xA;- Libellé,&#xD;&#xA;- Version&#xD;&#xA;- sa version générée &#xD;&#xA;- sa version codée&#xD;&#xA;- et seulement le dernier état d'association avec l'indicateur correspondant (FONC)." rationale="" acceptanceCriteria="">
+          <referencedObject href="SAFRAN_M6.graal#_sQZ3UDXWEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_-86vADbBEeGUarZ1nKomqg" name="Vue par les tests - Récupérer la liste des exigences testées" id="NVF_TEC_360708" statement="Les informations à récupérer sont l'ensemble des exigences testées du système ce qui correspond à celle dont l'attribut .&#xD;&#xA;Le système doit aussi récupérer par exigence sa position dans l'arborescence fonctionnelle (Module, UC, tâche) ainsi que son libellé et sa version et seulement le dernier état d'association avec l'indicateur correspondant.&#xD;&#xA;Prévoir la récupération au niveau de l'interface des descriptions liées aux cas de tests suivantes :&#xD;&#xA;- Campagnes (nom, id),&#xD;&#xA;- Cas de test (Id, version) non utilisé en présentation : date, état." rationale="" acceptanceCriteria="">
+          <referencedObject href="SAFRAN_M6.graal#_BVrA4DXXEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_b9aowDbNEeGZAbEqkuAzhg" name="Vue fonctionnelle - Présenter la liste des exigences" id="NVF_FCT_360709" statement="Présenter la liste des exigences au sein de son arborescence fonctionnelle (Modules, CU, tâches)." rationale="">
+          <referencedObject href="SAFRAN_M6.graal#_ICWwwDXWEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_dIFFEDbNEeGZAbEqkuAzhg" name="Vue fonctionnelle - Afficher la description d'une exigence" id="NVF_FCT_360710" statement="Sur sélection d'une exigence, le système doit présenter en lecture seule les champs suivants :&#xD;&#xA;- Type,&#xD;&#xA;- SubType,&#xD;&#xA;- Id,&#xD;&#xA;- Name,&#xD;&#xA;- Status,&#xD;&#xA;- Statement,&#xD;&#xA;- Rationale,&#xD;&#xA;- Date de création,&#xD;&#xA;- Date de modification,&#xD;&#xA;- et Version." rationale="">
+          <referencedObject href="SAFRAN_M6.graal#_ZnHqUDbOEeGZAbEqkuAzhg"/>
+        </requirements>
+        <requirements xmi:id="_ufUoQDbOEeGZAbEqkuAzhg" name="Vue fonctionnelle - Récupérer la description d'une exigence" id="NVF_TEC_360711" statement="Le système doit récupérer la description fonctionnelle de l'exigence qui se traduit par les attributs suivants :&#xD;&#xA;- Type,&#xD;&#xA;- SubType,&#xD;&#xA;- Id,&#xD;&#xA;- Name,&#xD;&#xA;- Status,&#xD;&#xA;- Statement&#xD;&#xA;- Rationale&#xD;&#xA;- Date de création,&#xD;&#xA;- Date de modification,&#xD;&#xA;- et Version." rationale="">
+          <referencedObject href="SAFRAN_M6.graal#_joBukDbOEeGZAbEqkuAzhg"/>
+        </requirements>
+        <requirements xmi:id="_b9aowTbNEeGZAbEqkuAzhg" name="Vue par le code - Présenter la liste des exigences codées" id="NVF_FCT_360712" statement="Présenter la liste des exigences codées sous forme de tableau (triable sur toutes les colonnes) ou l'on présente les champs suivants :&#xD;&#xA;- Package,&#xD;&#xA;- Classe,&#xD;&#xA;- Module&#xD;&#xA;- UC&#xD;&#xA;- Tâche&#xD;&#xA;- Id exigence&#xD;&#xA;- Libellé exigence&#xD;&#xA;- Version exigence&#xD;&#xA;- Version générée / version codée (mettre « - » si pas de version)&#xD;&#xA;- Indicateur calculé par NVF_FCT_360715." rationale="" acceptanceCriteria="">
+          <referencedObject href="SAFRAN_M6.graal#_1odL0DXWEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_b9aowjbNEeGZAbEqkuAzhg" name="Vue par les tests - Présenter la liste des exigences testables" id="NVF_FCT_360713" statement="Présenter la liste des exigences tesables sous forme de tableau (triable sur toutes les colonnes) ou l'on présente les champs suivants :&#xD;&#xA;- Module&#xD;&#xA;- UC&#xD;&#xA;- Tâche&#xD;&#xA;- Id exigence&#xD;&#xA;- Libellé exigence&#xD;&#xA;- Version exigence&#xD;&#xA;- Id cas de test, &#xD;&#xA;- Version cas de test&#xD;&#xA;- Indicateur calculé par NVF_FCT_360714." rationale="" acceptanceCriteria="" subtype="">
+          <referencedObject href="SAFRAN_M6.graal#_ExBGYDXXEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_5oxyQDxbEeG0QJHBpfKeRw" name=" Vue par les tests - Préparer les indicateurs pour les exigences couvertes par des cas de test" id="NVF_FCT_360714" statement="Un indicateur est à présenter de la manière suivante :&#xD;&#xA;Logo/bullette verte : pour l'ensemble des exigences du système qui une veriosn de cas de test mis à jour face à la dernière montée de version de l'exigence (« EstLieeACasDeTest »vaut VRAI).&#xD;&#xA;Logo/bullette orange : pour l'ensemble des exigences du système qui ont un cas de test associé mais dont la version n'a pas été mise à jour alors que la version de l'exigence a elle évoluée." rationale="" status="">
+          <referencedObject href="SAFRAN_M6.graal#_Wh7xYDYmEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_HERm0FDQEeGFAN5Ao94FFg" name="Vue par le code - Préparer les indicateurs pour les exigences couvertes par le code" id="NVF_FCT_360715" statement="Un indicateur est à présenter de la manière suivante :&#xD;&#xA;Logo/bullette verte : pour l'ensemble des exigences du système qui une veriosn source codée et générée avec la bonne verion de l'exigence par rapport à celle en base de données (« EstLieeASource » vaut VRAI).&#xD;&#xA;Logo/bullette orange / jaune : voir exigence NVF_FCT_362804." rationale="" status="">
+          <referencedObject href="SAFRAN_M6.graal#_sQZ3UDXWEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_9AqqwHJ3EeG_xesym8B4jw" name="Outil de gestion des tests" id="NVF_FCT_360716" statement="La plateforme doit fournir un outil de gestion des tests à partir du référentiel d’exigences (Cf.M5UC12 NVF_FCT_360716)" rationale="SFN_G_3351_01_17">
+          <referencedObject href="SAFRAN_M6.graal#_wqOMsDXVEeGUarZ1nKomqg"/>
+        </requirements>
+      </subCategories>
+      <subCategories xmi:id="_kYZx8DYmEeGUarZ1nKomqg" name="Préparer la vue consolidée des exigences non couvertes par des cas de test" id="UC36T27">
+        <requirements xmi:id="_DkGe4DapEeGUarZ1nKomqg" name="Préparer liste des exigences non couvertes par des cas de test" id="NVF_FCT_362701" statement="Les informations à récupérer sont l'ensemble des exigences du système qui n'ont soit aucun cas de test d'associé soit un cas de test associé dont la version n'a pas été mise à jour alors que la version de l'exigence a elle évoluée.(TEC)&#xD;&#xA;Le système doit aussi récupérer par exigence sa position dans l'arborescence fonctionnelle (Module, UC, tâche) ainsi que son libellé et sa version et seulement le dernier état d'association avec l'indicateur correspondant.(FONC)&#xD;&#xA;" rationale="SFN_PP_33521_07_5" status="">
+          <referencedObject href="SAFRAN_M6.graal#_Wh7xYDYmEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_sRTRUDapEeGUarZ1nKomqg" name="Préparer les indicateurs pour les exigences non couvertes par des cas de test" id="NVF_FCT_362702" statement="Un indicateur est à présenter de la manière suivante :&#xD;&#xA;Logo/bullette rouge : pour l'ensemble des exigences du système qui n'ont eu aucun cas de test associé ou bien ceux qui ne sont plus lié à aucun cas de test : attribut &quot;EstLieeACasDeTest&quot; vaut FAUX.&#xD;&#xA;Logo/bullette orange : pour l'ensemble des exigences du système qui ont un cas de test associé mais dont la version n'a pas été mise à jour alors que la version de l'exigence a elle évoluée." rationale="SFN_PP_33521_07_5" status="">
+          <referencedObject href="SAFRAN_M6.graal#_Wh7xYDYmEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_RLwK4DaqEeGUarZ1nKomqg" name="Présenter les exigences non couvertes par des cas de test" id="NVF_FCT_362703" statement="Présenter la liste des exigences non couvertes par des cas de test sous forme de tableau (triable sur toutes les colonnes) ou l'on présente les champs suivants :&#xD;&#xA;- Module&#xD;&#xA;- UC&#xD;&#xA;- Tâche&#xD;&#xA;- Id exigence&#xD;&#xA;- Libellé exigence&#xD;&#xA;- Version exigence&#xD;&#xA;- Id cas de test, &#xD;&#xA;- Version cas de test&#xD;&#xA;- Indicateur calculé par NVF_FCT_362702." rationale="SFN_PP_33524_04_16" status="">
+          <referencedObject href="SAFRAN_M6.graal#_ZCtsEDYmEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_JYYfwDarEeGUarZ1nKomqg" name="Liens vers description de l'exigence fonctionnelle (depuis la vue consolidée par les cas de tests)" id="NVF_FCT_362704" statement="Le système doit permettre sur sélection d'un exigence de positionner l'utilisateur dans la vue fonctionnelle afin qu'il ait accès à sa description fonctionnelle (de la vue fonctionnelle)." rationale="SFN_PP_33524_04_16" acceptanceCriteria="" status="">
+          <referencedObject href="SAFRAN_M6.graal#_ZSSiQDasEeGUarZ1nKomqg"/>
+        </requirements>
+      </subCategories>
+      <subCategories xmi:id="_nmMjoDYmEeGUarZ1nKomqg" name="Préparer la vue consolidée des exigences non couvertes par du code" id="UC36T28">
+        <requirements xmi:id="_5oHsADaqEeGUarZ1nKomqg" name="Préparer liste des exigences non couvertes par le code" id="NVF_TEC_362801" statement="Les informations à récupérer sont l'ensemble des exigences du système qui ne sont pas taguée dans le code applicatif.&#xD;&#xA;Le système doit aussi récupérer par exigence sa position dans l'arborescence fonctionnelle (Module, UC, tâche) ainsi que son libellé et sa version.&#xD;&#xA;" rationale="SFN_PP_33524_04_16" status="">
+          <referencedObject href="SAFRAN_M6.graal#_KUztMDYmEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_5oHsATaqEeGUarZ1nKomqg" name="Présenter les exigences non couvertes par le code" id="NVF_FCT_362802" statement="Présenter la liste des exigences non couvertes par le code sous forme de tableau (triable sur toutes les colonnes) ou l'on présente les champs suivants :&#xD;&#xA;- Module&#xD;&#xA;- UC&#xD;&#xA;- Tâche&#xD;&#xA;- Id exigence&#xD;&#xA;- Libellé exigence&#xD;&#xA;- Version exigence&#xD;&#xA;- Indicateur calculé par NVF_FCT_362804." rationale="SFN_PP_33524_04_16" status="">
+          <referencedObject href="SAFRAN_M6.graal#_NCZ74DYmEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_erdb0DarEeGUarZ1nKomqg" name="Liens vers description de l'exigence fonctionnelle (depuis la vue consolidée par le code)" id="NVF_FCT_362803" statement="Le système doit permettre sur sélection d'un exigence de positionner l'utilisateur dans la vue fonctionnelle afin qu'il ait accès à sa description fonctionnelle (de la vue fonctionnelle)." rationale="SFN_PP_33524_04_16" status="">
+          <referencedObject href="SAFRAN_M6.graal#_rgOu0DarEeGUarZ1nKomqg"/>
+        </requirements>
+        <requirements xmi:id="_d_VUsFDNEeGFAN5Ao94FFg" name="Préparer les indicateurs pour les exigences non couvertes par le code" id="NVF_FCT_362804" statement="Un indicateur est à présenter de la manière suivante :&#xD;&#xA;Logo/bullette rouge : pour l'ensemble des exigences du système qui n'ont eu aucun code source associé ou bien ceux qui ne sont plus lié à aucun code source : attribut &quot;EstLieeASource&quot; vaut FAUX.&#xD;&#xA;Logo/bullette orange : pour l'ensemble des exigences du système qui ont un code source associé mais dont la version n'a pas été mise à jour dans le code (TAG : req_codee) alors que la version de l'exigence a elle évoluée.&#xD;&#xA;Logo/bullette jaune: pour l'ensemble des exigences du système qui ont un code source associé mais dont la version n'a pas été mise à jour dans le design (qui produit la génération) (TAG : req_generee) alors que la version de l'exigence a elle évoluée.&#xD;&#xA;La rouge prévaut sur l'orange et la jaune et s'il y a et jaune et orange en même temps, le bullet / logo ets bicoloré." rationale="SFN_PP_33521_07_6" status="">
+          <referencedObject href="SAFRAN_M6.graal#_KUztMDYmEeGUarZ1nKomqg"/>
+        </requirements>
+      </subCategories>
+      <subCategories xmi:id="_2O9NkDe3EeGlouIALIGdsw" name="Gérer la montée de version d'une exigence" id="UC36T29">
+        <requirements xmi:id="_DzGIADe4EeGlouIALIGdsw" name="Le changement de version ne peut être qu'ascendant" id="NVF_FCT_362901" statement="Le système ne peut présenter que des versions ascendantes de l'exigence. le calcul est le suivant :&#xD;&#xA;Version suivante = Version courante + 1." rationale="SFN_PP_33524_04_13" status="">
+          <referencedObject href="SAFRAN_M6.graal#_9eLKIDezEeGlouIALIGdsw"/>
+        </requirements>
+        <requirements xmi:id="_VFh5IDe4EeGlouIALIGdsw" name="Un changement de version d'exigence passe automatiquement par une confirmation" id="NVF_FCT_362902" statement="Le système ne peut modifier une version d'exigence qu'après avoir reçu une confirmation utilisateur." rationale="SFN_PP_33524_04_13" status="">
+          <referencedObject href="SAFRAN_M6.graal#_tOkdEDe1EeGlouIALIGdsw"/>
+        </requirements>
+        <requirements xmi:id="_l9LLsDe4EeGlouIALIGdsw" name="Enregistrement d'un changement de version d'exigence" id="NVF_FCT_362903" statement="Le système doit enregistrer la date de dernière modification de l'exigence associée à la montée de version." rationale="SFN_PP_33524_04_13" status="">
+          <referencedObject href="SAFRAN_M6.graal#_q9vC4De1EeGlouIALIGdsw"/>
+        </requirements>
+        <requirements xmi:id="_yqrZEDe4EeGlouIALIGdsw" name="Enregistrement lors de la création d'une première exigence" id="NVF_FCT_362904" statement="Le système doit enregistrer la date de création de l'exigence lors de sa création ou bien au premier enregistrement si cette date est vide (cas de la reprise de l'existant COSI)." rationale="SFN_PP_33524_04_13" status="">
+          <referencedObject href="SAFRAN_M6.graal#_q9vC4De1EeGlouIALIGdsw"/>
+        </requirements>
+      </subCategories>
+      <subCategories xmi:id="_ymoi4FivEeGivKFKNFarkg" name="Mettre à jour le référentiel de Forge à partir du référentiel OBEO" id="UC36T38">
+        <requirements xmi:id="_Fhz-AFixEeGivKFKNFarkg" name="Interface type web service offrant le CRFUD sur le référentiel d'exigence" id="NVF_FCT_363801" statement="Le système doit proposer une interface de type webservice permettant à un client authentifié d'effectuer des opérations de type CRUD sur le référentiel d'exigences." rationale="SFN_IC_334_03_3;SFN_PP_33524_04_13">
+          <referencedObject href="SAFRAN_M6.graal#_CnNuwFipEeGivKFKNFarkg"/>
+        </requirements>
+        <requirements xmi:id="_g9i6YFixEeGivKFKNFarkg" name="Parsing référentiel OBEO puis insertion par interface web service d'exigences" id="NVF_FCT_363802" statement="Le système doit lire le référentiel OBEO, récupérer de la forge par l'interface de type web service le ou les exigences correspondantes puis effectuer des opérations de type CRUD sur le référentiel d'exigences afin de le mettre à jour." rationale="SFN_PP_33524_04_13">
+          <referencedObject href="SAFRAN_M6.graal#_Ic2IkFitEeGivKFKNFarkg"/>
+        </requirements>
+      </subCategories>
+      <subCategories xmi:id="_LlXWgHhbEeGaFIl5BVsxPg" name="Mettre à jour le référentiel de Forge à partir du référentiel OBEO (partie Associer Unité de périmètre à exigence)" id="UC36T17">
+        <requirements xmi:id="_6KK1gHhbEeGaFIl5BVsxPg" name="Parsing référentiel OBEO puis insertion par interface web service du lien exigences - unité de périmètre" id="NVF_FCT_361701" statement="Le système doit lire le référentiel OBEO, récupérer de la forge par l'interface de type web service le ou les exigences correspondantes et le ou les unités de périmètres puis effectuer des opérations de type CRUD sur le référentiel d'exigences afin de le mettre à jour avec les liaisons entre exigences et unités de périmètres." rationale="SFN_PP_33524_04_13;PP_33521_07">
+          <referencedObject href="SAFRAN_M6.graal#_Ic2IkFitEeGivKFKNFarkg"/>
+          <referencedObject href="SAFRAN_M6.graal#_OV7J4FivEeGivKFKNFarkg"/>
+        </requirements>
+      </subCategories>
+    </subCategories>
+  </mainCategories>
+</requirement:Repository>

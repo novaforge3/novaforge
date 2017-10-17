@@ -1,0 +1,6 @@
+## Disable tty for '@NOVAFORGE_USER@'
+Defaults:@NOVAFORGE_USER@ !requiretty
+
+## Allows '@NOVAFORGE_USER@' to reload apache
+Cmnd_Alias APACHE = /usr/sbin/apachectl graceful
+@NOVAFORGE_USER@ ALL=(root) NOPASSWD: APACHE

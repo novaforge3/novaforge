@@ -1,0 +1,96 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+ 
+.v-splitpanel-first-container-nf-splitpanel-scroll,
+.sidebar-application-content .v-splitpanel-first-container-nf-splitpanel-scroll {
+		overflow: auto !important;
+}
+ 
+.v-splitpanel-hsplitter,
+.v-splitpanel-hsplitter-locked {
+	width: 7px;
+	background-repeat: repeat-y;
+	background-image: url(img/hor-bg.png); /** sprite-ref: horizontals; sprite-alignment: repeat */
+}
+.v-splitpanel-hsplitter div {
+	width: 7px;
+	height: 100%; /* for Opera */
+	background: transparent;
+	background-repeat: no-repeat;
+	background-position: 50%;
+	background-image: url(img/hor-handle.png); /** sprite-ref: horizontals; sprite-alignment: center */
+}
+.v-splitpanel-vsplitter,
+.v-splitpanel-vsplitter-locked {
+	height: 7px;
+	background-repeat: repeat-x;
+	background-image: url(img/ver-bg.png); /** sprite-ref: verticals; sprite-alignment: repeat */
+}
+.v-splitpanel-vsplitter div {
+	height: 7px;
+	background: transparent;
+	background-repeat: no-repeat;
+	background-position: 50%;
+	background-image: url(img/ver-handle.png); /** sprite-ref: verticals; sprite-alignment: center */
+}
+
+
+/* Splitpanels on blue background */
+.blue .v-splitpanel-hsplitter-small,
+.blue .v-splitpanel-hsplitter-small-locked {
+	background: #7c8a91;
+}
+
+/* Splitpanels on black background */
+.black .v-splitpanel-hsplitter-small,
+.black .v-splitpanel-hsplitter-small-locked {
+	background: #4e5253;
+}
+
+/* Small style */
+.v-splitpanel-hsplitter-small,
+.v-splitpanel-hsplitter-small-locked,
+.white .v-splitpanel-hsplitter-small,
+.white .v-splitpanel-hsplitter-small-locked {
+	width: 1px;
+	background: #949698;
+}
+.v-splitpanel-vsplitter-small,
+.v-splitpanel-vsplitter-small-locked,
+.white .v-splitpanel-vsplitter-small,
+.white .v-splitpanel-vsplitter-small-locked {
+	height: 1px;
+	background: #949698;
+}
+.v-splitpanel-hsplitter-small div {
+	width: 5px;
+	margin-left: -2px;
+	background: transparent;
+}
+.v-splitpanel-vsplitter-small div {
+	height: 5px;
+	margin-top: -2px;
+	background: transparent;
+}

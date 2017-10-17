@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="dashboard-config">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="layouts" minOccurs="1" maxOccurs="1" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="layouts">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="1" maxOccurs="unbounded" ref="layout" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="layout">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="1" maxOccurs="unbounded" ref="area" />
+			</xs:sequence>
+			<xs:attribute name="key" use="required" type="xs:string" />
+			<xs:attribute name="row" use="required" type="xs:int" />
+			<xs:attribute name="column" use="required" type="xs:int" />
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="area">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="top-left" minOccurs="1" maxOccurs="1" type="position" />
+				<xs:element name="bottom-right" minOccurs="1" maxOccurs="1" type="position" />
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:int" />
+		</xs:complexType>
+	</xs:element>
+	<xs:complexType name="position">
+		<xs:attribute name="row" use="required" type="xs:int" />
+		<xs:attribute name="column" use="required" type="xs:int" />
+	</xs:complexType>
+</xs:schema>

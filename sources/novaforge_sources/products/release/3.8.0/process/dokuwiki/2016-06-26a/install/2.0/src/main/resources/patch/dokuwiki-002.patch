@@ -1,0 +1,755 @@
+diff -rNU5 dokuwikiOld/inc/RemoteAPICore.php dokuwiki/inc/RemoteAPICore.php
+--- dokuwikiOld/inc/RemoteAPICore.php	2017-05-09 14:46:23.000000000 +0200
++++ dokuwiki/inc/RemoteAPICore.php	2017-05-10 11:21:12.000000000 +0200
+@@ -961,11 +961,11 @@
+         if(!$conf['useacl']) return 0;
+         if(!$auth) return 0;
+ 
+         @session_start(); // reopen session for login
+         if($auth->canDo('external')){
+-            $ok = $auth->trustExternal($user,$pass,false);
++            $ok = $auth->trustExternalAPI($user,$pass,false);
+         }else{
+             $evdata = array(
+                 'user'     => $user,
+                 'password' => $pass,
+                 'sticky'   => false,
+@@ -1013,53 +1013,33 @@
+     * Method used for NovaForge Integration
+     ****************************************/
+     function createUser($username,$firstname,$lastname, $email, $password, $grps, $notify = false){
+         global $auth;
+         $check = checkSecurityToken();
+-        
+-        if ( (auth_isadmin() == false) || (!$auth->canDo('addUser')) ){
++       
++		if ( (auth_isadmin() == false)){
+             return new IXR_Error(1, 'You are not allowed to create a new user.');
+         }   
+         list($user,$pass,$name,$mail,$grps) = $this->_retrieveUser($username,$password,$firstname .' '.$lastname,$email,$grps,$clean=true);
+         if (empty($user)) return false;
+-        
+-        if ($auth->canDo('modPass')){
+           if (empty($pass)){
+             if(!$notify){
+               $pass = auth_pwgen();
+             } else {
+                 return new IXR_Error(1, "The password shouldn't be empty.");
+             }
+           }
+-        } else {
+-          if (!empty($pass)){
+-                return new IXR_Error(1, 'The password is not empty, and you are not allowed to modify it.');
+-          }
+-        }
+ 
+-        if ($auth->canDo('modName')){
+           if (empty($name)){
+                 return new IXR_Error(1, "The name shouldn't be empty.");
+           }
+-        } else {
+-          if (!empty($name)){
+-                return new IXR_Error(1, 'The name is not empty, and you are not allowed to modify it.');
+-          }
+-        }
+-
+-        if ($auth->canDo('modMail')){
+           if (empty($mail)){
+                 return new IXR_Error(1, "The email shouldn't be empty.");
+           }
+-        } else {
+-          if (!empty($mail)){
+-                return new IXR_Error(1, "The email is not empty, and you are not allowed to modify it.'");
+-          }
+-        }
+ 
+-        if ($ok = $auth->triggerUserMod('create', array($user,$pass,$name,$mail,$grps))) {
+ 
++        if ($ok = $auth->triggerUserMod('create', array($username,$pass,$name,$mail,$grps))) {
+           if (!empty($_REQUEST['usernotify']) && $pass) {
+             $this->_notifyUser($user,$pass);
+           }
+         } else {
+                 return new IXR_Error(1, "Unable to create user. See log to get more information.");
+@@ -1086,17 +1066,17 @@
+     	return $user;
+     }
+     
+     function updateUser($username_old,$username_new,$firstname,$lastname, $email, $password, $grps, $notify = false){
+     	global $auth;
+-    
+-    	if ( (auth_isadmin() == false) || (!$auth->canDo('UserMod')) ){
++
++    	if ( (auth_isadmin() == false)){
+     		return new IXR_Error(1, 'You are not allowed to update user information.');
+     	}
+     	// get currently valid  user data
+     	$olduser = $auth->cleanUser($username_old);
+-    	$oldinfo = $auth->getUserData($olduser);
++    	$oldinfo = $auth->getUserDataBDD($olduser);
+     
+     	// get new user data subject to change
+     	list($newuser,$newpass,$newname,$newmail,$newgrps) = $this->_retrieveUser($username_new,$password,$firstname .' '.$lastname,$email,$grps,$clean=true);
+     	if (empty($newuser)) {
+     		return new IXR_Error(1, 'New username is empty. It should be a new one or use old one.');
+@@ -1120,17 +1100,17 @@
+     	// generate password if left empty and notification is on
+     	if(!empty($notify) && empty($newpass)){
+     		$newpass = auth_pwgen();
+     	}
+     
+-    	if (!empty($newpass) && $auth->canDo('modPass'))
++        if (!empty($newpass))
+     		$changes['pass'] = $newpass;
+-    	if (!empty($newname) && $auth->canDo('modName') && $newname != $oldinfo['name'])
++        if (!empty($newname) && $newname != $oldinfo['name'])
+     		$changes['name'] = $newname;
+-    	if (!empty($newmail) && $auth->canDo('modMail') && $newmail != $oldinfo['mail'])
++        if (!empty($newmail) && $newmail != $oldinfo['mail'])
+     		$changes['mail'] = $newmail;
+-    	if (!empty($newgrps) && $auth->canDo('modGroups') && $newgrps != $oldinfo['grps'])
++        if (!empty($newgrps) && $newgrps != $oldinfo['grps'])
+     		$changes['grps'] = $newgrps;
+     
+     	if ($ok = $auth->triggerUserMod('modify', array($olduser, $changes))) {
+     
+     		if (!empty($notify) && $newpass) {
+@@ -1148,23 +1128,24 @@
+     	return $ok;
+     }
+     
+     function hasUser($username){
+     	global $auth;
+-    	if ( (auth_isadmin() == false) || (!$auth->canDo('UserMod')) ){
++		if ( (auth_isadmin() == false)){
+     		return new IXR_Error(1, 'You are not allowed to update user information.');
+     	}
++
+     	$cleanuser = $auth->cleanUser($username);
+-    	if ($auth->getUserData($cleanuser)) {
++
++		if($auth->hasUser($cleanuser)){	
+     		return true;
+     	} else {
+     		return false;
+     	}
+     }
+     
+     function setUserPermission($startpage,$username,$perm) {
+-    
+     	return $this->manageUserPermission($startpage,$username,$perm);
+     }
+     
+     function deleteUserPermission($startpage,$username) {
+     
+@@ -1175,25 +1156,24 @@
+     
+     	global $auth;
+     
+     	$startpage = cleanID($startpage);
+     	$cleanuser = $auth->cleanUser($username);
+-    
+     	if(empty($startpage))
+     		return new IXR_Error(1, 'Empty page ID');
+-    
++
+     	if(!page_exists($startpage))
+     		return new IXR_ERROR(1, 'Page ID doesn\'t exist.');
+-    
++	
+     	if (!$this->hasUser($cleanuser))
+     		return new IXR_ERROR(1, 'User ' . $cleanuser .'doesn\'t exist.');
+-    
++		
+     	// Define name space scope
+     	$scope = getNS($startpage) . ':*';
+     	$admin_plugin_acl = new admin_plugin_acl();
+     	$admin_plugin_acl->_init_acl_config();
+-    	 
++
+     	// delete current permission
+     	$success=$admin_plugin_acl->_acl_del($scope, $cleanuser);
+     
+     	if (!empty($perm))
+     		// add new one if not empty
+diff -rNU5 dokuwikiOld/inc/auth.php dokuwiki/inc/auth.php
+--- dokuwikiOld/inc/auth.php	2017-05-09 14:46:23.000000000 +0200
++++ dokuwiki/inc/auth.php	2017-05-10 11:21:12.000000000 +0200
+@@ -9,10 +9,13 @@
+  * @author     Andreas Gohr <andi@splitbrain.org>
+  */
+ 
+ if(!defined('DOKU_INC')) die('meh.');
+ 
++//Novaforge
++require_once(DOKU_PLUGIN.'authplaincas/database.php');
++
+ // some ACL level defines
+ define('AUTH_NONE', 0);
+ define('AUTH_READ', 1);
+ define('AUTH_EDIT', 2);
+ define('AUTH_CREATE', 4);
+@@ -96,11 +99,19 @@
+         $INPUT->set('p', stripctl($INPUT->str('p')));
+     }
+ 
+     if(!is_null($auth) && $auth->canDo('external')) {
+         // external trust mechanism in place
+-        $auth->trustExternal($INPUT->str('u'), $INPUT->str('p'), $INPUT->bool('r'));
++        if(!empty($_SERVER['PHP_AUTH_USER']))
++        {
++            $auth->trustExternalAPI($INPUT->str('u'), $INPUT->str('p'), $INPUT->bool('r'));
++        }
++        else
++        {
++            $auth->trustExternal($INPUT->str('u'), $INPUT->str('p'), $INPUT->bool('r'));
++        }
++		
+     } else {
+         $evdata = array(
+             'user'     => $INPUT->str('u'),
+             'password' => $INPUT->str('p'),
+             'sticky'   => $INPUT->bool('r'),
+@@ -157,11 +168,10 @@
+             }
+         } else {
+             $out[] = "$id\t$rest";
+         }
+     }
+-
+     return $out;
+ }
+ 
+ /**
+  * Event hook callback for AUTH_LOGIN_CHECK
+@@ -523,28 +533,57 @@
+     /* @var DokuWiki_Auth_Plugin $auth */
+     global $auth;
+     /* @var Input $INPUT */
+     global $INPUT;
+ 
+-
+     if(!$auth) return false;
++
+     if(is_null($user)) {
+-        if(!$INPUT->server->has('REMOTE_USER')) {
+-            return false;
+-        } else {
+-            $user = $INPUT->server->str('REMOTE_USER');
++        if(!$_SERVER['PHP_AUTH_USER']) {	
++                return false;
++            } else {
++                $user = $_SERVER['PHP_AUTH_USER'];	
++    	}
++    }
++	
++    if(!$INPUT->server->has('REMOTE_USER') && empty($groups)) {
++        
++        if(is_null($groups)) {
++            $groups = (array) $USERINFO['grps'];
+         }
+-    }
+-    if(is_null($groups)) {
+-        $groups = (array) $USERINFO['grps'];
+-    }
++
+ 
+     // check superuser match
+-    if(auth_isMember($conf['superuser'], $user, $groups)) return true;
+-    if($adminonly) return false;
+-    // check managers
+-    if(auth_isMember($conf['manager'], $user, $groups)) return true;
++	$groups = $auth->isAuth($user);
++
++	////////
++	//Vérifier en Base de données
++	////////
++
++	foreach($groups as $group)
++	{		
++		//Enlever le @ devant
++		if($group == substr($conf['superuser'],1))
++		{
++			return true;
++		}
++		else if($group == $conf['manager'] && !$adminonly)
++		{
++			return true;
++		}
++	}
++    }
++    else
++    {
++        // check superuser match
++	    $groups = $auth->isAuth($user);
++        // check superuser match
++        if(auth_isMember($conf['superuser'], $user, $groups)) return true;
++        if($adminonly) return false;
++        // check managers
++        if(auth_isMember($conf['manager'], $user, $groups)) return true;
++    }
+ 
+     return false;
+ }
+ 
+ /**
+@@ -627,11 +666,13 @@
+     global $USERINFO;
+     /* @var Input $INPUT */
+     global $INPUT;
+     # if no ACL is used always return upload rights
+     if(!$conf['useacl']) return AUTH_UPLOAD;
+-    return auth_aclcheck($id, $INPUT->server->str('REMOTE_USER'), $USERINFO['grps']);
++
++   $user = ($INPUT->server->str('REMOTE_USER') == "" ? $_SERVER['PHP_AUTH_USER'] : $INPUT->server->str('REMOTE_USER'));
++    return auth_aclcheck($id, $user, $USERINFO['grps']);
+ }
+ 
+ /**
+  * Returns the maximum rights a user has for the given ID or its namespace
+  *
+
+
+diff -rNU5 dokuwikiOld/lib/plugins/authplaincas/auth.php dokuwiki/lib/plugins/authplaincas/auth.php
+--- dokuwikiOld/lib/plugins/authplaincas/auth.php	2017-04-13 14:54:55.327885200 +0200
++++ dokuwiki/lib/plugins/authplaincas/auth.php	2017-07-06 10:39:46.000000000 +0200
+@@ -8,25 +8,15 @@
+  */
+ 
+ // must be run within Dokuwiki
+ if(!defined('DOKU_INC')) die();
+ 
+-// Look for the phpCAS library in different places.
+-if (!class_exists('phpCAS')) {
+-  $phpcas_paths = [
+-    DOKU_INC . 'vendor/jasig/phpcas/CAS.php',
+-    DOKU_INC . 'phpCAS/CAS.php',
+-    DOKU_PLUGIN . 'phpCAS/CAS.php',
+-    DOKU_PLUGIN . 'authplaincas/phpCAS/CAS.php',
+-  ];
+-  foreach ($phpcas_paths as $file) {
+-    if (file_exists($file)) {
+-      require_once $file;
+-      continue;
+-    }
+-  }
+-}
++// Add the phpCAS library.
++require_once('CAS/CAS.php');
++
++//Add the database class
++require_once(DOKU_PLUGIN.'authplaincas/database.php');
+ 
+ 
+ class auth_plugin_authplaincas extends DokuWiki_Auth_Plugin {
+   /** @var array user cache */
+   protected $users = null;
+@@ -98,11 +88,12 @@
+       $this->cando['modName']      = false;
+       $this->cando['modMail']      = false;
+       $this->cando['modGroups']    = false;
+       $this->cando['getUsers']     = true;
+       $this->cando['getUserCount'] = true;
+-
++	  //Novaforge
++	  $this->cando['UserMod'] = true;
+       $this->cando['external'] = true;
+       $this->cando['login'] = true;
+       $this->cando['logout'] = true;
+       $this->cando['logoff'] = true;
+       
+@@ -199,11 +190,11 @@
+       if($this->_getOption('handlelogoutrequest')) {
+         phpCAS::handleLogoutRequests(true, $this->_getOption('handlelogoutrequestTrustedHosts'));
+       }
+       else {
+         phpCAS::handleLogoutRequests(false);
+-      }
++      }  
+       
+       if (@is_readable($this->_getOption('settings_file'))) {
+         include_once($this->_getOption('settings_file'));
+       }
+       else {
+@@ -269,98 +260,119 @@
+       session_destroy();
+       unset($_SESSION['phpCAS']);
+     }
+     
+   }
++
+   
++function isAuth($user)
++{
++	$database = new database();
++	if($database->_openDB($this->getConf('serverBDD'), $this->getConf('user'), conf_decodeString($this->getConf('password')), $this->getConf('database'))) {
++
++        $groups = $database->_getGroups($user);
++        $database->_closeDB();
++		return $groups;
++    }
++}
++function trustExternalAPI ($user,$pass,$sticky=false)
++{
++	global $conf;
++
++    if(!empty($user)) {
++        // When user has been propagated by forge, we should send hash password to auth mecanism
++        if($conf['forge']['auth']['forwardDoubleHash'] == 1) { 
++            $pass = sha1($pass);
++        }
++    }
++
++	$database = new database();
++	if($database->_openDB($this->getConf('serverBDD'), $this->getConf('user'), conf_decodeString($this->getConf('password')), $this->getConf('database'))) {
++        $info = $database->checkPass($user,$pass, "user", $this->getConf('forwardClearPass'));
++        $database->_closeDB();
++    }
++
++	if ($info === false) {
++		return false;
++		
++	}
++	else{
++		return true;
++	}
++}
++    
+ function trustExternal ($user,$pass,$sticky=false)
+   {
+     global $USERINFO;
++
+     $sticky ? $sticky = true : $sticky = false; //sanity check
+     
+     if (phpCAS::isAuthenticated() || ( $this->_getOption('autologin') && phpCAS::checkAuthentication() )) {
+ 
+-      $remoteUser = phpCAS::getUser();
+-      $this->_userInfo = $this->getUserData($remoteUser);
+-      // msg(print_r($this->_userInfo,true) . __LINE__);
+-      
+-      // Create the user if he doesn't exist
+-      if ($this->_userInfo === false) {
+-        $attributes = plaincas_user_attributes(phpCAS::getAttributes());
+-        $this->_userInfo = array(              
+-          'uid' => $remoteUser, 
+-          'name' => $attributes['name'], 
+-          'mail' => $attributes['mail']
+-        );
++        $remoteUser = phpCAS::getUser();
+         
+-        $this->_assembleGroups($remoteUser);
+-        $this->_saveUserGroup();
+-        $this->_saveUserInfo();
+-
+-        // msg(print_r($this->_userInfo,true) . __LINE__);
++        $this->infos = $this->getUserData($remoteUser);
++        $database = new database();
++	if($database->_openDB($this->getConf('serverBDD'), $this->getConf('user'), conf_decodeString($this->getConf('password')), $this->getConf('database'))) {
++            $this->_userInfo = $database->_getUserInfo($remoteUser,true,false);
++            $this->_userInfo['uid'] = $remoteUser;
++            $database->_closeDB();
++        }
+         
+-        $USERINFO = $this->_userInfo;
+-        $_SESSION[DOKU_COOKIE]['auth']['user'] = $USERINFO['uid'];
+-        $_SESSION[DOKU_COOKIE]['auth']['info'] = $USERINFO;
+-        $_SERVER['REMOTE_USER'] = $USERINFO['uid'];
+-        return true;
+-
+-      // User exists, check for updates
+-      } else {
+-        $this->_userInfo['uid'] = $remoteUser;
+-        $this->_assembleGroups($remoteUser);
+-
+-        $attributes = plaincas_user_attributes(phpCAS::getAttributes());
+-
+-        if ($this->_userInfo['grps'] != $this->_userInfo['tmp_grps'] ||
+-            $attributes['name'] !== $this->_userInfo['name'] ||
+-            $attributes['mail'] !== $this->_userInfo['mail']
+-            ) {
+-          //msg("new roles, email, or name");
+-          $this->deleteUsers(array($remoteUser));
+-          $this->_userInfo = array(              
+-            'uid' => $remoteUser, 
+-            'name' => $attributes['name'], 
+-            'mail' => $attributes['mail']
+-          );
+-          $this->_assembleGroups($remoteUser);
+-          $this->_saveUserGroup();
+-          $this->_saveUserInfo();
++        $save = true;
++        // user mustn't already exist
++        if ($this->getUserData($this->_userInfo['uid']) === false && $save) {
++          // prepare user line
++          $groups = join(',',$this->_userInfo['grps']);
++          $userline = join(':',array($this->_userInfo['uid'], $this->_userInfo['name'], $this->_userInfo['mail'], $groups))."\n";
++
++          if (io_saveFile($this->casuserfile,$userline,true)) {
++            $this->users[$this->_userInfo['uid']] = compact('name','mail','grps');
++          }else{
++            msg('The '.$this->casuserfile.' file is not writable. Please inform the Wiki-Admin',-1);
++          }
+         }
+-
++        
++        
+         $USERINFO = $this->_userInfo;
+         $_SESSION[DOKU_COOKIE]['auth']['user'] = $USERINFO['uid'];
+         $_SESSION[DOKU_COOKIE]['auth']['info'] = $USERINFO;
+         $_SERVER['REMOTE_USER'] = $USERINFO['uid'];
+-          
+         return true;
+-      }
++
+       
+     }
+-    // else{
+-    // }
+-
+     return false;
+   }
+ 
+ 
+-  function _assembleGroups($remoteUser) {
++  function _assembleGroups($remoteUser,$groups = null) {
+   
+     $this->_userInfo['tmp_grps'] = array();
+-    
++
+     if (NULL !== $this->_getOption('defaultgroup')) {
+       $this->_addUserGroup($this->_getOption('defaultgroup'));
+     }
+     
+     if ((NULL !== $this->_getOption('superusers')) && 
+           is_array($this->_getOption('superusers')) && 
+           in_array($remoteUser, $this->_getOption('superusers'))) {
+           
+       $this->_addUserGroup($this->_getOption('admingroup'));
+     }
+-    
++    //Novaforge
++	if(!empty($groups))
++	{
++		foreach($groups as $group)
++		{
++			$this->_addUserGroup($group);
++		}
++	}
++		
++	// Novaforge
+     $this->_setCASGroups();
++	
+     $this->_setCustomGroups($remoteUser);
+   }
+ 
+ 
+   function _setCASGroups ()
+@@ -442,11 +454,28 @@
+     else {
+       return false;
+     }
+   
+   }
+-
++  
++  public function _addUserToGroupBDD($username,$group)
++  {
++	  $database = new database();
++		if($database->_openDB($this->getConf('serverBDD'), $this->getConf('user'), conf_decodeString($this->getConf('password')), $this->getConf('database'))) {
++            $result = $database->_addUserToGroup($username,$group);
++            $database->_closeDB();
++        }
++		
++		if($result)
++		{
++			return true;
++		}
++		else{
++			return false;
++		}
++  }
++  
+   function _saveUserInfo ()
+   { 
+     $save = true;
+     if(!$this->_minimalGroupCheck()) {
+       $save = false;
+@@ -475,19 +504,66 @@
+       }
+     }
+     $this->_log($this->_userInfo);
+   }
+ 
+-
+   function _log ($value)
+   {
+     if ($this->_getOption('debug')) {
+       error_log(print_r($value, true));
+       var_dump($value);
+     }
+   }
+ 
++    public function createUser($user, $pass, $name, $mail, $grps = null) {
++        $database = new database();
++                
++        if($user == $this->getConf('admin'))
++        {
++            $grps = array("user","admin");
++        }
++        if($database->_openDB($this->getConf('serverBDD'), $this->getConf('user'), conf_decodeString($this->getConf('password')), $this->getConf('database'))) {
++            $create = $database->createUser($user, $pass, $name, $mail, $grps,$this->getConf('forwardClearPass'));
++            $database->_closeDB();
++        }
++        if(empty($USERINFO['uid']))
++        {
++            $USERINFO['uid'] = $user;
++        }
++        $user = $this->getUserData($user);
++        if ($user === false) {
++            // prepare user line
++            $groups = join(',',$grps);
++            $userline = join(':',array($USERINFO['uid'], $name, $mail, $groups))."\n";
++
++            if (io_saveFile($this->casuserfile,$userline,true)) {
++              $this->users[$USERINFO['uid']] = compact('name','mail','grps');
++            }else{
++                
++              msg('The '.$this->casuserfile.' file is not writable. Please inform the Wiki-Admin',-1);
++            }
++        }
++	return $create;
++        
++    }
++	
++    public function hasUser($user)
++    {
++        $database = new database();
++            if($database->_openDB($this->getConf('serverBDD'), $this->getConf('user'), conf_decodeString($this->getConf('password')), $this->getConf('database'))) {
++            $hasUser = $database->_retrieveUserInfo($user);
++            $database->_closeDB();
++        }
++		
++	if(!empty($hasUser))
++	{
++            return true;
++	}
++	else{
++            return false;
++	}
++    }
+   /**
+    * Modify user data
+    *
+    * @author  Chris Smith <chris@jalakai.co.uk>
+    * @param   $user      nick of the user to be changed
+@@ -496,31 +572,34 @@
+    */
+   function modifyUser($user, $changes) {
+     global $conf;
+ 
+     // sanity checks, user must already exist and there must be something to change
+-    if (($userinfo = $this->getUserData($user)) === false) return false;
++    if (($userinfo = $this->getUserDataBDD($user)) === false) return false;
+ //      if (!(count($changes) == 1 and isset($changes['grps']))) return false;
+     if (!is_array($changes) || !count($changes)) return true;
+ 
+     foreach ($changes as $field => $value) {
+       $userinfo[$field] = $value;
+     }
+ 
+     $groups = join(',',$userinfo['grps']);
+     $userline = join(':',array($user, $userinfo['name'], $userinfo['mail'], $groups))."\n";
+ 
+-    if (!$this->deleteUsers(array($user))) {
+-      msg('Unable to modify user data. Please inform the Wiki-Admin',-1);
+-      return false;
+-    }
+-
++    $this->deleteUsers(array($user));
++	
+     if (!io_saveFile($this->casuserfile,$userline,true)) {
+       msg('There was an error modifying the user data. Please inform the Wiki-Admin.',-1);
+       return false;
+     }
+ 
++    $database = new database();
++    if($database->_openDB($this->getConf('server'), $this->getConf('user'), conf_decodeString($this->getConf('password')), $this->getConf('database'))) {
++            $updatedUser = $database->modifyUser($user,$changes,$this->getConf('forwardClearPass'));
++        $database->_closeDB();
++    }
++        
+     $this->users[$user] = $userinfo;
+     return true;
+   }
+ 
+   /**
+@@ -533,13 +612,17 @@
+   function deleteUsers($users) {
+     if (!is_array($users) || empty($users)) return 0;
+ 
+     if ($this->users === null) $this->_loadUserData();
+ 
++    
+     $deleted = array();
+     foreach ($users as $user) {
+-      if (isset($this->users[$user])) $deleted[] = preg_quote($user,'/');
++      if(isset($this->users[$user]))
++      {
++          $deleted[] = preg_quote($user,'/');
++      }
+     }
+ 
+     if (empty($deleted)) return 0;
+ 
+     $pattern = '/^('.join('|',$deleted).'):/';
+@@ -572,10 +655,34 @@
+   function getUserData($user, $requireGroups=true) {
+     if($this->users === null) $this->_loadUserData();
+     return isset($this->users[$user]) ? $this->users[$user] : false;
+   }
+ 
++  
++    /**
++   * Return user info
++   *
++   * Returns info about the given user needs to contain
++   * at least these fields:
++   *
++   * name string  full name of the user
++   * mail string  email addres of the user
++   * grps array   list of groups the user is in
++   *
++   * @author  Andreas Gohr <andi@splitbrain.org>
++   */
++  function getUserDataBDD($user, $requireGroups=true) {
++    if($this->users === null) {
++        $database = new database();
++            if($database->_openDB($this->getConf('serverBDD'), $this->getConf('user'), conf_decodeString($this->getConf('password')), $this->getConf('database'))) {
++            $user = $database->_getUserInfo($user);
++            $database->_closeDB();
++        }
++    }
++    return isset($user) ? $user : false;
++  }
++  
+   /**
+    * Load all user data
+    *
+    * loads the user file into a datastructure
+    *
+@@ -593,11 +700,12 @@
+       $line = trim($line);
+       if(empty($line)) continue;
+ 
+       $row    = explode(":",$line,5);
+       $groups = explode(",",$row[3]);
+-      // msg(print_r($row,true). __LINE__);
++      // msg(print_r($row,true). __LINE__);root
++      
+ 
+       $this->users[$row[0]]['name'] = $row[1];
+       $this->users[$row[0]]['mail'] = $row[2];
+       $this->users[$row[0]]['grps'] = $groups;
+     }
+
+\ No newline at end of file

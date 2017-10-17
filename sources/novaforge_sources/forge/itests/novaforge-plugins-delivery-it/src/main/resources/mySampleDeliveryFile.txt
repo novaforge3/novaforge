@@ -1,0 +1,56 @@
+Démarré par l'utilisateur Admin
+Building in workspace /datas/novaforge3/datas/jenkins/jobs/job_issued_from_jenkinsmaven_jenkins1_default/workspace
+Updating https://vm-infra-37/svn-default/svn/jenkinsmaven_svnsource/test1/mytestmigration
+At revision 2
+no change for https://vm-infra-37/svn-default/svn/jenkinsmaven_svnsource/test1/mytestmigration since the previous build
+Parsing POMs
+[workspace] $ /datas/novaforge3/engines/java/jdk1.6.0_26/bin/java -cp /datas/novaforge3/datas/jenkins/plugins/maven-plugin/WEB-INF/lib/maven3-agent-1.2.jar:/datas/novaforge3/engines/apache-maven-3.0.4/boot/plexus-classworlds-2.4.jar org.jvnet.hudson.maven3.agent.Maven3Main /datas/novaforge3/engines/apache-maven-3.0.4 /datas/novaforge3/datas/jenkins/war/WEB-INF/lib/remoting-2.16.jar /datas/novaforge3/datas/jenkins/plugins/maven-plugin/WEB-INF/lib/maven3-interceptor-1.2.jar 55452
+<===[JENKINS REMOTING CAPACITY]===>channel started
+log4j:WARN No appenders could be found for logger (org.apache.commons.beanutils.converters.BooleanConverter).
+log4j:WARN Please initialize the log4j system properly.
+Executing Maven:  -B -f /datas/novaforge3/datas/jenkins/jobs/job_issued_from_jenkinsmaven_jenkins1_default/workspace/pom.xml install
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective settings
+[WARNING] expected START_TAG or END_TAG not TEXT (position: TEXT seen ...g/xsd/settings-1.0.0.xsd">\n\n#### Local Repository ###########\n  <l... @8:5)  @ /datas/novaforge3/engines/apache-maven-3.0.4/conf/settings.xml, line 8, column 5
+[WARNING] 
+[INFO] Scanning for projects...
+
+Projects to build: [MavenProject: mytestmigration:mytestmigration:0.0.1 @ /datas/novaforge3/datas/jenkins/jobs/job_issued_from_jenkinsmaven_jenkins1_default/workspace/pom.xml]
+projectStarted mytestmigration:mytestmigration:0.0.1
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building mytestmigration 0.0.1
+[INFO] ------------------------------------------------------------------------
+Downloading: https://vm-infra-37/nexus-default/nexus/content/repositories/central/org/apache/maven/plugins/maven-plugins/21/maven-plugins-21.pom
+
+Downloaded: https://vm-infra-37/nexus-default/nexus/content/repositories/central/org/apache/maven/plugins/maven-plugins/21/maven-plugins-21.pom (13 KB at 9.8 KB/sec)
+Downloading: https://vm-infra-37/nexus-default/nexus/content/repositories/central/org/apache/maven/plugins/maven-jar-plugin/2.3.2/maven-jar-plugin-2.3.2.jar
+
+Downloaded: https://vm-infra-37/nexus-default/nexus/content/repositories/central/org/apache/maven/plugins/maven-jar-plugin/2.3.2/maven-jar-plugin-2.3.2.jar (32 KB at 35.5 KB/sec)
+Downloading: https://vm-infra-37/nexus-default/nexus/content/repositories/central/org/apache/maven/plugins/maven-install-plugin/2.3.1/maven-install-plugin-2.3.1.pom
+
+Downloaded: https://vm-infra-37/nexus-default/nexus/content/repositories/central/org/apache/maven/plugins/maven-install-plugin/2.3.1/maven-install-plugin-2.3.1.pom (5 KB at 10.3 KB/sec)
+Downloading: https://vm-infra-37/nexus-default/nexus/content/repositories/central/org/apache/maven/plugins/maven-install-plugin/2.3.1/maven-install-plugin-2.3.1.jar
+
+Downloaded: https://vm-infra-37/nexus-default/nexus/content/repositories/central/org/apache/maven/plugins/maven-install-plugin/2.3.1/maven-install-plugin-2.3.1.jar (23 KB at 15.3 KB/sec)
+Downloading: https://vm-infra-37/nexus-default/nexus/content/repositories/central/junit/junit/3.8.1/junit-3.8.1.pom
+
+Downloaded: https://vm-infra-37/nexus-default/nexus/content/repositories/central/junit/junit/3.8.1/junit-3.8.1.pom (998 B at 2.4 KB/sec)
+Downloading: https://vm-infra-37/nexus-default/nexus/content/repositories/central/junit/junit/3.8.1/junit-3.8.1.jar
+
+mojoStarted org.apache.maven.plugins:maven-resources-plugin:2.5(default-resources)Downloaded: https://vm-infra-37/nexus-default/nexus/content/repositories/central/junit/junit/3.8.1/junit-3.8.1.jar (119 KB at 63.6 KB/sec)
+
+[INFO] 
+[INFO] --- maven-resources-plugin:2.5:resources (default-resources) @ mytestmigration ---
+Downloading: https://vm-infra-37/nexus-default/nexus/content/repositories/central/org/apache/maven/maven-plugin-api/2.0.6/maven-plugin-api-2.0.6.pom
+Downloaded: https://vm-infra-37/nexus-default/nexus/content/repositories/central/org/apache/maven/maven-plugin-api/2.0.6/maven-plugin-api-2.0.6.pom (2 KB at 3.3 KB/sec)
+Downloading: https://vm-infra-37/nexus-default/nexus/content/repositories/central/org/apache/maven/maven/2.0.6/maven-2.0.6.pom
+Downloaded: https://vm-infra-37/nexus-default/nexus/content/repositories/central/org/apache/maven/maven/2.0.6/maven-2.0.6.pom (9 KB at 17.8 KB/sec)
+Downloading: https://vm-infra-37/nexus-default/nexus/content/repositories/central/org/apache/maven/maven-parent/5/maven-parent-5.pom
+
+Downloaded: https://vm-infra-37/nexus-default/nexus/content/repositories/central/org/apache/maven/maven-parent/5/maven-parent-5.pom (15 KB at 28.1 KB/sec)
+Downloading: https://vm-infra-37/nexus-default/nexus/content/repositories/central/org/apache/apache/3/apache-3.pom
+Downloaded: https://vm-infra-37/nexus-default/nexus/content/repositories/central/org/apache/apache/3/apache-3.pom (4 KB at 3.6 KB/sec)
+Downloading: https://vm-infra-37/nexus-default/nexus/content/repositories/central/org/apache/maven/maven-project/2.0.6/maven-project-2.0.6.pom
+
+Downloaded: https://vm-infra-37/nexus-default/nexus/content/repositories/central/org/apache/maven/maven-project/2.0.6/maven-project-2.0.6.pom (3 KB at 7.1 KB/sec)

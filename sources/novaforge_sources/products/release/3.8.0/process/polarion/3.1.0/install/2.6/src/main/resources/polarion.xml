@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.2.0" name="polarion-@POLARION_DATA_VERSION@">
+	<repository>mvn:org.novaforge.products.data/polarion-feature/@POLARION_DATA_VERSION@/xml</repository>
+
+	<feature name="hot-polarion" install="auto">
+		<feature version="@POLARION_DATA_VERSION@">polarion-webclient</feature>
+	</feature>
+</features>

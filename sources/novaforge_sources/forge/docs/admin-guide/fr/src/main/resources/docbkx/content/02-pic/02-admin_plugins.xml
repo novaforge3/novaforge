@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<chapter xmlns:db="http://docbook.org/ns/docbook" version="5.0" xml:lang="fr"
+				 xmlns="http://docbook.org/ns/docbook">
+	<title>Plate-forme d'Intégration Continue (PIC)</title>
+	<sect1>
+		<title>Gestion de l'approvisionnement des applications PIC</title>
+		<para>Les applications PIC (Sonar et Jenkins) sont cloisonnées par
+			projet et limitées à une application Sonar et une application Jenkins
+			par projet.</para>
+
+		<para>Pour que chaque projet puisse créer ses applications PIC, il
+			faut approvisionner les instances d'outils associés.</para>
+
+		<para>A la création d'une application PIC, si une instance d'outil est
+			disponible, l'application est créée automatiquement.
+			Dans le cas contraire, une demande d'application transparente pour le
+			gestionnaire du projet est fournie à l'administrateur de forge.
+		</para>
+	</sect1>
+	<sect1>
+		<title>Console d'administration des instances d'outil</title>
+		<para>Dans l'administration des plugins, l'administrateur peut
+			consulter la liste des instances d'outils, créer, modifier ou
+			supprimer une instance d'outil mais également assigner une instance
+			d'outil à une demande d'application</para>
+		<figure>
+			<title>Menu Administration des plugins</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="admin_plugins.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+		<sect2>
+			<title>Visualiser les instances d'outil d'un plugin</title>
+			<para>
+				En cliquant sur l'icone
+				<emphasis> "Gérer les instances du plugin"</emphasis>
+				dans la ligne concernant Jenkins, on accède à la liste des instances
+				d'outil Jenkins
+			</para>
+			<figure>
+				<title>Menu Administration du plugin Jenkins</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="admin_jenkins.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</sect2>
+		<sect2>
+			<title>Créer une instance</title>
+			<para>Un message alerte l'administrateur qu'il doit créer si ce n'est
+				pas déjà fait la même instance pour le plugin Sonar. En effet,
+				l'administrateur doit enregistrer manuellement les instances des outils
+				Jenkins et Sonar pour une même machine virtuelle puisque
+				l'installation rassemble les deux outils. La "même instance"
+				signifie que les deux instances doivent avoir le même host dans
+				leurs "base URL" respectives.</para>
+			<para>A la création d'une instance, l'association à une demande
+				d'application peut être automatique ou manuelle en saisissant le nom
+				du projet ayant fait une demande. Si l'assignation est automatique,
+				c'est la demande la plus ancienne qui sera traitée.</para>
+			<figure>
+				<title>Créer une instance d'outil</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="create_instance.png"
+							width="150px" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+			<para>Les propriétés des instances d'outil sont : </para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						<emphasis>Nom</emphasis>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis>Description</emphasis>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis>Alias</emphasis>
+						: l'alias de l'instance doit commencer par un /
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis>Base URL</emphasis>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis>Statut</emphasis>
+						: Disponible ou Occupé (Calculé en fonction de l'occupation et de
+						la propriété
+						<db:emphasis>Partageable</db:emphasis>
+						)
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis>Partageable</emphasis>
+						: Si l'instance peut héberger une ou plusieurs applications
+					</para>
+				</listitem>
+			</itemizedlist>
+		</sect2>
+
+
+		<sect2>
+			<title>Modifier une instance</title>
+			<figure>
+				<title>Editer une instance d'outil</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="edit_instance.png"
+							width="150px" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>
+				Toutes les propriétés sont modifiables hormis la propriété
+				<emphasis>Paratageable</emphasis>
+				si l'instance héberge déjà plus d'une application.
+			</para>
+		</sect2>
+
+		<sect2>
+			<title>Supprimer une instance</title>
+			<figure>
+				<title>Supprimer une instance d'outil</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="remove_instance.png"
+							width="500px" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+			<para>
+				Seules les instances
+				<db:emphasis>Disponible</db:emphasis>
+				peuvent être supprimées.(Croix non désactivée)
+			</para>
+		</sect2>
+
+		<sect2>
+			<title>Remarque sur la disponibilité d'une instance</title>
+			<para>
+				<emphasis>Attention ! </emphasis>
+				Si un projet crée une application Jenkins et pas d'application
+				Sonar, l'instance de l'outil Sonar associée est dans l'état
+				<db:emphasis>DISPONIBLE</db:emphasis>
+				bien qu'en fait cette instance n'est disponible que pour la création
+				d'un Sonar pour CE PROJET EN QUESTION.
+			</para>
+		</sect2>
+
+	</sect1>
+	<sect1>
+		<title>Console d'administration des demandes d'applications</title>
+		<sect2>
+			<title>Visualiser les requêtes d'application d'un plugin</title>
+			<para>L'administrateur peut consulter la liste des requêtes
+				effectuées pour des applications Jenkins ou Sonar. Il peut associer
+				une requête à une instance d'outil ou également supprimer une
+				requête.</para>
+			<para>Il visualise le nom du projet, le demandeur ainsi que la date
+				de création de la demande.</para>
+			<figure>
+				<title>Consulter les requêtes</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="admin_requests.png"
+							width="500px" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</sect2>
+
+		<sect2>
+			<title>Associer une requête à une instance d'outil</title>
+			<para>L'administrateur peut également associer une demande à une
+				instance d'outil à partir de la liste des demandes. Ce qui équivaut
+				à une assignation manuelle dans la vue de la création d'une instance
+				d'outil.</para>
+		</sect2>
+		<figure>
+			<title>Associer une requête à une instance d'outil</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="link_request.png" width="400px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+	</sect1>  
+
+
+<!--  <sect1> -->
+<!--     <title>Améliorations à apporter</title> -->
+<!--    <itemizedlist> -->
+<!--    <listitem> -->
+<!--       <para>Si un projet créé une application jenkins et pas d'application sonar, l'instance de l'outil sonar associée est dans l'état <db:emphasis>“Disponible”</db:emphasis> bien qu'en fait cette instance n'est disponible que pour la création d'un sonar par le PROJET EN QUESTION. On peut imaginer de gérer un état <db:emphasis>“Réservé”</db:emphasis>.</para> -->
+<!--    </listitem> -->
+<!--       <listitem> -->
+<!--       <para>L'IHM ne permet pas de visualiser le projet associé à une instance PIC donné.</para> -->
+<!--    </listitem>  -->
+<!--       <listitem> -->
+<!--       <para>Il n'y a pas de notification au gestionnaire de projet lors de l'assignation d'une instance d'outil à une demande d'application.</para> -->
+<!--    </listitem>  -->
+<!--       <listitem> -->
+<!--       <para>Il n'y a pas de gestion d'un seuil critique d'approvisionnement des instances d'outils ni de notification à l'administrateur de forge lors du dépassement de ce seuil.</para> -->
+<!--    </listitem>  -->
+<!--    <listitem> -->
+<!--       <para>Il n'y a pas de gestion des machines virtuelles en amont des enregistrements des instances d'outil</para> -->
+<!--    </listitem>  -->
+<!--    </itemizedlist> -->
+<!--  </sect1>  -->
+	<sect1>
+		<title>Remarques</title>
+		<para>Les données associées aux applications et aux instances d'outils
+			se trouvent dans les bases des plugins (plugin_jenkins et
+			plugin_sonar). </para>
+		<para>Les applications sont stockées dans la table plugin_instance.
+			Les instances d'outils sont stockées dans la table plugin_tool.
+		</para>
+		<para>
+			Voici une requête simple permettant de savoir quel est le projet qui
+			utilise une instance d'outil dont l'alias est ALIAS_PARAM :
+			<programlisting language="sql">mysql> 
+				SELECT forge_project_id from plugin_instance inst, plugin_tool tool 
+				WHERE inst.tool_instance_id = tool.id 
+				AND tool.alias = ALIAS_PARAM;
+			</programlisting>
+		</para>
+	</sect1>
+</chapter>

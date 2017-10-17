@@ -1,0 +1,1 @@
+sshpass -p '@NOVAFORGE_PASSWORD@' ssh -oStrictHostKeyChecking=no @NOVAFORGE_USER@@@HOST_SRC@ "cat /home/@NOVAFORGE_USER@/.ssh/id_rsa.pub" >> /home/@NOVAFORGE_USER@/.ssh/authorized_keys

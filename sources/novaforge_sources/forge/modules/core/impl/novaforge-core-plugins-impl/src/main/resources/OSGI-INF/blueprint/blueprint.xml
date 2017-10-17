@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd">
+
+	<!-- Reference Services -->
+	<reference id="messageService" interface="org.novaforge.forge.commons.technical.jms.MessageService" />
+	<reference id="forgeIdentification" interface="org.novaforge.forge.core.configuration.services.ForgeIdentificationService" />
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+	<reference id="forgeInitializationService" interface="org.novaforge.forge.core.initialization.services.ForgeInitializationService" />
+	<reference id="compositionDAO" interface="org.novaforge.forge.core.organization.dao.CompositionDAO" />
+	<reference id="userDAO" interface="org.novaforge.forge.core.organization.dao.UserDAO" />
+	<reference id="lifeCycleHandler" interface="org.novaforge.forge.core.plugins.handlers.PluginLifeCycleHandler"
+		availability="optional" />
+			
+	<!-- Plugin Services -->
+	<bean id="pluginMetadataDAO" class="org.novaforge.forge.core.plugins.internal.dao.PluginMetadataDAOImpl">
+		<jpa:context unitname="core.plugins" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<service ref="pluginMetadataDAO" interface="org.novaforge.forge.core.plugins.dao.PluginMetadataDAO" />
+	<bean id="pluginMetadataFactory" class="org.novaforge.forge.core.plugins.internal.factory.PluginMetadataFactoryImpl" />
+
+	<reference-list id="pluginService" interface="org.novaforge.forge.core.plugins.services.PluginService"
+		availability="optional">
+		<reference-listener ref="pluginServiceListener" bind-method="addService" unbind-method="removeService" />
+	</reference-list>
+	<bean id="pluginServiceListener" class="org.novaforge.forge.core.plugins.internal.PluginServiceListener"
+		init-method="init" destroy-method="destroy">
+		<property name="pluginsManager" ref="pluginsManager" />
+		<property name="forgeInitializationService" ref="forgeInitializationService" />
+	</bean>
+	<service ref="pluginServiceListener" interface="org.novaforge.forge.core.initialization.services.ForgeInitializationListener" />
+
+
+	<bean id="pluginsManager" class="org.novaforge.forge.core.plugins.internal.PluginsManagerImpl"
+		init-method="start">
+		<property name="pluginMetadataFactory" ref="pluginMetadataFactory" />
+		<property name="pluginMetadataDAO" ref="pluginMetadataDAO" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+		<property name="lifeCycleHandler" ref="lifeCycleHandler" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="bundleContext" ref="blueprintBundleContext" />
+		<property name="pluginsCategoryManager" ref="pluginsCategoryManager" />
+	</bean>
+	<service ref="pluginsManager" interface="org.novaforge.forge.core.plugins.services.PluginsManager" />
+	
+	<!-- Category Services -->
+	<reference-list id="categoryDefinitionService" interface="org.novaforge.forge.core.plugins.categories.CategoryDefinitionService"
+		availability="optional">
+		<reference-listener ref="pluginsCategoryManager" bind-method="addService" unbind-method="removeService" />
+	</reference-list>
+	<bean id="pluginsCategoryManager" class="org.novaforge.forge.core.plugins.internal.categories.PluginsCategoryManagerImpl" />
+	<service ref="pluginsCategoryManager" interface="org.novaforge.forge.core.plugins.services.PluginsCategoryManager" />
+	
+	<!-- Association inter plugins Services -->
+	<service id="applicationRequestService" interface="org.novaforge.forge.core.plugins.services.ApplicationRequestService">
+		<bean class="org.novaforge.forge.core.plugins.internal.categories.ApplicationRequestServiceImpl">
+			<property name="pluginsManager" ref="pluginsManager" />
+			<property name="categoriesManager" ref="pluginsCategoryManager" />
+			<property name="compositionDAO" ref="compositionDAO" />
+			<property name="forgeIdentification" ref="forgeIdentification" />
+		</bean>
+	</service>
+	<service id="pluginArtefactFactory" interface="org.novaforge.forge.core.plugins.services.PluginArtefactFactory">
+		<bean class="org.novaforge.forge.core.plugins.internal.categories.PluginArtefactFactoryImpl">
+			<property name="pluginsCategoryManager" ref="pluginsCategoryManager" />
+		</bean>
+	</service>
+	<service id="pluginMessageDelegate" interface="org.novaforge.forge.core.plugins.delegates.PluginMessageDelegate">
+		<bean class="org.novaforge.forge.core.plugins.internal.delegates.PluginMessageDelegateImpl">
+			<property name="messageService" ref="messageService" />
+		</bean>
+	</service>
+</blueprint>

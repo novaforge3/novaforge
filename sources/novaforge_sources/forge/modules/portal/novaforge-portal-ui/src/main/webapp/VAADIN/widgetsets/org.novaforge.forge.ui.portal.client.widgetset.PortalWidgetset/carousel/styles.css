@@ -1,0 +1,102 @@
+.carousel {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.carousel:FOCUS {
+	outline: none;
+}
+
+.carousel .carouselpanel {
+	position: relative;
+	height: 100%;
+	width: 100%;
+}
+
+.carousel .childpanelwrapper {
+	overflow: hidden;
+	position: relative;
+	height: 100%;
+	width: 100%;
+}
+
+.carousel .childpanel {
+	position: absolute;
+	-webkit-transition: none 1s ease-out;
+	-moz-transition: none 1s ease-out;
+	-o-transition: none 1s ease-out;
+	-ms-transition: none 1s ease-out;
+	transition: none 1s ease-out;
+}
+
+.carousel.transitioned .childpanel {
+	-webkit-transition-property: left, top;
+	-moz-transition-property: left, top;
+	-o-transition-property: left, top;
+	-ms-transition-property: left, top;
+	transition-property: left, top;
+}
+
+.carousel .placeholder {
+	width: 100%;
+	height: 100%;
+	background: transparent url(loading-indicator.gif) center center no-repeat;
+}
+
+.carousel .carouselbutton {
+	position: absolute;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+}
+.carousel.horizontalcarousel .carouselbutton {
+	height: 100%;
+	width: 50px;
+	top: 0;
+}
+.carousel.verticalcarousel .carouselbutton {
+	height: 50px;
+	width: 100%;
+}
+
+.carousel .carouselbutton:AFTER{
+	content: "";
+	position: absolute;
+	border: 7px solid transparent;
+}
+.carousel .carouselbutton:HOVER {
+	background-color: #ccc;
+	background-color: rgba(0,0,0,0.2);
+}
+
+.carousel.horizontalcarousel .previousbutton {
+	left: 0;
+}
+.carousel.horizontalcarousel .nextbutton {
+	right: 0;
+}
+.carousel.verticalcarousel .previousbutton {
+	top: 0;
+}
+.carousel.verticalcarousel .nextbutton {
+	bottom: 0;
+}
+.carousel.horizontalcarousel .previousbutton:AFTER {
+	border-right-color: #000;
+	right: 50%;
+}
+.carousel.horizontalcarousel .nextbutton:AFTER {
+	border-left-color: #000;
+	left: 50%;
+}
+.carousel.verticalcarousel .previousbutton:AFTER {
+	border-bottom-color: #000;
+	bottom: 50%;
+}
+.carousel.verticalcarousel .nextbutton:AFTER {
+	border-top-color: #000;
+	top: 50%;
+}

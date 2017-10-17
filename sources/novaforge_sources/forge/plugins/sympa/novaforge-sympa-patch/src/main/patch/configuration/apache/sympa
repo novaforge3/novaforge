@@ -1,0 +1,18 @@
+# Apache configuration file for Sympa
+
+Alias /static-sympa /home/sympa/static_content
+ScriptAlias /sympa /home/sympa/bin/wwsympa-wrapper.fcgi
+
+FastCgiServer /home/sympa/bin/sympa_soap_server-wrapper.fcgi -processes 2
+ScriptAlias /sympasoap /home/sympa/bin/sympa_soap_server-wrapper.fcgi
+
+
+<Location /sympasoap>
+   SetHandler fastcgi-script
+   AddHandler fastcgi-script .fcgi .fpl .pl
+</Location>
+
+<Location /sympa>
+   SetHandler fastcgi-script
+   AddHandler fastcgi-script .fcgi .fpl .pl
+</Location>

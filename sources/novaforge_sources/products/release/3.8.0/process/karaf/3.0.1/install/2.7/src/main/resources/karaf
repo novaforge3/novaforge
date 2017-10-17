@@ -1,0 +1,165 @@
+#!/bin/sh
+
+## Variables
+export KARAF_HOME=@KARAF_HOME@
+
+DESC="NovaForge Karaf Server"
+PROCESS="\-Dkaraf.home=$KARAF_HOME"
+
+if [ `uname -o` = 'Cygwin' ];then
+  STARTUP=start.bat
+  SHUTDOWN=stop.bat
+  CLIENT=client.bat
+  SHELL=karaf.bat
+else
+  STARTUP=start
+  SHUTDOWN=stop
+  CLIENT=client
+  SHELL=karaf
+fi
+
+## Functions
+start() {	
+	local _PROCESS_NUMBER=`ps -ef | grep $PROCESS | grep -v grep | wc -l`
+	if [ $_PROCESS_NUMBER -eq 0 ]; then
+		KARAF_COMMAND="$KARAF_HOME/bin/$STARTUP"
+		while [ "$2" != "" ]; do
+		    case $2 in
+			debug )   shift
+			          KARAF_COMMAND="$KARAF_COMMAND debug"
+			          ;;
+			clean )   shift
+			          KARAF_COMMAND="$KARAF_COMMAND clean"
+			          ;;
+			* )
+			;;
+		    esac
+		done
+	    case "$(whoami)" in
+	        root)
+				su @NOVAFORGE_USER@ -c "$KARAF_COMMAND"
+		    	;;
+			@NOVAFORGE_USER@)
+				$KARAF_COMMAND
+		    	;;
+			*)
+	            exit 1
+	    esac
+	else
+		echo -e "$DESC: \033[32mOK\033[0m"
+    fi
+}
+
+stop() {
+	local _PROCESS_NUMBER=`ps -ef | grep $PROCESS | grep -v grep | wc -l`
+	if [ $_PROCESS_NUMBER -ne 0 ]; then
+	    case "$(whoami)" in
+	        root)
+				su @NOVAFORGE_USER@ -c "$KARAF_HOME/bin/$SHUTDOWN"
+			    ;;
+			@NOVAFORGE_USER@)
+				$KARAF_HOME/bin/$SHUTDOWN
+			   	;;
+			*)
+	            exit 1
+	    esac
+	else
+		echo -e "$DESC: \033[31mKO\033[0m"
+	fi
+}
+
+client() {
+    case "$(whoami)" in
+        root)
+	  	    su @NOVAFORGE_USER@ -c "$KARAF_HOME/bin/$CLIENT"
+		    ;;
+		@NOVAFORGE_USER@)
+		    $KARAF_HOME/bin/$CLIENT
+		    ;;
+		*)
+            exit 1
+    esac
+}
+
+shell() {
+	KARAF_COMMAND="$KARAF_HOME/bin/$SHELL"
+	while [ "$2" != "" ]; do
+	    case $2 in
+		debug )   
+			shift
+		    KARAF_COMMAND="$KARAF_COMMAND debug"
+		    ;;
+		clean )   
+			shift
+		    KARAF_COMMAND="$KARAF_COMMAND clean"
+		    ;;
+		* )
+			;;
+	    esac
+	done
+    case "$(whoami)" in
+        root)
+	  	    su @NOVAFORGE_USER@ -c "$KARAF_COMMAND"
+		    ;;
+		@NOVAFORGE_USER@)
+		    $KARAF_COMMAND
+		    ;;
+		*)
+            exit 1
+    esac
+}
+
+status() {
+	local _PROCESS_NUMBER=`ps -ef | grep $PROCESS | grep -v grep | wc -l`
+	if [ $_PROCESS_NUMBER -ne 0 ]; then
+		echo -e "$DESC: \033[32mOK\033[0m"
+	else
+		echo -e "$DESC: \033[31mKO\033[0m"
+	fi
+	RETVAL=0
+}
+
+## Cases
+case "$1" in
+    start)
+		echo "Starting '$DESC'"
+        start $@
+		RETVAL=$?
+		;;
+		
+    shell)
+		echo "Starting '$DESC' in shell mode"
+        shell $@
+		RETVAL=$?
+		;;
+
+    stop)
+		echo "Stopping '$DESC'"
+        stop
+        RETVAL=$?
+        ;;
+
+    client)
+		echo "Starting '$DESC' client"
+        client
+        RETVAL=$?
+        ;;
+
+    restart)
+		echo "Restarting '$DESC'"
+        stop
+		sync
+		sleep 10
+        start 
+        RETVAL=$?
+		;;
+    status)
+        status
+		RETVAL=$?
+		;;
+    *)
+		echo "Usage: karaf {start (debug) (clean)|shell (debug) (clean)|stop|client|restart|status}"
+		RETVAL=1
+esac
+
+exit $RETVAL

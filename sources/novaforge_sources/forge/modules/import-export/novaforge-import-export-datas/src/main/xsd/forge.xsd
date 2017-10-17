@@ -1,0 +1,239 @@
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' elementFormDefault="qualified">
+	<xs:element name="forge">
+		<xs:complexType>
+			<xs:sequence>
+			<xs:element name="users" type="users" minOccurs="1" maxOccurs="1" />
+			<xs:element name="groups" type="groups" minOccurs="1" maxOccurs="1" />
+			<xs:element name="projects" type="projects" minOccurs="0" maxOccurs="1" />
+			</xs:sequence>
+			<xs:attribute name="exportDate" type="xs:date" />
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:simpleType name="status">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="toDo" />
+			<xs:enumeration value="done" />
+			<xs:enumeration value="onError" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="users">
+		<xs:sequence>
+			<xs:element name="userElement" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="passwd" type="xs:string" />
+						<xs:element name="lastname" type="xs:string" />
+						<xs:element name="firstname" type="xs:string" />
+						<xs:element name="email" type="email" />
+						<xs:element name="language" type="languageType" default="FR" />
+					</xs:sequence>
+					<xs:attribute name="login" type="xs:string" use="required" />
+					<xs:attribute name="status" type="status" default="toDo" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="languageType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="FR" />
+			<xs:enumeration value="EN" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="groups">
+		<xs:sequence>
+			<xs:element name="groupElement" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="description" type="xs:string" />
+						<xs:element name="users" type="groupUsers" />
+					</xs:sequence>
+					<xs:attribute name="id" type="xs:string" use="required" />
+					<xs:attribute name="public" type="xs:boolean" default="false" />
+					<xs:attribute name="status" type="status" default="toDo" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="groupUsers">
+		<xs:sequence>
+			<xs:element name="login" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="projects">
+		<xs:sequence>
+			<xs:element name="projectElement" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="projectInfo" type="projectInfo" />
+						<xs:element name="roles" type="roles" />
+						<xs:element name="domains" type="domains" />
+						<xs:element name="memberships" type="memberships" />
+						<xs:element name="groups" type="groups" />
+					</xs:sequence>
+					<xs:attribute name="id" type="xs:string" use="required" />
+					<xs:attribute name="status" type="status" default="toDo" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="projectInfo">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="author" type="xs:string" minOccurs="1" maxOccurs="1" />
+			<xs:element name="licenceType" type="xs:string" default="Other" minOccurs="1" maxOccurs="1" />
+		</xs:sequence>
+		<xs:attribute name="private" type="xs:boolean" default="true" />
+		<xs:attribute name="status" type="status" default="toDo" />
+	</xs:complexType>
+	<xs:complexType name="roles">
+		<xs:sequence>
+			<xs:element name="roleElement" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="name" type="xs:string" />
+						<xs:element name="description" type="xs:string" />
+					</xs:sequence>
+					<xs:attribute name="status" type="status" default="toDo" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="domains">
+		<xs:sequence>
+			<xs:element name="domainElement" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="name" type="xs:string" />
+						<xs:element name="applications" type="applications" />
+					</xs:sequence>
+					<xs:attribute name="status" type="status" default="toDo" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="applications">
+		<xs:sequence>
+			<xs:element name="applicationElement" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="name" type="xs:string" />
+						<xs:element name="description" type="xs:string" />
+						<xs:element name="category" type="appCategory" />
+						<xs:element name="type" type="appType" />
+						<xs:element name="rolesMapping" type="rolesMapping" />
+					</xs:sequence>
+					<xs:attribute name="status" type="status" default="toDo" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="appCategory">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="testmanagement" />
+			<xs:enumeration value="mailinglist" />
+			<xs:enumeration value="scm" />
+			<xs:enumeration value="cms" />
+			<xs:enumeration value="quality" />
+			<xs:enumeration value="requirementmanagement" />
+			<xs:enumeration value="forum" />
+			<xs:enumeration value="repositorymanagement" />
+			<xs:enumeration value="bugtracker" />
+			<xs:enumeration value="survey" />
+			<xs:enumeration value="ci" />
+			<xs:enumeration value="wiki" />
+			<xs:enumeration value="delivery" />
+			<xs:enumeration value="ecm" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="appType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Testlink" />
+			<xs:enumeration value="Sympa" />
+			<xs:enumeration value="SVN" />
+			<xs:enumeration value="Spip" />
+			<xs:enumeration value="Sonar" />
+			<xs:enumeration value="Requirements" />
+			<xs:enumeration value="PhpBB" />
+			<xs:enumeration value="Nexus" />
+			<xs:enumeration value="Mantis" />
+			<xs:enumeration value="Limesurvey" />
+			<xs:enumeration value="Jenkins" />
+			<xs:enumeration value="Dokuwiki" />
+			<xs:enumeration value="Deliveries" />
+			<xs:enumeration value="Alfresco" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="rolesMapping">
+		<xs:sequence>
+			<xs:element name="roleMapped" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="forgeId" type="xs:string" />
+						<xs:element name="applicationId" type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="memberships">
+		<xs:sequence>
+			<xs:element name="membershipsUsers" type="membershipsUsers" />
+			<xs:element name="membershipsGroups" type="membershipsGroups" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="membershipsUsers">
+		<xs:sequence>
+			<xs:element name="membershipUser" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="role" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+					<xs:attribute name="login" type="xs:string" />
+					<xs:attribute name="status" type="status" default="toDo" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="membershipsGroups">
+		<xs:sequence>
+			<xs:element name="membershipGroup" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="role" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+					</xs:sequence>
+					<xs:attribute name="id" type="xs:string" />
+					<xs:attribute name="status" type="status" default="toDo" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="email">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[^@]+@[^\.]+\..+" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema> 

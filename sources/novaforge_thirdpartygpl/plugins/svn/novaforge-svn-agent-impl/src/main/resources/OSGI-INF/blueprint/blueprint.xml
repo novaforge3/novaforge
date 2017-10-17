@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this file.  If not, see http://www.gnu.org/licenses/.
+-->
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0" xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+	xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws" xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
+	xmlns:cxf="http://cxf.apache.org/blueprint/core" xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd 
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd 
+	http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
+    http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd
+	http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
+
+<!-- Property place holder -->
+	<cm:property-placeholder persistent-id="plugins.svn.agent" update-strategy="reload">
+		<cm:default-properties>
+			<!-- Plugin configuration -->
+			<cm:property name="repositoriesPath" value="/datas/novaforge3/datas/svn" />
+			<cm:property name="rootUrl" value="http://localhost/svn-default/svn" />
+		</cm:default-properties>
+	</cm:property-placeholder>
+	<reference id="searchService" interface="org.novaforge.forge.commons.technical.search.SearchService" />
+	<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/pluginSVNAgent)" />
+
+	<bean id="repositoryDAO" class="org.novaforge.forge.plugins.scm.svn.agent.internal.dao.impl.RepositoryDAOImpl">
+		<jpa:context unitname="plugins.svn-agent" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="repositoryPathDAO" class="org.novaforge.forge.plugins.scm.svn.agent.internal.dao.impl.RepositoryPathDAOImpl">
+		<jpa:context unitname="plugins.svn-agent" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="userDAO" class="org.novaforge.forge.plugins.scm.svn.agent.internal.dao.impl.UserDAOImpl">
+		<jpa:context unitname="plugins.svn-agent" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="userPermissionDAO" class="org.novaforge.forge.plugins.scm.svn.agent.internal.dao.impl.UserPermissionDAOImpl">
+		<jpa:context unitname="plugins.svn-agent" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+
+	<bean id="svnRepositoryService" class="org.novaforge.forge.plugins.scm.svn.agent.internal.services.SVNRepositoryServiceImpl">
+		<property name="searchService" ref="searchService" />
+	</bean>
+	<bean id="svnToolService" class="org.novaforge.forge.plugins.scm.svn.agent.internal.services.SVNToolServiceImpl">
+		<property name="repositoriesPath" value="${repositoriesPath}" />
+		<property name="rootUrl" value="${rootUrl}" />
+	</bean>
+	<bean id="userService" class="org.novaforge.forge.plugins.scm.svn.agent.internal.facades.UserServiceImpl">
+		<tx:transaction method="*" value="Required" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="userPermissionDAO" ref="userPermissionDAO" />
+		<property name="repositoryPathDAO" ref="repositoryPathDAO" />
+		<property name="repositoryDAO" ref="repositoryDAO" />
+		<property name="svnRepositoryService" ref="svnRepositoryService" />
+	</bean>
+	<bean id="svnFacadeService" class="org.novaforge.forge.plugins.scm.svn.agent.internal.services.SVNFacadeServiceImpl">
+		<property name="svnRepositoryService" ref="svnRepositoryService" />
+		<property name="svnToolService" ref="svnToolService" />
+		<property name="userService" ref="userService" />
+		<property name="repositoriesPath" value="${repositoriesPath}" />
+	</bean>
+	<cxf:bus id="svnAgentBus" />
+	<jaxws:endpoint implementor="#svnFacadeService" implementorClass="org.novaforge.forge.plugins.scm.svn.agent.services.SVNFacadeService" address="/SVNAgentFacadeService" />
+
+</blueprint>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<chapter version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+	  <title>Présentation de l'application</title>
+	  <sect2>
+	  <title>Composition</title>
+	  <para>L'application "exigences" est composée des onglets suivants :  </para>
+	  <itemizedlist>
+				<listitem>
+					<para>
+						<emphasis>Vue fonctionnelle.</emphasis>
+					</para>
+					<para>La vue fonctionnelle permet de parcourir l'arborescence des exigences et de visualiser les répertoires et le détail de chacune des exigences. Ces informations ne sont pas modifiables 
+					et sont issues du référentiel OBEO.</para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis>Vue par le code.</emphasis>
+					</para>
+					<para>La vue par le code permet de visualiser une liste à plat des exigences, sans les dossiers les contenant, avec la ou les classes associées dans le cas où l'exigence est couverte par le code.</para>
+					<para>Un indicateur coloré permet de définir si :</para>
+					<itemizedlist>
+						<listitem>
+							<para>Rouge : L'exigence n'est pas couverte,</para>
+						</listitem>
+						<listitem>
+							<para>Orange : Est couverte dans une version antérieure,</para>
+						</listitem>
+						<listitem>
+							<para>Verte : Est couverte dans la version courante de l'exigence.</para>
+						</listitem>
+					</itemizedlist>
+					<para>Un formulaire permet de renseigner les champs afin de filtrer les exigences en fonction de différents critères.</para>
+				</listitem>	
+				<listitem>
+					<para>
+						<emphasis>Vue par les tests.</emphasis>
+					</para>
+					<para>La vue par les tests permet de visualiser une liste des exigences avec le ou les cas de test associés dans le cas où l'exigence est couverte par les tests.</para>
+					<para>Un indicateur coloré permet de définir si :</para>
+					<itemizedlist>
+						<listitem>
+							<para>Rouge : L'exigence n'est pas couverte,</para>
+						</listitem>
+						<listitem>
+							<para>Orange : Est couverte dans une version antérieure,</para>
+						</listitem>
+						<listitem>
+							<para>Verte : Est couverte dans la version courante de l'exigence.</para>
+						</listitem>
+					</itemizedlist>
+					<para>Un formulaire permet de renseigner les champs afin de filtrer les exigences en fonction de différents critères.</para>
+				</listitem>	
+				<listitem>
+					<para>
+						<emphasis>Administration.</emphasis>
+					</para>
+					<para>L'onglet "Administration" permet de gérer les synchronisations avec les différents outils-tiers. On y trouve :</para>
+					<itemizedlist>
+						<listitem>
+							<para><emphasis>La liste des dépôts d'exigences faisant office de référentiel d'exigences.</emphasis></para>
+							<para>Dans le titre de cette section est rappelé la configuration du serveur CDO dont nous parlerons dans le chapitre <emphasis>configuration</emphasis></para>
+						</listitem>
+						<listitem>
+							<para><emphasis>La configuration générale contenant pour l'instant uniquement le chemin du code SVN.</emphasis></para>
+							<para>C'est le chemin absolu du dépôt SVN à partir duquel les analyses du code sont effectuées.</para>
+						</listitem>	
+						<listitem>
+							<para><emphasis>Synchronisation manuelle.</emphasis></para>
+							<para>Cette section permet de lancer une synchronisation de l'application avec les outils sélectionnés. Si la case <emphasis>Tout Sélectionner</emphasis>
+							est cochée, la synchronisation avec le référentiel OBEO est effectuée avant celles de testlink et de SVN.</para>
+						</listitem>	
+						<listitem>
+							<para><emphasis>Synchronisation programmée.</emphasis></para>
+							<para>Cette section permet de programmer une synchronisation globale en respectant l'ordre défini ci-dessus.</para>
+						</listitem>							
+					</itemizedlist>
+				</listitem>						
+			</itemizedlist>
+	  </sect2>
+	  <sect2>
+	  	<title>Gestion des rôles</title>
+	  	<para>Les rôles suivants sont présents :</para>
+	  	<itemizedlist>
+			<listitem>
+				<para><emphasis>project manager</emphasis></para>
+				<para>Ce rôle a accès à tous les onglets.</para>
+			</listitem> 
+			<listitem>
+				<para><emphasis>viewer</emphasis></para>
+				<para>Ce rôle a accès à tous les onglets hormis celui de l'administration.</para>
+			</listitem>
+		</itemizedlist>
+	  </sect2>
+</chapter>

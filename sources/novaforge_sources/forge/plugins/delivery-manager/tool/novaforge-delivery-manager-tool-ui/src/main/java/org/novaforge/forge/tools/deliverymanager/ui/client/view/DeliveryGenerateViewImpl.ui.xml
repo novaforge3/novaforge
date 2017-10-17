@@ -1,0 +1,117 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+						 xmlns:g="urn:import:com.google.gwt.user.client.ui"
+						 xmlns:common="urn:import:org.novaforge.forge.ui.commons.client.loading">
+	<ui:with field='res'
+		type='org.novaforge.forge.ui.commons.client.resources.CommonsResources' />
+
+	<g:ScrollPanel alwaysShowScrollBars="false">
+		<g:VerticalPanel spacing="5" width='100%' verticalAlignment='ALIGN_TOP'>
+			<g:HorizontalPanel addStyleNames="{res.css.actionPanel}" horizontalAlignment='ALIGN_LEFT'>
+				<g:HorizontalPanel spacing="5" horizontalAlignment='ALIGN_LEFT'>
+					<g:Button addStyleNames="{res.css.important}" ui:field="returnButton" />
+				</g:HorizontalPanel>
+			</g:HorizontalPanel>
+			<!-- CONTENT -->
+			<g:VerticalPanel spacing="5" width='100%'>
+      			<g:Label ui:field='deliveryGenerateTitle' addStyleNames="{res.css.zoneTitle}" />
+      			<g:VerticalPanel spacing="5" width='100%' addStyleNames="{res.css.zonePanel}">
+      				<g:Label ui:field='deliveryDetailsTitle' addStyleNames="{res.css.zoneTitle}" />
+      				<g:HorizontalPanel spacing="5" horizontalAlignment="ALIGN_CENTER" width='100%' addStyleNames="{res.css.zonePanel}">
+      					<common:LoadingPanel ui:field='deliveryDetailsLoadingPanel' />
+      					<g:VerticalPanel ui:field='deliveryDetailsPanel'>
+	      					<g:Grid addStyleNames="{res.css.infoGrid}">
+								<g:row>
+									<g:customCell>
+										<g:Label ui:field="deliveryNameLabel" addStyleNames="{res.css.gridLabel}" />
+									</g:customCell>
+									<g:customCell>
+										<g:Label ui:field="deliveryNameValue" />
+									</g:customCell>
+								</g:row>
+								<g:row>
+									<g:customCell>
+										<g:Label ui:field="deliveryVersionLabel" addStyleNames="{res.css.gridLabel}" />
+									</g:customCell>
+									<g:customCell>
+										<g:Label ui:field="deliveryVersionValue" />
+									</g:customCell>
+								</g:row>
+								<g:row>
+									<g:customCell>
+										<g:Label ui:field="deliveryReferenceLabel" addStyleNames="{res.css.gridLabel}" />
+									</g:customCell>
+									<g:customCell>
+										<g:Label ui:field="deliveryReferenceValue" />
+									</g:customCell>
+								</g:row>
+								<g:row>
+									<g:customCell>
+										<g:Label ui:field="deliveryTypeLabel" addStyleNames="{res.css.gridLabel}" />
+									</g:customCell>
+									<g:customCell>
+										<g:Label ui:field="deliveryTypeValue" />
+									</g:customCell>
+								</g:row>
+							</g:Grid>
+						</g:VerticalPanel>
+      				</g:HorizontalPanel>
+      				<g:Label ui:field='deliveryContentTitle' addStyleNames="{res.css.zoneTitle}" />
+      				<g:VerticalPanel spacing="5" horizontalAlignment="ALIGN_LEFT" width='100%' addStyleNames="{res.css.zonePanel}">
+      					<common:LoadingPanel ui:field='deliveryContentLoadingPanel' />
+      					<g:VerticalPanel ui:field='deliveryContentPanel'>
+	      					<g:HorizontalPanel ui:field="ecmPanel">
+	      						<g:Label ui:field='deliveryContentECM' addStyleNames="{res.css.subZoneTitle}" />
+	      						<g:Label ui:field='contentECMInfosValue' />
+	      					</g:HorizontalPanel>
+	      					<g:HorizontalPanel ui:field="scmPanel">
+	      						<g:Label ui:field='deliveryContentSCM' addStyleNames="{res.css.subZoneTitle}" />
+	      						<g:Label ui:field='contentSCMInfosValue' />
+	      					</g:HorizontalPanel>
+	      					<g:HorizontalPanel ui:field="filesPanel">
+	      						<g:Label ui:field='deliveryContentFILES' addStyleNames="{res.css.subZoneTitle}" />
+	      						<g:Label ui:field='contentFilesInfosValue' />
+	      					</g:HorizontalPanel>
+	      					<g:HorizontalPanel ui:field="bugsPanel">
+	      						<g:Label ui:field='deliveryContentBUGS' addStyleNames="{res.css.subZoneTitle}" />
+	      						<g:Label ui:field='contentBugsInfosValue' />
+	      					</g:HorizontalPanel>
+	      					<g:HorizontalPanel ui:field="notePanel">
+	      						<g:Label ui:field='deliveryContentNOTE' addStyleNames="{res.css.subZoneTitle}" />
+	      						<g:Label ui:field='contentNoteInfosValue' />
+	      					</g:HorizontalPanel>
+      					</g:VerticalPanel>
+      				</g:VerticalPanel>
+      			</g:VerticalPanel>
+      		</g:VerticalPanel>
+			<g:HorizontalPanel spacing="5" horizontalAlignment="ALIGN_CENTER" width='100%'>
+				<g:HorizontalPanel spacing="5" horizontalAlignment="ALIGN_CENTER">
+					<g:Button addStyleNames="{res.css.important}" ui:field="buttonEditDelivery" />
+					<g:Button addStyleNames="{res.css.important}" ui:field="buttonGenerateDelivery" />
+				</g:HorizontalPanel>
+			</g:HorizontalPanel>
+		</g:VerticalPanel>
+	</g:ScrollPanel>
+</ui:UiBinder> 

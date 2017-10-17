@@ -1,0 +1,6 @@
+Alias /@ALIAS@-default/@PHPBB_NAME@ "@PHPBB_HOME@"
+
+<Directory @PHPBB_HOME@>
+        Options Indexes
+        Require all granted
+</Directory>

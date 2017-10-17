@@ -1,0 +1,87 @@
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>novaforge-plugins</artifactId>
+		<groupId>org.novaforge.forge.plugins</groupId>
+		<version>3.8.0</version>
+	</parent>
+
+	<artifactId>novaforge-jira</artifactId>
+	<packaging>pom</packaging>
+	<name>NovaForge(tm) :: Plugins :: Jira</name>
+
+	<repositories>
+		<repository>
+			<id>atlassian</id>
+			<url>https://maven.atlassian.com/public/</url>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+		</repository>
+	</repositories>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.atlassian.jira</groupId>
+				<artifactId>jira-rest-java-client-api</artifactId>
+				<version>${jira.rest.client.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.atlassian.jira</groupId>
+				<artifactId>jira-rest-java-client-core</artifactId>
+				<version>${jira.rest.client.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.atlassian.util.concurrent</groupId>
+				<artifactId>atlassian-util-concurrent</artifactId>
+				<version>${atlassian.util.concurrent.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.servicemix.bundles</groupId>
+				<artifactId>org.apache.servicemix.bundles.jsoup</artifactId>
+				<version>${jsoup.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<properties>
+		<jira.rest.client.version>2.0.0-m31</jira.rest.client.version>
+		<atlassian.util.concurrent.version>3.0.0</atlassian.util.concurrent.version>
+		<jsoup.version>1.5.2_2</jsoup.version>
+		<jira.version>6.0.7</jira.version>
+	</properties>
+	<modules>
+		<module>novaforge-jira-api</module>
+		<module>novaforge-jira-library</module>
+		<module>novaforge-jira-client</module>
+		<module>novaforge-jira-cfg</module>
+		<module>novaforge-jira-impl</module>
+	</modules>
+</project>

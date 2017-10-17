@@ -1,0 +1,75 @@
+DBDriver mysql
+DBDParams "dbname=plugin_svn_agent user=@NOVAFORGE_USER@ pass=@NOVAFORGE_PWD@"
+DBDMin  4
+DBDKeep 8
+DBDMax 300
+DBDExptime 300
+DBDPersist Off
+DBDPrepareSQL "SELECT password from SVN_USER WHERE name=%s"
+
+
+<Location /svn-default/svn>
+
+### This is for MySQL Authentications
+  DAV svn 
+  SVNParentPath @SVN_REPOS_PATH@  
+  SVNListParentPath On 
+  Options FollowSymLinks Indexes MultiViews
+  AuthType Basic
+  AuthName "Subversion Repositories"
+  AuthBasicProvider dbd
+  AuthDBDUserPWQuery "SELECT password from SVN_USER WHERE name=%s"
+
+  Require valid-user
+  AllowOverride None
+  Require all denied
+
+
+### This is for MySQL Authorizations
+      AuthzSVNDBAuthoritative 		                On
+      AuthzSVNDBHost 			                    @MARIADB_HOST@
+      AuthzSVNDBPort 			                    @MARIADB_PORT@
+      AuthzSVNDBName 			                    plugin_svn_agent
+      AuthzSVNDBUsername 		                    @NOVAFORGE_USER@
+      AuthzSVNDBPassword 		                    @NOVAFORGE_PWD@
+
+# informations about User persistence 
+      AuthzSVNDBUserTable 		                    SVN_USER
+      AuthzSVNDBUserColumn 		                    name
+      AuthzSVNDBUserIDColumn 		                id
+
+# informations about Repository persistence 
+      AuthzSVNDBRepositoryTable 		            SVN_REPOSITORY 
+      AuthzSVNDBRepositoryColumn	                name
+      AuthzSVNDBRepositoryIDColumn	                id
+
+# informations about GroupMembership persistence 
+      AuthzSVNDBGroupMembershipTable 	            SVN_GROUP_MEMBERSHIP 
+      AuthzSVNDBGroupMembershipUserColumn		    user_id 
+      AuthzSVNDBGroupMembershipGroupColumn		    group_id 
+
+# informations about UserPermission persistence		 
+      AuthzSVNDBUPermissionTable		            SVN_USER_PERMISSION 
+      AuthzSVNDBUPermissionUserColumn		        user_id 
+      AuthzSVNDBUPermissionPathColumn		        repository_path_id
+
+AuthzSVNDBUPermissionReadColumn		                read_permission 
+      AuthzSVNDBUPermissionWriteColumn		        write_permission 
+      AuthzSVNDBUPermissionRecursiveColumn	        recursive_permission 
+
+# informations about GroupPermission persistence 
+      AuthzSVNDBGPermissionTable			        SVN_GROUP_PERMISSION 
+      AuthzSVNDBGPermissionGroupColumn		        group_id 
+      AuthzSVNDBGPermissionPathColumn		        repository_path_id 
+      AuthzSVNDBGPermissionReadColumn		        read_permission 
+      AuthzSVNDBGPermissionWriteColumn		        write_permission 
+      AuthzSVNDBGPermissionRecursiveColumn	        recursive_permission 
+
+# informations about RepositoryPath persistence 
+      AuthzSVNDBRepoPathTable				        SVN_REPOSITORY_PATH 
+      AuthzSVNDBRepoPathPathColumn			        path 
+      AuthzSVNDBRepoPathRepositoryColumn		    repository_id 
+      AuthzSVNDBRepoPathIDColumn			        id 
+
+
+</Location>

@@ -1,0 +1,182 @@
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.novaforge.forge</groupId>
+		<artifactId>config</artifactId>
+		<version>3.8.0</version>
+	</parent>
+
+	<groupId>org.novaforge.forge.docs</groupId>
+	<artifactId>novaforge-docs</artifactId>
+	<packaging>pom</packaging>
+	<name>NovaForge(tm) :: Docs</name>
+	<description>NovaForge(tm) Documentations Project</description>
+
+	<properties>
+		<webhelpOutput>${project.build.directory}/docbkx/webhelp</webhelpOutput>
+		<dependencyRep>${project.build.directory}/docRes/</dependencyRep>
+	</properties>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<!-- Unpacking resources that'll be parsed by docbook generator -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>unpack-docbkx-resources</id>
+							<phase>generate-resources</phase>
+							<goals>
+								<goal>unpack</goal>
+							</goals>
+							<configuration>
+								<artifactItems>
+									<artifactItem>
+										<groupId>org.novaforge.forge.docs</groupId>
+										<artifactId>${artifact.common.doc}</artifactId>
+										<version>${project.version}</version>
+										<classifier>resources</classifier>
+										<type>tar.gz</type>
+									</artifactItem>
+								</artifactItems>
+								<!-- Unpacking to docbook working folder -->
+								<outputDirectory>${dependencyRep}</outputDirectory>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<!-- Dispatching resources into the right folder that'll be parsed by docbook generator -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>copy-docbkx-resources</id>
+							<phase>process-resources</phase>
+							<goals>
+								<goal>run</goal>
+							</goals>
+							<configuration>
+								<target name="copy docbkx XML files">
+									<copy todir="${webhelpOutput}/${docbookModule}/css/">
+										<fileset dir="${dependencyRep}/css/" />
+									</copy>
+								</target>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>com.agilejava.docbkx</groupId>
+					<artifactId>docbkx-maven-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>generate-webhelp</id>
+							<phase>compile</phase>
+							<goals>
+								<goal>generate-webhelp</goal>
+							</goals>
+							<configuration>
+								<preProcess>
+									<!-- Copy images to the webhelp working docbook folder -->
+									<copy todir="${webhelpOutput}/${docbookModule}/images/" overwrite="true">
+										<fileset dir="src/main/resources/docbkx/images/" />
+									</copy>
+									<!-- Copy images to the webhelp working docbook folder -->
+									<copy todir="${webhelpOutput}/${docbookModule}/images/" overwrite="true" failonerror="false">
+										<fileset dir="${dependencyRep}/docbkx/images/" />
+									</copy>
+									<!-- Copy root docbook file to the working docbook folder for use by docbook generator -->
+									<copy todir="${dependencyRep}/docbkx/" overwrite="true">
+										<fileset dir="src/main/resources/docbkx/">
+											<include name="*.xml" />
+										</fileset>
+									</copy>
+									<!-- Copy imported docbook files to the working docbook folder for use by docbook generator -->
+									<copy todir="${dependencyRep}/docbkx/content/" overwrite="true">
+										<fileset dir="src/main/resources/docbkx/content/" />
+									</copy>
+								</preProcess>
+								<!-- Specifying custom CSS file -->
+								<htmlStylesheet>../css/nova-positioning.css</htmlStylesheet>
+								<!-- Specifying custom source folder where docbook xml files are located -->
+								<sourceDirectory>${dependencyRep}/docbkx/</sourceDirectory>
+								<includes>*.xml</includes>
+								<webhelpIndexerLanguage>fr</webhelpIndexerLanguage>
+								<webhelpIncludeSearchTab>1</webhelpIncludeSearchTab>
+								<imgSrcPath>../images/</imgSrcPath>
+								<defaultImageWidth>650px</defaultImageWidth>
+							</configuration>
+						</execution>
+						<execution>
+							<id>generate-pdf</id>
+							<phase>compile</phase>
+							<goals>
+								<goal>generate-pdf</goal>
+							</goals>
+							<configuration>
+								<preProcess>
+									<!-- Copy images to the pdf working docbook folder -->
+									<copy todir="${dependencyRep}/docbkx/images/" overwrite="true">
+										<fileset dir="src/main/resources/docbkx/images/" />
+									</copy>
+								</preProcess>
+								<!-- Specifying custom source folder where docbook xml files are located -->
+								<sourceDirectory>${dependencyRep}/docbkx/</sourceDirectory>
+								<includes>*.xml</includes>
+							</configuration>
+						</execution>
+					</executions>
+					<configuration>
+						<xincludeSupported>true</xincludeSupported>
+						<keepRelativeImageUris>1</keepRelativeImageUris>
+						<imgSrcPath>images/</imgSrcPath>
+						<defaultImageWidth>450px</defaultImageWidth>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	
+   <!-- Declaration of modules -->
+	<modules>
+		<module>user-guide/fr-common</module>
+		<module>user-guide/fr-safran</module>
+		<module>user-guide/fr-bull</module>
+		<module>user-guide/en-common</module>
+		<module>user-guide/en-safran</module>
+		<module>user-guide/en-bull</module>
+		<module>exploitation-guide</module>
+		<module>admin-guide/fr</module>
+		<module>admin-guide/en</module>
+		<module>architecture-document</module>
+		<module>requirements-guide</module>
+	</modules>
+</project>

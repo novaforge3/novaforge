@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+	<reference id="forgeInitializationService" interface="org.novaforge.forge.core.initialization.services.ForgeInitializationService" />
+
+
+	<reference id="projectPresenter" interface="org.novaforge.forge.core.organization.presenters.ProjectPresenter" />
+	<reference id="applicationPresenter" interface="org.novaforge.forge.core.organization.presenters.ApplicationPresenter" />
+	<reference id="spacePresenter" interface="org.novaforge.forge.core.organization.presenters.SpacePresenter" />
+	<reference id="userPresenter" interface="org.novaforge.forge.core.organization.presenters.UserPresenter" />
+	<reference id="languagePresenter" interface="org.novaforge.forge.core.organization.presenters.LanguagePresenter" />
+	<reference id="rolePresenter" interface="org.novaforge.forge.core.organization.presenters.ProjectRolePresenter" />
+	<reference id="membershipPresenter" interface="org.novaforge.forge.core.organization.presenters.MembershipPresenter" />
+	<reference id="permissionHandler" interface="org.novaforge.forge.core.security.authorization.PermissionHandler" />
+	<reference id="roleDAO" interface="org.novaforge.forge.core.organization.dao.RoleDAO" />
+	<reference id="authentificationService" interface="org.novaforge.forge.core.security.authentification.AuthentificationService" />
+	<reference id="pluginsManager" interface="org.novaforge.forge.core.plugins.services.PluginsManager" />
+	<reference id="historizationService" interface="org.novaforge.forge.commons.technical.historization.services.HistorizationService" />
+	<reference id="referenceToolService" interface="org.novaforge.forge.reference.tool.ReferenceToolService" availability="optional"/>
+
+	<reference id="templatePresenter" interface="org.novaforge.forge.core.organization.presenters.TemplatePresenter" />
+	<reference id="templateNodePresenter" interface="org.novaforge.forge.core.organization.presenters.TemplateNodePresenter" />
+	<reference id="templateRolePresenter" interface="org.novaforge.forge.core.organization.presenters.TemplateRolePresenter" />
+	<reference id="alfrescoService" interface="org.novaforge.forge.core.plugins.services.PluginService"
+		availability="optional" filter="(type=Alfresco)" />
+	<reference id="dokuwikiService" interface="org.novaforge.forge.core.plugins.services.PluginService"
+		availability="optional" filter="(type=Dokuwiki)" />
+
+	<bean id="initializationPropertiesFile"
+		class="org.novaforge.forge.configuration.initialization.internal.properties.InitializationPropertiesFile"
+		init-method="init">
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+
+	<bean id="initializationProperties" class="org.novaforge.forge.configuration.initialization.internal.properties.InitializationProperties">
+		<property name="initializationPropertiesFile" ref="initializationPropertiesFile" />
+	</bean>
+
+	<bean id="languageCreator" class="org.novaforge.forge.configuration.initialization.internal.creator.LanguageCreator">
+		<property name="languagePresenter" ref="languagePresenter" />
+	</bean>
+	<bean id="projectCreator" class="org.novaforge.forge.configuration.initialization.internal.creator.ProjectCreator">
+		<property name="authentificationService" ref="authentificationService" />
+		<property name="projectPresenter" ref="projectPresenter" />
+		<property name="rolePresenter" ref="rolePresenter" />
+		<property name="roleDAO" ref="roleDAO" />
+		<property name="userPresenter" ref="userPresenter" />
+		<property name="membershipPresenter" ref="membershipPresenter" />
+		<property name="permissionHandler" ref="permissionHandler" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+		<property name="initializationProperties" ref="initializationProperties" />
+	</bean>
+
+	<bean id="applicationCreator" class="org.novaforge.forge.configuration.initialization.internal.creator.ApplicationCreator">
+		<property name="initializationProperties" ref="initializationProperties" />
+		<property name="authentificationService" ref="authentificationService" />
+		<property name="applicationPresenter" ref="applicationPresenter" />
+		<property name="pluginsManager" ref="pluginsManager" />
+		<property name="historizationService" ref="historizationService" />
+		<property name="projectPresenter" ref="projectPresenter" />
+
+		<property name="period" value="30000" />
+		<property name="initialDelay" value="30000" />
+		<property name="maxTrialDelay" value="180000" />
+	</bean>
+	<bean id="referentielCreator" class="org.novaforge.forge.configuration.initialization.internal.creator.ReferentielCreator">
+		<property name="authentificationService" ref="authentificationService" />
+		<property name="initializationProperties" ref="initializationProperties" />
+		<property name="projectPresenter" ref="projectPresenter" />
+		<property name="rolePresenter" ref="rolePresenter" />
+		<property name="referenceToolService" ref="referenceToolService" />
+		<property name="spacePresenter" ref="spacePresenter" />
+		<property name="dokuwikiService" ref="dokuwikiService" />
+		<property name="alfrescoService" ref="alfrescoService" />
+		<property name="applicationCreator" ref="applicationCreator" />
+	</bean>
+	<bean id="userCreator" class="org.novaforge.forge.configuration.initialization.internal.creator.UserCreator">
+		<property name="userPresenter" ref="userPresenter" />
+		<property name="languagePresenter" ref="languagePresenter" />
+		<property name="initializationProperties" ref="initializationProperties" />
+	</bean>
+
+	<bean id="forgeInitializator" class="org.novaforge.forge.configuration.initialization.internal.ForgeInitializator"
+		init-method="init">
+		<!-- Internal beans -->
+		<property name="initializationPropertiesFile" ref="initializationPropertiesFile" />
+		<property name="initializationProperties" ref="initializationProperties" />
+		<property name="languageCreator" ref="languageCreator" />
+		<property name="projectCreator" ref="projectCreator" />
+		<property name="referentielCreator" ref="referentielCreator" />
+		<property name="userCreator" ref="userCreator" />
+		<!-- Services -->
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+		<property name="forgeInitializationService" ref="forgeInitializationService" />
+		<property name="historizationService" ref="historizationService" />
+	</bean>
+
+	<bean id="templateLoaderService" class="org.novaforge.forge.configuration.initialization.internal.TemplateLoaderServiceImpl">
+		<property name="templateNodePresenter" ref="templateNodePresenter" />
+		<property name="templateRolePresenter" ref="templateRolePresenter" />
+		<property name="templatePresenter" ref="templatePresenter" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+		<property name="pluginsManager" ref="pluginsManager" />
+	</bean>
+	
+	<!-- Services -->
+	<service ref="templateLoaderService" interface="org.novaforge.forge.core.organization.services.TemplateLoaderService" />
+
+
+</blueprint>

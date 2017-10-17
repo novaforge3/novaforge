@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd 
+
+
+	http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
+
+<!-- Property place holder -->
+	<cm:property-placeholder id="tools" persistent-id="tools.delivery" update-strategy="reload" >
+		<cm:default-properties>
+			<!-- Tool configuration -->
+			<cm:property name="rootRepository" value="/datas/novaforge3/datas/delivery" />
+			<!-- Roles Configuration -->			
+			<cm:property name="roles" value="[{'name': 'viewer', 'permissions': ['read']}, {'name': 'project manager', 'permissions': ['read','edit']}]" />
+		</cm:default-properties>
+	</cm:property-placeholder>
+	
+	<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/toolDelivery)" />
+
+	<reference id="instanceConfigurationDAO" interface="org.novaforge.forge.core.plugins.dao.InstanceConfigurationDAO"
+		filter="(&amp;(type=Deliveries)(version=${novaforge.version}))" availability="optional"/>
+	<reference id="applicationRequestService" interface="org.novaforge.forge.core.plugins.services.ApplicationRequestService" />
+	<reference id="validationService" interface="org.novaforge.forge.commons.technical.validation.ValidationService" />
+	<reference id="fileService" interface="org.novaforge.forge.commons.technical.file.FileService" />
+	<reference id="reportingService" interface="org.novaforge.forge.commons.reporting.services.ReportingService" />
+
+	<bean id="contentDAO" class="org.novaforge.forge.tools.deliverymanager.internal.beans.ContentDAOImpl">
+		<jpa:context unitname="tools.delivery" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="deliveryDAO" class="org.novaforge.forge.tools.deliverymanager.internal.beans.DeliveryDAOImpl">
+		<jpa:context unitname="tools.delivery" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="deliveryTypeDAO" class="org.novaforge.forge.tools.deliverymanager.internal.beans.DeliveryTypeDAOImpl">
+		<jpa:context unitname="tools.delivery" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="nodeDAO" class="org.novaforge.forge.tools.deliverymanager.internal.beans.NodeDAOImpl">
+		<jpa:context unitname="tools.delivery" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="templateReportDAO" class="org.novaforge.forge.tools.deliverymanager.internal.beans.TemplateReportDAOImpl">
+		<jpa:context unitname="tools.delivery" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="projectDAO" class="org.novaforge.forge.tools.deliverymanager.internal.beans.ProjectDAOImpl">
+		<jpa:context unitname="tools.delivery" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="roleDAO" class="org.novaforge.forge.tools.deliverymanager.internal.beans.RoleDAOImpl">
+		<jpa:context unitname="tools.delivery" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="userDAO" class="org.novaforge.forge.tools.deliverymanager.internal.beans.UserDAOImpl">
+		<jpa:context unitname="tools.delivery" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="membershipDAO" class="org.novaforge.forge.tools.deliverymanager.internal.beans.MembershipDAOImpl">
+		<jpa:context unitname="tools.delivery" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="deliveryService" class="org.novaforge.forge.tools.deliverymanager.internal.services.DeliveryServiceImpl">
+		<property name="contentDAO" ref="contentDAO" />
+		<property name="nodeDAO" ref="nodeDAO" />
+		<property name="deliveryDAO" ref="deliveryDAO" />
+		<property name="deliveryTypeDAO" ref="deliveryTypeDAO" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="templateReportService" class="org.novaforge.forge.tools.deliverymanager.internal.services.TemplateReportServiceImpl">
+		<property name="templateReportDAO" ref="templateReportDAO" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="deliveryPluginService" class="org.novaforge.forge.tools.deliverymanager.internal.services.DeliveryPluginServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="applicationRequestService" ref="applicationRequestService" />
+	</bean>
+	<bean id="deliveryRepositoryService" class="org.novaforge.forge.tools.deliverymanager.internal.services.DeliveryRepositoryServiceImpl">
+		<property name="rootRepository" value="${rootRepository}" />
+	</bean>
+	<bean id="deliveryDataReportService" class="org.novaforge.forge.tools.deliverymanager.internal.services.DeliveryDataReportServiceImpl">
+		<property name="deliveryPresenter" ref="deliveryPresenter" />
+		<property name="deliveryPluginService" ref="deliveryPluginService" />
+	</bean>
+	<bean id="deliveryPresenter" class="org.novaforge.forge.tools.deliverymanager.internal.presenter.DeliveryPresenterImpl">
+		<property name="validationService" ref="validationService" />
+		<property name="deliveryService" ref="deliveryService" />
+		<property name="deliveryRepositoryService" ref="deliveryRepositoryService" />
+		<property name="fileService" ref="fileService" />
+		<property name="deliveryPluginService" ref="deliveryPluginService" />
+		<property name="templateReportPresenter" ref="templateReportPresenter" />
+		<property name="reportingService" ref="reportingService" />
+	</bean>
+	<bean id="templateReportPresenter" class="org.novaforge.forge.tools.deliverymanager.internal.presenter.TemplateReportPresenterImpl">
+		<property name="validationService" ref="validationService" />
+		<property name="templateReportService" ref="templateReportService" />
+		<property name="deliveryRepositoryService" ref="deliveryRepositoryService" />
+	</bean>
+	
+	<!-- OrganizationService And PermissionService -->
+	<bean id="deliveryOrganizationService" class="org.novaforge.forge.tools.deliverymanager.internal.services.DeliveryOrganizationServiceImpl" >
+		<tx:transaction method="*" value="Required" />
+		<property name="roleDAO" ref="roleDAO" />
+		<property name="membershipDAO" ref="membershipDAO" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="projectDAO" ref="projectDAO" />
+	</bean>
+	<bean id="deliveryPermissionService" class="org.novaforge.forge.tools.deliverymanager.internal.services.DeliveryPermissionServiceImpl" >
+		<property name="membershipDAO" ref="membershipDAO" />
+	</bean>
+	
+	<service ref="deliveryDataReportService" interface="org.novaforge.forge.tools.deliverymanager.services.DeliveryDataReportService"/>
+	<service ref="deliveryPluginService" interface="org.novaforge.forge.tools.deliverymanager.services.DeliveryPluginService"/>
+	<service ref="deliveryRepositoryService" interface="org.novaforge.forge.tools.deliverymanager.services.DeliveryRepositoryService"/>
+	<service ref="deliveryPresenter" interface="org.novaforge.forge.tools.deliverymanager.services.DeliveryPresenter"/>
+	<service ref="templateReportPresenter" interface="org.novaforge.forge.tools.deliverymanager.services.TemplateReportPresenter"/>
+	<service ref="deliveryOrganizationService" interface="org.novaforge.forge.tools.deliverymanager.services.DeliveryOrganizationService" />
+	<service ref="deliveryPermissionService" interface="org.novaforge.forge.tools.deliverymanager.services.DeliveryPermissionService" />
+	
+	<!-- Initialization -->
+	<bean id="roleHandler" class="org.novaforge.forge.tools.deliverymanager.internal.handlers.RoleHandler" init-method="starting">
+		<tx:transaction method="*" value="Required" />
+		<property name="roleDAO" ref="roleDAO" />
+		<property name="bundleContext" ref="blueprintBundleContext" />
+		<property name="roles" value="${roles}" />
+	</bean>
+</blueprint>

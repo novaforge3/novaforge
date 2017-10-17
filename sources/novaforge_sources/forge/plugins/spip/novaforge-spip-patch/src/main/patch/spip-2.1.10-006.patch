@@ -1,0 +1,30 @@
+diff -rNU5 spip-005/config/mes_options.php spip/config/mes_options.php
+--- spip-005/config/mes_options.php	2013-07-02 15:50:14.543406573 +0200
++++ spip/config/mes_options.php	2013-07-04 10:19:36.973899387 +0200
+@@ -13,13 +13,14 @@
+ 	_DIR_RACINE .':' .
+ 	_DIR_RACINE . 'squelettes-dist/:' .
+ 	_DIR_RACINE.'prive/:' .
+ 	_DIR_RESTREINT);
+ 
+-	// exemple de logs a la racine pour tous les sites
+-	define('_FILE_LOG_SUFFIX', '_' . $site_id . '.log');
+-	define('_DIR_LOG',  _DIR_RACINE . 'log/');
++	//define log location to be take into account by NovaForge logger service.
++	define('_FILE_LOG_SUFFIX', '_' . $site_id . '.log');	
++	$NOVA_LOG=getenv('NOVA_LOG');
++	define('_DIR_LOG',  $NOVA_LOG.'/spip_sites/');
+ 
+ 	spip_initialisation(
+ 	($path . _NOM_PERMANENTS_INACCESSIBLES),
+ 	($path . _NOM_PERMANENTS_ACCESSIBLES),
+ 	($path . _NOM_TEMPORAIRES_INACCESSIBLES),
+@@ -31,6 +32,6 @@
+ 	}
+ 
+ 	//Need because of php version used by Novaforge
+ 	date_default_timezone_set('Europe/Paris');
+ }
+-?>
+\ Pas de fin de ligne à la fin du fichier.
++?>

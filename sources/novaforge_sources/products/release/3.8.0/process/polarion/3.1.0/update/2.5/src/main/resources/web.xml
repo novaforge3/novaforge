@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+                         "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+	<!-- Path to repository url Values: Valid path Example: http://localhost/repos -->
+	<context-param>
+		<param-name>ParentRepositoryDirectory</param-name>
+		<param-value>file://@SVN_DATA@</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>Cas_Auth</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>EmbeddedNovaforge</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>casServerLogoutUrl</param-name>
+		<param-value>@CAS_URL@@CAS_LOGOUT_URI@</param-value>
+	</context-param>
+
+ <!--
+        Username
+        Values: Valid UserName
+        Example: usename
+    -->
+    <!--
+    <context-param>
+        <param-name>Username</param-name>
+        <param-value>anonymous</param-value>
+    </context-param>
+    -->
+    
+    <!--
+		Password
+        Values: valid password
+        Example: pass
+    -->
+    <!--
+    <context-param>
+        <param-name>Password</param-name>
+        <param-value>anonymous</param-value>
+    </context-param> 
+    -->
+<!--
+        SVNConnections count
+        Example: 20
+    -->
+	<context-param>
+		<param-name>SvnConnectionsCount</param-name>
+		<param-value>20</param-value>
+	</context-param>
+
+    <!--
+        Optional. Path to temporary directory. This directory is used for temporary files storage, etc.
+        Values: Valid path
+        Example: c:/temp
+    -->
+    <!--
+    <context-param>
+        <param-name>TempDirectory</param-name>
+        <param-value>c:/temp</param-value>
+    </context-param>    
+    -->
+
+    <!--
+        Defines how much revisions are shown in revision list by default. Note that increasing this value
+        can increase revision list retrieving time.
+        Values: Number, greater 0
+        Example: 20
+    -->
+	<context-param>
+		<param-name>VersionsCount</param-name>
+		<param-value>20</param-value>
+	</context-param>
+
+    <!--
+        PATH AUTODETECTION
+        WebClient has advanced feature, which allows automatically detect location of trunk-branches-tags 
+        and perform smart switching between them. Subversion in origin does not make a difference between
+        trunk, brunches and tags foledrs - they are simple folders, which are stored on repository. User 
+        must interpret them as repository storage structure by himself. Nevertheless Subversion has 
+        recomendation for storing projects. By this recomendation project must have trunk folder where
+        main stream is located, branches and tags folders where branches and tags are stored. Because trunk, 
+        branches, and tags folders name can be arbitrary in WebClient these names mapping must be defined. 
+    -->
+
+    <!-- 
+        Turns on repository structure detection feature. If this mode is turned on WebClient will 
+        automatically defines existence of trunk, branches and tags structure and provides functionality
+        for smart swithing between them.
+        Values:
+            true  - switch on path autodetection mode
+            false - switch off path autodetection mode
+    -->
+	<context-param>
+		<param-name>PathAutodetect</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+    <!-- 
+        Defines the folder name which is used for pointing to trunk.
+        Values: Any valid folder name which used in repository for trunk
+        Example: trunk
+    -->
+	<context-param>
+		<param-name>TrunkName</param-name>
+		<param-value>trunk</param-value>
+	</context-param>
+
+    <!--
+        Defines the folder name which is used for pointing to branches.
+        Values: Any valid folder name which used in repository for branches
+        Example: branches        
+    -->
+	<context-param>
+		<param-name>BranchesName</param-name>
+		<param-value>branches</param-value>
+	</context-param>
+
+    <!--
+        Defines the folder name which is used for pointing to tags.
+        Values: Any valid folder name which used in repository for tags
+        Example: tags
+    -->
+	<context-param>
+		<param-name>TagsName</param-name>
+		<param-value>tags</param-value>
+	</context-param>
+
+    <!--
+        Defines filename encoding
+        Values: Any valid Java encoding code
+        Example: windows-1251
+    -->
+	<context-param>
+		<param-name>DefaultEncoding</param-name>
+		<param-value>UTF-8</param-value>
+	</context-param>
+
+    <!--
+        Defines ZIP filename encoding
+        Values: Any valid Java encoding code
+        Example: IBM866
+    -->
+	<context-param>
+		<param-name>ZipEncoding</param-name>
+		<param-value>ISO-8859-1</param-value>
+	</context-param>
+    
+    <!-- 
+        CACHE SETTINGS
+        For increase WebClient performance log messages cache was implemented. It reads in backgroung
+        revisions comments and stores them in persistent storage. 
+    -->        
+
+    <!--
+        Optional. Path to folder where log messages will be stored persistently
+        Values: Valid path
+        Example: c:/temp/cache
+    -->    
+    <!--
+    <context-param>
+        <param-name>CacheDirectory</param-name>
+        <param-value>c:/temp/cache</param-value>
+    </context-param>
+    -->
+
+    <!--
+        Comments are extracted and stored by pages. This value defines how many revisions are stored in one page.
+        Please note that too low values can decrease required resources, but increase wait time. For too high 
+        values - vice a versa.
+        Values: Number, greater 0
+        Example: 100
+    -->
+	<context-param>
+		<param-name>CachePageSize</param-name>
+		<param-value>100</param-value>
+	</context-param>
+
+    <!--
+        How many revision comments must be extracted at application startup.
+        Values: 
+            -1                - to extract all available comments
+            Number, greater 0 - to extract specified comments
+        Example: 100
+    -->
+	<context-param>
+		<param-name>CachePrefetchMessagesCount</param-name>
+		<param-value>-1</param-value>
+	</context-param>
+
+    <!-- 
+        OPTIONAL PARAMETERS
+        WebClient has optional parameters, which allows to make it nicer
+    -->      
+
+    <!--
+        Optional. Defines mode in which error report is shown. Full error report is reasonable
+        to show for techical staff
+        Values:
+            true  - Show full error report with stack trace
+            false - Show error report without stack trace
+    -->
+	<context-param>
+		<param-name>ShowStackTrace</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<!--
+		Defines if forced Basic HTTP authentication should be used.
+	-->
+	<context-param>
+		<param-name>ForcedHttpAuth</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+    <!-- 
+        Defines if WebClient supplies it's on login screen or if it uses a http basic
+        authentication dialog.
+    -->
+	<context-param>
+		<param-name>BasicAuth</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+    <!-- 
+        Defines the Realm if http basic authentication is used.
+    -->
+	<context-param>
+		<param-name>BasicRealm</param-name>
+		<param-value>SVNWebClient</param-value>
+	</context-param>
+
+    <!-- 
+        EXTENSION POINTS
+        WebClient is flexible application, which is able to integrate to other applications. 
+        Currently it is used by Polarion application.
+        Following settings defines extension points and do not require any changes in common cases
+    -->  
+
+    <!-- 
+        Extension point. Defines if WebClient is embedded to Polarion product
+        Values:
+            true  - if WebClient is embedded to Polarion product
+            false - if WebClient is standalone application
+    -->
+	<context-param>
+		<param-name>Embedded</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+    <!-- 
+		Defines hide Polarion commit mode		
+    -->
+	<context-param>
+		<param-name>HidePolarionCommit</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+	 <!--
+        Defines whether include link to logout page or not
+    -->
+	<context-param>
+		<param-name>Logout</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+    <!--
+        Extension point. Does not require any modification.
+        Defines revision decorator implementation
+    -->
+	<context-param>
+		<param-name>RevisionDecoratorClassName</param-name>
+		<param-value>org.polarion.svnwebclient.decorations.impl.RevisionDecorator</param-value>
+	</context-param>
+
+    <!--
+        Extension point. Does not require any modification.
+        Defines alternative view provider implementation
+    -->
+	<context-param>
+		<param-name>AlternativeViewProviderClassName</param-name>
+		<param-value>org.polarion.svnwebclient.decorations.impl.AlternativeViewProvider</param-value>
+	</context-param>
+
+    <!--
+        Extension point. Does not require any modification.
+        Defines author decorator implementation
+    -->
+	<context-param>
+		<param-name>AuthorDecoratorClassName</param-name>
+		<param-value>org.polarion.svnwebclient.decorations.impl.AuthorDecorator</param-value>
+	</context-param>
+
+	<!-- Protocols support -->
+
+	<!--
+        Path to user's certificate file in SSL or user's ssh private key in SSH
+        Example: D:/client.p12
+	-->
+	<context-param>
+		<param-name>ProtocolKeyFile</param-name>
+		<param-value>D:/client.p12</param-value>
+	</context-param>
+
+    <!--
+		The password to the ssh private key or the password to ssl certificate
+        Example: svn
+	-->
+	<context-param>
+		<param-name>ProtocolPassPhrase</param-name>
+		<param-value>svn</param-value>
+	</context-param>
+
+    <!--        
+        The number of the port across which an ssh tunnel is established
+        Values: valid port number
+        Example: 22
+	-->
+	<context-param>
+		<param-name>ProtocolPortNumber</param-name>
+		<param-value>22</param-value>
+	</context-param>
+
+
+	<!-- Proxy settings -->
+
+	<!--
+        Determine whether Proxy is supported
+        Values: boolean value
+        Example: false
+	-->
+	<context-param>
+		<param-name>ProxySupported</param-name>
+		<param-value>false</param-value>
+	</context-param>
+
+	<!--
+        The username to supply to the proxy machine if proxy authentication enabled
+        Values: valid user name
+        Example: user1
+	-->
+	<context-param>
+		<param-name>ProxyUserName</param-name>
+		<param-value>user1</param-value>
+	</context-param>
+
+	<!--
+     	The password to supply to the proxy machine if proxy authentication enabled
+        Values: valid password
+        Example: pswd
+	-->
+	<context-param>
+		<param-name>ProxyPassword</param-name>
+		<param-value>pswd</param-value>
+	</context-param>
+
+	<!--
+     	The hostname of the proxy server through which HTTP-based requests must pass
+	-->
+	<context-param>
+		<param-name>ProxyHost</param-name>
+		<param-value>host</param-value>
+	</context-param>
+
+    <!--
+	    The port number on the proxy host to use
+    -->
+	<context-param>
+		<param-name>ProxyPortNumber</param-name>
+		<param-value>80</param-value>
+	</context-param>
+
+	<!-- Mail Settings -->
+
+    <!--
+        'From' Email address
+        Values: valid email address
+        Example: svnwebclient-bugs@polarion.org
+	-->
+	<context-param>
+		<param-name>EmailFrom</param-name>
+		<param-value>svnwebclient-bugs@polarion.org</param-value>
+	</context-param>
+
+    <!--
+        'To' Email address
+        Values: valid email address
+        Example: svnwebclient-bugs@polarion.org
+	-->
+	<context-param>
+		<param-name>EmailTo</param-name>
+		<param-value>svnwebclient-bugs@polarion.org</param-value>
+	</context-param>
+
+    <!--
+        Email host
+        Values: valid email host
+        Example: mail.polarion.cz
+	-->
+	<context-param>
+		<param-name>EmailHost</param-name>
+		<param-value>mail.cz.polarion.com</param-value>
+	</context-param>
+
+    <!--
+        Email port
+        Values: email port
+        Example: 25
+	-->
+	<context-param>
+		<param-name>EmailPort</param-name>
+		<param-value>25</param-value>
+	</context-param>
+
+    <!--
+        Project name
+        Values: SVNWebClient project name
+        Example: SVNWebClient
+	-->
+	<context-param>
+		<param-name>EmailProjectName</param-name>
+		<param-value>SVNWebClient</param-value>
+	</context-param>
+
+    <!--
+        Available list of character encodings separated by comma
+        Values: Supported character encodings
+        Example: UTF-8, windows-1251
+	-->
+	<context-param>
+		<param-name>CharacterEncodings</param-name>
+		<param-value>
+			windows-1250,windows-1251,windows-1252,windows-1253,windows-1254,
+			windows-1255,windows-1256,windows-1257,windows-1258,windows-31j,
+			UTF-8,UTF-16LE,UTF-16BE,UTF-16,
+			ISO-8859-1,ISO-8859-13,ISO-8859-15,ISO-8859-2,ISO-8859-3,ISO-8859-4,ISO-8859-5,ISO-8859-6,
+			ISO-8859-7,ISO-8859-8,ISO-8859-9,
+			US-ASCII,KOI8-R
+		</param-value>
+	</context-param>
+
+    <!-- 
+        FILTERS SETTINGS
+        Does not require any modifications
+    -->
+	<filter>
+        <!-- ATTENTION! This filter must be loaded first -->
+		<filter-name>Charset Filter</filter-name>
+		<filter-class>org.polarion.svnwebclient.web.CharsetFilter</filter-class>
+		<init-param>
+			<param-name>RequestEncoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+
+	<filter>
+		<!-- This filter has no use in the standalone version, but should be present -->
+		<filter-name>Bind Sessions Filter</filter-name>
+		<filter-class>org.polarion.svnwebclient.authorization.impl.BindSessionsFilter</filter-class>
+	</filter>
+
+
+
+	<filter>
+		<filter-name>CAS Single Sign Out Filter</filter-name>
+		<filter-class>org.jasig.cas.client.session.SingleSignOutFilter</filter-class>
+	</filter>
+	<filter>
+		<filter-name>CAS Authentication Filter</filter-name>
+		<filter-class>org.jasig.cas.client.authentication.AuthenticationFilter</filter-class>
+		<init-param>
+			<param-name>casServerLoginUrl</param-name>
+			<param-value>@CAS_URL@@CAS_LOGIN_URI@</param-value>
+		</init-param>
+		<init-param>
+			<param-name>serverName</param-name>
+			<param-value>@EXTERNAL_URL@</param-value>
+		</init-param>
+	</filter>
+	<filter>
+		<filter-name>CAS Validation Filter</filter-name>
+		<filter-class>org.jasig.cas.client.validation.Cas10TicketValidationFilter</filter-class>
+		<init-param>
+			<param-name>casServerUrlPrefix</param-name>
+			<param-value>@CAS_URL@</param-value>
+		</init-param>
+		<init-param>
+			<param-name>serverName</param-name>
+			<param-value>@EXTERNAL_URL@</param-value>
+		</init-param>
+		<init-param>
+			<param-name>redirectAfterValidation</param-name>
+			<param-value>false</param-value>
+		</init-param>			
+	</filter>
+	<filter>
+		<filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
+		<filter-class>org.jasig.cas.client.util.HttpServletRequestWrapperFilter</filter-class>
+	</filter>
+  
+  
+  <!-- Novaforge Authorization Filter -->
+	<filter>
+		<filter-name>NovaforgeAuthorizationFilter</filter-name>
+		<filter-class>org.polarion.svnwebclient.authorization.impl.NovaforgeAuthorizationFilter</filter-class>
+		<init-param>
+			<param-name>db.url</param-name>
+			<param-value>jdbc:mysql://@MARIADB_HOST@:@MARIADB_PORT@/plugin_svn_agent?autoReconnect=true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>db.username</param-name>
+			<param-value>@NOVAFORGE_USER@</param-value>
+		</init-param>
+		<init-param>
+			<param-name>db.password</param-name>
+			<param-value>@NOVAFORGE_PWD@</param-value>
+		</init-param>
+		<init-param>
+			<param-name>db.className</param-name>
+			<param-value>org.mariadb.jdbc.Driver</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>Charset Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>CAS Single Sign Out Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>CAS Authentication Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>CAS Validation Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>NovaforgeAuthorizationFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+<!--   
+    <filter>
+        <filter-name>Compression Filter</filter-name>
+        <filter-class>org.polarion.svnwebclient.web.GZIPFilter</filter-class>
+    </filter>  
+-->     
+
+<!--    
+    <filter-mapping>
+        <filter-name>Compression Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>     
+-->
+
+	<filter-mapping>
+		<filter-name>Bind Sessions Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<listener>
+		<listener-class>org.polarion.svnwebclient.web.InitListener</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>fileDownload</servlet-name>
+		<servlet-class>org.polarion.svnwebclient.web.servlet.FileDownloadServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>logout</servlet-name>
+		<servlet-class>org.polarion.svnwebclient.web.servlet.LogoutServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>cleanExtraSessionAttribute</servlet-name>
+		<servlet-class>org.polarion.svnwebclient.web.servlet.CleanExtraSessionAttributeServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>restrictLogin</servlet-name>
+		<servlet-class>org.polarion.svnwebclient.web.servlet.RestrictLoginServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>directoryAddAction</servlet-name>
+		<servlet-class>org.polarion.svnwebclient.web.servlet.DirectoryAddActionServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>fileAddAction</servlet-name>
+		<servlet-class>org.polarion.svnwebclient.web.servlet.FileAddActionServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>deleteAction</servlet-name>
+		<servlet-class>org.polarion.svnwebclient.web.servlet.DeleteActionServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>fileUpdateAction</servlet-name>
+		<servlet-class>org.polarion.svnwebclient.web.servlet.FileUpdateActionServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>content</servlet-name>
+		<servlet-class>org.polarion.svnwebclient.web.servlet.ContentServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>changedResource</servlet-name>
+		<servlet-class>org.polarion.svnwebclient.web.servlet.ChangedResourceServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>Download Directory</servlet-name>
+		<servlet-class>org.polarion.svnwebclient.web.servlet.ArchiveDownloadServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>Send Email</servlet-name>
+		<servlet-class>org.polarion.svnwebclient.web.servlet.SendEmailServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>GoTo</servlet-name>
+		<servlet-class>org.polarion.svnwebclient.web.servlet.GotoServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>ChangeRevisionMode</servlet-name>
+		<servlet-class>org.polarion.svnwebclient.web.servlet.RevisionModeChangeServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>fileDownload</servlet-name>
+		<url-pattern>/fileDownload.jsp</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>logout</servlet-name>
+		<url-pattern>/logout.jsp</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>cleanExtraSessionAttribute</servlet-name>
+		<url-pattern>/cleanExtraSessionAttribute.jsp</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>restrictLogin</servlet-name>
+		<url-pattern>/restrictLogin.jsp</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>directoryAddAction</servlet-name>
+		<url-pattern>/directoryAddAction.jsp</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>fileAddAction</servlet-name>
+		<url-pattern>/fileAddAction.jsp</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>deleteAction</servlet-name>
+		<url-pattern>/deleteAction.jsp</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>fileUpdateAction</servlet-name>
+		<url-pattern>/fileUpdateAction.jsp</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>content</servlet-name>
+		<url-pattern>/content.jsp</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>changedResource</servlet-name>
+		<url-pattern>/changedResource.jsp</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>Download Directory</servlet-name>
+		<url-pattern>/downloadDirectory.jsp</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>Send Email</servlet-name>
+		<url-pattern>/sendEmail.jsp</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>GoTo</servlet-name>
+		<url-pattern>/goto.jsp</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>ChangeRevisionMode </servlet-name>
+		<url-pattern>/changeRevisionMode.jsp</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>directoryContent.jsp</welcome-file>
+	</welcome-file-list>
+
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/error.jsp</location>
+	</error-page>
+
+</web-app>
+
+

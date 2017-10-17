@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+
+
+<section version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+  <title>Gérer vos demandes avec Jira</title>
+
+  <para>Jira est un système de gestion de demandes créé par l'entreprise Australienne de développement logiciel : Atlassian.</para>
+
+  <para>Caractéristiques et avantages</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>Prioriser, assigner, suivre, reporter et auditer des demandes ;</para>
+    </listitem>
+
+    <listitem>
+      <para>Plateforme multi-usage (développement Agile, gestion de projet, centre d'assistance, TMA etc...) ;</para>
+    </listitem>
+
+    <listitem>
+      <para>Exécution de recherches et de filtres simples ou complexes basés sur le Java Query Language ;</para> 
+    </listitem>
+
+    <listitem>
+      <para>Des workflow pleinement configurables ;</para>
+    </listitem>
+    
+    <listitem>
+      <para>Un puissant système de notification par e-mail ;</para>
+    </listitem>
+        
+	<listitem>
+      <para>Le reporting en temps-réel ;</para>
+    </listitem>
+    
+    <listitem>
+      <para>Une documentation en ligne abondante : <ulink url="https://confluence.atlassian.com/display/JIRA060/JIRA+Documentation">Jira Online Documentation</ulink> ;</para>
+    </listitem>
+  </itemizedlist>
+  
+  <section>
+    <title>Jira : Gestion des demandes </title>
+    <para>
+      Jira propose une granularité très fine dans la gestion des demandes. 
+      <figure>
+        <title>Schema de haut niveau de l'architecture des demandes</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" fileref="05-05a-08-JiraArchitecture.png" width="300px"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </para>
+    <para><ulink url="http://fr.slideshare.net/sgenterprise20/introduction-to-jira‎">Source du schéma</ulink></para>
+  </section>
+  
+  <section>
+    <title>Jira : Workflow personnalisable </title>
+    <para>
+      Jira propose une interface intuitive pour créer des workflows à appliquer aux demandes. 
+      <figure>
+        <title>Exemple d'un workflow classique</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" fileref="05-05a-09-JiraWorkflow.png" width="300px"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </para>
+    <para><ulink url="https://confluence.atlassian.com/download/attachments/296095695/project-workflow-page-diagram-mode-after-auto-creation.png‎">Source du schéma</ulink></para>
+  </section>
+  
+  <section>
+    <title>Intégration de Jira dans Novaforge</title>
+    
+    <para>La version de Jira intégrée dans NovaForge est 6.0.7. Les fonctionnalités de gestion des utilisateurs et des projets ont été désactivées, NovaForge les paramètre automatiquement.</para>
+    
+    <para>Il est possible d'ajouter un grand nombre de configurations en fonction des besoins des projets comme des workflows ou des champs personnalisés.</para> 
+    
+    <para>Les configurations de base du projet sont accessibles par les administrateurs du projet, les configurations avancées doivent être définies par l'administrateur du système. Pour toute modification qu'un administrateur de projet ne peut pas réaliser, s'adresser au super-administrateur de NovaForge</para>
+    
+    <para>Trois plugins ont été intégrés à Jira :</para>
+    
+    <itemizedlist>
+	  <listitem>
+	    <para>Jira Agile</para>
+	  </listitem>
+	  <listitem>
+	    <para>Service Desk</para>
+	  </listitem>
+	  <listitem>
+	    <para>Tempo</para>
+	  </listitem>
+    </itemizedlist>
+    
+    <section>
+    <title>Jira Agile</title>
+    <para>Le plugin Jira Agile permet la gestion de projet basée sur les méthodes Agiles Scrum et Kamban en :</para>
+    <itemizedlist>
+      <listitem>
+	    <para>utilisant des types de demandes spécifiques aux méthodes agiles : les épopées, les récits et les tâches ;</para>
+      </listitem>
+	  <listitem>
+		<para>utilisant l'interface agile : le dashboard ;</para>
+	  </listitem>
+	  <listitem>
+		<para>en ayant la possibilité de prioriser un backlog et d'organiser des sprints ;</para>
+      </listitem>
+	  <listitem>
+		<para>utilisant des graphiques de reporting spécifiques à Agile comme le burndown graph ;</para>
+	  </listitem> 
+     </itemizedlist>
+     <para>
+      <figure>
+        <title>Exemple de dashboard</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" fileref="05-05a-10-JiraDashboard.png" width="500px"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+     </para>
+     <para><ulink url="http://blogs.atlassian.com/wp-content/uploads/jira_agile_portfolio_project_management_full_board-600x331.png">Source de la figure</ulink></para>  
+     <para><ulink url="https://www.atlassian.com/JIRA-Agile‎">Documentation en ligne de Jira Agile</ulink></para>
+   </section>
+   
+   <section>
+    <title>Service Desk</title>
+    <para>Le plugin Service Desk permet de gérer des projets de Tierce Maintenance Applicative en</para>
+    <itemizedlist>
+      <listitem>
+	    <para>permettant de définir et gérer facilement des accords de niveau de services (Service Level Agreements - SLAs) utilisant le Java Query Language ;</para>
+      </listitem>
+	  <listitem>
+		<para>permettant de configurer un portail simple et intuitif pour faire interface avec le client ;</para>
+	  </listitem>
+	  <listitem>
+		<para>permettant de définir des queues de demande à résoudre en fonction de leurs priorités définies par leurs SLAs;</para>
+      </listitem>
+      <listitem>
+		<para>permettant de définir des alertes quand une demande risque de ne pas respecter un de ses SLAs ;</para>
+      </listitem>
+     </itemizedlist>
+    <para> 
+      <figure>
+        <title>Exemple de queue de demande</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" fileref="05-05a-11-JiraServiceDesk.png" width="400px"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </para>
+    <para><ulink url="http://blogs.atlassian.com/wp-content/uploads/06-JIRA_Service_Desk-Queue-Multilingual-French-final.png‎">Source de la figure</ulink></para>  
+    <para><ulink url="https://www.atlassian.com/software/jira/service-desk">Documentation en ligne de Jira Service Desk</ulink></para>
+   </section>
+   
+   <section>
+    <title>Tempo</title>
+    <para>Le plugin Tempo est un plugin de Time Tracking qui permet de suivre les journaux de travail des utilisateurs :</para>
+    <itemizedlist>
+      <listitem>
+	    <para>en permettant l'accès à une inteface de feuille de temps par utilisateur, par groupe ou par projet ;</para>
+      </listitem>
+	  <listitem>
+		<para>en permettant la planification et le management de la disponibilité des développeurs ;</para>
+	  </listitem>
+	  <listitem>
+		<para>en donnant l'accès à des rapports sur le temps passé par chaque utilisateur sur chaque projet ;</para>
+      </listitem>
+     </itemizedlist>  
+     <para>
+      <figure>
+        <title>Exemple de feuille de temps pour un projet</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" fileref="05-05a-12-JiraTempo.png" width="350px"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+     </para>
+     <para><ulink url="https://marketplace-cdn.atlassian.com/files/images/is.origo.jira.tempo-plugin/ec47488d-bb72-4528-80f0-050444891054.jpeg‎">Source de la figure</ulink></para> 
+     <para><ulink url="https://marketplace.atlassian.com/plugins/is.origo.jira.tempo-plugin">Documentation en ligne de Tempo</ulink></para>
+   </section> 
+
+  </section>
+  
+</section>

@@ -1,0 +1,86 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+/* NovaForge Tabsheet scroller styles */
+
+.v-tabsheet-tabcontainer-project .v-tabsheet-scroller {
+	height: 32px;
+   margin-top: -42px;
+   padding: 0 3px 0 4px;
+   border-right: 1px solid #262626;
+   border-left: 1px solid #262626;
+   position: relative;
+   float: right;
+   width: 36px;
+   background: transparent url(img/project/tab-bg.png) !important;
+}
+.v-tabsheet-tabcontainer-application .v-tabsheet-scroller {
+	height: 32px;
+   margin-top: -32px;
+   padding: 0 3px 0 4px;
+   border-right: 1px solid #262626;
+   border-left: 1px solid #262626;
+   position: relative;
+   float: right;
+   width: 36px;
+   background: transparent url(img/application/tab-bg.png) !important;
+}
+.v-tabsheet-scroller button {
+	margin-top: 7px;
+}
+.v-tabsheet-scrollerPrev,
+.v-tabsheet-scrollerNext,
+.v-tabsheet-scrollerPrev-disabled,
+.v-tabsheet-scrollerNext-disabled {
+	border: none;
+	background: transparent;
+	background-image: url(img/tab-prev.png);
+	width: 18px;
+	height: 17px;
+	overflow: hidden;
+}
+.v-tabsheet-scroller button::-moz-focus-inner {
+	border: none;
+}
+.v-tabsheet-scrollerNext {
+	background-image: url(img/tab-next.png);
+}
+.v-tabsheet-scrollerPrev:active {
+	background-image: url(img/tab-prev-pressed.png);
+	background-position: top left !important;
+}
+.v-tabsheet-scrollerNext:active {
+	background-image: url(img/tab-next-pressed.png);
+	background-position: top left !important;
+}
+.v-tabsheet-scrollerPrev-disabled,
+.v-tabsheet-scrollerPrev-disabled:active {
+	background-image: url(img/tab-prev-disabled.png);
+	background-position: top left !important;
+}
+.v-tabsheet-scrollerNext-disabled,
+.v-tabsheet-scrollerNext-disabled:active {
+	background-image: url(img/tab-next-disabled.png);
+	background-position: top left !important;
+}

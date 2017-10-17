@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<sect1 version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+       xmlns:xlink="http://www.w3.org/1999/xlink"
+       xmlns:xi="http://www.w3.org/2001/XInclude"
+       xmlns:ns5="http://www.w3.org/2000/svg"
+       xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+       xmlns:ns3="http://www.w3.org/1999/xhtml"
+       xmlns:db="http://docbook.org/ns/docbook">
+  <title>Propagation des rôles</title>
+  
+  <para>Un rôle est utilisé dans certains cas pour la propagation des utilisateurs sur les outils lors du mapping de rôle.</para>
+  <para>L'utilisation de plusieurs rôles sur les outils n'est pas envisageable car ceux-ci ne le permettent pas dans la plupart des cas. Le système utilise donc le rôle prioritaire parmi l'ensemble des rôles possédés par l'utilisateur sur la forge pour déterminer le rôle que possédera l'utilisateur sur l'outil.</para>
+  <para>Les rôles du projet sont ordonnés. Ceci permet de définir quel rôle est prioritaire sur quel autre. Ainsi le choix d'un rôle à propager sur un outil sera effectué en fonction de cette hiérarchie.</para>
+   <para>Si un utilisateur détient plusieurs rôles, l'administrateur du projet peut définir le rôle à utiliser en priorité lors de la propagation. Celui-ci sera utilisé si un mapping est existant avec l'outil.
+     </para>
+     <para>
+     Les utilisateurs du groupe ainsi rattaché héritent du ou des rôles du groupe ainsi que des permissions associées. 
+     </para>
+  <sect2><title>Règles</title>
+  
+  <para><emphasis
+    role="bold">En règle générale, le rôle qui est propagé sur l'outil est :</emphasis></para>
+
+ <itemizedlist>
+    <listitem>
+      <para>
+      1. Soit le rôle projet de priorité supérieure ET possédant un mapping sur l'outil</para>
+    </listitem>
+
+    <listitem>
+      <para>
+      2. Soit le rôle projet sélectionné explicitement comme prioritaire par l'administrateur lors des affiliations ET possédant un mapping sur l'outil</para>
+    </listitem>
+  </itemizedlist>
+  <para><emphasis role="bold">Les règles suivantes s'appliquent si et seulement si les rôles projet ont un mapping vers les rôles des outils applicatifs</emphasis></para>
+  
+  <para>
+<emphasis role="bold"> 1-</emphasis> Lorsqu’un utilisateur</para>
+	 
+	  <itemizedlist>
+    <listitem>
+      <para>
+      Est affilié individuellement à un projet via plusieurs rôles projet</para>
+    </listitem>
+	<listitem>
+      <para>
+      Il ne lui a été attribué aucun rôle projet prioritaire lors de l'affiliation</para>
+    </listitem>
+  </itemizedlist>
+  <para>
+  Alors </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+      Le rôle projet d'ordre supérieur est retenu pour l'affilier à une application</para>
+    </listitem>
+  </itemizedlist>
+  
+   <para>
+<emphasis role="bold"> 2-</emphasis> Lorsqu’un utilisateur </para>
+	 
+	  <itemizedlist>
+    <listitem>
+      <para>
+      Est affilié individuellement à un projet via plusieurs rôles projet</para>
+    </listitem>
+	<listitem>
+      <para>
+      Il lui a été attribué un rôle projet prioritaire lors de l'affiliation</para>
+    </listitem>
+  </itemizedlist>
+  <para>
+  Alors </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+       Ce rôle est retenu pour l'affilier à une application</para>
+    </listitem>
+  </itemizedlist>
+  
+   <para>
+<emphasis role="bold"> 3-</emphasis> Lorsqu’un groupe projet contenant un utilisateur </para>
+	 
+	  <itemizedlist>
+    <listitem>
+      <para>
+       Est affilié à un projet avec plusieurs rôles projet</para>
+    </listitem>
+	<listitem>
+      <para>
+      Il ne lui a été attribué aucun rôle projet prioritaire lors de l'affiliation</para>
+    </listitem>
+  </itemizedlist>
+  <para>
+  Alors </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+      Le rôle projet d'ordre supérieur est retenu pour l'affilier à une application</para>
+    </listitem>
+  </itemizedlist>
+  
+  
+  
+ <para>
+ <emphasis role="bold"> 4-</emphasis> Lorsqu’un groupe projet contenant un utilisateur </para>
+	 
+	  <itemizedlist>
+    <listitem>
+      <para>
+       Est affilié à un projet avec plusieurs rôles projet</para>
+    </listitem>
+	<listitem>
+      <para>
+      Il lui a été attribué un rôle projet prioritaire lors de l'affiliation</para>
+    </listitem>
+  </itemizedlist>
+  <para>
+  Alors </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+      Ce rôle est retenu pour l'affilier à une application</para>
+    </listitem>
+  </itemizedlist>
+  
+   <para>
+ <emphasis role="bold"> 5-</emphasis> Lorsqu’un groupe projet contenant un utilisateur </para>
+	 
+	  <itemizedlist>
+    <listitem>
+      <para>
+       Est affilié à un projet avec plusieurs rôles projet</para>
+    </listitem>
+  </itemizedlist>
+  <para>Et que ce même utilisateur </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+      Est affilié au projet avec plusieurs rôles projet</para>
+    </listitem>
+  </itemizedlist>
+  <para>
+  Alors </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+      Le rôle projet utilisé pour l'affiliation de l'utilisateur est retenu dans tous les cas pour l'affilier à une application</para>
+    </listitem>
+  </itemizedlist>
+  <para>
+  Sauf </para>
+  <itemizedlist>
+    <listitem>
+      <para>
+       Si un rôle projet non prioritaire est utilisé pour l'affiliation de l'utilisateur au projet</para>
+    </listitem>
+  </itemizedlist>
+  
+ 
+ <para><emphasis role="bold">Si aucun rôle ne correspond à ces règles, l'utilisateur n'est pas propagé sur l'outil.</emphasis></para>  
+  </sect2>
+  <sect2>
+    <title>Cas d'utilisation : propagation des rôles vers l'outil «Mantis»</title>
+     
+     <itemizedlist>
+    <listitem>
+      <para><emphasis role="bold">But</emphasis> :</para>
+       <para>Lorsque l'outil «Mantis» est ajouté au projet, la forge doit déterminer le rôle prioritaire qui doit être propagé pour un utilisateur qui en posséderait plusieurs.</para>
+    </listitem>
+
+    <listitem>
+      <para><emphasis
+    role="bold">Configuration :</emphasis></para>
+      <itemizedlist>
+      
+      <listitem>
+      <para>Utilisateur affilié au projet : jean-j</para>
+    </listitem>
+      <listitem>
+      <para>Le projet contient une instance de l'outil Mantis</para>
+    </listitem>
+      <listitem>
+      <para>Rôles existants dans le projet : </para>
+      <para>- «Manager» mappé avec le rôle «Manager» de l'outil Mantis</para>
+      <para>- «Developer» mappé avec le rôle «Developer» de l'outil Mantis</para>
+      <para>- Le rôle «Manager» est configuré avec une plus haute priorité que le rôle «Developer»  </para>
+      <para>- Le groupe «Reporter» est ajouté au projet  </para>
+      
+    </listitem>
+    
+      </itemizedlist>
+    </listitem>
+
+  </itemizedlist>
+     
+     
+     <sect3>
+     <title>Cas d'un utilisateur affilié individuellement au projet</title>
+     <sect4>
+     <title>Pas de rôle prioritaire</title>
+     
+     <para>L'utilisateur jean-j possède les rôles "Manager" et "Developer"</para>
+     
+    <para>Résultat : l'utilisateur jean-j obtient le mapping "Manager" dans l'outil Mantis, ce qui correspond à la priorité des rôles dans le projet.</para>
+     </sect4>
+     <sect4>
+     <title>Un rôle prioritaire est fixé</title>
+    
+     
+      <para>L'utilisateur jean-j possède le rôle "Manager" et le rôle prioritaire "Developer"</para>
+     
+    <para> Résultat : l'utilisateur jean-j obtient le rôle "Developer" dans l'outil Mantis, ce qui correspond à la priorité affectée à ses rôles.</para>
+     
+     
+     </sect4>
+     </sect3>
+     <sect3>
+     <title>Cas d'un utilisateur affilié au projet à travers un groupe projet</title>
+     <sect4>
+     <title>Pas de rôle prioritaire</title>
+     
+     <para>Le groupe "Reporter" contient l'utilisateur jean-j. Ce groupe est rattaché avec les rôles "Manager" et "Developer"</para>
+     
+    <para>Résultat : l'utilisateur jean-j obtient le mapping "Manager" dans l'outil Mantis, Ce qui correspond à la priorité des rôles dans le projet.</para>
+     </sect4>
+     <sect4>
+     <title>Un rôle prioritaire est fixé</title>
+    
+     
+      <para>Le groupe "Reporter" contient l'utilisateur jean-j. Ce groupe est rattaché avec le rôle "Manager" et le rôle prioritaire "Developer"</para>
+     
+    <para> Résultat : l'utilisateur jean-j obtient le rôle "Developer" dans l'outil Mantis, Ce qui correspond à la priorité affectée à ses rôles.</para>
+     
+     
+     </sect4>
+     
+     </sect3>
+     <sect3>
+     <title>Cas d'un utilisateur affilié au projet individuellement et par un groupe projet</title>
+     
+     <para>L'administrateur de projet associe un utilisateur à un groupe. L'administrateur associe un rôle au groupe lors du rattachement de ce dernier au projet. Puis l'administrateur associe un rôle au même utilisateur sur le projet. Dans ce dernier cas l'utilisateur possédera un rôle hérité de son appartenance au groupe ET un rôle explicitement attribué.</para>
+     
+     <para>Le tableau suivant regroupe les cas de figure</para>
+     <table>
+						 <title>Cas de figure</title>
+						<tgroup cols="4">
+							<thead>
+								<row>
+									<entry>Scénario</entry>
+									<entry>Rôle utilisateur/Priorité sélectionnée</entry>
+									<entry>Rôle groupe/Priorité sélectionnée</entry>
+									<entry>Résultat : rôle affecté dans Mantis</entry>
+								</row>
+							</thead>
+							<tbody>
+								<row>
+									<entry>Cas 1</entry>
+									<entry>Developer/Non 
+												
+									
+									</entry>
+									<entry>Manager/Non
+									</entry>
+									<entry>Manager</entry>
+								</row>
+								<row>
+									<entry>Cas 2</entry>
+									<entry>Manager/Non
+									
+									</entry>
+									<entry>Developer/Non
+									
+									
+									</entry>
+									<entry>Manager</entry>
+								</row>
+								<row>
+									<entry>Cas 3</entry>
+									<entry>Developer/Oui
+									
+									</entry>
+									<entry>Manager/Non
+									
+									</entry>
+									<entry>Developer</entry>
+								</row>
+								<row>
+									<entry>Cas 4</entry>
+									<entry>Manager/Non
+									</entry>
+									<entry>Developer/Oui
+									
+									</entry>
+									<entry>Manager</entry>
+								</row>
+								<row>
+									<entry>Cas 5</entry>
+									<entry>Developer/Oui
+									</entry>
+									<entry>Manager/Oui
+									
+									</entry>
+									<entry>Developer</entry>
+								</row>
+								<row>
+									<entry>Cas 6</entry>
+									<entry>Manager/Oui
+									</entry>
+									<entry>Developer/Oui
+									
+									</entry>
+									<entry>Manager</entry>
+								</row>
+							</tbody>
+						</tgroup>
+					</table>
+     </sect3>
+   </sect2>  
+</sect1>

@@ -1,0 +1,77 @@
+diff -rNU5 mantisbt-1.2.5/config_defaults_inc.php mantis_ard/config_defaults_inc.php
+--- mantisbt-1.2.5/config_defaults_inc.php	2013-07-22 14:51:44.179226420 +0200
++++ mantis_ard/config_defaults_inc.php	2013-07-22 14:14:37.583276621 +0200
+@@ -710,11 +710,11 @@
+ 
+ 	/**
+ 	 * browser window title
+ 	 * @global string $g_window_title
+ 	 */
+-	$g_window_title			= 'MantisBT';
++	$g_window_title			= 'MantisARD';
+ 
+ 	/**
+ 	 * title at top of html page (empty by default, since there is a logo now)
+ 	 * @global string $g_page_title
+ 	 */
+@@ -734,11 +734,11 @@
+ 
+ 	/**
+ 	 * Logo
+ 	 * @global string $g_logo_image
+ 	 */
+-	$g_logo_image			= 'images/mantis_logo.gif';
++	$g_logo_image			= 'images/mantisard_logo.png';
+ 
+ 	/**
+ 	 * Logo URL link
+ 	 * @global string $g_logo_url
+ 	 */
+@@ -989,43 +989,43 @@
+ 	 * date format strings defaults to ISO 8601 formatting
+ 	 * go to http://www.php.net/manual/en/function.date.php
+ 	 * for detailed instructions on date formatting
+ 	 * @global string $g_short_date_format
+ 	 */
+-	$g_short_date_format    = 'Y-m-d';
++	$g_short_date_format    = 'd/m/Y';
+ 
+ 	/**
+ 	 * date format strings defaults to ISO 8601 formatting
+ 	 * go to http://www.php.net/manual/en/function.date.php
+ 	 * for detailed instructions on date formatting
+ 	 * @global string $g_normal_date_format
+ 	 */
+-	$g_normal_date_format   = 'Y-m-d H:i';
++	$g_normal_date_format   = 'd/m/Y H:i';
+ 
+ 	/**
+ 	 * date format strings defaults to ISO 8601 formatting
+ 	 * go to http://www.php.net/manual/en/function.date.php
+ 	 * for detailed instructions on date formatting
+ 	 * @global string $g_complete_date_format
+ 	 */
+-	$g_complete_date_format = 'Y-m-d H:i T';
++	$g_complete_date_format = 'd/m/Y H:i T';
+ 
+ 	/**
+ 	 * jscalendar date format string
+ 	 * go to http://www.php.net/manual/en/function.date.php
+ 	 * for detailed instructions on date formatting
+ 	 * @global string $g_calendar_js_date_format
+ 	 */
+-	$g_calendar_js_date_format   = '\%Y-\%m-\%d \%H:\%M';
++	$g_calendar_js_date_format   = '\%d-\%m-\%Y \%H:\%M';
+ 
+ 	/**
+ 	 * jscalendar date format string
+ 	 * go to http://www.php.net/manual/en/function.date.php
+ 	 * for detailed instructions on date formatting
+ 	 * @global string $g_calendar_date_format
+ 	 */
+-	$g_calendar_date_format   = 'Y-m-d H:i';
++	$g_calendar_date_format   = 'd/m/Y H:i';
+ 
+ 	/**************************
+ 	 * MantisBT TimeZone Settings *
+ 	 **************************/

@@ -1,0 +1,120 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          sympa
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Should-Start:      mysql postgresql
+# Should-Stop:       mysql postgresql
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+### END INIT INFO
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+
+SYMPA_BIN=/home/sympa/bin
+
+DAEMON=${SYMPA_BIN}/sympa.pl
+RUNDIR=/home/sympa
+PIDFILE=${RUNDIR}/sympa.pid
+
+ARCHIVED_DAEMON=${SYMPA_BIN}/archived.pl
+ARCHIVED_PIDFILE=${RUNDIR}/archived.pid
+
+BOUNCED_DAEMON=${SYMPA_BIN}/bounced.pl
+BOUNCED_PIDFILE=${RUNDIR}/bounced.pid
+
+BULK_DAEMON=${SYMPA_BIN}/bulk.pl
+BULK_PIDFILE=${RUNDIR}/bulk.pid
+
+TASK_MANAGER_DAEMON=${SYMPA_BIN}/task_manager.pl
+TASK_MANAGER_PIDFILE=${RUNDIR}/task_manager.pid
+
+OWNER="sympa:sympa"
+
+#set -xv
+
+. /lib/lsb/init-functions
+
+use_db()
+{
+	conf=/etc/sympa.conf
+
+	grep -q "^[[:space:]]*db_name" ${conf} &&\
+		grep -q "^[[:space:]]*db_type" ${conf} &&\
+		return 0
+
+	return 1
+}
+
+test -f ${DAEMON} || exit 0
+test -f ${ARCHIVED_DAEMON} || exit 0
+test -f ${BOUNCED_DAEMON} || exit 0
+test -f ${BULK_DAEMON} || exit 0
+test -f ${TASK_MANAGER_DAEMON} || exit 0
+
+case "$1" in
+    start)
+	log_daemon_msg "Starting Sympa mailing list manager" "sympa"
+	start-stop-daemon --start --quiet --pidfile ${PIDFILE} \
+		--chuid ${OWNER} --exec ${DAEMON}
+	log_end_msg 0
+
+	if use_db ; then
+		# only sympa itself works without RDBMS
+		log_daemon_msg "Starting Sympa bulk daemon" "bulk"
+		start-stop-daemon --start --quiet --pidfile ${BULK_PIDFILE} \
+			--chuid ${OWNER} --exec ${BULK_DAEMON}
+		log_end_msg 0
+
+		log_daemon_msg "Starting Sympa mailing list archive manager" "archived"
+		start-stop-daemon --start --quiet --pidfile ${ARCHIVED_PIDFILE} \
+			--chuid ${OWNER} --exec ${ARCHIVED_DAEMON}
+		log_end_msg 0
+
+		log_daemon_msg "Starting Sympa task manager" "task_manager"
+		start-stop-daemon --start --quiet --pidfile ${TASK_MANAGER_PIDFILE} \
+			--chuid ${OWNER} --exec ${TASK_MANAGER_DAEMON}
+		log_end_msg 0
+
+		log_daemon_msg "Starting Sympa bounce manager" "bounced"
+		start-stop-daemon --start --quiet --pidfile ${BOUNCED_PIDFILE} \
+			--chuid ${OWNER} --exec ${BOUNCED_DAEMON}
+		log_end_msg 0
+	fi
+	;;
+    stop)
+	if use_db ; then
+		# only sympa itself works without RDBMS
+		log_daemon_msg "Stopping Sympa bounce manager" "bounced"
+		start-stop-daemon --stop --quiet --pidfile ${BOUNCED_PIDFILE}
+		log_end_msg 0
+
+		log_daemon_msg "Stopping Sympa task manager" "task_manager"
+		start-stop-daemon --stop --quiet --pidfile ${TASK_MANAGER_PIDFILE}
+		log_end_msg 0
+
+		log_daemon_msg "Stopping Sympa mailing list archive manager" "archived"
+		start-stop-daemon --stop --quiet --pidfile ${ARCHIVED_PIDFILE}
+		log_end_msg 0
+
+		log_daemon_msg "Stopping Sympa bulk daemon" "bulk"
+		start-stop-daemon --stop --quiet --pidfile ${BULK_PIDFILE}
+		log_end_msg 0
+	fi
+
+	log_daemon_msg "Stopping Sympa mailing list manager" "sympa"
+	start-stop-daemon --stop --quiet --pidfile ${PIDFILE}
+	log_end_msg 0
+	;;
+    restart|force-reload|reload)
+	$0 stop
+	sleep 3
+	$0 start
+	;;
+    *)
+	echo "Usage: /etc/init.d/sympa {start|stop|restart|reload|force-reload}"
+	exit 1
+	;;
+esac
+
+exit 0

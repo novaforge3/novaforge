@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+
+<chapter version="5.0" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+	<title>Managing the Forge repository</title>
+
+	<para>In Novaforge, there are two special spaces: the Forge project and
+		the Forge repository. This chapter describes the purpose of the Forge
+		repository and how to manage it.</para>
+
+	<sect1>
+		<title>Purpose of the Forge repository</title>
+
+		<para>The purpose of the Forge repository is to share information for
+			all forge users but even more so users of the same forge cluster.
+		</para>
+
+		<para>The
+			concept of &quot;repository&quot; is therefore intimately related to
+			the concept of forge distribution since the entire content of the
+			repository can be propagated from a central forge to all its daughter
+			forges. See chapter
+			<xref linkend="distribution_intro" />
+		</para>
+
+		<para>
+			Using the forge repository therefore, any use of the forge or forge
+			cluster can access:
+			<itemizedlist>
+				<listitem>
+					<para>Shared applications (Wiki and Documents in the repository).
+					</para>
+				</listitem>
+				<listitem>
+					<para>Project templates.</para>
+				</listitem>
+				<listitem>
+					<para>Shared tools.</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+
+		<para>Note that to make a wiki or a document management application
+			available, the forge project or the forge repository can be used. If
+			the content is to be shared throughout the forge cluster, choose the
+			repository.</para>
+
+		<para>If the content is specific to a single forge, choose the forge
+			project instead. The forge project can therefore be used to share
+			other applications whereas the repository is used to manage the
+			templates and availability of versioned tools.</para>
+	</sect1>
+
+	<sect1>
+		<title>Administrating the Forge repository</title>
+
+		<para>To access the repository administration space, you must be a
+			forge administrator and be on a central or orphan (= no mother)
+			forge. Since the content of the forge repository is pushed from a
+			mother to the daughters, the content of the daughters is overwritten
+			by that of the mother. Access to the repository administration is
+			therefore denied on the daughter forges to avoid any loss of
+			information.</para>
+
+		<sect2>
+			<title>Administrating the applications </title>
+
+			<para>From the left menu, click "Administrate reference
+				project"</para>
+
+			<figure>
+				<title>Administrate the repository project</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="062-01-ReferenceProject.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>Applications in the repository project are administrated in the
+				same way as for a traditional project, with one major difference:
+				only distributable applications can be added to the repository
+				project. </para>
+
+			<para>
+				For the time being, the distributable applications are:
+				<itemizedlist>
+					<listitem>
+						<para>Dokuwiki</para>
+					</listitem>
+
+					<listitem>
+						<para>Alfresco</para>
+					</listitem>
+				</itemizedlist>
+			</para>
+
+			<para>
+				The following actions can be carried out on the repository project:
+				<itemizedlist>
+					<listitem>
+						<para>Create, change, delete a domain</para>
+					</listitem>
+
+					<listitem>
+						<para>Add, change, delete a distributable application</para>
+					</listitem>
+
+					<listitem>
+						<para>Edit the project description</para>
+					</listitem>
+				</itemizedlist>
+			</para>
+
+			<para>
+				Compared with a traditional project, the following actions are not
+				available on the repository project:
+				<itemizedlist>
+					<listitem>
+						<para>Management of groups, users: by default, all users are
+							members. Only forge administrators on central or orphan forges
+							can access the project administration.</para>
+					</listitem>
+
+					<listitem>
+						<para>Role management: There are two roles: Administrator and
+							member. They are used for mapping with the tool roles.</para>
+					</listitem>
+
+					<listitem>
+						<para>Inter-tool association.</para>
+					</listitem>
+				</itemizedlist>
+			</para>
+		</sect2>
+
+		<sect2>
+			<title>Administrate the project templates</title>
+
+			<para>Project templates allow forge users to quickly create a project
+				with roles, domains, applications and preconfigured role mappings,
+				thereby saving time when creating typical redundant projects within
+				an organization.</para>
+
+			<para>To access the template administration space, from the forge
+				repository click the &quot;Templates&quot; tab.</para>
+
+			<figure>
+				<title>Administrate the templates</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="062-02-TemplatesProject.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>The forge may be initialized with a certain number of templates
+				which can be changed or deleted. New templates can therefore be
+				created.</para>
+
+			<sect3>
+				<title>Creating a template</title>
+
+				<para>Click the "Create a template" button. A wizard
+					containing several steps is started. You can go back or cancel the
+					wizard at all times using the "Back" or "Cancel" buttons.</para>
+
+				<figure>
+					<title>Create a template</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="062-03-CreateTemplate.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+
+				<para>Enter the template name, identifier and description and click
+					"Next"</para>
+
+				<figure>
+					<title>Enter the template description</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="062-04-CreateTemplateDesc.png"
+								width="400px" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+
+				<para>Add, change or delete roles. In this case, roles are managed
+					in the same way as for a project.</para>
+
+				<figure>
+					<title>Manage the template roles</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="062-05-CreateTemplateRole.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+
+				<para>Add, change or delete domains and applications.
+				</para>
+
+				<figure>
+					<title>Manage the template applications</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="062-06-CreateTemplateAppli.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+
+				<para>A template summary is displayed.</para>
+
+				<figure>
+					<title>Template summary</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="062-07-CreateTemplateSummary.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+
+				<para>Click the "Save" button to save a draft copy
+					of the template. Before using it when creating a project, it must
+					be validated.</para>
+
+				<figure>
+					<title>Validate a template</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="062-08-CreateTemplateValidate.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+
+				<para>The template can then be used to create a project.</para>
+
+				<figure>
+					<title>Template activated</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="062-09-CreateTemplateActivated.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</sect3>
+		</sect2>
+
+		<sect2>
+			<title>Administrating the shared tools</title>
+
+			<para>Using the "Import Tools" tab from the
+				"Repository administration" menu, the forge
+				administrator can provide the forge users with tools, binary files,
+				IDE, etc. </para>
+
+			<para>The tools imported can then be downloaded from the "Shared Tool" menu. The administrator can choose to deposit a
+				tool in one of the two spaces :</para>
+
+			<itemizedlist>
+				<listitem>
+					<para>Administrator space: only forge administrators can download
+						tools from this space.</para>
+				</listitem>
+
+				<listitem>
+					<para>User space: all forge users can download tools from this
+						space.</para>
+				</listitem>
+			</itemizedlist>
+
+			<para>Click the "Import tools" tab. Choose the
+				required space (Administrator or user), give the file a name and a
+				version. These parameters are mandatory. However, the tool concerned
+				will retain its existing extension (e.g. .zip, .rpm, etc.).
+				Consequently, do not add the extension to the name.</para>
+
+			<figure>
+				<title>Information about the imported tool.</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="062-10-ImportToolInfo.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>Click the "Choose a file" button then, after
+				choosing the tool, click "Send your file".</para>
+
+			<figure>
+				<title>Choose, send a tool</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="062-11-ImportToolFile1.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>A progress bar is displayed. Click the cross to cancel the
+				transfer. A message is displayed when the file has been transferred :
+				"Your file has been successfully received."</para>
+
+			<figure>
+				<title>Progress bar </title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="062-12-ImportToolFile2.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>You can also look for an available tool from a URL.</para>
+
+			<figure>
+				<title>Retrieve a tool from a URL.</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="062-13-ImportToolFile3.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</sect2>
+	</sect1>
+
+	<sect1>
+		<title>Using the forge repository</title>
+
+		<sect2>
+			<title>Displaying shared documents (from the forge repository)
+			</title>
+
+			<para>To access the shared documents, open the "Shared
+				applications" menu -&gt; "Alfresco repository".
+				The administrator of a central or orphan forge can then display,
+				create or change documents. All other users are restricted to read
+				only access to the document management application.</para>
+
+			<figure>
+				<title>Forge repository documents</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="062-14-SharedGED.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</sect2>
+
+		<sect2>
+			<title>Displaying the shared wiki (from the forge repository)</title>
+
+			<para>To access the shared wiki, open the "Shared
+				applications" menu -&gt; "Wiki repository". The
+				administrator of a central or orphan forge can then display, create
+				or change pages. All other users are restricted to read only access
+				to the wiki.</para>
+
+			<figure>
+				<title>Forge repository wiki</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="062-15-SharedWiki.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</sect2>
+
+		<sect2>
+			<title>Creating a project from a template</title>
+
+			<para>To create a project from a template, choose the correct
+				template in the create project form (see <xref
+				linkend="create-project" />)</para>
+
+			<para>Once validated by the forge administrator, the project will be
+				created with the roles, applications and mapping of the forge-tool
+				roles preconfigured in the template.</para>
+		</sect2>
+
+		<sect2>
+			<title>Downloading a shared tool</title>
+
+			<para>To download a shared tool, click the "Shared" menu. Two submenus are available :</para>
+
+			<itemizedlist>
+				<listitem>
+					<para>The administrator space, only visible to the forge
+						administrators</para>
+				</listitem>
+				<listitem>
+					<para>The user space, visible to all forge users</para>
+				</listitem>
+			</itemizedlist>
+
+			<figure>
+				<title>Shared tools menu</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="062-16-SharedToolsMenu.png"
+							width="250px" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<sect3>
+				<title>Administrator space</title>
+
+				<para>Click the Administrator space menu to display the list of
+					available files. You can filter by tool name, delete a tool (cross)
+					or download it (green arrow icon)</para>
+
+				<figure>
+					<title>Shared tools: Administrator space</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="062-17-SharedToolsAdmin.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</sect3>
+
+			<sect3>
+				<title>User space</title>
+
+				<para>Click the User space menu to display the list of available
+					files. You can filter by tool name, delete a tool (only available
+					for a forge administrator) or download it (green arrow icon)</para>
+
+				<figure>
+					<title>Shared tools: User space</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="062-18-SharedToolsUser.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</sect3>
+		</sect2>
+	</sect1>
+</chapter>

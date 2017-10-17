@@ -1,0 +1,153 @@
+<!-- * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above. 
+	* * This file is free software: you may redistribute and/or modify it under 
+	* the terms of the GNU Affero General Public License as published by the 
+	* Free Software Foundation, version 3 of the License. * * This file is distributed 
+	in the hope that it will be useful, * but WITHOUT ANY WARRANTY; without even 
+	the implied warranty * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+	* See the GNU Affero General Public License for more details. * You should 
+	have received a copy of the GNU Affero General Public License * along with 
+	this program. If not, see http://www.gnu.org/licenses. * * Additional permission 
+	under GNU AGPL version 3 (AGPL-3.0) section 7. * * If you modify this Program, 
+	or any covered work, by linking or combining * it with libraries listed in 
+	COPYRIGHT file at the top-level directory of * this distribution (or a modified 
+	version of that libraries), containing parts * covered by the terms of licenses 
+	cited in the COPYRIGHT file, the licensors * of this Program grant you additional 
+	permission to convey the resulting work. -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>novaforge-nexus</artifactId>
+		<groupId>org.novaforge.forge.plugins</groupId>
+		<version>3.8.0</version>
+	</parent>
+	<artifactId>novaforge-nexus-client</artifactId>
+	<packaging>bundle</packaging>
+	<name>NovaForge(tm) :: Plugins :: Nexus :: Client</name>
+	<description>NovaForge(tm) :: Plugins :: Nexus :: Client REST</description>
+	<dependencies>
+
+		<dependency>
+			<groupId>org.novaforge.forge.plugins</groupId>
+			<artifactId>novaforge-nexus-api</artifactId>
+			<version>${novaforge.version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.novaforge.forge.plugins</groupId>
+		    <artifactId>novaforge-jersey-common</artifactId>
+		    <version>${jersey2.version}</version>
+		</dependency>
+
+		<!-- JAX-RS Jersey -->
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.glassfish.jersey.core</groupId>
+					<artifactId>jersey-common</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.connectors</groupId>
+			<artifactId>jersey-apache-connector</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.glassfish.jersey.core</groupId>
+					<artifactId>jersey-common</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.glassfish.jersey.core</groupId>
+					<artifactId>jersey-common</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>	
+
+    <dependency>
+        <groupId>org.glassfish.jersey.media</groupId>
+    	<artifactId>jersey-media-jaxb</artifactId>	
+    	<version>${jersey2.version}</version>		
+    	<exclusions>
+			<exclusion>
+				<groupId>org.glassfish.jersey.core</groupId>
+				<artifactId>jersey-common</artifactId>
+			</exclusion>
+		</exclusions>
+    </dependency>
+
+
+
+
+	<!-- required by jersey-entity-filtering cf. its manifest org.glassfish.jersey.message.filtering -->
+		<dependency>
+		    <groupId>org.glassfish.jersey.core</groupId>
+		    <artifactId>jersey-server</artifactId>
+		    <version>${jersey2.version}</version>
+		    <exclusions>
+				<exclusion>
+					<groupId>org.glassfish.jersey.core</groupId>
+					<artifactId>jersey-common</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+	<!-- 
+	<dependency>
+		<groupId>javax.annotation</groupId>
+		<artifactId>javax.annotation-api</artifactId>
+		<version>1.2</version>
+	</dependency> -->
+		<!-- needed for authenticator to encode usename and password in base64 -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+	
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>1.3.1</version>
+				<executions>
+					<execution>
+						<id>enforce-version</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<bannedDependencies>
+									<excludes>
+										<!-- exclude all versions lower than 1.2.17 -->
+										<exclude>com.sun.jersey:jersey-*:[0.0,2.0]</exclude>
+									</excludes>	
+								</bannedDependencies>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -1,0 +1,1 @@
+UPDATE users SET authentication_token='@CLIENT_TOKEN@', encrypted_password='$2a$10$87unmMmEY.ZzrVDplxYtjuE3Lj3Ycv/6CuS.LBvF.0PjQwpKFQrgq' where users.id=1;

@@ -1,0 +1,12 @@
+From: [% fromlist %]
+Subject: [% FILTER qencode %][%|loc(list.name)%]Reminder of your subscription to %1[%END%][%END%]
+
+[%|loc(list.name,list.host,user.email,user.password)%]Your are subscriber of list %1@%2 with  email %3[%END%]
+
+[%|loc(list.name)%]To get information about this %1 list, please contact the forge administrator.[%END%]
+[% IF subscriber.included != 1 %]
+[%|loc%]Unsubscription:[%END%]
+[% | mailtourl({subject => "sig ${list.name} ${user.email}"}) ~%]
+  [% conf.email %]@[% conf.host %]
+[%~ END %]
+[%END%]

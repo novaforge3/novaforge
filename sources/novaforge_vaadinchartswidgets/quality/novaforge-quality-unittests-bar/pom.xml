@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>novaforge-widgets-quality</artifactId>
+		<groupId>org.novaforge.forge.widgets.charts</groupId>
+		<version>3.8.0</version>
+	</parent>
+
+	<artifactId>novaforge-quality-unittests-bar</artifactId>
+	<packaging>bundle</packaging>
+	<name>NovaForge(tm) :: Vaadin Charts Widgets :: Quality :: Unit Tests Bar</name>
+	<description>NovaForge(tm) :: Vaadin Charts Widgets :: Quality :: Unit Tests Bar</description>
+
+	<dependencies>
+	<!-- Vaadin dependencies -->
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-server</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+   			<groupId>com.vaadin.addon</groupId>
+   			<artifactId>vaadin-charts</artifactId>
+   			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.vaadin.addons</groupId>
+			<artifactId>stepper</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Commons dependencies -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<classifier>jdk15</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<!-- NovaForge dependencies -->
+		<dependency>
+			<groupId>org.novaforge.forge.widgets.charts</groupId>
+			<artifactId>novaforge-quality-libraries</artifactId>
+			<version>${novaforge.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.novaforge.forge.modules</groupId>
+			<artifactId>novaforge-dashboard-apis</artifactId>
+			<version>${novaforge.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.novaforge.forge.modules</groupId>
+			<artifactId>novaforge-dashboard-libraries</artifactId>
+			<version>${novaforge.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.novaforge.forge.modules</groupId>
+			<artifactId>novaforge-ui-vaadin-theme</artifactId>
+			<version>${novaforge.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.novaforge.forge.modules</groupId>
+			<artifactId>novaforge-portal-apis</artifactId>
+			<version>${novaforge.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.novaforge.forge.modules</groupId>
+			<artifactId>novaforge-ui-vaadin-libraries</artifactId>
+			<version>${novaforge.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.novaforge.forge.modules</groupId>
+			<artifactId>novaforge-core-plugins</artifactId>
+			<version>${novaforge.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.novaforge.forge.modules</groupId>
+			<artifactId>novaforge-core-organization</artifactId>
+			<version>${novaforge.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.novaforge.forge.modules</groupId>
+			<artifactId>novaforge-configuration-apis</artifactId>
+			<version>${novaforge.version}</version>
+		</dependency>
+	</dependencies>
+</project>

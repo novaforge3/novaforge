@@ -1,0 +1,272 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+						 xmlns:validation="urn:import:org.novaforge.forge.tools.managementmodule.ui.client.view.commons.validation"
+						 xmlns:common="urn:import:org.novaforge.forge.tools.managementmodule.ui.client.view.commons">
+
+	<ui:with field='res' type='org.novaforge.forge.tools.managementmodule.ui.client.ressources.ManagementModuleRessources' />
+	<g:ScrollPanel alwaysShowScrollBars="false">
+		<g:VerticalPanel width='100%' spacing="5" verticalAlignment='ALIGN_TOP'>
+			<g:HorizontalPanel addStyleNames="{res.css.actionPanel}" horizontalAlignment='ALIGN_LEFT'>
+				<!-- Button Panel -->
+				<g:HorizontalPanel spacing="5" horizontalAlignment='ALIGN_LEFT'>
+					<g:Button addStyleNames="{res.css.important}" ui:field="buttonSave" />
+					<g:Button addStyleNames="{res.css.important}" ui:field="buttonCancel" />
+					<g:Button addStyleNames="{res.css.important}" ui:field="buttonReOpen" />
+				</g:HorizontalPanel>
+			</g:HorizontalPanel>
+			<g:VerticalPanel spacing="5" width='100%' verticalAlignment='ALIGN_TOP'>
+				<g:Label ui:field='labelTitle' addStyleNames="{res.css.zoneTitle}" />
+				<g:VerticalPanel addStyleNames="{res.css.zonePanel}" horizontalAlignment="ALIGN_LEFT">
+					<!-- Top Panel with non modifiable information -->
+					<g:HorizontalPanel spacing="5" width="100%" horizontalAlignment='ALIGN_LEFT'
+						addStyleNames="{res.css.zonePanel}">
+						<g:Grid ui:field="topGrid" width="100%">
+							<g:row>
+								<g:customCell>
+									<g:Label ui:field="labelIteration" addStyleNames="{res.css.gridLabel}" />
+								</g:customCell>
+								<g:customCell>
+									<g:TextBox ui:field="iterationNameTB" enabled="false"></g:TextBox>
+								</g:customCell>
+
+								<g:customCell>
+									<g:Label ui:field="labelLot" addStyleNames="{res.css.gridLabel}" />
+								</g:customCell>
+								<g:customCell>
+									<g:TextBox ui:field="lotNameTB" enabled="false"></g:TextBox>
+								</g:customCell>
+
+								<g:customCell>
+									<g:Label ui:field="labelParentLot" addStyleNames="{res.css.gridLabel}" />
+								</g:customCell>
+								<g:customCell>
+									<g:TextBox ui:field="parentLotNameTB" enabled="false"></g:TextBox>
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<g:Label ui:field="labelType" addStyleNames="{res.css.gridLabel}" />
+								</g:customCell>
+								<g:customCell>
+									<g:TextBox ui:field="typeNameTB" enabled="false"></g:TextBox>
+								</g:customCell>
+
+								<g:customCell>
+									<g:Label ui:field="labelUP" addStyleNames="{res.css.gridLabel}" />
+								</g:customCell>
+								<g:customCell>
+									<g:TextBox ui:field="UPNameTB" enabled="false"></g:TextBox>
+								</g:customCell>
+
+								<g:customCell>
+									<g:Label ui:field="labelParentUP" addStyleNames="{res.css.gridLabel}" />
+								</g:customCell>
+								<g:customCell>
+									<g:TextBox ui:field="parentUpNameTB" enabled="false"></g:TextBox>
+								</g:customCell>
+							</g:row>
+						</g:Grid>
+					</g:HorizontalPanel>
+					<g:HTML>
+						<p style="margin-top:20px;margin-bottom:0px;" />
+					</g:HTML>
+					<g:Grid ui:field="formGrid" width="100%">
+						<g:row>
+							<g:customCell>
+								<g:Grid ui:field="topLeftFormGrid" cellPadding="5">
+									<g:row>
+										<g:customCell>
+											<g:Label ui:field="labelName" addStyleNames="{res.css.gridLabel}" />
+										</g:customCell>
+										<g:customCell>
+											<validation:TextBoxValidation ui:field="nameTBV" />
+										</g:customCell>
+									</g:row>
+									<g:row>
+										<g:customCell>
+											<g:Label ui:field="labelStartDate" addStyleNames="{res.css.gridLabel}" />
+										</g:customCell>
+										<g:customCell>
+											<validation:DateBoxValidation ui:field="startDateDBV" />
+										</g:customCell>
+									</g:row>
+									<g:row>
+										<g:customCell>
+											<g:Label ui:field="labelState" addStyleNames="{res.css.gridLabel}" />
+										</g:customCell>
+										<g:customCell>
+											<common:CustomListBox ui:field="stateLB" />
+										</g:customCell>
+									</g:row>
+									<g:row>
+										<g:customCell>
+											<g:Label ui:field="labelInitialEstimation" addStyleNames="{res.css.gridLabel}" />
+										</g:customCell>
+										<g:customCell>
+											<validation:TextBoxValidation ui:field="initialEstimationTBV" />
+										</g:customCell>
+									</g:row>
+								</g:Grid>
+							</g:customCell>
+							<g:customCell>
+								<g:Label />
+							</g:customCell>
+							<g:customCell>
+								<g:Grid cellPadding="5" ui:field="topRightFormGrid">
+									<g:row>
+										<g:customCell>
+											<g:Label ui:field="labelUser" addStyleNames="{res.css.gridLabel}" />
+										</g:customCell>
+										<g:customCell>
+											<common:CustomListBox ui:field="userLB" />
+										</g:customCell>
+									</g:row>
+									<g:row>
+										<g:customCell>
+											<g:Label ui:field="labelEndDate" addStyleNames="{res.css.gridLabel}" />
+										</g:customCell>
+										<g:customCell>
+											<validation:DateBoxValidation ui:field="endDateDBV" />
+										</g:customCell>
+									</g:row>
+									<g:row>
+										<g:customCell>
+											<g:Label ui:field="labelDiscipline" addStyleNames="{res.css.gridLabel}" />
+										</g:customCell>
+										<g:customCell>
+											<common:CustomListBox ui:field="disciplineLB" />
+										</g:customCell>
+									</g:row>
+									<g:row>
+										<g:customCell>
+											<g:Label ui:field="labelCategory" addStyleNames="{res.css.gridLabel}" />
+										</g:customCell>
+										<g:customCell>
+											<common:CustomListBox ui:field="categoryLB" />
+										</g:customCell>
+									</g:row>
+								</g:Grid>
+							</g:customCell>
+							<g:customCell>
+								<g:Label />
+							</g:customCell>
+							<g:customCell>
+								<g:Label />
+							</g:customCell>
+						</g:row>
+						<g:row>
+							<g:customCell>
+								<g:HorizontalPanel width="525px">
+									<g:VerticalPanel addStyleNames="{res.css.zonePanel}" horizontalAlignment="ALIGN_LEFT">
+										<g:Label ui:field="suiviFieldSetTitle" addStyleNames="{res.css.subTitle}" />
+										<g:Grid ui:field="suiviGrid" cellPadding="5">
+											<g:row>
+												<g:customCell>
+													<g:Label ui:field="labelRemainingTime" addStyleNames="{res.css.gridLabel}" />
+												</g:customCell>
+												<g:customCell>
+													<validation:TextBoxValidation ui:field="remainingTimeTBV" />
+												</g:customCell>
+											</g:row>
+											<g:row>
+												<g:customCell>
+													<g:Label ui:field="labelConsumedTime" addStyleNames="{res.css.gridLabel}" />
+												</g:customCell>
+												<g:customCell>
+													<validation:TextBoxValidation ui:field="consumedTimeTBV" />
+												</g:customCell>
+											</g:row>
+											<g:row>
+												<g:customCell>
+													<g:Label ui:field="labelReEstimated" addStyleNames="{res.css.gridLabel}" />
+												</g:customCell>
+												<g:customCell>
+													<validation:TextBoxValidation ui:field="reEstimatedTBV" enabled="false " />
+												</g:customCell>
+											</g:row>
+										</g:Grid>
+									</g:VerticalPanel>
+								</g:HorizontalPanel>
+							</g:customCell>
+							<g:customCell>
+								<g:Label />
+							</g:customCell>
+							<g:customCell>
+								<g:VerticalPanel>
+									<g:Grid ui:field="textAreaGrid" cellPadding="5">
+										<g:row>
+											<g:customCell>
+												<g:Label ui:field="labelDescription" addStyleNames="{res.css.gridLabel}" />
+											</g:customCell>
+											<g:customCell>
+												<g:TextArea ui:field="descriptionTA" />
+											</g:customCell>
+										</g:row>
+										<g:row>
+											<g:customCell>
+												<g:Label ui:field="labelComment" addStyleNames="{res.css.gridLabel}" />
+											</g:customCell>
+											<g:customCell>
+												<g:TextArea ui:field="commentTA" />
+											</g:customCell>
+										</g:row>
+									</g:Grid>
+								</g:VerticalPanel>
+							</g:customCell>
+							<g:customCell>
+								<g:Label />
+							</g:customCell>
+							<g:customCell>
+								<g:Label />
+							</g:customCell>
+						</g:row>
+					</g:Grid>
+					<g:HTML>
+						<p style="margin-top:20px;margin-bottom:0px;" />
+					</g:HTML>
+					<g:VerticalPanel addStyleNames="{res.css.zonePanel}" horizontalAlignment="ALIGN_LEFT"
+						width="100%" ui:field="bugPanel">
+						<g:Label ui:field="bugFieldSetTitle" addStyleNames="{res.css.subTitle}" />
+						<g:HorizontalPanel>
+							<g:HorizontalPanel width="600px">
+								<g:TextBox ui:field="bugTitleTB" enabled="false"></g:TextBox>
+							</g:HorizontalPanel>
+							<g:HorizontalPanel width="250px">
+								<g:Button addStyleNames="{res.css.important}" ui:field="buttonInfos" />
+							</g:HorizontalPanel>
+							<g:HorizontalPanel width="250px">
+								<g:Button addStyleNames="{res.css.important}" ui:field="buttonChooseBug" />
+							</g:HorizontalPanel>
+							<g:HorizontalPanel>
+							</g:HorizontalPanel>
+						</g:HorizontalPanel>
+					</g:VerticalPanel>
+				</g:VerticalPanel>
+			</g:VerticalPanel>
+			<g:HorizontalPanel spacing="5" horizontalAlignment='ALIGN_LEFT' addStyleNames="{res.css.bottomButonPanel}">
+			</g:HorizontalPanel>
+		</g:VerticalPanel>
+	</g:ScrollPanel>
+</ui:UiBinder> 

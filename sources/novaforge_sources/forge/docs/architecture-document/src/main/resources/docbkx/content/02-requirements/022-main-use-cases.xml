@@ -1,0 +1,839 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<section version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+		>
+	<sect3>
+		<title>Créer un compte utilisateur</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_Create_User_Account</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Utilisateur externe</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Module création des utilisateurs disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un utilisateur externe peut créer son compte dans la forge après avoir saisit les champs
+							obligatoires.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect3>
+	<sect3>
+		<title>Créer, Modifier ou supprimer un compte utilisateur</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_CRUD_User_Account</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Administrateur de la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Module d'administration des utilisateurs disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>L’administrateur du système peut créer, modifier ou supprimer un compte utilisateur dans la
+							forge.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect3>
+	<sect3>
+		<title>Gérer son compte utilisateur</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_Gestion_Compte_Utilisateur</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Utilisateur de la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Module de gestion du compte utilisateur disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>L’utilisateur de la forge peut gérer son compte utilisateur dans la forge, c'est à dire modifier
+							ses données personnelles: nom, prénom, adresse e-mail, mot de passe et photo.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect3>
+	<sect3>
+		<title>Authentification à la forge</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_Authentification</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Utilisateur de la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Module d'authentification disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un utilisateur enregistré peut accéder à la forge après avoir saisit son login et son mot de
+							passe.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect3>
+	<sect3>
+		<title>Déconnexion de la forge</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_Deconnexion</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Utilisateur de la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Module d'authentification disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un utilisateur authentifié peut se déconnecter de la forge.</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect3>
+	<sect3>
+		<title>Créer un projet dans la forge</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_Create_projets</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Utilisateur de la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Module de gestion de projet disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un administrateur de projet peut administrer son projet afin d'éditer ses informations ou ses
+							membres.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect3>
+	<sect3>
+		<title>Gestion d'un projet dans la forge</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_Manage_projets</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Administrateur de projet dans la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Module de gestion de projet disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un administrateur de projet peut administrer son projet afin d'éditer ses informations ou ses
+							membres.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect3>
+	<sect3>
+		<title>Gestion des applications d'un projet</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_CRUD_applications</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Administrateur de projet dans la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Module de gestion d'applications disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un administrateur de projet peut ajouter, modifier ou supprimer une application de son projet.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect3>
+	<sect3>
+		<title>Les applications de la forge</title>
+		<para>La forge doit intégrer un certain nombre de fonctionnalités haut niveau représentées par les cas
+			d'utilisations suivants.
+		</para>
+	</sect3>
+	<sect4>
+		<title>Gestion des documents</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_ECM</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Utilisateur de la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Application de gestion documentaire disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un utilisateur de la forge peut gérer ses documents dans son projet en fonction de ses droits
+							dans l'application.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect4>
+	<sect4>
+		<title>Gestion des tickets</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_Issues</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Utilisateur de la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Application de gestion de tickets disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un utilisateur de la forge peut gérer ses tickets dans son projet en fonction de ses droits
+							dans
+							l'application.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect4>
+	<sect4>
+		<title>Gestion des sources</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_Sources</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Utilisateur de la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Application de gestion de sources disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un utilisateur de la forge peut gérer ses sources dans son projet en fonction de ses droits
+							dans
+							l'application.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect4>
+	<sect4>
+		<title>Gestion de pages wiki</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_Wiki</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Utilisateur de la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Application de gestion de pages wiki disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un utilisateur de la forge peut gérer ses pages wiki dans son projet en fonction de ses droits
+							dans
+							l'application.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect4>
+	<sect4>
+		<title>Gestion de forums</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_Forums</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Utilisateur de la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Application de gestion de forums disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un utilisateur de la forge peut gérer ses forums dans son projet en fonction de ses droits
+							dans
+							l'application.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect4>
+	<sect4>
+		<title>Gestion de dépôts Maven</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_Repo_Maven</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Utilisateur de la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Application de gestion de dépôts maven disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un utilisateur de la forge peut gérer ses dépôts Maven dans son projet en fonction de ses droits
+							dans
+							l'application.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect4>
+	<sect4>
+		<title>Gestion des tests</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_Tests</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Utilisateur de la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Application de gestion de tests disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un utilisateur de la forge peut gérer ses tests dans son projet en fonction de ses droits
+							dans
+							l'application.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect4>
+	<sect4>
+		<title>Gestion de listes de diffusion</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_Mailing_list</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Utilisateur de la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Application de gestion de listes de diffusion disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un utilisateur de la forge peut gérer ses listes de diffusion dans son projet en fonction de ses droits
+							dans
+							l'application.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect4>
+	<sect4>
+		<title>Gestion des livraisons</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_Deliveries</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Utilisateur de la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Application de gestion de livraisons disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un utilisateur de la forge peut gérer ses livraisons dans son projet en fonction de ses droits
+							dans
+							l'application.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect4>
+	<sect4>
+		<title>Intégration continue</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_IC</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Utilisateur de la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Application d'intégration continu disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un utilisateur de la forge peut gérer ses intégrations continu dans son projet en fonction de ses droits
+							dans
+							l'application.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect4>
+	<sect4>
+		<title>Gestion de la qualité</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_Survey</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Utilisateur de la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Application de gestion de sondages disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un utilisateur de la forge peut gérer ses sondages dans son projet en fonction de ses droits
+							dans
+							l'application.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect4>
+	<sect4>
+		<title>Gestion de sondages</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_Survey</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Utilisateur de la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Application de gestion de sondages disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un utilisateur de la forge peut gérer ses sondages dans son projet en fonction de ses droits
+							dans
+							l'application.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect4>
+	<sect4>
+		<title>Gestion de contenu web</title>
+		<informaltable frame="all">
+			<tgroup cols="2" align="justify" colsep="1" rowsep="1">
+				<colspec colname="c1" colwidth="1*" />
+				<colspec colname="c2" colwidth="1*" />
+				<spanspec spanname="span1" namest="c1" nameend="c2" />
+				<tbody>
+					<row>
+						<entry>
+							<emphasis role="bold">Référence</emphasis>
+						</entry>
+						<entry>UC_CMS</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Auteur</emphasis>
+						</entry>
+						<entry>Utilisateur de la forge</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Pré-condition</emphasis>
+						</entry>
+						<entry>Application de gestion de contenus web disponible</entry>
+					</row>
+					<row>
+						<entry>
+							<emphasis role="bold">Description</emphasis>
+						</entry>
+						<entry>Un utilisateur de la forge peut gérer son contenu web dans son projet en fonction de ses droits
+							dans
+							l'application.
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</informaltable>
+	</sect4>
+</section>

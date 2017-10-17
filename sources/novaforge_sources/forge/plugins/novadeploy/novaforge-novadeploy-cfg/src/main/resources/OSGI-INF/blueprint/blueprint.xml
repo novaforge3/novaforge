@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+					 xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd 
+	http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
+
+<!-- Property place holder -->
+	<cm:property-placeholder persistent-id="plugins.novadeploy" update-strategy="reload">
+		<cm:default-properties>
+			<!-- Client configuration -->
+			<cm:property name="clientAdmin" value="admin" />
+			<cm:property name="clientPwd" value="novadmin" />
+			<!-- The following should'nt start with / because its relative -->
+			<cm:property name="clientEndPoint" value="cxf/novadeploy" />
+			<!-- Plugin configuration -->
+			<cm:property name="description" value="I am Novadeploy for everyone" />
+			<cm:property name="maxAllowedProjectInstances" value="1" />			
+			<cm:property name="defaultAccess" value="modules:novadeploy" />
+			<!-- <cm:property name="adminAccess" value="/Novadeploy/doku.php?do=admin" /> -->
+			<!-- The following has to end with -->
+			<cm:property name="defaultToolURL" value="http://localhost/novadeploy-default/" />
+			<cm:property name="webServerConfName" value="novadeploy" />
+		</cm:default-properties>
+	</cm:property-placeholder>
+	<bean id="defaultPluginConfigurationService" class="org.novaforge.forge.plugins.commons.services.DefaultPluginConfigurationService">
+		<property name="clientAdmin" value="${clientAdmin}" />
+		<property name="clientPwd" value="${clientPwd}" />
+		<property name="clientEndPoint" value="${clientEndPoint}" />
+		<property name="description" value="${description}" />
+		<property name="defaultAccess" value="${defaultAccess}" />
+		<property name="defaultToolInternal" value="true" />
+		<property name="defaultToolURLString" value="${defaultToolURL}" />
+		<property name="webServerConfName" value="${webServerConfName}" />
+		<property name="maxAllowedProjectInstances" value="${maxAllowedProjectInstances}" />
+	</bean>
+	<bean id="novadeployConfigurationService" class="org.novaforge.forge.plugins.devops.novadeploy.internal.NovadeployConfigurationImpl">
+		<property name="pluginConfigurationService" ref="defaultPluginConfigurationService" />
+		<!-- property name="adminAccess" value="${adminAccess}" /> -->
+	</bean>
+	<service ref="novadeployConfigurationService" interface="org.novaforge.forge.plugins.devops.novadeploy.services.NovadeployConfigurationService">
+		<service-properties>
+			<entry key="service.pid" value="plugins.Novadeploy"></entry>
+		</service-properties>
+	</service>
+</blueprint>

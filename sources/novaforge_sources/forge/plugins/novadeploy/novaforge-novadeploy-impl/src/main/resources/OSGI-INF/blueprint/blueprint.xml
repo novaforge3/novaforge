@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
+					 xmlns:cxf="http://cxf.apache.org/blueprint/core"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd 
+
+    http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd
+    http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+	
+	
+	<!-- External references required -->
+	<reference id="cxfConfigService" interface="org.novaforge.forge.commons.technical.cxf.CxfConfigService" />
+	<reference id="webServerConfigurator" interface="org.novaforge.forge.commons.webserver.configuration.services.WebServerConfigurator" />
+	<reference id="normalizeService" interface="org.novaforge.forge.commons.technical.normalize.NormalizeService" />
+	<reference id="novadeployRestClient" interface="org.novaforge.forge.plugins.devops.novadeploy.client.NovadeployRestClient" />
+	<reference id="novadeployResourceBuilder" interface="org.novaforge.forge.plugins.devops.novadeploy.datamapper.NovadeployResourceBuilder" />
+	<reference id="novadeployConfigurationService" interface="org.novaforge.forge.plugins.devops.novadeploy.services.NovadeployConfigurationService" />
+	<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/pluginNovadeploy)" />
+		
+	<!-- DAO"s -->
+	<bean id="instanceConfigurationDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.InstanceConfigurationDAOImpl">
+		<jpa:context unitname="plugins.novadeploy" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="rolesMappingDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.RolesMappingDAOImpl">
+		<jpa:context unitname="plugins.novadeploy" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="toolInstanceDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.ToolInstanceDAOImpl">
+		<jpa:context unitname="plugins.novadeploy" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="uuidDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.UuidDAOImpl">
+		<jpa:context unitname="plugins.novadeploy" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	
+	<!-- Services -->
+	<bean id="novadeployRoleMappingService" class="org.novaforge.forge.plugins.devops.novadeploy.internal.services.NovadeployRoleMappingServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="rolesMappingDAO" ref="rolesMappingDAO" />
+	</bean>
+	<bean id="novadeployMembershipService" class="org.novaforge.forge.plugins.devops.novadeploy.internal.services.NovadeployMembershipServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="pluginRoleMappingService" ref="novadeployRoleMappingService" />
+		<property name="novadeployRestClient" ref="novadeployRestClient" />
+		<property name="novadeployResourceBuilder" ref="novadeployResourceBuilder" />
+		<property name="novadeployConfigurationService" ref="novadeployConfigurationService" />
+	</bean>
+	<bean id="novadeployProjectService" class="org.novaforge.forge.plugins.devops.novadeploy.internal.services.NovadeployProjectServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="normalizeService" ref="normalizeService" />
+		<property name="pluginRoleMappingService" ref="novadeployRoleMappingService" />
+		<property name="novadeployRestClient" ref="novadeployRestClient" />
+		<property name="novadeployResourceBuilder" ref="novadeployResourceBuilder" />
+		<property name="novadeployConfigurationService" ref="novadeployConfigurationService" />
+	</bean>
+	<bean id="novadeployUserService" class="org.novaforge.forge.plugins.devops.novadeploy.internal.services.NovadeployUserServiceImpl">
+		<property name="novadeployRestClient" ref="novadeployRestClient" />
+		<property name="novadeployResourceBuilder" ref="novadeployResourceBuilder" />
+		<property name="novadeployConfigurationService" ref="novadeployConfigurationService" />
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+	</bean>
+
+
+	<bean id="novadeployToolInstanceProvider" class="org.novaforge.forge.plugins.commons.services.DefaultToolInstanceProvider">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="pluginConfigurationService" ref="novadeployConfigurationService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+	</bean>
+	<bean id="novadeployInstanceService" class="org.novaforge.forge.plugins.devops.novadeploy.internal.NovadeployInstanceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+	</bean>
+	<cxf:bus id="novadeployBus" />
+	<jaxws:endpoint implementor="#novadeployInstanceService" implementorClass="org.novaforge.forge.core.plugins.services.PluginInstanceService"
+		address="/NovadeployInstance" />
+
+
+	<!--  Configuration for Camel JMS Route -->
+	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />	
+	<!--  Configuration for Camel JMS Route -->
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<argument ref="jmsConfig" />
+	</bean>	
+	<!-- Novadeploy Route Builders Beans  -->
+	<bean id="novadeployProjectRouteBuilder" class="org.novaforge.forge.plugins.devops.novadeploy.internal.route.NovadeployProjectRoute">
+		<property name="pluginProjectService" ref="novadeployProjectService" />
+	</bean>
+	<bean id="novadeployUserRouteBuilder" class="org.novaforge.forge.plugins.devops.novadeploy.internal.route.NovadeployUserRoute">
+		<property name="pluginUserService" ref="novadeployUserService" />
+	</bean>
+	<bean id="novadeployRolesMappingRouteBuilder" class="org.novaforge.forge.plugins.devops.novadeploy.internal.route.NovadeployRolesMappingRoute">
+		<property name="pluginRoleMappingService" ref="novadeployRoleMappingService" />
+		<property name="pluginMembershipService" ref="novadeployMembershipService" />
+	</bean>
+	<bean id="novadeployMembershipRouteBuilder" class="org.novaforge.forge.plugins.devops.novadeploy.internal.route.NovadeployMembershipRoute">
+		<property name="pluginMembershipService" ref="novadeployMembershipService" />
+	</bean>				
+	<!-- Routes definition -->
+	<camelContext id="novadeployCamelContext" xmlns="http://camel.apache.org/schema/blueprint">
+		<routeBuilder ref="novadeployProjectRouteBuilder" />
+		<routeBuilder ref="novadeployUserRouteBuilder" />
+		<routeBuilder ref="novadeployRolesMappingRouteBuilder" />
+		<routeBuilder ref="novadeployMembershipRouteBuilder" />
+	</camelContext>
+
+	<bean id="novadeployService" class="org.novaforge.forge.plugins.devops.novadeploy.internal.NovadeployServiceImpl">	   
+		<!-- Camel context -->
+		<property name="camelContext" ref="novadeployCamelContext" />
+	<!-- Service reference -->
+		<argument ref="uuidDAO" />
+		<property name="pluginConfigurationService" ref="novadeployConfigurationService" />
+		<property name="pluginRoleMappingService" ref="novadeployRoleMappingService" />
+		<property name="pluginUserService" ref="novadeployUserService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="toolInstanceProvisioningService" ref="novadeployToolInstanceProvider" />
+		<property name="cxfConfigService" ref="cxfConfigService" />
+		
+		<!-- Configuration -->
+		<property name="type" value="Novadeploy" />
+		<property name="version" value="1.0.0" />
+	</bean>
+	<bean id="novadeployCategoryService" class="org.novaforge.forge.plugins.devops.novadeploy.internal.NovadeployCategoryServiceImpl" />
+	<service id="novadeployServiceRegistration" ref="novadeployService"
+		interface="org.novaforge.forge.core.plugins.services.PluginService">
+		<service-properties>
+			<entry key="type" value="Novadeploy" />
+			<entry key="version" value="1.0.0" />
+		</service-properties>
+	</service>
+	<service id="novadeployCategoryRegistration" ref="novadeployCategoryService" auto-export="interfaces">
+		<service-properties>
+			<entry key="type" value="Novadeploy" />
+			<entry key="version" value="${Novadeploy.version}" />
+		</service-properties>
+	</service>
+	<bean id="pluginServiceRegistration" class="org.novaforge.forge.plugins.commons.services.PluginServiceRegistration">
+		<argument ref="blueprintBundleContext" />
+		<argument ref="novadeployServiceRegistration" />
+		<argument ref="novadeployCategoryRegistration" />
+	</bean>
+</blueprint>
+

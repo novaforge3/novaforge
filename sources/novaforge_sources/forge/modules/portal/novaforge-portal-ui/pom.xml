@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.novaforge.forge.modules</groupId>
+    <artifactId>novaforge-portal</artifactId>
+    <version>3.8.0</version>
+  </parent>
+  <artifactId>novaforge-portal-ui</artifactId>
+  <packaging>war</packaging>
+  <name>NovaForge(tm) :: Modules :: Portal :: UI :: Main</name>
+  <description>NovaForge(tm) :: Modules :: Portal :: UI :: Main</description>
+  <properties>
+    <vaadin.draftCompile>false</vaadin.draftCompile>
+  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <configuration>
+          <supportedProjectTypes>
+            <supportedProjectType>war</supportedProjectType>
+          </supportedProjectTypes>
+          <instructions>
+            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+            <Bundle-ClassPath>.,WEB-INF/classes</Bundle-ClassPath>
+
+            <!-- Add Embed lib -->
+            <Embed-Directory>WEB-INF/lib</Embed-Directory>
+            <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+
+            <!-- VAADIN Require -->
+            <Require-Bundle>com.vaadin.server;bundle-version=${vaadin.version},
+              com.vaadin.themes;bundle-version=${vaadin.version},
+              com.vaadin.client-compiled;bundle-version=${vaadin.version},
+              novaforge-ui-vaadin-theme,
+              novaforge-ui-vaadin-libraries
+            </Require-Bundle>
+            <Import-Package>org.apache.shiro.web.servlet;version=${shiro.version},
+              org.apache.shiro.cas;version=${shiro.version},
+              org.jasig.cas.client.session,
+              org.novaforge.forge.core.security.filter;version=${novaforge.version},
+              org.novaforge.forge.core.security.realms;version=${novaforge.version},
+              !com.google.gwt.*,
+              *
+            </Import-Package>
+            <Export-Package>!.*</Export-Package>
+
+            <!-- Package format version - do not change -->
+            <Vaadin-Package-Version>${project.version}</Vaadin-Package-Version>
+
+            <!-- Comma-separated list of widgetsets in the package -->
+            <Vaadin-Widgetsets>org.novaforge.forge.ui.portal.client.widgetset.PortalWidgetset</Vaadin-Widgetsets>
+
+            <!-- OSGi war spec config -->
+            <Web-ContextPath>portal</Web-ContextPath>
+          </instructions>
+        </configuration>
+        <executions>
+          <execution>
+            <id>bundle-manifest</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>manifest</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <webResources>
+            <resource>
+              <filtering>true</filtering>
+              <directory>src/main/webapp</directory>
+              <includes>
+                <include>**/web.xml</include>
+              </includes>
+            </resource>
+          </webResources>
+          <archive>
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/target/extra-resources</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>src/non-packaged-resources</directory>
+                  <filtering>true</filtering>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  <profiles>
+    <profile>
+      <!-- Updates Vaadin widgetset definitions based on project dependencies
+        Remove widgetset directory to trigger recompile: rm -Rf src/main/webapp/VAADIN/widgetsets/ -->
+      <id>update-widgetset</id>
+      <activation>
+        <file>
+          <missing>${basedir}/src/main/webapp/VAADIN/widgetsets/</missing>
+        </file>
+        <property>
+          <name>vaadin.production</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <properties>
+        <vaadin.draftCompile>false</vaadin.draftCompile>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>delete-widgetsets-dir</id>
+                <phase>initialize</phase>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+                <configuration>
+                  <target>
+                    <delete dir="${basedir}/src/main/webapp/VAADIN/widgetsets"/>
+                    <delete dir="${basedir}/src/main/webapp/VAADIN/gwt-unitCache"/>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-maven-plugin</artifactId>
+            <configuration>
+              <webappDirectory>${basedir}/src/main/webapp/VAADIN/widgetsets/</webappDirectory>
+              <extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+              <!-- Remove draftCompile when project is ready -->
+              <draftCompile>${vaadin.draftCompile}</draftCompile>
+              <strict>false</strict>
+              <compileReport>false</compileReport>
+            </configuration>
+            <executions>
+              <execution>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>resources</goal>
+                  <goal>update-widgetset</goal>
+                  <goal>compile</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+  <dependencies>
+    <!-- Vaadin dependencies -->
+    <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>vaadin-server</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>vaadin-client-compiler</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>vaadin-client-compiled</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>vaadin-client</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>vaadin-themes</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.vaadin.addons</groupId>
+      <artifactId>formsender</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.vaadin.addon</groupId>
+      <artifactId>easyuploads</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.vaadin.addons</groupId>
+      <artifactId>dragdroplayouts</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.vaadin.addons</groupId>
+      <artifactId>PortalLayout</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.vaadin.addons</groupId>
+      <artifactId>stepper</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.vaadin.addon</groupId>
+      <artifactId>itemlayout</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.vaadin.addon</groupId>
+      <artifactId>vaadin-charts</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.vaadin.addons</groupId>
+      <artifactId>wizards-for-vaadin</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.vaadin.addons</groupId>
+      <artifactId>exporter</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.vaadin.addons</groupId>
+      <artifactId>refresher</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.vaadin.jonatan</groupId>
+      <artifactId>contexthelp</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.vaadin.addons</groupId>
+      <artifactId>popupbutton</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.vaadin.virkki</groupId>
+      <artifactId>carousel</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.vaadin.addons</groupId>
+      <artifactId>loginform</artifactId>
+      <version>0.4.4</version>
+    </dependency>
+    <!-- Commons dependencies -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.engio</groupId>
+      <artifactId>mbassador</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.json-lib</groupId>
+      <artifactId>json-lib</artifactId>
+      <classifier>jdk15</classifier>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
+    <!-- Shiro -->
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-cas</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <!-- OSGi dependencies -->
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.compendium</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <!-- NovaForge dependencies -->
+    <dependency>
+      <groupId>org.novaforge.forge.modules</groupId>
+      <artifactId>novaforge-ui-vaadin-theme</artifactId>
+      <version>${novaforge.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.novaforge.forge.modules</groupId>
+      <artifactId>novaforge-portal-apis</artifactId>
+      <version>${novaforge.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.novaforge.forge.modules</groupId>
+      <artifactId>novaforge-ui-vaadin-libraries</artifactId>
+      <version>${novaforge.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.novaforge.forge.modules</groupId>
+      <artifactId>novaforge-configuration-apis</artifactId>
+      <version>${novaforge.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.novaforge.forge.modules</groupId>
+      <artifactId>novaforge-core-security</artifactId>
+      <version>${novaforge.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.novaforge.forge.modules</groupId>
+      <artifactId>novaforge-core-organization</artifactId>
+      <version>${novaforge.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.novaforge.forge.tooling</groupId>
+      <artifactId>novaforge-tooling-tests-jpa</artifactId>
+      <version>${novaforge.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>simple-jndi</groupId>
+      <artifactId>simple-jndi</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>

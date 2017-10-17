@@ -1,0 +1,5 @@
+title.gettext anybody using novaforge by validation by listmaster required
+
+!equal ([remote_application_name],'novaforge') smtp,md5,smime -> reject(reason='create_list_via_novaforge_application')
+is_listmaster([sender])   md5,smime -> do_it
+true()                    smtp,md5,smime -> listmaster,notify

@@ -1,0 +1,403 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+.v-customtabsheet,.v-customtabsheet-content,.v-customtabsheet-deco {
+	outline: none;
+	/* Prevent selection outline which might break layouts or cause scrollbars */
+	text-align: left; /* Force default alignment */
+}
+
+.v-customtabsheet-tabs {
+	empty-cells: hide;
+	border-collapse: collapse;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	width: 100%;
+	overflow: hidden;
+}
+
+.v-customtabsheet-tabs .v-caption,.v-customtabsheet-tabs .v-caption span
+	{
+	white-space: nowrap;
+	vertical-align: middle;
+}
+
+.v-customtabsheet-tabs .v-customtabsheet-tabitemcell,.v-customtabsheet-tabs:after {
+		border-left: 1px solid #4b4c4d;
+		border-left-color: rgba(255,255,255,.05);
+		width: 0;
+}
+	
+
+.v-customtabsheet-tabcontainer {
+	background: #414243 url(img/framed/tab-bg.png) repeat-x;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.v-customtabsheet-tabitemcell,.v-customtabsheet-spacertd {
+	height: 32px;
+	margin: 0;
+	padding: 0;
+}
+
+.v-customtabsheet-spacertd {
+	width: 100%;
+}
+
+.v-customtabsheet-tabitemcell-first {
+	
+}
+
+.v-customtabsheet-tabitemcell {
+	-webkit-appearance: none;
+	border: none;
+	margin: 0;
+	position: relative;
+	border-left: 1px solid #4b4c4d;
+	border-left-color: rgba(255, 255, 255, .05);
+	border-right: 1px solid #353637;
+	border-right-color: rgba(0, 0, 0, .18);
+	background: transparent;
+	color: #888a8c;
+	font-weight: normal;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, .5);
+	text-align: center;
+	padding-left: 0.5em;
+	cursor: pointer;
+}
+
+.v-customtabsheet-tabitemcell .v-customtabsheet-tabitem .v-icon {
+	width: 16px !important;
+	height: 16px !important;
+	opacity: 0.5;
+}
+
+.v-customtabsheet-tabitemcell .v-caption .v-captiontext {
+	font-size: 12px;
+	font-weight: 600;
+}
+
+.v-customtabsheet-tabitemcell:focus {
+	outline: none;
+}
+
+.v-customtabsheet-tabitemcell .v-icon {
+	opacity: 1;
+}
+
+.v-customtabsheet-tabitemcell:hover,.v-customtabsheet-tabitemcell:focus
+	{
+	color: #e1e1e1;
+	opacity: 1;
+}
+
+.v-customtabsheet-tabitemcell:before {
+	font-size: 24px;
+	line-height: 1;
+	margin: 0;
+}
+
+.v-webkit & .v-customtabsheet-tabitemcell:before {
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e8e8e8),
+		color-stop(100%, #d3d3d3));
+	background: -webkit-linear-gradient(top, #fff 0%, #777 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+	opacity: .5;
+	-webkit-transition: opacity ease-in-out 200ms;
+	-moz-transition: opacity ease-in-out 200ms;
+	-ms-transition: opacity ease-in-out 200ms;
+	-o-transition: opacity ease-in-out 200ms;
+	transition: opacity ease-in-out 200ms;
+}
+
+.v-customtabsheet-tabitemcell:hover:before,.v-customtabsheet-tabitemcell:focus:before
+	{
+	opacity: 1;
+}
+
+.v-customtabsheet-tabitemcell:active {
+	background: rgba(0, 0, 0, .1);
+}
+
+.v-customtabsheet-tabitemcell-selected {
+	color: #e1e1e1;
+	text-shadow: 0 2px 2px rgba(0, 0, 0, .5);
+	border-top-color: #262729;
+	border-bottom-color: #2b2c2e;
+	background: #333537;
+	background: -moz-linear-gradient(top, #2d2f30 0%, #333537 10%, #333537 90%, #2d2f30
+		100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2d2f30),
+		color-stop(10%, #333537), color-stop(90%, #333537),
+		color-stop(100%, #2d2f30));
+	background: -webkit-linear-gradient(top, #2d2f30 0%, #333537 10%, #333537 90%,
+		#2d2f30 100%);
+	background: -o-linear-gradient(top, #2d2f30 0%, #333537 10%, #333537 90%, #2d2f30
+		100%);
+	background: -ms-linear-gradient(top, #2d2f30 0%, #333537 10%, #333537 90%, #2d2f30
+		100%);
+	-webkit-transition: none;
+}
+
+.v-customtabsheet-tabitem .v-caption
+{
+	padding-right: 5px ;
+}
+.v-customtabsheet-tabitem .v-caption-closable,.v-customtabsheet-tabitem .v-caption-hasmenu
+{
+	padding-right: 2px !important;
+}
+
+.v-customtabsheet-tabitem .v-captiontext {
+	font-size: 12px;
+	font-weight: 600;
+	display: block;
+	white-space: normal;
+}
+
+.v-customtabsheet-tabitem .v-captiontext:hover {
+	color: #fff;
+	text-shadow: 1px 1px 1px #262626 !important;
+}
+
+.v-customtabsheet-tabitem-selected .v-captiontext {
+	color: #fff !important;
+	text-shadow: 1px 1px 1px #262626 !important;
+}
+
+.v-customtabsheet-tabitem .v-caption-both .v-captiontext,.v-customtabsheet-tabitem .v-caption-both .v-icon
+	{
+	margin-top: 3px;
+}
+
+.v-customtabsheet-tabitem .v-caption-closable .v-captiontext,.v-customtabsheet-tabitem .v-caption-closable .v-icon,.v-customtabsheet-tabitem .v-caption-hasmenu .v-captiontext,.v-customtabsheet-tabitem .v-caption-hasmenu .v-icon
+	{
+	vertical-align: middle;
+}
+
+.v-customtabsheet-caption-button,.v-customtabsheet-tabitem-selected .v-customtabsheet-caption-button
+	{
+	display: inline-block;
+	*display: inline;
+	zoom: 1;
+	padding-left: 2px;
+}
+
+.v-customtabsheet-caption-close {
+	float: none !important;
+	width: 19px;
+	margin: -1px -1px 0;
+	padding-left: 2px;
+	background: transparent;
+	background-image: url(img/close-btn.png); /** sprite-ref: verticals */
+	cursor: default;
+	text-indent: -999px;
+	overflow: hidden;
+	font-size: 14px;
+	font-weight: normal;
+}
+
+.v-caption-hasmenu .v-customtabsheet-caption-close,.v-customtabsheet-tabitem-selected .v-caption-hasmenu .v-customtabsheet-caption-close
+	{
+	display: block;
+	margin-bottom: -6px !important;
+}
+
+.v-ff .v-customtabsheet-caption-close {
+	margin-top: 4px;
+}
+
+.v-ie7 .v-customtabsheet-caption-close {
+	margin-top: -17px;
+}
+
+.v-ie6 .v-customtabsheet-caption-close {
+	float: none;
+}
+
+.v-customtabsheet-caption-close:hover {
+	background-image: url(img/close-btn-hover.png);
+	/** sprite-ref: verticals */
+}
+
+.v-customtabsheet-caption-close:active {
+	background-image: url(img/close-btn-pressed.png);
+	/** sprite-ref: verticals */
+}
+
+.v-customtabsheet-tabitem-selected .v-customtabsheet-caption-close {
+	background-image: url(img/close-btn.png); /** sprite-ref: verticals */
+}
+
+.v-customtabsheet-tabitem-selected .v-customtabsheet-caption-close:hover
+	{
+	background-image: url(img/close-btn-hover.png);
+	/** sprite-ref: verticals */
+}
+
+.v-customtabsheet-tabitem-selected .v-customtabsheet-caption-close:active
+	{
+	background-image: url(img/close-btn-pressed.png);
+	/** sprite-ref: verticals */
+}
+
+.v-customtabsheet-caption-menu {
+	float: right;
+	width: 19px;
+	margin: -1px -1px 0;
+	padding-left: 2px;
+	background: transparent;
+	background-image: url(img/menu-btn.png); /** sprite-ref: verticals */
+	cursor: default;
+	text-indent: -999px;
+	overflow: hidden;
+	font-size: 14px;
+	font-weight: normal;
+}
+
+.v-caption-closable .v-customtabsheet-caption-menu {
+	margin: 1px -1px 0 !important;
+}
+
+.v-ff .v-customtabsheet-caption-menu {
+	margin-top: 2px;
+}
+
+.v-ie7 .v-customtabsheet-caption-menu {
+	margin-top: -17px;
+}
+
+.v-ie6 .v-customtabsheet-caption-menu {
+	float: none;
+}
+
+.v-customtabsheet-caption-menu:hover {
+	background-image: url(img/menu-btn-hover.png);
+	/** sprite-ref: verticals */
+}
+
+.v-customtabsheet-caption-menu:active {
+	background-image: url(img/menu-btn-pressed.png);
+	/** sprite-ref: verticals */
+}
+
+.v-customtabsheet-tabitem-selected .v-customtabsheet-caption-menu {
+	background-image: url(img/menu-btn.png); /** sprite-ref: verticals */
+}
+
+.v-customtabsheet-tabitem-selected .v-customtabsheet-caption-menu:hover
+	{
+	background-image: url(img/menu-btn-hover.png);
+	/** sprite-ref: verticals */
+}
+
+.v-customtabsheet-tabitem-selected .v-customtabsheet-caption-menu:active
+	{
+	background-image: url(img/menu-btn-pressed.png);
+	/** sprite-ref: verticals */
+}
+
+.v-customtabsheet-spacertd div {
+	margin-right: 4px;
+}
+
+.blue .v-customtabsheet-content {
+	border-color: #a8bcc5;
+}
+
+.v-customtabsheet-content,.white .v-customtabsheet-content {
+	border: 1px solid #dcdcdc;
+	border-bottom: none;
+	border-top: none;
+	color: #222;
+	text-shadow: none;
+}
+
+.v-customtabsheet-tabsheetpanel {
+	background: #fff;
+}
+
+.v-sa .v-customtabsheet-content,.v-ff3 .v-customtabsheet-content {
+	border-color: rgba(0, 0, 0, .1);
+}
+
+.blue .v-customtabsheet-deco {
+	border-color: #92a3ac;
+	background: #adc2cd;
+}
+
+.v-customtabsheet-deco,.white .v-customtabsheet-deco {
+	height: 1px;
+	border-top: 1px solid #bebebe;
+	background: #e2e2e2;
+	overflow: hidden;
+}
+
+.v-sa .v-customtabsheet-deco,.v-ff3 .v-customtabsheet-deco {
+	border-top-color: rgba(0, 0, 0, .1);
+	background: rgba(0, 0, 0, .08);
+}
+
+/* Icons & error indicators */
+.v-customtabsheet-tabs .v-icon,.v-customtabsheet-tabs .v-captiontext,.v-customtabsheet-tabs .v-errorindicator
+	{
+	display: inline;
+	float: none;
+}
+
+.v-sa .v-customtabsheet-tabs .v-captiontext {
+	display: inline-block;
+}
+
+.v-customtabsheet-tabs .v-errorindicator {
+	display: inline-block;
+	width: 13px;
+	height: 16px;
+	background: transparent url(../common/icons/error.png) no-repeat 50%;
+}
+
+.v-ff2 .v-customtabsheet-tabs .v-icon,.v-ff2 .v-customtabsheet-tabs .v-errorindicator
+	{
+	display: -moz-inline-stack;
+}
+
+.v-ie6 .v-customtabsheet-tabs .v-errorindicator {
+	background-image: url(../common/icons/error-ie6.png);
+}
+
+.v-ie .v-customtabsheet-tabs .v-errorindicator {
+	zoom: 1;
+	display: inline;
+}
+
+.v-ie8 .v-customtabsheet-tabs .v-errorindicator,.v-ie9 .v-customtabsheet-tabs .v-errorindicator
+	{
+	display: inline-block;
+}

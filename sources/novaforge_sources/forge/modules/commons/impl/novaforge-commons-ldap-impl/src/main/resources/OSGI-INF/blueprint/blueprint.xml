@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" default-activation="lazy">
+	>
+
+<!-- Property place holder -->
+	<cm:property-placeholder persistent-id="commons.ldap" update-strategy="reload">
+		<cm:default-properties>
+<!-- Ldap configuration -->
+			<cm:property name="baseDN" value="dc=defense,dc=gouv,dc=fr"/>
+			<cm:property name="initialContextFactory" value="com.sun.jndi.ldap.LdapCtxFactory"/>
+			<cm:property name="providerUrl" value="ldap://127.0.0.1:389"/>
+			<cm:property name="securityAuthentication" value="simple"/>
+			<cm:property name="securityPrincipal" value="cn=root,dc=defense,dc=gouv,dc=fr"/>
+			<cm:property name="securityCredentials" value="novaforge_1"/>
+			<cm:property name="referralMode" value="follow"/>
+			<cm:property name="userSearchFilter" value="uid={0}"/>
+<!-- Ldap attributes -->
+			<cm:property name="uidAttribute" value="uid"/>
+			<cm:property name="userPasswordAttribute" value="Password"/>
+			<cm:property name="surnameAttribute" value="sn"/>
+			<cm:property name="givennameAttribute" value="givenName"/>
+			<cm:property name="mailAttribute" value="mail"/>
+			<cm:property name="preferredLanguageAttribute" value="preferredLanguage"/>
+			<cm:property name="defaultLanguageAttribute" value="FR"/>
+<!-- authorize user to connect Novaforge by Jpa When Ldap is Down -->
+			<cm:property name="authorizeJpaAccessWhenLdapDown" value="true"/>
+<!-- authorize user to create Novaforge account on Jpa (i.e. authorize Ldap and Jpa access) -->
+			<cm:property name="authorizeCreateJpaAccess" value="false"/>
+<!-- authorize to update user language -->
+			<cm:property name="authorizeToUpdateLanguage" value="false"/>
+		</cm:default-properties>
+	</cm:property-placeholder>
+
+	<bean id="ldapService" class="org.novaforge.forge.commons.ldap.internal.services.LdapServiceImpl"
+		init-method='init' destroy-method='detroy'>
+		<property name="baseDN" value="${baseDN}" />
+		<property name="initialContextFactory" value="${initialContextFactory}" />
+		<property name="providerUrl" value="${providerUrl}" />
+		<property name="securityAuthentication" value="${securityAuthentication}" />
+		<property name="securityPrincipal" value="${securityPrincipal}" />
+		<property name="securityCredentials" value="${securityCredentials}" />
+		<property name="referralMode" value="${referralMode}" />
+		<property name="userSearchFilter" value="${userSearchFilter}" />
+		<property name="uidAttribute" value="${uidAttribute}" />
+		<property name="userPasswordAttribute" value="${userPasswordAttribute}" />
+		<property name="surnameAttribute" value="${surnameAttribute}" />
+		<property name="givennameAttribute" value="${givennameAttribute}" />
+		<property name="mailAttribute" value="${mailAttribute}" />
+		<property name="preferredLanguageAttribute" value="${preferredLanguageAttribute}" />
+		<property name="defaultLanguageAttribute" value="${defaultLanguageAttribute}" />
+		<property name="authorizeJpaAccessWhenLdapDown" value="${authorizeJpaAccessWhenLdapDown}" />
+		<property name="authorizeCreateJpaAccess" value="${authorizeCreateJpaAccess}" />
+		<property name="authorizeToUpdateLanguage" value="${authorizeToUpdateLanguage}" />
+	</bean>
+
+	<service ref="ldapService" interface="org.novaforge.forge.commons.ldap.services.LdapService" />
+
+</blueprint>

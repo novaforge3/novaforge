@@ -1,0 +1,203 @@
+<!-- * NovaForge(TM) is a web-based forge offering a Collaborative Development 
+	and * Project Management Environment. * * Copyright (C) 2007-2012 BULL SAS 
+	* * This program is free software: you can redistribute it and/or modify 
+	* it under the terms of the GNU Affero General Public License as * published 
+	by the Free Software Foundation, either version 3 of the * License, or (at 
+	your option) any later version. * * This program is distributed in the hope 
+	that it will be useful, * but WITHOUT ANY WARRANTY; without even the implied 
+	warranty of * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+	* GNU Affero General Public License for more details. * * You should have 
+	received a copy of the GNU Affero General Public License * along with this 
+	program. If not, see http://www.gnu.org/licenses/. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.novaforge.studio</groupId>
+	<artifactId>novastudio-config</artifactId>
+	<version>3.8.0</version>
+	<packaging>pom</packaging>
+
+	<name>NovaStudio(tm) :: Configuration</name>
+	<description>NovaStudio(tm) Parent POM</description>
+
+	<inceptionYear>2012</inceptionYear>
+
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License Version 3</name>
+			<url>http://www.gnu.org/licenses/lgpl.txt</url>
+		</license>
+	</licenses>
+	<organization>
+		<name>Bull SAS</name>
+		<url>http://www.bull.net</url>
+	</organization>
+
+
+
+	<distributionManagement>
+	</distributionManagement>
+
+	<properties>
+		<tycho-version>0.15.0</tycho-version>
+	</properties>
+
+
+	<repositories>
+
+		<repository>
+			<id>eclipse-indigo</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/releases/indigo</url>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+		</repository>
+
+		<repository>
+			<id>eclipse-mylyn</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/mylyn/releases/indigo</url>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+		</repository>
+
+		<!-- Uncomment the following lines to put a dependency on Mylyn-Mantis 
+			and thus let it be installed with NovaStudio -->
+		<!-- <repository> -->
+		<!-- <id>mylyn-mantis</id> -->
+		<!-- <layout>p2</layout> -->
+		<!-- <url>http://mylyn-mantis.sourceforge.net/eclipse/update/</url> -->
+		<!-- </repository> -->
+
+		<repository>
+			<id>Maven repo1</id>
+			<name>Maven repo1</name>
+			<url>http://repo1.maven.org/maven2/org/</url>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+		</repository>
+	</repositories>
+
+	<modules>
+		<module>plugins</module>
+		<module>features</module>
+		<module>org.novaforge.studio.repository</module>
+	</modules>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>2.4.1</version>
+				</plugin>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-dependency-plugin
+										</artifactId>
+										<versionRange>
+											[2.1,)
+										</versionRange>
+										<goals>
+											<goal>
+												copy-dependencies
+											</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<!-- enable tycho build extension -->
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<!-- configure the p2 target environments for multi-platform build -->
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.novaforge.forge.modules</groupId>
+				<artifactId>novaforge-remote-apis</artifactId>
+				<version>3.8.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxws</artifactId>
+				<version>2.7.7</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http</artifactId>
+				<version>2.7.7</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.shiro</groupId>
+				<artifactId>shiro-core</artifactId>
+				<version>1.2.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-all</artifactId>
+				<version>1.8.5</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>

@@ -1,0 +1,293 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+@import "tabsheetimproved/tabsheetimproved.css";
+@import "portallayout/portallayout.css";
+@import "portallayout/gwt-dnd.css";
+
+.tabheader {
+	color: white;
+	padding: 8px;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	background: #333537
+		url(/portal/VAADIN/themes/novaforge_blue/common/img/header-bg-gradient.png)
+		repeat-x bottom left;
+	display: inline-block;
+}
+
+.v-verticallayout-separator {
+	background: #434547;
+	margin-left: 10px !important;
+	margin-right: 10px !important;
+}
+
+.tabheader .v-caption {
+	white-space: normal;
+	text-align: center;
+}
+
+.tabheader .v-form legend {
+	color: #DDD;
+}
+
+.tabheader .v-formlayout-contentcell {
+	padding-bottom: 5px !important;
+	padding-top: 8px !important;
+}
+
+.tabheader .v-itemlayout-slot {
+	margin: 0px 4px;
+}
+
+.boxes .v-button .v-button-wrap {
+	padding: 2px 2px !important;
+	margin: 0px !important;
+}
+
+.boxes .v-button-selected {
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, rgb(192
+		, 192, 192)), color-stop(1, grey));
+	background: -moz-linear-gradient(center top, rgb(192, 192, 192) 5%, grey
+		100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='rgb(192, 192, 192)',
+		endColorstr='grey');
+	background-color: grey;
+	behavior: url(/portal/VAADIN/themes/novaforge/PIE.htc);
+}
+
+.v-horizontallayout-boxes {
+	padding-top: 10px;
+}
+
+.v-gridlayout-selected {
+	border: solid grey 1px;
+	background: grey;
+}
+
+.v-gridlayout-layout:hover {
+	background: #B9B8B8;
+	cursor: pointer;
+}
+
+.v-csslayout-boxcontainer {
+	padding: 2px;
+}
+
+.v-csslayout-boxcontainer .v-csslayout {
+	background: #8B8D8F;
+}
+
+.v-gridlayout-selected .v-csslayout-boxcontainer .v-csslayout {
+	background: #66A3C7;
+}
+
+.nf-show-area .v-gridlayout-slot {
+	background: #66A3C7;
+	min-height: 40px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+
+.v-csslayout-nf-show-area {
+	overflow: visible !important;
+}
+
+
+.v-gridlayout-slot .dragdrop-dropTarget-v-portal-layout {
+	min-height: 40px;
+	padding: 10px;
+}
+
+.dashboard-widgets-item {
+	z-index: 1;
+	height: 100px;
+	width: 100px;
+	border: none !important;
+	background: #222
+		url(/portal/VAADIN/themes/novaforge_blue/modules/dashboard/img/widget-box.png?v=949)
+		no-repeat 0 0;
+}
+
+.dashboard-widgets-item:hover {
+	-moz-box-shadow: 0px 0px 12px 1px #cfcfcf !important;
+	-webkit-box-shadow: 0px 0px 12px 1px #cfcfcf !important;
+	-o-box-shadow: 0px 0px 12px 1px #cfcfcf !important;
+	box-shadow: 0px 0px 12px 1px #cfcfcf !important;
+	filter: progid:DXImageTransform.Microsoft.Shadow(color=#cfcfcf,
+		Direction=NaN, Strength=12) !important;
+}
+
+.dashboard-widgets-item-title {
+	padding-left: 4px;
+	margin-top: 2px;
+	font-weight: bold;
+	text-overflow: ellipsis;
+	white-space: nowrap !important;
+}
+
+.dashboard-widgets-item-icon {
+	position: absolute;
+	z-index: 2;
+	left: 16px;
+	top: 25px;
+	width: 70px;
+	height: 60px;
+	line-height: 53px;
+	text-align: center;
+	background: #222
+		url(/portal/VAADIN/themes/novaforge_blue/modules/dashboard/img/widget-icon.png)
+		no-repeat 0 0;
+}
+
+.dashboard-widgets-item-add-corner {
+	position: absolute;
+	z-index: 3;
+	left: 74px;
+	top: 74px;
+	background: transparent;
+	background-image:
+		url(/portal/VAADIN/themes/novaforge_blue/modules/dashboard/img/widget-corner.png);
+	cursor: pointer !important;
+}
+
+.dashboard-widgets-item-add-corner:hover {
+	background-image:
+		url(/portal/VAADIN/themes/novaforge_blue/modules/dashboard/img/widget-corner-hover.png);
+}
+
+.tabcontent .v-portlet .portlet-header
+{
+	margin-right: 5px;
+}
+
+.tabcontent .v-portlet .header-settings,.tabcontent .v-portlet .header-refresh
+	{
+	width: 16px;
+	height: 16px;
+	background: transparent;
+	background-size: 16px 16px;
+	border: none;
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+
+.tabcontent .v-portlet .header-settings:hover,.tabcontent .v-portlet .header-refresh:hover
+	{
+	cursor: pointer;
+}
+
+.tabcontent .v-portlet .header-settings:focus,.tabcontent .v-portlet .header-refresh:focus
+	{
+	outline: none;
+}
+
+.tabcontent .v-portlet .header-settings {
+	background-image:
+		url(/portal/VAADIN/themes/novaforge_blue/img/icons/eldorado/gear-dark.png);
+}
+
+.tabcontent .v-portlet .header-settings:hover {
+	background-image:
+		url(/portal/VAADIN/themes/novaforge_blue/img/icons/eldorado/gear-colored.png);
+}
+
+.tabcontent .v-portlet .header-refresh {
+	background-image:
+		url(/portal/VAADIN/themes/novaforge_blue/img/icons/eldorado/refresh-dark.png);
+}
+
+.tabcontent .v-portlet .header-refresh:hover {
+	background-image:
+		url(/portal/VAADIN/themes/novaforge_blue/img/icons/eldorado/refresh-colored.png);
+}
+
+.tabcontent {
+	overflow-y: auto !important;
+}
+
+.dashboard-settings-header {
+	border-bottom: 1px solid grey;
+	padding-bottom: 8px;
+	margin-bottom: 15px;
+}
+
+.dashboard-settings-content,.v-panel-content-dashboard-settings-content
+	{
+	overflow: auto;
+}
+
+.nf-dashboard-selected-box {
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-moz-box-shadow: 0px 0px 12px 1px #cfcfcf;
+	-webkit-box-shadow: 0px 0px 12px 1px #cfcfcf;
+	-o-box-shadow: 0px 0px 12px 1px #cfcfcf;
+	box-shadow: 0px 0px 12px 1px #cfcfcf;
+	filter: progid:DXImageTransform.Microsoft.Shadow(color=#cfcfcf,
+		Direction=NaN, Strength=12);
+	background: #333537;
+	color: white;
+}
+
+.nf-dashboard-selected-box-title {
+	border-bottom: 1px solid black;
+}
+
+.nf-dashboard-selected-box-item {
+	background: #333537 !important;
+	color: white !important;
+	border-top: none !important;
+	border-left: none !important;
+	border-right: none !important;
+	border-bottom: 1px solid #434547 !important;
+}
+
+.nf-dashboard-selected-box .v-icon,.nf-dashboard-selected-box .v-icon {
+	width: 16px;
+	height: 16px;
+}
+
+.nf-dashboard-selected-box .v-icon,.nf-dashboard-selected-box .v-icon {
+	width: 16px;
+	height: 16px;
+}
+
+.dashboard-settings {
+	width: 100% !important;
+	height: 100% !important;
+	min-width: 100% !important;
+	min-height: 100% !important;
+}
+
+.dashboard-settings .v-splitpanel-first-container {
+	overflow: hidden !important;
+}
+
+.dashboard-settings .v-splitpanel-second-container {
+	overflow: hidden !important;
+}

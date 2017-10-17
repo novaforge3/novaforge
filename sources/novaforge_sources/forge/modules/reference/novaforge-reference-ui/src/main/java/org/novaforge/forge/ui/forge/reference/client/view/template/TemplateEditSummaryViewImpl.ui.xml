@@ -1,0 +1,72 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+						 xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+
+	<ui:with field='res' type='org.novaforge.forge.ui.forge.reference.client.resources.ReferenceResources' />
+
+	<g:VerticalPanel spacing="5" verticalAlignment='ALIGN_TOP' width='100%' height='100%'>
+		<g:Label ui:field='templateSummaryTitle' addStyleNames="{res.style.zoneTitle}" />
+		<g:VerticalPanel addStyleNames="{res.style.zonePanel}">
+			<g:Grid ui:field="templateDetailGrid" addStyleNames="{res.style.infoGrid}">
+				<g:row>
+					<g:customCell>
+						<g:Label ui:field="templateNameLabel" addStyleNames="{res.style.gridLabel}" />
+					</g:customCell>
+					<g:customCell>
+						<g:Label ui:field="templateName" addStyleNames="{res.style.gridInfo},{res.style.important}"
+							width="200px" />
+					</g:customCell>
+				</g:row>
+				<g:row>
+					<g:customCell>
+						<g:Label ui:field="templateIdLabel" addStyleNames="{res.style.gridLabel}" />
+					</g:customCell>
+					<g:customCell>
+						<g:Label ui:field="templateId" addStyleNames="{res.style.gridInfo},{res.style.important}" width="200px" />
+					</g:customCell>
+				</g:row>
+				<g:row>
+					<g:customCell>
+						<g:Label ui:field="templateDescLabel" addStyleNames="{res.style.gridLabel}" />
+					</g:customCell>
+					<g:customCell>
+						<g:Label ui:field="templateDesc" addStyleNames="{res.style.gridInfo}" width="200px" />
+					</g:customCell>
+				</g:row>
+			</g:Grid>
+		</g:VerticalPanel>
+
+		<g:VerticalPanel spacing="5" verticalAlignment='ALIGN_TOP' width="100%">
+			<g:VerticalPanel addStyleNames="{res.style.zonePanel}" title="">
+				<c:CellTable addStyleNames='{res.style.cellTable}' ui:field='rolesCellTable' />
+				<c:SimplePager ui:field='rolePager' addStyleNames='{res.style.zoneTable}' />
+			</g:VerticalPanel>
+			<g:VerticalPanel addStyleNames="{res.style.zonePanel}">
+				<c:CellTree ui:field='templateTree' />
+			</g:VerticalPanel>
+		</g:VerticalPanel>
+	</g:VerticalPanel>
+
+</ui:UiBinder>

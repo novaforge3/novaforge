@@ -1,0 +1,8 @@
+<?php
+	$g_hostname = 'hostname_long';
+	$g_db_type = 'mysql';
+	$g_database_name = 'mantis_ard';
+	$g_db_username = 'usermantisard';
+	$g_db_password = 'passmantisard';
+        date_default_timezone_set('Europe/Brussels');
+?>

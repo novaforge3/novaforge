@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<chapter version="5.0" xmlns="http://docbook.org/ns/docbook"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook"
+	xml:lang="fr">
+
+	<title>A la découverte de NovaForgeTM</title>
+
+	<sect2>
+		<title>Authentification</title>
+
+		<para>Pour utiliser la forge, il faut s'identifier, en remplissant son
+			login et mot de passe.</para>
+
+		<figure>
+			<title>Authentification</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="02-00-login.png"
+						width="450px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+
+	</sect2>
+
+	<sect2>
+		<title>Navigation</title>
+
+		<para>Novaforge permet la navigation sur 3 niveaux: le menu de gauche,
+			les onglets (projets) et les sous-onglets (applications).
+		</para>
+
+		<para>Le contenu est toujours affiché dans la zone centrale.</para>
+
+		<figure>
+			<title>Contenu</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="02-01-intro.png"
+						width="450px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+
+	</sect2>
+
+	<sect2>
+		<title>Menu projets</title>
+
+		<para>Chaque onglet représente un projet ouvert.
+			Pour naviguer, il suffit de cliquer sur un onglet.
+		</para>
+
+		<figure>
+			<title>Onglets projets</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="02-015-ongletsProjets.png"
+						width="450px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+
+	</sect2>
+
+	<sect2>
+		<title>Menu gauche</title>
+
+		<para>Le menu de gauche est constitué de la liste déroulante des
+			applications
+			disponibles. Pour ouvrir une application, il suffit de cliquer sur son nom.
+		</para>
+
+		<figure>
+			<title>Menu gauche</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="02-02-menuGauche.png"
+						width="450px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+
+	</sect2>
+
+	<sect2>
+		<title>Applications</title>
+
+		<para>L'interface Novaforge permet d'avoir plusieurs onglets
+			(applications) ouverts au
+			même temps. Pour naviguer, il suffit de cliquer sur un onglet.
+		</para>
+
+		<figure>
+			<title>Onglets Applications</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="02-03-menuHaut.png"
+						width="450px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+
+	</sect2>
+
+
+	<sect2>
+		<title>Menu projets rapide</title>
+
+		<para>A chaque moment il est possible de changer le projet. Le menu
+			des projets présente la liste de tous les projets disponibles.
+		</para>
+
+		<figure>
+			<title>Menu projets rapide</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="02-04-menuProjets.png"
+						width="450px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+
+	</sect2>
+
+	<sect2>
+		<title>Menu compte</title>
+
+		<para>Menu compte permet d'accèder aux paramètres de compte, à l'aide
+			en
+			ligne, ainsi que de se déconnecter.
+		</para>
+
+		<figure>
+			<title>Menu compte</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="02-05-menuCompte.png"
+						width="450px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+
+	</sect2>
+</chapter>
+

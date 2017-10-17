@@ -1,0 +1,6 @@
+Alias /%ALIAS%-default/%MANTIS_NAME% "%MANTIS_HOME%"
+
+<Directory %MANTIS_HOME%>
+        Options Indexes
+        Require all granted
+</Directory>

@@ -1,0 +1,1 @@
+export CATALINA_OPTS="$CATALINA_OPTS -Dorg.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER=true -Dmail.mime.decodeparameters=true -Xms128m -Xmx512m -XX:MaxPermSize=256m -Datlassian.plugins.enable.wait=300 -Djavax.net.ssl.keyStore=@keystore@ -Djavax.net.ssl.keyStorePassword=@storepass@ -Djavax.net.ssl.trustStore=@keystore@ -Djavax.net.ssl.trustStorePassword=@storepass@"

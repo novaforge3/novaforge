@@ -1,0 +1,209 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+
+@CHARSET "ISO-8859-1";
+
+td{
+	vertical-align:top;	
+}
+
+.important {
+	font-weight: bold;
+}
+
+.center {
+	margin: auto;
+}
+
+.borderCell {
+	border: 2px solid #ccc;
+	height: 100%;
+	width: 100%;
+}
+
+.actionPanel {
+	background-color: #F0F0F0;
+	height: 30px;
+	width: 100%;
+}
+
+.infoPanel {
+	background-color: #F0F0F0;
+	height: 30px;
+	width: 100%;
+}
+
+.zoneTitle {
+	padding-left: 10px;
+	color: gray;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.subTitle {
+	color: #333333;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.zonePanel {
+	border-radius: 10px;
+	border: 1px solid #9ACD32;
+	padding: 10px;
+	width: 100%;
+	height: 100%;
+	text-align: right;
+}
+
+.cellPanel {
+	margin: auto;
+	width: 100%;
+	height: 100%;
+}
+
+.cellTable {
+	border-bottom: 1px solid #ccc;
+	text-align: left;
+	margin-bottom: 4px;
+	width: 100%;
+	height: 100%;
+}
+
+.zonePanel .zoneTable {
+	margin: auto;
+	border-collapse: collapse;
+	text-align: right;
+}
+
+.zoneTableLeft {
+	border-collapse: collapse;
+	text-align: left;
+}
+
+.bottomButonPanel {
+	margin: auto;
+}
+
+.titleList {
+	color: gray;
+	font-size: 20px;
+	font-style: normal;
+	font-weight: bold;
+}
+
+.subZoneTitle {
+	color: black;
+	font-weight: bold;
+	text-align: left;
+}
+
+.titleInfo {
+	color: black;
+	font-size: 10px;
+	font-style: normal;
+	font-weight: italic;
+}
+
+.labelTB {
+	text-align: right;
+}
+
+.emptyLabel {
+	color: gray;
+}
+
+.infoGrid {
+	border-collapse: collapse;
+	height: 100%;
+	width: 100%;
+}
+
+.gridLabel, .acronymLabel {
+	margin: 5px 0px;
+	text-align: right;
+	width: 100%;
+	vertical-align: middle;
+}
+.acronymLabel {
+	font-weight: bold;		
+}
+
+.gridLabelRight {
+	margin: 5px 0px;
+	text-align: left;
+	width: 100%;
+	vertical-align: middle;
+}
+
+.gridInfo {
+	margin: 5px 0px;
+	text-align: left;
+	padding-left: 5px;
+	width: 100%;
+	vertical-align: middle;
+}
+
+.gridTB {
+	vertical-align: middle;
+	margin: 5px 0px;
+	text-align: left;
+	margin-left: 5px;
+}
+
+.labelCell {
+	width: 25%;
+}
+
+.gridRowPair {
+	background: #e4ffd6;
+}
+
+.chargePlanMainTable {
+	width: 800px;
+	background-color: red;
+}
+
+.disabledPanel {
+	background: #e0dfe3; /*light grey*/
+}
+
+.disabledLink {
+	color: #696969; /*dark grey*/
+	font-family: Verdana;
+	font-size: 13px;
+}
+
+.disabledLink:hover {
+	color: #696969;
+}
+
+.anchor {
+	text-decoration: underline;
+	cursor: pointer;
+	display: block;
+	font-family: Verdana;
+	font-size: 13px;
+}
+

@@ -1,0 +1,205 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+@mixin novaforge-sidebar {
+	
+	.sidebar {
+		background: #414243 url(img/sidebar-gradient.png) repeat-y top right;
+		@include valo-animate-in-slide-right(300ms,0);
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	
+	.sidebar .sidebar-branding {
+		border-bottom: 1px solid #353637;
+		position: relative;
+		-webkit-font-smoothing: antialiased;
+	}
+	
+	.sidebar .sidebar-branding .v-label {
+		position: relative;
+		z-index: 2;
+		
+		white-space: normal;
+		font-size: 16px;
+		line-height: 1.1;
+		color: #fff;
+		text-shadow: 0 2px 2px rgba(0,0,0,.5);
+		
+		/* WTH? Why is inline-block forced as an inline style? */
+		display: block !important;
+		padding: .8em .8em 1.2em;
+	}
+	
+	.sidebar .sidebar-branding .v-label span {
+		font-size: 13px;
+		color: #d0d1d3;
+		display: block;
+	}
+	
+	.sidebar .sidebar-branding .v-image {
+		position: absolute;
+		z-index: 1;
+		top: 0;
+		left: 0;
+		width: 100%;
+	}
+	
+	.sidebar .sidebar-menu {
+		overflow: auto;
+		height: 100%;
+		width: 100%;
+	}
+	
+	.sidebar .sidebar-menu .v-ddwrapper {
+		padding: 2px;
+	}
+	
+	.sidebar .sidebar-menu .v-ddwrapper .v-nativebutton {
+		margin: -2px -2px;
+	}
+	
+	.sidebar .sidebar-menu .v-ddwrapper-over {
+		padding: 0;
+		border: 2px solid #2d90f3;
+		background: transparent;
+		@include border-top-radius(4px);
+		@include border-bottom-radius(4px);
+	}
+	
+	.sidebar .sidebar-menu .v-nativebutton {
+		@include appearance(none);
+		
+		display: block;
+		padding: 10px 14px 10px;
+		width: 100%;
+		border: none;
+		margin: 0;
+		position: relative;
+		
+		border-top: 1px solid #4b4c4d;
+		border-top-color: rgba(255,255,255,.05);
+		
+		border-bottom: 1px solid #353637;
+		border-bottom-color: rgba(0,0,0,.18);
+		
+		background: transparent;
+		
+		color: #888a8c;
+		font-weight: normal;
+		text-shadow: 0 1px 0 rgba(0,0,0,.5);
+		text-align: center;
+		
+		@include transition(color ease-in-out 100ms, background-color linear 60ms);
+	}
+	
+	.sidebar .sidebar-menu .v-nativebutton .v-icon {
+		width: 32px;
+		opacity: 0.5;
+	}
+
+	.sidebar .sidebar-menu:after {
+		content: "";
+		display: block;
+		border-top: 1px solid #4b4c4d;
+		border-top-color: rgba(255,255,255,.05);
+		height: 0;
+	}
+	
+	.sidebar .sidebar-menu .v-nativebutton-caption {
+		font-size: 12px;
+		font-weight: 600;
+		display: block;
+		margin: .2em 0 0 0;
+	}
+	
+	.sidebar .sidebar-menu .v-nativebutton:focus {
+		outline: none;
+	}
+	
+	.sidebar .sidebar-menu .v-nativebutton:hover .v-icon {
+		opacity: 1;
+	}
+	
+	.sidebar .sidebar-menu .v-nativebutton:hover,
+	.sidebar .sidebar-menu .v-nativebutton:focus {
+		color: #e1e1e1;
+		opacity: 1;
+	}
+	
+	
+	.sidebar .sidebar-menu .v-nativebutton:before {
+		font-size: 24px;
+		line-height: 1;
+		margin: 0;
+	}
+	
+	.v-webkit & .sidebar-menu .v-nativebutton:before {	
+		@include linear-gradient(to bottom, #e8e8e8 0%,#d3d3d3 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		text-shadow: 0 1px 1px rgba(0,0,0,.2);
+		opacity: .5;
+		
+		@include transition(opacity ease-in-out 200ms);
+	}
+	
+	.v-webkit & .sidebar-menu .v-nativebutton:hover:before,
+	.v-webkit & .sidebar-menu .v-nativebutton:focus:before {
+		opacity: 1;
+	}
+	
+	.sidebar .sidebar-menu .v-nativebutton:active {
+		background: rgba(0,0,0,.1);
+	}
+	
+	.sidebar .sidebar-menu .v-nativebutton.selected {
+		color: #e1e1e1;
+		text-shadow: 0 2px 2px rgba(0,0,0,.5);
+		
+		border-top-color: #262729;
+		border-bottom-color: #2b2c2e;
+		
+		background: #333537;
+			
+		@include linear-gradient(to bottom, #2d2f30 0%,#333537 10%,#333537 90%,#2d2f30 100%);
+		-webkit-transition: none;
+	}
+	
+	.v-webkit & .sidebar-menu .v-nativebutton.selected:before {
+		text-shadow: none;
+		opacity: 1;
+	}
+	
+	.sidebar .sidebar-menu .v-nativebutton.selected .v-icon {
+		opacity: 1;
+	}
+		
+	.sidebar-second-component {
+		overflow: auto;
+	}
+	
+}

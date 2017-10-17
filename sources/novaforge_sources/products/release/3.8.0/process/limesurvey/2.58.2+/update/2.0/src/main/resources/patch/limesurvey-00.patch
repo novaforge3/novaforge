@@ -1,0 +1,1935 @@
+diff -rNU5 limesurvey2.58.2+170114/admin/index.php limesurvey/admin/index.php
+--- limesurvey2.58.2+170114/admin/index.php	2017-01-12 13:55:52.000000000 +0100
++++ limesurvey/admin/index.php	2017-02-22 14:20:25.712387900 +0100
+@@ -18,14 +18,16 @@
+     $config_file = $config_folder . 'config-sample-mysql.php';
+ }
+ define('BASEPATH', dirname(__FILE__) . '/..'); // To prevent direct access not allowed
+ $config = require($config_file);
+ 
+-$urlStyle = $config['components']['urlManager']['urlFormat'];
++// Novaforge : propagate parameters
++$qry = $_SERVER['QUERY_STRING'];
+ 
++$urlStyle = $config['components']['urlManager']['urlFormat'];
+ // Simple redirect to still have the old /admin URL
+ if ($urlStyle == 'path') {
+-    header( 'Location: ../index.php/admin' );
++    header( 'Location: ../index.php/admin?'.$qry );
+ } else {
+     // For IIS use get style
+-    header( 'Location: ../index.php?r=admin' );
++    header( 'Location: ../index.php?r=admin&'.$qry );
+ }
+\ Pas de fin de ligne à la fin du fichier
+diff -rNU5 limesurvey2.58.2+170114/application/config/config-defaults.php limesurvey/application/config/config-defaults.php
+--- limesurvey2.58.2+170114/application/config/config-defaults.php	2017-01-12 13:55:52.000000000 +0100
++++ limesurvey/application/config/config-defaults.php	2017-01-13 16:14:25.412346400 +0100
+@@ -565,11 +565,11 @@
+ /**
+ * This parameter enables/disables the RPC interface
+ * Set to 'json' (for JSON-RPC) )or 'xml' (for XML-RPC) to enable and 'off' to disable
+ * @var string
+ */
+-$config['RPCInterface'] = 'off';
++$config['RPCInterface'] = 'xml';
+ 
+ /**
+ * This parameter sets the default session expiration time in seconds
+ * Default is 2 hours
+ * @var integer
+diff -rNU5 limesurvey2.58.2+170114/application/config/version.php limesurvey/application/config/version.php
+--- limesurvey2.58.2+170114/application/config/version.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/config/version.php	2017-01-13 16:15:00.625346400 +0100
+@@ -13,10 +13,10 @@
+  */
+ 
+ $config['versionnumber'] = '2.58.2';
+ $config['dbversionnumber'] = 260;
+ $config['buildnumber'] = '170114';
+-$config['updatable'] = true;
++$config['updatable'] = false;     // false to disable ComfortUpdate
+ $config['assetsversionnumber'] = '47';
+ return $config;
+ 
+ ?>
+diff -rNU5 limesurvey2.58.2+170114/application/controllers/admin/surveypermission.php limesurvey/application/controllers/admin/surveypermission.php
+--- limesurvey2.58.2+170114/application/controllers/admin/surveypermission.php	2017-01-12 13:55:52.000000000 +0100
++++ limesurvey/application/controllers/admin/surveypermission.php	2017-01-13 16:11:17.091346400 +0100
+@@ -313,33 +313,33 @@
+                             $addsummary .= "<div class=\"jumbotron message-box message-box\">\n";
+                             $addsummary .= "<h2>".gT("Add user group")."</h2>\n";
+                             $addsummary .= "<p class='lead'>".gT("Failed to add user group.")."</p>\n";
+                             $addsummary .= "<p>";
+ 
+-                            $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/>\n";
++                            $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_self')\" value=\"".gT("Continue")."\"/>\n";
+                             $addsummary .= "</p>";
+                         }
+                     }
+                     else
+                     {
+                         // no user to add
+                         $addsummary .= "<div class=\"jumbotron message-box message-box\">\n";
+                         $addsummary .= "<h2>".gT("Add user group")."</h2>\n";
+                         $addsummary .= "<p class='lead'>".gT("Failed to add user group.")."</p>\n";
+                         $addsummary .= "<p>";
+-                        $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/>\n";
++                        $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_self')\" value=\"".gT("Continue")."\"/>\n";
+                         $addsummary .= "</p>";
+                     }
+                 }
+                 else
+                 {
+                     $addsummary .= "<div class=\"jumbotron message-box message-box\">\n";
+                     $addsummary .= "<h2>".gT("Add user group")."</h2>\n";
+                     $addsummary .= "<p class='lead'>".gT("Failed to add user group.")."</p>\n";
+                     $addsummary .= "<p>".gT("No Username selected.")."</p>\n";
+                     $addsummary .= "<p>";
+-                    $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/>\n";
++                    $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_self')\" value=\"".gT("Continue")."\"/>\n";
+                     $addsummary .= "</p>";
+                 }
+             }
+             else
+             {
+@@ -411,20 +411,20 @@
+                         // Username already exists.
+                         $addsummary .= "<div class=\"jumbotron message-box message-box-error\">\n";
+                         $addsummary .= "<h2>".gT("Add user")."</h2>\n";
+                         $addsummary .= "<p class='lead'>".gT("Failed to add user.")."</p>\n"
+                         . "<p>" . gT("Username already exists.")."</p>";
+-                        $addsummary .= "<p><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/></p>\n";
++                        $addsummary .= "<p><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_self')\" value=\"".gT("Continue")."\"/></p>\n";
+                     }
+                 }
+                 else
+                 {
+                     $addsummary .= "<div class=\"jumbotron message-box message-box-error\">\n";
+                     $addsummary .= "<h2>".gT("Add user")."</h2>\n";
+                     $addsummary .= "<p class='lead'>".gT("Failed to add user.")."</p>\n"
+                     . "<p>" . gT("No Username selected.")."</p>\n";
+-                    $addsummary .= "<p><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/></p>\n";
++                    $addsummary .= "<p><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_self')\" value=\"".gT("Continue")."\"/></p>\n";
+                 }
+             }
+             else
+             {
+                 $this->getController()->error('Access denied');
+@@ -629,11 +629,11 @@
+                 }
+                 else
+                 {
+                     $addsummary .= "<div class=\"warningheader\">".gT("Could not delete user. User was not supplied.")."</div>\n";
+                 }
+-                $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/>\n";
++                $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_self')\" value=\"".gT("Continue")."\"/>\n";
+             }
+             else
+             {
+                 $this->getController()->error('Access denied');
+             }
+@@ -747,11 +747,11 @@
+                 {
+                     Yii::app()->request->redirect(Yii::app()->getController()->createUrl('admin/surveypermission/sa/set', array('action'=>'setsurveysecurity','surveyid'=>$surveyid,'uid'=>$postuserid)));
+                 }
+                 Yii::app()->request->redirect(Yii::app()->getController()->createUrl('admin/surveypermission/sa/view', array('surveyid'=>$surveyid)));
+             }
+-            $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_top')\" value=\"".gT("Continue")."\"/>\n";
++            $addsummary .= "<br/><input class='btn btn-default'  type=\"submit\" onclick=\"window.open('".$this->getController()->createUrl('admin/surveypermission/sa/view/surveyid/'.$surveyid)."', '_self')\" value=\"".gT("Continue")."\"/>\n";
+             $addsummary .= "</div></div></div>\n";
+             $aViewUrls['output'] = $addsummary;
+         }
+         else
+         {
+diff -rNU5 limesurvey2.58.2+170114/application/controllers/admin/tokens.php limesurvey/application/controllers/admin/tokens.php
+--- limesurvey2.58.2+170114/application/controllers/admin/tokens.php	2017-01-12 13:55:52.000000000 +0100
++++ limesurvey/application/controllers/admin/tokens.php	2017-01-13 16:11:17.216346400 +0100
+@@ -934,11 +934,11 @@
+                 $message= array(
+                 'title' => gT("Failed"),
+                 'message' => "<p>".sprintf(gT("Only %s new dummy participants were added after %s trials."),$newDummyToken,$invalidtokencount)
+                 .gT("Try with a bigger token length.")."</p>"
+                 ."\n<input type='button' value='"
+-                . gT("Browse participants") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$iSurveyId") . "', '_top')\" />\n"
++                . gT("Browse participants") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/browse/surveyid/$iSurveyId") . "', '_self')\" />\n"
+                 );
+             }
+ 
+             $this->_renderWrappedTemplate('token',  array('message' => $message),$aData);
+ 
+@@ -2351,11 +2351,11 @@
+             'title' => gT("Create tokens"),
+             'message' => gT("Clicking 'Yes' will generate tokens for all those in this token list that have not been issued one. Continue?") . "<br /><br />\n"
+             . "<input class='btn btn-default btn-lg' type='submit' value='"
+             . gT("Yes") . "' onclick=\"" . convertGETtoPOST($this->getController()->createUrl("admin/tokens/sa/tokenify/surveyid/$iSurveyId", array('ok'=>'Y'))) . "\" />\n"
+             . "<input class='btn btn-default  btn-lg' type='submit' value='"
+-            . gT("No") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
++            . gT("No") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_self')\" />\n"
+             . "<br />\n"
+             )), $aData);
+         }
+         else
+         {
+@@ -2418,13 +2418,13 @@
+             $this->_renderWrappedTemplate('token', array( 'message' => array(
+             'title' => gT("Delete survey participants table"),
+             'message' => gT("If you delete this table tokens will no longer be required to access this survey.") . "<br />" . gT("A backup of this table will be made if you proceed. Your system administrator will be able to access this table.") . "<br />\n"
+             . sprintf('("%s")<br /><br />', $newtableDisplay)
+             . "<input class='btn btn-danger' type='submit' value='"
+-            . gT("Delete table") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/kill/surveyid/{$iSurveyId}/ok/Y") . "', '_top')\" />\n"
++            . gT("Delete table") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/kill/surveyid/{$iSurveyId}/ok/Y") . "', '_self')\" />\n"
+             . "<input class='btn btn-default' type='submit' value='"
+-            . gT("Cancel") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/{$iSurveyId}") . "', '_top')\" />\n"
++            . gT("Cancel") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/{$iSurveyId}") . "', '_self')\" />\n"
+             )), $aData);
+         }
+         else
+         /* The user has confirmed they want to delete the tokens table */
+         {
+@@ -2437,11 +2437,11 @@
+             $this->_renderWrappedTemplate('token', array( 'message' => array(
+             'title' => gT("Delete survey participants table"),
+             'message' => '<br />' . gT("The tokens table has now been removed and tokens are no longer required to access this survey.") . "<br /> " . gT("A backup of this table has been made and can be accessed by your system administrator.") . "<br />\n"
+             . sprintf('("%s")<br /><br />', $newtableDisplay)
+             . "<input type='submit' class='btn btn-default' value='"
+-            . gT("Main Admin Screen") . "' onclick=\"window.open('" . Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyId) . "', '_top')\" />"
++            . gT("Main Admin Screen") . "' onclick=\"window.open('" . Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyId) . "', '_self')\" />"
+             )), $aData);
+ 
+             LimeExpressionManager::SetDirtyFlag();  // so that knows that token tables have changed
+         }
+     }
+@@ -2620,11 +2620,11 @@
+             LimeExpressionManager::SetDirtyFlag();  // LimeExpressionManager needs to know about the new token table
+             $this->_renderWrappedTemplate('token', array('message' =>array(
+             'title' => gT("Survey participants"),
+             'message' => gT("A participant table has been created for this survey.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId\")<br /><br />\n"
+             . "<input type='submit' class='btn btn-default' value='"
+-            . gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
++            . gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_self')\" />\n"
+             )));
+         }
+         /* Restore a previously deleted tokens table */
+         elseif (returnGlobal('restoretable') == "Y" && Yii::app()->request->getPost('oldtable'))
+         {
+@@ -2663,11 +2663,11 @@
+             $aData['sidemenu']['state'] = false;
+             $this->_renderWrappedTemplate('token', array('message' => array(
+             'title' => gT("Import old tokens"),
+             'message' => gT("A token table has been created for this survey and the old tokens were imported.") . " (\"" . Yii::app()->db->tablePrefix . "tokens_$iSurveyId" . "\")<br /><br />\n"
+             . "<input type='submit' class='btn btn-default' value='"
+-            . gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_top')\" />\n"
++            . gT("Continue") . "' onclick=\"window.open('" . $this->getController()->createUrl("admin/tokens/sa/index/surveyid/$iSurveyId") . "', '_self')\" />\n"
+             )));
+ 
+             LimeExpressionManager::SetDirtyFlag();  // so that knows that token tables have changed
+         }
+         else
+diff -rNU5 limesurvey2.58.2+170114/application/controllers/admin/translate.php limesurvey/application/controllers/admin/translate.php
+--- limesurvey2.58.2+170114/application/controllers/admin/translate.php	2017-01-12 13:55:52.000000000 +0100
++++ limesurvey/application/controllers/admin/translate.php	2017-01-13 16:11:17.277346400 +0100
+@@ -367,11 +367,11 @@
+                             'select',
+                             array(
+                                 'id' => 'translationlanguage',
+                                 'name' => 'translationlanguage',
+                                 'class' => 'form-control',
+-                                'onchange' => "window.open(this.options[this.selectedIndex].value,'_top')"
++                                'onchange' => "window.open(this.options[this.selectedIndex].value,'_self')"
+                             )
+                         );
+         $language_list .= CHtml::closeTag('div');
+         $language_list .= CHtml::closeTag('div');
+         $language_list .= CHtml::closeTag('div');
+@@ -998,11 +998,11 @@
+         //$imageurl = Yii::app()->getConfig("adminimageurl");
+ 
+         //$img_tag = CHtml::image($imageurl . "/" . $menuImageFile, $jsMenuText, array('name'=>$menuImageText));
+         $icon_tag = '<span class="'.$menuIconClasses.'"></span>'.$jsMenuText;
+         $menuitem = CHtml::link($icon_tag, '#', array(
+-            'onclick' => "window.open('{$scriptname}', '_top')"
++            'onclick' => "window.open('{$scriptname}', '_self')"
+         ));
+         return $menuitem;
+     }
+ 
+     /**
+diff -rNU5 limesurvey2.58.2+170114/application/core/LSHttpRequest.php limesurvey/application/core/LSHttpRequest.php
+--- limesurvey2.58.2+170114/application/core/LSHttpRequest.php	2017-01-12 13:55:52.000000000 +0100
++++ limesurvey/application/core/LSHttpRequest.php	2017-02-16 18:18:15.991727000 +0100
+@@ -157,10 +157,18 @@
+                         array($this,'validateCsrfToken'));
+                     Yii::trace('Route "'.$route.' passed without CSRF validation');
+                     break; // found first route and break
+                 }
+             }
++            // Do not perform CSRF Validation for POST logout Request from CAS Server
++            $bdy=$this->getRawBody();
++            if (!is_null($bdy) && (strpos($bdy,'logoutRequest=')===0))
++            {
++                Yii::app()->detachEventHandler('onBeginRequest',
++                    array($this,'validateCsrfToken'));
++                Yii::trace('Route "'.$route.' passed without CSRF validation');
++            }
+         }
+     }
+ 
+ 
+     public function getPathInfo()
+diff -rNU5 limesurvey2.58.2+170114/application/helpers/common_helper.php limesurvey/application/helpers/common_helper.php
+--- limesurvey2.58.2+170114/application/helpers/common_helper.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/helpers/common_helper.php	2017-04-07 15:39:07.645281400 +0200
+@@ -1039,30 +1039,41 @@
+             }
+ 
+             // List users from same group as me + all my childs
+             // a subselect is used here because MSSQL does not like to group by text
+             // also Postgres does like this one better
+-            $uquery = " SELECT {$sSelectFields} from {{users}} where uid in (
+-                SELECT uid from {{user_in_groups}} where ugid in (
+-                    SELECT ugid from {{user_in_groups}} where uid={$myuid}
+-                    )
+-                )
++            // All users who belong to the same connected user's GID
++            // All users whom the connected user is the parent and belong to the same connected user's GID
++            // The connected user
++            $uquery = "SELECT {$sSelectFields} from {{users}} where uid in (
++                SELECT uid from {{user_in_groups}} where ugid = ".Yii::app()->session['groupID'].") and uid not in (                
++                SELECT uid from {{permissions}} where permission='superadmin')
+             UNION
+-            SELECT {$sSelectFields} from {{users}} v where v.parent_id={$myuid}
++            SELECT {$sSelectFields} from {{users}} v where v.parent_id={$myuid} and v.uid in (
++                SELECT uid from {{user_in_groups}} where ugid = ".Yii::app()->session['groupID'].") and v.uid not in (                
++                SELECT uid from {{permissions}} where permission='superadmin')
+             UNION
+-            SELECT {$sSelectFields} from {{users}} v where uid={$myuid}";
++            SELECT {$sSelectFields} from {{users}} v where uid={$myuid} and uid not in (                
++                SELECT uid from {{permissions}} where permission='superadmin')";
+ 
+         }
+         else
+         {
+             return array(); // Or die maybe
+         }
+ 
+     }
+     else
+     {
+-        $uquery = "SELECT * FROM {{users}} ORDER BY uid";
++        // If fullinfoarray mode, superadmin must be in the results to avoid presence of "Reserved for logged in user" in $userlist[0]
++        $uquery = "SELECT * FROM {{users}} where uid in (
++            SELECT uid from {{user_in_groups}} where ugid = ".Yii::app()->session['groupID'].") ";
++        if ($outputformat=='onlyuidarray')
++        {
++            $uquery = $uquery."and uid not in (SELECT uid from {{permissions}} where permission='superadmin')";
++        }
++        $uquery = $uquery."ORDER BY uid";
+     }
+ 
+     $uresult = Yii::app()->db->createCommand($uquery)->query()->readAll(); //Checked
+ 
+     if (count($uresult)==0)
+@@ -3175,11 +3186,11 @@
+ 
+     $homeurl = Yii::app()->getConfig('homeurl');
+     $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+     $baselang = Survey::model()->findByPk($surveyid)->language;
+     array_unshift($slangs,$baselang);
+-    $html = "<select class='listboxquestions' name='langselect' onchange=\"window.open(this.options[this.selectedIndex].value, '_top')\">\n";
++    $html = "<select class='listboxquestions' name='langselect' onchange=\"window.open(this.options[this.selectedIndex].value, '_self')\">\n";
+ 
+     foreach ($slangs as $lang)
+     {
+         $link = Yii::app()->homeUrl.("/admin/dataentry/sa/view/surveyid/".$surveyid."/lang/".$lang);
+         if ($lang == $selected) $html .= "\t<option value='{$link}' selected='selected'>".getLanguageNameFromCode($lang,false)."</option>\n";
+@@ -5415,17 +5426,13 @@
+     return $resarray;
+ }
+ 
+ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
+ {
+-
+-    //$squery = "SELECT ugid, name FROM ".db_table_name('user_groups') ." WHERE owner_id = {Yii::app()->session['loginID']} ORDER BY name";
+-    $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid WHERE 1=1 ";
+-    if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+-    {
+-        $sQuery .="AND uid = ".Yii::app()->session['loginID'];
+-    }
++    // Novaforge : UserGroup must be equal to Project
++    $sQuery = "SELECT distinct a.ugid, a.name, a.owner_id FROM {{user_groups}} AS a LEFT JOIN {{user_in_groups}} AS b ON a.ugid = b.ugid ";
++    $sQuery .="WHERE a.ugid = ".Yii::app()->session['groupID'];
+     $sQuery .=  " ORDER BY name";
+ 
+     $sresult = Yii::app()->db->createCommand($sQuery)->query(); //Checked
+     if (!$sresult) {return "Database Error";}
+     $selecter = "";
+@@ -6255,6 +6262,6 @@
+     */
+     function isMd5($sMD5 ='') {
+         return strlen($sMD5) == 32 && ctype_xdigit($sMD5);
+     }
+ 
+-// Closing PHP tag intentionally omitted - yes, it is okay
++// Closing PHP tag intentionally omitted - yes, it is okay
+\ Pas de fin de ligne à la fin du fichier
+diff -rNU5 limesurvey2.58.2+170114/application/helpers/remotecontrol/remotecontrol_handle.php limesurvey/application/helpers/remotecontrol/remotecontrol_handle.php
+--- limesurvey2.58.2+170114/application/helpers/remotecontrol/remotecontrol_handle.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/helpers/remotecontrol/remotecontrol_handle.php	2017-01-13 16:21:13.978346400 +0100
+@@ -2740,6 +2740,565 @@
+             }
+             return true;
+         }
+         return false;
+     }
++    
++    /**
++    * RPC Routine to create a user.
++    *
++    * @access public
++    * @param string $sSessionKey
++    * @param string $sUser User's login
++    * @param string $sPass User's password
++    * @param string $sEmail User's eMail address
++    * @param string $sNameUser User's full name
++    * @param string $sLang User's default language
++    * @return array|int
++    */
++    public function create_user($sSessionKey, $sUser, $sPass, $sEmail, $sNameUser, $sLang)
++    {
++        if ($this->_checkSessionKey($sSessionKey))
++        {
++            if(Permission::model()->hasGlobalPermission('superadmin','read'))
++            {
++                if (is_null(User::model()->getID($sUser)))
++                {
++                    try
++                    {
++                        $iNewUserid = User::model()->createUser($sUser, $sPass,$sNameUser,1,$sEmail,$sLang);
++                        if (!$iNewUserid)
++                            return array('status' => 'Creation Failed');
++                        return (int)$iNewUserid;
++                    }
++                    catch(Exception $e)
++                    {
++                        return array('status' => $e->getmessage());
++                    }
++                }
++                else
++                    return array('status' => 'User already exists');
++            }
++            else
++                return array('status' => 'No permission');
++        }
++        else
++            return array('status' => 'Invalid session key');
++    }
++
++    /**
++    * RPC Routine to create an Admin user.
++    *
++    * @access public
++    * @param string $sSessionKey
++    * @param string $sUser User's login
++    * @param string $sPass User's password
++    * @param string $sEmail User's eMail address
++    * @param string $sNameUser User's full name
++    * @param string $sLang User's default language
++    * @return array|string|int
++    */
++    public function create_super_admin($sSessionKey, $sUser, $sPass, $sEmail, $sNameUser, $sLang)
++    {
++        if ($this->_checkSessionKey($sSessionKey))
++        {
++            if(Permission::model()->hasGlobalPermission('superadmin','read'))
++            {
++                if (is_null(User::model()->getID($sUser)))
++                {
++                    try
++                    {
++                        $iNewUserid = User::model()->createUser($sUser, $sPass,$sNameUser,1,$sEmail,$sLang);
++                        if (!$iNewUserid)
++                            return array('status' => 'Creation Failed');
++                        Permission::model()->setAdminPermission($iNewUserid);
++                        return (int)$iNewUserid;
++                    }
++                    catch(Exception $e)
++                    {
++                        return array('status' => $e->getmessage());
++                    }
++                }
++                else
++                    return array('status' => 'User already exists');
++            }
++            else
++                return array('status' => 'No permission');
++        }
++        else
++            return array('status' => 'Invalid session key');
++    }
++
++    /**
++    * RPC Routine to update a user.
++    *
++    * @access public
++    * @param string $sSessionKey
++    * @param string $sUser User's login
++    * @param string $sPass User's password
++    * @param string $sEmail User's eMail address
++    * @param string $sNameUser User's full name
++    * @param string $sLang User's default language
++    * @return array|bool
++    */
++    public function update_user($sSessionKey, $sUser, $sPass, $sEmail, $sNameUser, $sLang)
++    {
++        if ($this->_checkSessionKey($sSessionKey))
++        {
++            if(Permission::model()->hasGlobalPermission('superadmin','read'))
++            {
++                if (!is_null(User::model()->getID($sUser)))
++                {
++                    try
++                    {
++                        $bReturn = User::model()->updateUser($sUser,$sPass,$sEmail,$sNameUser,$sLang);
++                        return ($bReturn?'true':'false');
++                    }
++                    catch(Exception $e)
++                    {
++                        return array('status' => $e->getmessage());
++                    }
++                }
++                else
++                    return array('status' => 'User does not exist');
++            }
++            else
++                return array('status' => 'No permission');
++        }
++        else
++            return array('status' => 'Invalid session key');
++    }
++
++    /**
++    * RPC Routine to delete a user.
++    *
++    * @access public
++    * @param string $sSessionKey
++    * @param string $sUser User's login
++    * @return array|bool
++    */
++    public function delete_user($sSessionKey, $sUser)
++    {
++        if ($this->_checkSessionKey($sSessionKey))
++        {
++            if(Permission::model()->hasGlobalPermission('superadmin','read'))
++            {
++                $iUserID=User::model()->getID($sUser);
++                if (!is_null($iUserID))
++                {
++                    //Deletion of initial super admin is forbidden 
++                    if ($iUserID!=1)
++                    {
++                        try
++                        {
++                            $bReturn = User::model()->deleteUser($iUserID);
++                            return ($bReturn?'true':'false');
++                        }
++                        catch(Exception $e)
++                        {
++                            return array('status' => $e->getmessage());
++                        }
++                    }
++                    else
++                        return array('status' => 'Deletion of initial super admin is forbidden');
++                }
++                else
++                    return array('status' => 'User does not exist');
++            }
++            else
++                return array('status' => 'No permission');
++        }
++        else
++            return array('status' => 'Invalid session key');
++    }
++
++    /**
++    * RPC Routine to create a user group.
++    *
++    * @access public
++    * @param string $sSessionKey
++    * @param string $sUserAdmin User Admin's login to assign new group to
++    * @param string $sGroup Group name
++    * @param string $sdescription Group description
++    * @return array|string|int
++    */
++    public function create_user_group($sSessionKey, $sUserAdmin, $sGroup, $sdescription)
++    {
++        if ($this->_checkSessionKey($sSessionKey))
++        {
++            if(Permission::model()->hasGlobalPermission('superadmin','read')) 
++            {
++                if (is_null(UserGroup::model()->getID($sGroup)))
++                {
++                    try
++                    {
++                        // Get userAdmin ID
++                        $iUserAdminID=User::model()->getID($sUserAdmin);
++                        if (is_null($iUserAdminID))
++                            return array('status' => 'Admin user not found');
++                        else
++                        {
++                            $iNewGroupid = UserGroup::model()->createUserGroup($sGroup, $sdescription, $iUserAdminID);
++                            if (!$iNewGroupid)
++                                return array('status' => 'Creation Failed');
++                            return (int)$iNewGroupid;
++                        }
++                    }
++                    catch(Exception $e)
++                    {
++                        return array('status' => $e->getmessage());
++                    }
++                }
++                else
++                    return array('status' => 'Group already exists');
++            }
++            else
++                return array('status' => 'No permission');
++        }
++        else
++            return array('status' => 'Invalid session key');
++    }
++
++    /**
++    * RPC Routine to update a user group.
++    *
++    * @access public
++    * @param string $sSessionKey
++    * @param string $sUserAdmin User Admin's login to assign new group to
++    * @param string $sGroupId Group ID
++    * @param string $sGroup Group name
++    * @param string $sdescription Group description
++    * @return array|string|int
++    */
++    public function update_user_group($sSessionKey, $sUserAdmin, $sGroupId, $sGroup, $sdescription)
++    {
++        if ($this->_checkSessionKey($sSessionKey))
++        {
++            if(Permission::model()->hasGlobalPermission('superadmin','read'))
++            {
++                $oGroup = UserGroup::model()->findByPk($sGroupId);
++                if ($oGroup)
++                {
++                    try
++                    {
++                        // Get userAdmin ID
++                        $iUserAdminID=User::model()->getID($sUserAdmin);
++                        if (is_null($iUserAdminID))
++                            return array('status' => 'Admin user not found');
++                        else
++                        {
++                            $bReturn = UserGroup::model()->updateUserGroup((int)$sGroupId, $sGroup, $sdescription, $iUserAdminID);
++                            return ($bReturn?'true':'false');
++                        }
++                    }
++                    catch(Exception $e)
++                    {
++                        return array('status' => $e->getmessage());
++                    }
++                }
++                else
++                    return array('status' => 'Group not found');
++            }
++            else
++                return array('status' => 'No permission');
++        }
++        else
++            return array('status' => 'Invalid session key');
++    }
++
++    /**
++    * RPC Routine to delete a user group.
++    *
++    * @access public
++    * @param string $sSessionKey
++    * @param string $sGroupId Group ID
++    * @return array|string|int
++    */
++    public function delete_user_group($sSessionKey, $sGroupId)
++    {
++        if ($this->_checkSessionKey($sSessionKey))
++        {
++            if(Permission::model()->hasGlobalPermission('superadmin','read'))
++            {
++                $oGroup =UserGroup::model()->findByPk($sGroupId);
++                if ($oGroup)
++                {
++                    $iGroupID=(int)$sGroupId;
++                    try
++                    {
++                        $bReturn = UserGroup::model()->deleteUserGroup($iGroupID);
++                        return ($bReturn?'true':'false');
++                    }
++                    catch(Exception $e)
++                    {
++                        return array('status' => $e->getmessage());
++                    }
++                }
++                else
++                    return array('status' => 'Group not found');
++            }
++            else
++                return array('status' => 'No permission');
++        }
++        else
++            return array('status' => 'Invalid session key');
++    }
++
++    /**
++    * RPC Routine to add a user to a group.
++    *
++    * @access public
++    * @param string $sSessionKey
++    * @param string $sGroup Group name
++    * @param string $sUser User login to assign group to
++    * @return array|string
++    */
++    public function add_user_in_group($sSessionKey, $sGroup, $sUser)
++    {
++        if ($this->_checkSessionKey($sSessionKey))
++        {
++            if(Permission::model()->hasGlobalPermission('superadmin','read'))
++            {
++                $iGroupID=UserGroup::model()->getID($sGroup);
++                if (!is_null($iGroupID))
++                {
++                    $iUserID=User::model()->getID($sUser);
++                    if (!is_null($iUserID))
++                    {
++                        try
++                        {
++                            $user_in_group = UserInGroup::model()->findByPk(array('ugid' => $iGroupID, 'uid' => $iUserID));
++                            if (empty($user_in_group))
++                            {
++                                $bReturn = UserInGroup::model()->insertRecords(array('ugid' => $iGroupID, 'uid' => $iUserID));
++                                return ($bReturn?'true':'false');
++                            }
++                            else 
++                                return 'true';
++                        }
++                        catch(Exception $e)
++                        {
++                            return array('status' => $e->getmessage());
++                        }
++                    }
++                    else
++                        return array('status' => 'User not found');
++                }
++                else
++                    return array('status' => 'Group not found');
++            }
++            else
++                return array('status' => 'No permission');
++        }
++        else
++            return array('status' => 'Invalid session key');
++    }
++
++    /**
++    * RPC Routine to add a user to a group.
++    *
++    * @access public
++    * @param string $sSessionKey
++    * @param string $sGroupId Group ID
++    * @param string $sUser User login to assign group to
++    * @return array|string|int
++    */
++    public function add_user_in_group_by_id($sSessionKey, $sGroupId, $sUser)
++    {
++        if ($this->_checkSessionKey($sSessionKey))
++        {
++            if(Permission::model()->hasGlobalPermission('superadmin','read'))
++            {
++                $oGroup = UserGroup::model()->findByPk($sGroupId);
++                if ($oGroup)
++                {
++                    $iGroupID=(int)$sGroupId;
++                    $iUserID=User::model()->getID($sUser);
++                    if (!is_null($iUserID))
++                    {
++                        try
++                        {
++                            $user_in_group = UserInGroup::model()->findByPk(array('ugid' => $iGroupID, 'uid' => $iUserID));
++                            if (empty($user_in_group))
++                            {
++                                $bReturn = UserInGroup::model()->insertRecords(array('ugid' => $iGroupID, 'uid' => $iUserID));
++                                return ($bReturn?'true':'false');
++                            }
++                            else 
++                                return 'true';
++                        }
++                        catch(Exception $e)
++                        {
++                            return array('status' => $e->getmessage());
++                        }
++                    }
++                    else
++                        return array('status' => 'User not found');
++                }
++                else
++                    return array('status' => 'Group not found');
++            }
++            else
++                return array('status' => 'No permission');
++        }
++        else
++            return array('status' => 'Invalid session key');
++    }
++
++    /**
++    * RPC Routine to remove a user from a group.
++    *
++    * @access public
++    * @param string $sSessionKey
++    * @param string $sGroupId Group ID
++    * @param string $sUser User login to deassign group from
++    * @return array|string|int
++    */
++    public function remove_user_from_group($sSessionKey, $sGroupId, $sUser)
++    {
++        if ($this->_checkSessionKey($sSessionKey))
++        {
++            if(Permission::model()->hasGlobalPermission('superadmin','read'))
++            {
++                $oGroup = UserGroup::model()->findByPk($sGroupId);
++                if ($oGroup)
++                {
++                    $iGroupID=(int)$sGroupId;
++                    $iUserID=User::model()->getID($sUser);
++                    if (!is_null($iUserID))
++                    {
++                        try
++                        {
++                            $user_in_group = UserInGroup::model()->findByPk(array('ugid' => $iGroupID, 'uid' => $iUserID));
++                            if (!empty($user_in_group))
++                            {
++                                $bReturn = UserInGroup::model()->deleteByPk(array('ugid' => $iGroupID, 'uid' => $iUserID));
++                                return ($bReturn?'true':'false');
++                            }
++                            else 
++                                return 'true';
++                        }
++                        catch(Exception $e)
++                        {
++                            return array('status' => $e->getmessage());
++                        }
++                    }
++                    else
++                        return array('status' => 'User not found');
++                }
++                else
++                    return array('status' => 'Group not found');
++            }
++            else
++                return array('status' => 'No permission');
++        }
++        else
++            return array('status' => 'Invalid session key');
++    }
++  
++    /**
++    * RPC Routine to test if a user already exists.
++    *
++    * @access public
++    * @param string $sSessionKey
++    * @param string $sUser User's login
++    * @return array|int
++    */
++    public function is_user_exist($sSessionKey, $sUser)
++    {
++        if ($this->_checkSessionKey($sSessionKey))
++        {
++            $iUserid = User::model()->getID($sUser);
++            if(is_null($iUserid))
++                return -1;
++            else
++                return (int)$iUserid;
++        }
++        else
++            return array('status' => 'Invalid session key');
++    }
++
++    /**
++    * RPC Routine to test if a user group already exists.
++    *
++    * @access public
++    * @param string $sSessionKey
++    * @param string $sGroup Group name
++    * @return array|int
++    */
++    public function is_user_group_exist($sSessionKey, $sGroup)
++    {
++        if ($this->_checkSessionKey($sSessionKey))
++        {
++            $iGroupid = UserGroup::model()->getID($sGroup);
++            if(is_null($iGroupid))
++                return -1;
++            else
++                return (int)$iGroupid;
++        }
++        else
++            return array('status' => 'Invalid session key');
++    }
++
++    /**
++    * RPC Routine to test if a user group already exists
++    *
++    * @access public
++    * @param string $sSessionKey
++    * @param string $sGroupId Group ID
++    * @return array|int
++    */
++    public function is_user_group_exist_by_id($sSessionKey, $sGroupId)
++    {
++        if ($this->_checkSessionKey($sSessionKey))
++        {
++            $oGroup = UserGroup::model()->findByPk($sGroupId);
++            if ($oGroup)
++                return (int)$oGroup->ugid;
++            else
++                return -1;
++        }
++        else
++            return array('status' => 'Invalid session key');
++    }
++
++    /**
++    * RPC Routine to set update global user permission for surveys
++    *
++    * @access public
++    * @param string $sSessionKey
++    * @param string $sUser User's login
++    * @param string $adminRight admin permission or not 
++    * @return array|string
++    */
++    public function update_user_permission($sSessionKey, $sUser, $adminRight)
++    {
++        if ($this->_checkSessionKey($sSessionKey))
++        {
++            $iUserId = User::model()->getID($sUser);
++            if(!is_null($iUserId))
++            {
++                // Delete permission if exists
++                $oPermission=Permission::model()->findByAttributes(array('uid'=>$iUserId, 'entity'=>'global', 'permission'=>'surveys'));
++                $bReturn = true;
++                if ($oPermission)
++                {
++                    $bReturn = Permission::model()->deletePermission($oPermission->id);
++                }
++                // Set correct permission
++                if (($bReturn) && ('true' === $adminRight))
++                {
++                    Permission::model()->setGlobalPermission($iUserId, 'surveys', array('create_p','read_p','update_p','delete_p','export_p'));
++                }
++                else
++                {
++                    Permission::model()->setGlobalPermission($iUserId, 'surveys', array('read_p'));
++                }
++                return ($bReturn?'true':'false');
++            }
++            else
++                return array('status' => 'User not found');
++        }
++        else
++            return array('status' => 'Invalid session key');
++    }
+ }
+diff -rNU5 limesurvey2.58.2+170114/application/models/Permission.php limesurvey/application/models/Permission.php
+--- limesurvey2.58.2+170114/application/models/Permission.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/models/Permission.php	2017-01-13 16:25:03.074346400 +0100
+@@ -711,6 +711,43 @@
+         {
+             return $sEntityName::Model()->findByPk($iEntityID)->owner_id; // ALternative : if owner_id exist in $sEntityName::model()->findByPk($iEntityID), but unsure actually $sEntityName have always a model
+         }
+         return;
+     }
++
++    /**
++     * Set admin permissions to the user id
++     *
++     * @param int $iUserID
++     */
++    public function setAdminPermission($iUserID)
++    {
++        $aPerm = array(
++            'entity_id' => 0,
++            'entity' => 'global',
++            'uid' => $iUserID,
++            'permission' => 'superadmin',
++            'create_p' => 0,
++            'read_p' => 1,
++            'update_p' => 0,
++            'delete_p' => 0,
++            'import_p' => 0,
++            'export_p' => 0
++        );
++
++        $this->insertSomeRecords($aPerm);
++    }
++
++    /**
++    * Delete permission
++    *
++    * @access public
++    * @param int $iPermID The Permission ID to delete
++    * @return mixed
++    */
++    public function deletePermission($iPermID)
++    {
++        $iPermID= (int)$iPermID;
++        $oPerm=$this->findByPk($iPermID);
++        return (bool) $oPerm->delete();
++    }
+ }
+diff -rNU5 limesurvey2.58.2+170114/application/models/QuestionGroup.php limesurvey/application/models/QuestionGroup.php
+--- limesurvey2.58.2+170114/application/models/QuestionGroup.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/models/QuestionGroup.php	2017-01-13 16:11:17.410346400 +0100
+@@ -276,11 +276,11 @@
+         if($oSurvey->active != "Y" && Permission::model()->hasSurveyPermission($this->sid,'surveycontent','delete' ))
+         {
+             $condarray = getGroupDepsForConditions($this->sid, "all", $this->gid, "by-targgid");
+             if(is_null($condarray))
+             {
+-                $confirm = 'if (confirm(\''.gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js").'\')) { window.open(\''.Yii::app()->createUrl("admin/questiongroups/sa/delete/surveyid/$this->sid/gid/$this->gid").'\',\'_top\'); };';
++                $confirm = 'if (confirm(\''.gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js").'\')) { window.open(\''.Yii::app()->createUrl("admin/questiongroups/sa/delete/surveyid/$this->sid/gid/$this->gid").'\',\'_self\'); };';
+                 $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"
+                 onclick="'.$confirm.'">
+                 <span class="text-danger glyphicon glyphicon-trash"></span>
+                 </a>';
+             }
+diff -rNU5 limesurvey2.58.2+170114/application/models/User.php limesurvey/application/models/User.php
+--- limesurvey2.58.2+170114/application/models/User.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/models/User.php	2017-01-13 16:30:55.950346400 +0100
+@@ -175,10 +175,62 @@
+             return false;
+         }
+     }
+ 
+     /**
++    * Creates new user with predefined language
++    *
++    * @access public
++    * @return string
++    */
++    public static function createUser($new_user, $new_pass,$new_full_name,$parent_user,$new_email,$new_lang)
++    {
++        $oUser = new self;
++        $oUser->users_name = $new_user;
++        $oUser->password = hash('sha256', $new_pass);
++        $oUser->full_name = $new_full_name;
++        $oUser->parent_id = $parent_user;
++        $oUser->lang = $new_lang;
++        $oUser->email = $new_email;
++        if ($oUser->save())
++        {
++            return $oUser->uid;
++        }
++        else{
++            return false;
++        }
++    }
++
++    /**
++    * Updates existing user 
++    *
++    * @access public
++    * @return bool
++    */
++    public static function updateUser($user,$new_pass,$new_email,$new_full_name,$new_lang)
++    {
++        $oUser = User::model()->findByAttributes(array('users_name' => $user));
++        if ($oUser)
++        {
++            $oUser->password = hash('sha256', $new_pass);
++            $oUser->email = $new_email;
++            $oUser->full_name = $new_full_name;
++            $oUser->lang = $new_lang;
++            if ($oUser->save())
++            {
++                return true;
++            }
++            else{
++                return false;
++            }
++        }
++        else{
++            return false;
++        }
++    }
++
++    /**
+ 	 * This method is invoked before saving a record (after validation, if any).
+ 	 * The default implementation raises the {@link onBeforeSave} event.
+ 	 * You may override this method to do any preparation work for record saving.
+ 	 * Use {@link isNewRecord} to determine whether the saving is
+ 	 * for inserting or updating record.
+@@ -197,14 +249,15 @@
+ 
+ 
+     /**
+     * Delete user
+     *
++    * @access public
+     * @param int $iUserID The User ID to delete
+     * @return boolean
+     */
+-    function deleteUser($iUserID)
++    public function deleteUser($iUserID)
+     {
+         $iUserID= (int)$iUserID;
+         $oUser=$this->findByPk($iUserID);
+         return (bool) $oUser->delete();
+     }
+diff -rNU5 limesurvey2.58.2+170114/application/models/UserGroup.php limesurvey/application/models/UserGroup.php
+--- limesurvey2.58.2+170114/application/models/UserGroup.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/models/UserGroup.php	2017-01-13 16:33:19.802346400 +0100
+@@ -144,10 +144,52 @@
+         else
+             return -1;
+ 
+         }
+ 
++    public function createUserGroup($name, $description, $ownerid)
++    {
++        $oGroup = new self;
++        $oGroup->name=$name;
++        $oGroup->description=$description;
++        $oGroup->owner_id=$ownerid;
++        if ($oGroup->save())
++        {
++            return $oGroup->ugid;
++        }
++        else{
++            return false;
++        }
++    }
++
++    public function updateUserGroup($ugid, $name, $description, $ownerid)
++    {
++        $oGroup = UserGroup::model()->findByPk($ugid);
++        $oGroup->name=$name;
++        $oGroup->description=$description;
++        $oGroup->owner_id=$ownerid;
++        if ($oGroup->save())
++        {
++            return true;
++        }
++        else{
++            return false;
++        }
++    }
++
++    public function deleteUserGroup($ugid)
++    {
++        $oGroup = UserGroup::model()->findByPk($ugid);
++        if ($oGroup->delete())
++        {
++            return true;
++        }
++        else{
++            return false;
++        }
++    }
++
+     function updateGroup($name, $description, $ugid)
+     {
+         $group = UserGroup::model()->findByPk($ugid);
+         $group->name=$name;
+         $group->description=$description;
+@@ -302,6 +344,23 @@
+         ));
+ 
+         return $dataProvider;
+     }
+ 
++    /**
++    * Returns id of group
++    *
++    * @access public
++    * @param string $sGroup
++    * @return string
++    */
++    public function getID($sGroup)
++    {
++        $oGroup = UserGroup::model()->findByAttributes(array(
++            'name' => $sGroup
++        ));
++        if ($oGroup)
++        {
++            return $oGroup->ugid;
++        }
++    }
+ }
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/conditions/deleteAllConditions.php limesurvey/application/views/admin/conditions/deleteAllConditions.php
+--- limesurvey2.58.2+170114/application/views/admin/conditions/deleteAllConditions.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/conditions/deleteAllConditions.php	2017-01-13 16:11:17.481346400 +0100
+@@ -8,15 +8,15 @@
+     <?php eT("Continue?"); ?>
+ </p>
+ 
+ <button
+     class='btn btn-default'
+-    onclick="window.open('<?php echo $this->createUrl("admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/$iSurveyID")."?ok=Y"; ?>', '_top')"
++    onclick="window.open('<?php echo $this->createUrl("admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/$iSurveyID")."?ok=Y"; ?>', '_self')"
+ >
+     <?php eT('Yes'); ?>
+ </button>
+ <button
+     class='btn btn-default'
+-    onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$iSurveyID"); ?>', '_top')"
++    onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$iSurveyID"); ?>', '_self')"
+ >
+     <?php eT('Cancel'); ?>
+ </button>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/conditions/includes/navigator.php limesurvey/application/views/admin/conditions/includes/navigator.php
+--- limesurvey2.58.2+170114/application/views/admin/conditions/includes/navigator.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/conditions/includes/navigator.php	2017-01-13 16:11:17.547346400 +0100
+@@ -1,8 +1,8 @@
+ <div class="form-group pull-right">
+     <label for='questionNav'><?php eT("Move to question:");?></label>
+-    <select id='questionNav' class="form-control"  onchange="window.open(this.options[this.selectedIndex].value,'_top')">
++    <select id='questionNav' class="form-control"  onchange="window.open(this.options[this.selectedIndex].value,'_self')">
+ 
+         <optgroup class='activesurveyselect' label='<?php eT("Before"); ?>' >
+             <?php foreach ($theserows as $row): ?>
+                 <option value='<?php echo $row['value']; ?>'>
+                     <?php echo $row['text']; ?>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/dataentry/active_html_view.php limesurvey/application/views/admin/dataentry/active_html_view.php
+--- limesurvey2.58.2+170114/application/views/admin/dataentry/active_html_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/dataentry/active_html_view.php	2017-01-13 16:11:17.603346400 +0100
+@@ -86,11 +86,11 @@
+                 </form>
+                 <tr>
+                 <td colspan='3' align='center'>";
+                 <font color='red'><strong><?php eT("Error"); ?></strong></font><br />
+                 <?php eT("The survey you selected does not exist"); ?><br /><br />
+-                <input type='submit' value='<?php eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $scriptname; ?>', '_top')" />
++                <input type='submit' value='<?php eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $scriptname; ?>', '_self')" />
+                 </td>
+                 </tr>
+                 </table>
+                 <?php exit(); ?>
+             <?php } ?>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/dataentry/delete.php limesurvey/application/views/admin/dataentry/delete.php
+--- limesurvey2.58.2+170114/application/views/admin/dataentry/delete.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/dataentry/delete.php	2017-01-13 16:11:17.686346400 +0100
+@@ -2,11 +2,11 @@
+     <div class="row">
+         <div class="col-lg-12 content-right">
+             <div class="jumbotron message-box <?php if(isset($errormsg) && $errormsg) {echo 'message-box-error';}?>">
+                 <h2><?php eT("Record Deleted"); ?> (ID: <?php echo $id; ?>)</h2>
+                 <p>
+-                    <input class="btn btn-lg btn-default" type='submit' value='<?php eT("Browse responses"); ?>' onclick="window.open('<?php echo $this->createUrl("/admin/responses/sa/index/surveyid/{$surveyid}/all"); ?>', '_top');" />
++                    <input class="btn btn-lg btn-default" type='submit' value='<?php eT("Browse responses"); ?>' onclick="window.open('<?php echo $this->createUrl("/admin/responses/sa/index/surveyid/{$surveyid}/all"); ?>', '_self');" />
+                 </p>
+             </div>
+         </div>
+     </div>
+ </div>    
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/dataentry/insert.php limesurvey/application/views/admin/dataentry/insert.php
+--- limesurvey2.58.2+170114/application/views/admin/dataentry/insert.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/dataentry/insert.php	2017-01-13 16:11:17.746346400 +0100
+@@ -17,18 +17,18 @@
+                 </p>
+                 <p>
+                     <?php echo $errormsg; ?>
+                 </p>
+                 <p>
+-                    <input type='submit' class="btn btn-lg  btn-default" value='<?php eT("Add another record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/dataentry/sa/view/surveyid/'.$surveyid.'/lang/'.$lang); ?>', '_top')" />
++                    <input type='submit' class="btn btn-lg  btn-default" value='<?php eT("Add another record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/dataentry/sa/view/surveyid/'.$surveyid.'/lang/'.$lang); ?>', '_self')" />
+                     <br /><br />
+-                    <input type='submit' class="btn btn-lg  btn-default" value='<?php eT("Return to survey administration"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/view/surveyid/'.$surveyid); ?>', '_top')" />
++                    <input type='submit' class="btn btn-lg  btn-default" value='<?php eT("Return to survey administration"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/view/surveyid/'.$surveyid); ?>', '_self')" />
+                     <br /><br />
+                 </p>
+                 <p>
+                     <?php if(isset($save)): ?>
+-                        <input type='submit' class="btn btn-lg btn-default" value='<?php eT("Browse saved responses"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/saved/sa/view/surveyid/'.$surveyid.'/all'); ?>', '_top')" />
++                        <input type='submit' class="btn btn-lg btn-default" value='<?php eT("Browse saved responses"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/saved/sa/view/surveyid/'.$surveyid.'/all'); ?>', '_self')" />
+                         <br /><br />
+                     <?php endif; ?>
+                 </p>
+         <?php else:?>
+ 
+@@ -47,22 +47,22 @@
+                     <?php if(isset($thisid)): ?>
+                         <?php echo gT("The entry was assigned the following record id: ")."{$thisid}"; ?> <br /><br />
+                     <?php endif; ?>
+                 </p>
+                 <p>
+-                    <input type='submit' class="btn btn-lg btn-default" value='<?php eT("Add another record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/dataentry/sa/view/surveyid/'.$surveyid.'/lang/'.$lang); ?>', '_top')" />
++                    <input type='submit' class="btn btn-lg btn-default" value='<?php eT("Add another record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/dataentry/sa/view/surveyid/'.$surveyid.'/lang/'.$lang); ?>', '_self')" />
+                     <br /><br />
+-                    <input type='submit' class="btn btn-lg btn-default" value='<?php eT("Return to survey administration"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/view/surveyid/'.$surveyid); ?>', '_top')" />
++                    <input type='submit' class="btn btn-lg btn-default" value='<?php eT("Return to survey administration"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/view/surveyid/'.$surveyid); ?>', '_self')" />
+                     <br /><br />
+ 
+                     <?php if(isset($thisid) && Permission::model()->hasSurveyPermission($surveyid, 'responses','read')): ?>
+-                        <input type='submit' class="btn btn-lg btn-default" value='<?php eT("View this record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/responses/sa/view/surveyid/'.$surveyid.'/id/'.$thisid); ?>', '_top')" />
++                        <input type='submit' class="btn btn-lg btn-default" value='<?php eT("View this record"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/responses/sa/view/surveyid/'.$surveyid.'/id/'.$thisid); ?>', '_self')" />
+                         <br /><br />
+                     <?php endif; ?>
+ 
+                     <?php if(isset($save)): ?>
+-                        <input type='submit' class="btn btn-lg btn-default" value='<?php eT("Browse saved responses"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/saved/sa/view/surveyid/'.$surveyid.'/all'); ?>', '_top')" />
++                        <input type='submit' class="btn btn-lg btn-default" value='<?php eT("Browse saved responses"); ?>' onclick="window.open('<?php echo $this->createUrl('/admin/saved/sa/view/surveyid/'.$surveyid.'/all'); ?>', '_self')" />
+                         <br /><br />
+                     <?php endif; ?>
+                 </p>
+         <?php endif;?>
+ 
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/export/statistics_view.php limesurvey/application/views/admin/export/statistics_view.php
+--- limesurvey2.58.2+170114/application/views/admin/export/statistics_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/export/statistics_view.php	2017-01-13 16:11:17.801346400 +0100
+@@ -45,11 +45,11 @@
+ 
+                         <p>
+                             <input type='hidden' name='summary[]' value='idG' />
+                             <input type='hidden' name='summary[]' value='idL' />
+                             <input class="hidden" type='submit' value='<?php eT("View statistics"); ?>' />
+-                            <input class="hidden" type='button' value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
++                            <input class="hidden" type='button' value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_self')" />
+                         </p>
+                     </div>
+                 </div>
+             </div>
+ 
+@@ -89,11 +89,11 @@
+ 
+                     </div>
+ 
+                     <p id='vertical_slide2'>
+                         <input type='submit' class="hidden" value='<?php eT("View statistics"); ?>' />
+-                        <input type='button'class="hidden"  value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')" />
++                        <input type='button'class="hidden"  value='<?php eT("Clear"); ?>' onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_self')" />
+                         <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
+                         <input type='hidden' name='display' value='stats' />
+                     </p>
+             </div><!-- END OF AUTOSCROLLING DIV CONTAINING QUESTION FILTERS -->
+         </div>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/labels/importlabelresources_view.php limesurvey/application/views/admin/labels/importlabelresources_view.php
+--- limesurvey2.58.2+170114/application/views/admin/labels/importlabelresources_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/labels/importlabelresources_view.php	2017-01-13 16:11:17.859346400 +0100
+@@ -67,8 +67,8 @@
+         </ul></p><br />
+ <?php
+     }
+ ?>
+ <p>
+-    <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back") ?>' onclick="window.open('<?php echo $this->createUrl('admin/labels/sa/view/lid/' . $lid) ?>', '_top')" />
++    <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back") ?>' onclick="window.open('<?php echo $this->createUrl('admin/labels/sa/view/lid/' . $lid) ?>', '_self')" />
+ </p>
+ </div>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/pluginmanager/index.php limesurvey/application/views/admin/pluginmanager/index.php
+--- limesurvey2.58.2+170114/application/views/admin/pluginmanager/index.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/pluginmanager/index.php	2017-03-31 15:42:31.796971700 +0200
+@@ -83,28 +83,31 @@
+                 'style' => 'white-space: nowrap;',
+             ),
+             'value' => function($data) {
+ 
+                 $output='';
+-                if(Permission::model()->hasGlobalPermission('settings','update'))
++                if ($data['name'] != 'CAS')
+                 {
+-                    if ($data['active'] == 0)
+-                    {
+-                        $output = "<a href='#activate' data-action='activate' data-id='".$data['id']."' class='ls_action_changestate btn btn-default btn-xs btntooltip'>"
+-                            . "<span class='fa fa-power-off'>&nbsp;</span>"
+-                            . gT('Activate')
+-                        ."</a>";
+-                    } else {
+-                        $output = "<a href='#deactivate' data-action='deactivate' data-id='".$data['id']."' class='ls_action_changestate btn btn-warning btn-xs'>"
+-                            . "<span class='fa fa-power-off'>&nbsp;</span>"
+-                            . gT('Deactivate')
+-                        ."</a>";
+-                    }
+-                }
+-                if(count($data['settings'])>0)
+-                {
+-                    $output .= "&nbsp;<a href='" . Yii::app()->createUrl('/admin/pluginmanager/sa/configure', array('id' => $data['id'])) . "' class='btn btn-default btn-xs'><span class='icon-edit'>&nbsp;</span>" . gT('Configure') . "</a>";
++                  if(Permission::model()->hasGlobalPermission('settings','update'))
++                  {
++                      if ($data['active'] == 0)
++                      {
++                          $output = "<a href='#activate' data-action='activate' data-id='".$data['id']."' class='ls_action_changestate btn btn-default btn-xs btntooltip'>"
++                              . "<span class='fa fa-power-off'>&nbsp;</span>"
++                              . gT('Activate')
++                          ."</a>";
++                      } else {
++                          $output = "<a href='#deactivate' data-action='deactivate' data-id='".$data['id']."' class='ls_action_changestate btn btn-warning btn-xs'>"
++                              . "<span class='fa fa-power-off'>&nbsp;</span>"
++                              . gT('Deactivate')
++                          ."</a>";
++                      }
++                  }
++                  if(count($data['settings'])>0)
++                  {
++                      $output .= "&nbsp;<a href='" . Yii::app()->createUrl('/admin/pluginmanager/sa/configure', array('id' => $data['id'])) . "' class='btn btn-default btn-xs'><span class='icon-edit'>&nbsp;</span>" . gT('Configure') . "</a>";
++                  }
+                 }
+                 return $output;
+             }
+         ),
+     );
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/quotas/newanswererror_view.php limesurvey/application/views/admin/quotas/newanswererror_view.php
+--- limesurvey2.58.2+170114/application/views/admin/quotas/newanswererror_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/quotas/newanswererror_view.php	2017-01-13 16:11:17.928346400 +0100
+@@ -1,7 +1,7 @@
+ <div class="jumbotron message-box message-box-error">
+         <h2><?php eT("Add answer");?>: <?php eT("Question selection");?></h2>
+         <p class="lead"><?php eT("Sorry there are no supported question types in this survey.");?></p>
+         <p>
+-            <input  class="btn btn-lg btn-success" type="submit" onclick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$iSurveyId");?>', '_top')" value="<?php eT("Continue");?>"/>
++            <input  class="btn btn-lg btn-success" type="submit" onclick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$iSurveyId");?>', '_self')" value="<?php eT("Continue");?>"/>
+         </p>
+ </div>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/quotas/newanswertwo_view.php limesurvey/application/views/admin/quotas/newanswertwo_view.php
+--- limesurvey2.58.2+170114/application/views/admin/quotas/newanswertwo_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/quotas/newanswertwo_view.php	2017-01-13 16:11:17.980346400 +0100
+@@ -7,11 +7,11 @@
+ 
+             <?php if (count($question_answers) == $x): ?>
+                 <div class="jumbotron message-box">
+                         <h2><?php eT("All answers are already selected in this quota.");?></h2>
+                         <p>
+-                            <input class="btn btn-lg btn-success" type="submit" onclick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$iSurveyId");?>', '_top')" value="<?php eT("Continue");?>"/>
++                            <input class="btn btn-lg btn-success" type="submit" onclick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$iSurveyId");?>', '_self')" value="<?php eT("Continue");?>"/>
+                         </p>
+                 </div>
+             <?php else:?>
+                 <div class="jumbotron message-box">
+                     <div class='row'>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/quotas/viewquotas_view.php limesurvey/application/views/admin/quotas/viewquotas_view.php
+--- limesurvey2.58.2+170114/application/views/admin/quotas/viewquotas_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/quotas/viewquotas_view.php	2017-01-13 16:11:18.028346400 +0100
+@@ -30,9 +30,9 @@
+                     <td>&nbsp;</td>
+                     <td>&nbsp;</td>
+                     <td>&nbsp;</td>
+                     <td>&nbsp;</td>
+                     <td>&nbsp;</td>
+-                    <td style="padding: 3px;"><input type="button" class="btn btn-default" value="<?php eT("Quick CSV report");?>" onClick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$surveyid/quickreport/y") ?>', '_top')" /></td>
++                    <td style="padding: 3px;"><input type="button" class="btn btn-default" value="<?php eT("Quick CSV report");?>" onClick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$surveyid/quickreport/y") ?>', '_self')" /></td>
+                 </tr>
+                 </tfoot>
+                 <tbody>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/responses/browsemenubar_view.php limesurvey/application/views/admin/responses/browsemenubar_view.php
+--- limesurvey2.58.2+170114/application/views/admin/responses/browsemenubar_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/responses/browsemenubar_view.php	2017-01-13 16:11:18.077346400 +0100
+@@ -186,11 +186,11 @@
+                     <a class="btn btn-success" href="#" role="button" id="save-button">
+                         <span class="glyphicon"></span>
+                         <?php eT("View statistics"); ?>
+                     </a>
+ 
+-                    <a class="btn btn-default" href="#" role="button" id="save-button" onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_top')">
++                    <a class="btn btn-default" href="#" role="button" id="save-button" onclick="window.open('<?php echo Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>', '_self')">
+                         <span class="glyphicon glyphicon-refresh text-success"></span>
+                         <?php eT("Clear"); ?>
+                     </a>
+                 <?php endif; ?>
+ 
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/saved/savedlist_view.php limesurvey/application/views/admin/saved/savedlist_view.php
+--- limesurvey2.58.2+170114/application/views/admin/saved/savedlist_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/saved/savedlist_view.php	2017-01-13 16:11:18.128346400 +0100
+@@ -30,15 +30,15 @@
+                                     <td><?php echo $oResult->scid; ?></td>
+                                     <td align='center'>
+ 
+                                         <?php if (Permission::model()->hasSurveyPermission($iSurveyId,'responses','update'))
+                                             { ?>
+-                                            <span onclick="window.open('<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$iSurveyId}/id/{$oResult->srid}"); ?>', '_top')" title='<?php eT('Edit entry'); ?>'  class="glyphicon glyphicon-pencil text-success"></span>
++                                            <span onclick="window.open('<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$iSurveyId}/id/{$oResult->srid}"); ?>', '_self')" title='<?php eT('Edit entry'); ?>'  class="glyphicon glyphicon-pencil text-success"></span>
+                                             <?php }
+                                             if (Permission::model()->hasSurveyPermission($iSurveyId,'responses','delete'))
+                                             { ?>
+-                                            <span class="glyphicon glyphicon-trash text-warning" title='<?php eT('Delete entry'); ?>' onclick="if (confirm('<?php eT('Are you sure you want to delete this entry?', 'js'); ?>')) { window.open('<?php echo $this->createUrl("admin/saved/delete/surveyid/{$iSurveyId}/srid/{$oResult->srid}/scid/{$oResult->scid}"); ?>', '_top'); }" ></span>
++                                            <span class="glyphicon glyphicon-trash text-warning" title='<?php eT('Delete entry'); ?>' onclick="if (confirm('<?php eT('Are you sure you want to delete this entry?', 'js'); ?>')) { window.open('<?php echo $this->createUrl("admin/saved/delete/surveyid/{$iSurveyId}/srid/{$oResult->srid}/scid/{$oResult->scid}"); ?>', '_self'); }" ></span>
+                                             <?php } ?>
+                                     </td>
+ 
+                                     <td><?php echo $oResult->identifier; ?></td>
+                                     <td><?php echo $oResult->ip; ?></td>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/survey/copySurvey_view.php limesurvey/application/views/admin/survey/copySurvey_view.php
+--- limesurvey2.58.2+170114/application/views/admin/survey/copySurvey_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/survey/copySurvey_view.php	2017-01-13 16:11:18.184346400 +0100
+@@ -10,11 +10,11 @@
+     <div class="jumbotron message-box message-box-error">
+         <h2 ><?php eT("Copy survey"); ?></h2>
+         <p class="lead danger"><?php eT("Error"); ?></p>
+         <p><?php echo $aImportResults['error']; ?></p>
+         <p>
+-        <input type='submit' class="btn btn-default btn-large" value='<?php eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $this->createUrl('admin'); ?>', '_top')" />
++        <input type='submit' class="btn btn-default btn-large" value='<?php eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $this->createUrl('admin'); ?>', '_self')" />
+         <?php $importerror = true; ?>
+         </p>
+     </div>
+ <?php else: ?>
+ 
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/survey/deleteSurvey_view.php limesurvey/application/views/admin/survey/deleteSurvey_view.php
+--- limesurvey2.58.2+170114/application/views/admin/survey/deleteSurvey_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/survey/deleteSurvey_view.php	2017-01-13 16:11:18.243346400 +0100
+@@ -24,11 +24,11 @@
+                 </p>
+                 <p>
+                     <?php echo CHtml::beginForm($this->createUrl("admin/survey/sa/delete/surveyid/{$surveyid}"), 'post');?>
+                         <input type='hidden' name='delete' value='yes'>
+                         <input type='submit'  class="btn btn-lg btn-warning" value='<?php eT("Delete survey"); ?>'>
+-                        <input type='button'  class="btn btn-lg btn-default" value='<?php eT("Cancel"); ?>' onclick="window.open('<?php echo Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/survey/sa/view/surveyid/$surveyid") ); ?>', '_top')" />
++                        <input type='button'  class="btn btn-lg btn-default" value='<?php eT("Cancel"); ?>' onclick="window.open('<?php echo Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/survey/sa/view/surveyid/$surveyid") ); ?>', '_self')" />
+                     <?php echo CHtml::endForm(); ?>
+                 </p>
+         </div>
+ 
+         </div>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/survey/importSurvey_view.php limesurvey/application/views/admin/survey/importSurvey_view.php
+--- limesurvey2.58.2+170114/application/views/admin/survey/importSurvey_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/survey/importSurvey_view.php	2017-01-13 16:11:18.365346400 +0100
+@@ -17,11 +17,11 @@
+         <p>
+         <?php echo $sErrorMessage; ?>
+         </p>
+         <!-- buttons -->
+         <p>
+-            <input type='submit' class="btn btn-default btn-large" value='<?php eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/'); ?>', '_top')" />
++            <input type='submit' class="btn btn-default btn-large" value='<?php eT("Main Admin Screen"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/'); ?>', '_self')" />
+         </p>
+     </div>
+ 
+ <!-- Import success but errors -->
+ <?php elseif ( isset($aImportResults['error']) && $aImportResults['error']!=false ): ?>
+@@ -43,11 +43,11 @@
+             }
+             ?>
+ 
+             <!-- buttons -->
+             <p>
+-                <input type='submit' value='<?php eT("Main Admin Screen");?>' class="btn btn-large btn-default" onclick="window.open('<?php echo $this->createUrl('/admin');?>', '_top')" />
++                <input type='submit' value='<?php eT("Main Admin Screen");?>' class="btn btn-large btn-default" onclick="window.open('<?php echo $this->createUrl('/admin');?>', '_self')" />
+             </p>
+ 
+     </div>
+ 
+ <!-- Success -->
+@@ -126,9 +126,9 @@
+             <p class="text-info"><?php eT("Copy of survey is completed.");?></p>
+         <?php endif; ?>
+ 
+         <!-- Buttons -->
+         <p>
+-            <input type='submit' class="btn btn-default btn-large" value='<?php eT("Go to survey");?>' onclick="window.open('<?php echo $sLink; ?>', '_top')"><br /><br />
++            <input type='submit' class="btn btn-default btn-large" value='<?php eT("Go to survey");?>' onclick="window.open('<?php echo $sLink; ?>', '_self')"><br /><br />
+         </p>
+     </div>
+ <?php endif;?>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/survey/importSurveyResources_view.php limesurvey/application/views/admin/survey/importSurveyResources_view.php
+--- limesurvey2.58.2+170114/application/views/admin/survey/importSurveyResources_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/survey/importSurveyResources_view.php	2017-01-13 16:11:18.300346400 +0100
+@@ -25,11 +25,11 @@
+                         }
+                         ?>
+                     </ul>
+                 </p>
+                 <p>
+-                    <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/' . $surveyid); ?>', '_top')" />
++                    <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/' . $surveyid); ?>', '_self')" />
+                 </p>
+             </div>
+         </div>
+     </div>
+ </div>
+@@ -73,11 +73,11 @@
+                             }
+                         ?>
+                         </ul>
+                     </p>
+                     <p>
+-                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/' . $surveyid); ?>', '_top')" />
++                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/' . $surveyid); ?>', '_self')" />
+                     </p>
+                 </div>
+             </div>
+         </div>
+     </div>
+@@ -108,11 +108,11 @@
+                             }
+                         ?>
+                         </ul>
+                     </p>
+                     <p>
+-                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/' . $surveyid); ?>', '_top')" />
++                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/' . $surveyid); ?>', '_self')" />
+                     </p>
+                 </div>
+             </div>
+         </div>
+     </div>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php limesurvey/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php
+--- limesurvey2.58.2+170114/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/survey/QuestionGroups/questiongroupbar_view.php	2017-01-13 16:11:18.435346400 +0100
+@@ -108,11 +108,11 @@
+ 
+                         <!-- has question -->
+                         <?php if(is_null($condarray)):?>
+ 
+                             <!-- can delete group and question -->
+-                            <a class="btn btn-default" onclick="if (confirm('<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>')) { window.open('<?php echo $this->createUrl("admin/questiongroups/sa/delete/surveyid/$surveyid/gid/$gid"); ?>','_top'); }" role="button">
++                            <a class="btn btn-default" onclick="if (confirm('<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>')) { window.open('<?php echo $this->createUrl("admin/questiongroups/sa/delete/surveyid/$surveyid/gid/$gid"); ?>','_self'); }" role="button">
+                                 <span class="glyphicon glyphicon-trash"></span>
+                                 <?php eT("Delete current question group"); ?>
+                             </a>
+                         <?php else: ?>
+ 
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/templates/importuploaded_view.php limesurvey/application/views/admin/templates/importuploaded_view.php
+--- limesurvey2.58.2+170114/application/views/admin/templates/importuploaded_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/templates/importuploaded_view.php	2017-01-13 16:11:18.494346400 +0100
+@@ -80,10 +80,10 @@
+                         }
+                     ?>
+                 </ul>
+             </p>
+             <p>
+-                <input type='submit' class="btn btn-default btn-lg" value='<?php eT("Open imported template") ?>' onclick="window.open('<?php echo $this->createUrl('admin/templates/sa/view/editfile/startpage.pstpl/screenname/welcome/templatename/' . $newdir) ?>', '_top')" />
++                <input type='submit' class="btn btn-default btn-lg" value='<?php eT("Open imported template") ?>' onclick="window.open('<?php echo $this->createUrl('admin/templates/sa/view/editfile/startpage.pstpl/screenname/welcome/templatename/' . $newdir) ?>', '_self')" />
+             </p>
+         </div>
+     </div>
+ </div>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/templates/templateeditorbar_view.php limesurvey/application/views/admin/templates/templateeditorbar_view.php
+--- limesurvey2.58.2+170114/application/views/admin/templates/templateeditorbar_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/templates/templateeditorbar_view.php	2017-01-13 16:11:18.553346400 +0100
+@@ -197,21 +197,21 @@
+         <div class="col-md-7 text-right form-inline">
+             <div class="form-group">
+                 <label for='templatedir'><?php eT("Template:"); ?></label>
+                 <select class="listboxtemplates form-control" id='templatedir' name='templatedir' onchange="javascript: var uri = new Uri('<?php
+                     // Don't put 'sa' into the URL dirctly because YIi will then try to use filenames directly in the path because of the route
+-                    echo $this->createUrl("admin/templates",array('sa'=>'view','editfile'=>$editfile,'screenname'=>$screenname)); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
++                    echo $this->createUrl("admin/templates",array('sa'=>'view','editfile'=>$editfile,'screenname'=>$screenname)); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_self')">
+                     <?php echo templateoptions($templates, $templatename); ?>
+                 </select>
+             </div>
+ 
+             <div class="form-group">
+                 <label for='listboxtemplates'><?php eT("Screen:"); ?></label>
+                 <?php echo CHtml::dropDownList('screenname',$screenname,$screens,array(
+                     'id'=>'listboxtemplates',
+                     'class'=>"listboxtemplates form-control",
+-                    'onchange'=> "javascript:  var uri = new Uri('".$this->createUrl("admin/templates",array('sa'=>'view','editfile'=>$editfile,'templatename'=>$templatename))."'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
++                    'onchange'=> "javascript:  var uri = new Uri('".$this->createUrl("admin/templates",array('sa'=>'view','editfile'=>$editfile,'templatename'=>$templatename))."'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_self')"
+                 )); ?>
+             </div>
+ 
+             <?php if(isset($fullpagebar['savebutton']['form'])):?>
+                 <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/templates/templatesummary_view.php limesurvey/application/views/admin/templates/templatesummary_view.php
+--- limesurvey2.58.2+170114/application/views/admin/templates/templatesummary_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/templates/templatesummary_view.php	2017-01-13 16:11:18.614346400 +0100
+@@ -29,11 +29,11 @@
+                     gT("JavaScript files")=>array_combine($jsfiles,$jsfiles),
+                     gT("CSS files")=>array_combine($cssfiles,$cssfiles));
+ 
+                 echo CHtml::listBox('editfile',$editfile,$aSelectOptions,
+                     array('class'=>'form-control','size'=>'20',
+-                        'onchange'=> "javascript:  var uri = new Uri('".$this->createUrl("admin/templates",array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename))."'); uri.addQueryParam('editfile',this.value); window.open(uri.toString(), '_top')"
++                        'onchange'=> "javascript:  var uri = new Uri('".$this->createUrl("admin/templates",array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename))."'); uri.addQueryParam('editfile',this.value); window.open(uri.toString(), '_self')"
+                 ));
+                 ?>
+             </div>
+         </div>
+         <div class="col-lg-8 templateeditor">
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/token/addtokenpost.php limesurvey/application/views/admin/token/addtokenpost.php
+--- limesurvey2.58.2+170114/application/views/admin/token/addtokenpost.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/token/addtokenpost.php	2017-01-13 16:11:18.672346400 +0100
+@@ -14,14 +14,14 @@
+                     <h2><?php eT("Adding survey participant entry..."); ?></h2>
+                     <p class="lead text-success"><?php eT("Success"); ?></p>
+                     <p><?php eT("New entry was added."); ?></p>
+                     <div class="container">
+                         <div class="col-md-12 col-lg-4 col-lg-offset-2">
+-                            <input class="btn btn-large btn-block btn-default" type='button' value='<?php eT("Browse survey participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_top')" />
++                            <input class="btn btn-large btn-block btn-default" type='button' value='<?php eT("Browse survey participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_self')" />
+                         </div>
+                         <div class="col-md-12 col-lg-4">
+-                            <input class="btn btn-large btn-block btn-default" type='button' value='<?php eT("Add another participant"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/$surveyid"); ?>', '_top')" />
++                            <input class="btn btn-large btn-block btn-default" type='button' value='<?php eT("Add another participant"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/$surveyid"); ?>', '_self')" />
+                         </div>
+                     </div>
+                 </div>
+ 
+             <!-- Fail -->
+@@ -32,14 +32,14 @@
+                     <?php foreach ($errors as $error): ?>
+                         <p class='lead'><?php echo $error[0]; ?></p>
+                     <?php endforeach; ?>
+                     <div class="container">
+                         <div class="col-md-12 col-lg-4 col-lg-offset-2">
+-                            <input type='button' class="btn btn-large btn-default" value='<?php eT("Browse survey participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_top')" /><br />
++                            <input type='button' class="btn btn-large btn-default" value='<?php eT("Browse survey participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_self')" /><br />
+                         </div>
+                         <div class="col-md-12 col-lg-4 col-lg-offset-2">
+-                            <input type='button' class="btn btn-large btn-default" value='<?php eT("Add new survey participant"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/$surveyid"); ?>', '_top')" /><br />
++                            <input type='button' class="btn btn-large btn-default" value='<?php eT("Add new survey participant"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/addnew/surveyid/$surveyid"); ?>', '_self')" /><br />
+                         </div>
+                     </div>
+                 </div>
+             <?php endif;?>
+         </div>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/token/csvimportresult.php limesurvey/application/views/admin/token/csvimportresult.php
+--- limesurvey2.58.2+170114/application/views/admin/token/csvimportresult.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/token/csvimportresult.php	2017-01-13 16:11:18.730346400 +0100
+@@ -145,11 +145,11 @@
+ 
+                         </ul>
+                     <?php } ?>
+                     </p>
+                     <p>
+-                        <input class="btn btn-large btn-default" type='button' value='<?php eT("Browse participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_top')" /><br />
++                        <input class="btn btn-large btn-default" type='button' value='<?php eT("Browse participants"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>', '_self')" /><br />
+                     </p>
+                 </div>
+ 
+         </div>
+     </div>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/token/tokenwarning.php limesurvey/application/views/admin/token/tokenwarning.php
+--- limesurvey2.58.2+170114/application/views/admin/token/tokenwarning.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/token/tokenwarning.php	2017-01-13 16:11:18.788346400 +0100
+@@ -36,11 +36,11 @@
+                     }
+                     else
+                     {
+                         eT("You don't have the permission to activate tokens.");
+                     ?>
+-                    <input type='submit' value='<?php eT("Back to main menu"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>', '_top')" /></div>
++                    <input type='submit' value='<?php eT("Back to main menu"); ?>' onclick="window.open('<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>', '_self')" /></div>
+ 
+                     <?php
+                     }
+                     ?>
+                 </p>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/update/step2.php limesurvey/application/views/admin/update/step2.php
+--- limesurvey2.58.2+170114/application/views/admin/update/step2.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/update/step2.php	2017-01-13 16:11:18.855346400 +0100
+@@ -14,11 +14,11 @@
+ {
+     echo "<div class='messagebox ui-corner-all'>
+         <div class='warningheader'>".gT('Update server busy')."</div>
+         <p>".gT('The update server is currently busy. This usually happens when the update files for a new version are being prepared.')."<br /><br />
+            ".gT('Please be patient and try again in about 10 minutes.')."</p></div>
+-        <p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/globalsettings")."', '_top')\">".sprintf(gT('Back to global settings'),'4')."</button></p>";
++        <p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/globalsettings")."', '_self')\">".sprintf(gT('Back to global settings'),'4')."</button></p>";
+ }
+ else
+ {
+ 	echo '<h3>'.gT('Checking existing LimeSurvey files...').'</h3>';
+ 	if (count($readonlyfiles)>0)
+@@ -66,17 +66,17 @@
+     }
+ 
+     if (count($readonlyfiles)>0)
+     {
+         echo '<br />'.gT('When checking your file permissions we found one or more problems. Please check for any error messages above and fix these before you can proceed.');
+-        echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/update/sa/step2/")."', '_top')\"";
++        echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/update/sa/step2/")."', '_self')\"";
+         echo ">".gT('Check again')."</button></p>";
+     }
+     else
+     {
+         eT('Please check any problems above and then proceed to the next step.').'<br />';
+-        echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/update/sa/step3/")."', '_top')\" ";
++        echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/update/sa/step3/")."', '_self')\" ";
+         echo ">".sprintf(gT('Proceed to step %s'),'3')."</button></p>";
+ 
+     }
+ }
+ echo "</div>";
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/update/step4.php limesurvey/application/views/admin/update/step4.php
+--- limesurvey2.58.2+170114/application/views/admin/update/step4.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/update/step4.php	2017-01-13 16:11:18.904346400 +0100
+@@ -30,8 +30,8 @@
+ 	echo sprintf(gT('Buildnumber was successfully updated to %s.'),Yii::app()->session['updateinfo']['toversion']).'<br />';
+     eT('The update is now complete!'); ?> <br /> <?php
+     eT('As a last step you should clear your browser cache now.');?> <br /> <?php
+ }
+ 
+-echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/globalsettings")."', '_top')\" >".gT('Back to main menu'); ?>
++echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/globalsettings")."', '_self')\" >".gT('Back to main menu'); ?>
+ </button></p>
+ </div>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/update/update.php limesurvey/application/views/admin/update/update.php
+--- limesurvey2.58.2+170114/application/views/admin/update/update.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/update/update.php	2017-01-13 16:11:18.961346400 +0100
+@@ -29,16 +29,16 @@
+     }
+ 
+     if ($error)
+     {
+         echo '<br /><br />'.gT('When checking your installation we found one or more problems. Please check for any error messages above and fix these before you can proceed.');
+-        echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/update/sa/index/")."', '_top')\"";
++        echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/update/sa/index/")."', '_self')\"";
+         echo ">".gT('Check again')."</button></p>";
+     }
+     else
+     {
+         echo '<br /><br />'.gT('Everything looks alright. Please proceed to the next step.');
+-        echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/update/sa/step2/")."', '_top')\"";
++        echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/update/sa/step2/")."', '_self')\"";
+         echo ">".sprintf(gT('Proceed to step %s'),'2')."</button></p>";
+     }
+     echo '</div>';    
+ ?>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/update/updater/steps/_old_step4b.php limesurvey/application/views/admin/update/updater/steps/_old_step4b.php
+--- limesurvey2.58.2+170114/application/views/admin/update/updater/steps/_old_step4b.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/update/updater/steps/_old_step4b.php	2017-01-13 16:11:19.018346400 +0100
+@@ -35,8 +35,8 @@
+ 	echo sprintf(gT('Buildnumber was successfully updated to %s.'),Yii::app()->session['updateinfo']['toversion']).'<br />';
+     eT('The update is now complete!'); ?> <br /> <?php
+     eT('As a last step you should clear your browser cache now.');?> <br /> <?php
+ }
+ 
+-echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/globalsettings")."', '_top')\" >".gT('Back to main menu'); ?>
++echo "<p><button onclick=\"window.open('".Yii::app()->getController()->createUrl("admin/globalsettings")."', '_self')\" >".gT('Back to main menu'); ?>
+ </button></p>
+ </div>
+diff -rNU5 limesurvey2.58.2+170114/application/views/admin/user/personalsettings.php limesurvey/application/views/admin/user/personalsettings.php
+--- limesurvey2.58.2+170114/application/views/admin/user/personalsettings.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/admin/user/personalsettings.php	2017-03-31 16:54:28.698944900 +0200
+@@ -4,10 +4,11 @@
+  */
+ ?>
+ 
+ <div class="container-fluid welcome full-page-wrapper">
+     <?php echo CHtml::form($this->createUrl("/admin/user/sa/personalsettings"), 'post', array('class' => 'form44 form-horizontal', 'id'=>'personalsettings','autocomplete'=>"off")); ?>
++<!--
+     <h3 class="pagetitle"><?php eT("Your profile"); ?></h3>
+         <div class="form-group">
+             <?php echo CHtml::label(gT("User name:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
+              <div class="col-sm-3">
+                 <?php echo CHtml::textField('username', $sUsername,array('class'=>'form-control','readonly'=>'readonly')); ?>
+@@ -38,10 +39,11 @@
+             <?php echo CHtml::label(gT("Repeat password:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
+              <div class="col-sm-3">
+                 <?php echo CHtml::passwordField('repeatpassword', '',array('class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
+              </div>
+         </div>
++-->
+     <!-- form -->
+     <h3 class="pagetitle"><?php eT("Your personal settings"); ?></h3>
+ 
+     <!-- form -->
+ 
+diff -rNU5 limesurvey2.58.2+170114/application/views/installer/dbconfig_view.php limesurvey/application/views/installer/dbconfig_view.php
+--- limesurvey2.58.2+170114/application/views/installer/dbconfig_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/installer/dbconfig_view.php	2017-01-13 16:11:19.076346400 +0100
+@@ -57,11 +57,11 @@
+ 
+             ?>
+         <br />
+         <div class="row">
+             <div class="col-md-4" >
+-                <input class="btn btn-default" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
++                <input class="btn btn-default" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_self')" />
+             </div>
+             <div class="col-md-4" style="text-align: center;">
+             </div>
+             <div class="col-md-4" style="text-align: right;">
+                 <?php echo CHtml::submitButton(gT("Next",'unescaped'), array('class' => 'btn btn-default')); ?>
+diff -rNU5 limesurvey2.58.2+170114/application/views/installer/dbsettings_view.php limesurvey/application/views/installer/dbsettings_view.php
+--- limesurvey2.58.2+170114/application/views/installer/dbsettings_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/installer/dbsettings_view.php	2017-01-13 16:11:19.128346400 +0100
+@@ -7,11 +7,11 @@
+             <legend><?php eT('Database creation'); ?></legend>
+                 <?php if (isset($adminoutputText)) echo $adminoutputText; ?>
+ 
+             <div class="row">
+                 <div class="col-md-4" >
+-                    <input class="btn btn-default" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
++                    <input class="btn btn-default" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_self')" />
+                 </div>
+                 <div class="col-md-4" style="text-align: center;">
+                 </div>
+                 <div class="col-md-4" style="text-align: right;">
+                     <?php
+diff -rNU5 limesurvey2.58.2+170114/application/views/installer/license_view.php limesurvey/application/views/installer/license_view.php
+--- limesurvey2.58.2+170114/application/views/installer/license_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/installer/license_view.php	2017-01-13 16:11:19.176346400 +0100
+@@ -11,11 +11,11 @@
+         <?php echo CHtml::form(array("installer/license"), 'post', array('name'=>'formcheck')); ?>
+ 
+ 
+             <div class="row navigator">
+             <div class="col-md-4">
+-                <input class="btn btn-default" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/install/welcome"); ?>', '_top')" />
++                <input class="btn btn-default" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/install/welcome"); ?>', '_self')" />
+             </div>
+             <div class="col-md-4"></div>
+             <div class="col-md-4">
+                 <input class="btn btn-default"  type="submit" value="<?php eT('I accept'); ?>" />
+             </div>
+diff -rNU5 limesurvey2.58.2+170114/application/views/installer/optconfig_view.php limesurvey/application/views/installer/optconfig_view.php
+--- limesurvey2.58.2+170114/application/views/installer/optconfig_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/installer/optconfig_view.php	2017-01-13 16:11:19.222346400 +0100
+@@ -74,11 +74,11 @@
+             echo CHtml::closeTag('div');
+         }
+     ?>
+         <div class="row navigator">
+             <div class="col-md-4">
+-                <input class="btn btn-default" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/welcome"); ?>', '_top')" />
++                <input class="btn btn-default" type="button" value="<?php eT("Previous"); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/welcome"); ?>', '_self')" />
+             </div>
+             <div class="col-md-4"></div>
+             <div class="col-md-4">
+                 <?php echo CHtml::submitButton(gT("Next",'unescaped'), array('class' => 'btn btn-default')); ?>
+             </div>
+diff -rNU5 limesurvey2.58.2+170114/application/views/installer/precheck_view.php limesurvey/application/views/installer/precheck_view.php
+--- limesurvey2.58.2+170114/application/views/installer/precheck_view.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/application/views/installer/precheck_view.php	2017-01-13 16:11:19.270346400 +0100
+@@ -142,19 +142,19 @@
+         </tbody>
+ 
+         </table>
+         <div class="row navigator">
+             <div class="col-md-4" >
+-                <input class="btn btn-default" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/license"); ?>', '_top')" />
++                <input class="btn btn-default" type="button" value="<?php eT('Previous'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/license"); ?>', '_self')" />
+             </div>
+             <div class="col-md-4">
+-                <input class="btn btn-default" type="button" value="<?php eT('Check again'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_top')" />
++                <input class="btn btn-default" type="button" value="<?php eT('Check again'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/precheck"); ?>', '_self')" />
+             </div>
+             <div class="col-md-4">
+ 
+                 <?php if (isset($next) && $next== TRUE) { ?>
+-                <input class="btn btn-default" type="button" value="<?php eT('Next'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
++                <input class="btn btn-default" type="button" value="<?php eT('Next'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_self')" />
+                 <?php } ?>
+             </div>
+         </div>
+     </div>
+ </div>
+diff -rNU5 limesurvey2.58.2+170114/framework/web/CDbHttpSession.php limesurvey/framework/web/CDbHttpSession.php
+--- limesurvey2.58.2+170114/framework/web/CDbHttpSession.php	2017-01-12 13:55:54.000000000 +0100
++++ limesurvey/framework/web/CDbHttpSession.php	2017-02-22 17:19:20.145387900 +0100
+@@ -154,11 +154,11 @@
+ 			default:
+ 				$blob='BLOB';
+ 				break;
+ 		}
+ 		$db->createCommand()->createTable($tableName,array(
+-			'id'=>'CHAR(32) PRIMARY KEY',
++			'id'=>'CHAR(50) PRIMARY KEY',
+ 			'expire'=>'integer',
+ 			'data'=>$blob,
+ 		));
+ 	}
+ 

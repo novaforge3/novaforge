@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<chapter version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+		>
+	<title>Personnalisation de l'analyseur des sources</title>
+	
+	<para>Comme nous l'avons décrit dans le chapitre précédent, l'analyseur des sources permettant de détecter les exigences dans le code source est étroitement lié à la facon dont les exigences
+	sont insérées dans le code. Voici la façon de personnaliser cette analyseur.</para>
+	<para>Les connaissances prérequises sont Java2, OSGI et Blueprint pour l'injection de services.</para>
+	<sect2>
+	<title>Service <emphasis>RequirementManagerCodeHandler</emphasis></title>
+	
+	<para>Voici le service nécessitant d'être implémenté afin de personnaliser l'analyseur : </para>
+	<para><emphasis>org.novaforge.forge.plugins.requirements.requirementmanager.services.RequirementManagerCodeHandler</emphasis></para>
+	<para>Cette interface est présente dans le bundle <emphasis>novaforge-requirements-manager-api</emphasis></para>
+	
+	<programlisting language="java">
+public interface RequirementManagerCodeHandler
+{
+  /**
+   * This method returns the code resources found in function of requirements tracking
+   * 
+   * @param pProjectId Id of the NovaForge project
+   * @param pCodeRepositoryPath Path to the code repository
+   * @param pCurrentUser User
+   * @param pEnumClassName Class name of the enumeration
+   * @throws RequirementsManagementServiceException Exception in the Service
+   */
+  void getCodeResources(String pProjectId, String pCodeRepositoryPath, String pCurrentUser,
+      String pEnumClassName) throws RequirementsManagementServiceException;
+
+  /**
+   * This method sets the requirementManagerFunctionalService used to analyse SCM repository
+   * 
+   * @param pRequirementManagerFunctionalService The Requirement Manager Functional Service to set
+   */
+  void setRequirementManagerFunctionalService(
+      RequirementManagerFunctionalService pRequirementManagerFunctionalService);
+
+  /**
+   * This method sets the requirementCodeService used to update the requirements database
+   * 
+   * @param pRequirementCodeService The Requirement Code Service to set
+   */
+  void setRequirementCodeService(RequirementCodeService pRequirementCodeService);
+
+}
+	</programlisting>
+	<para>Nous allons passer en revue les deux services ci-dessous qui devront être utilisés par l'implémentation de <emphasis>RequirementManagerCodeHandler</emphasis> : </para>
+	<itemizedlist>
+		<listitem>
+			<para>
+				<emphasis>RequirementManagerFunctionalService</emphasis>
+			</para>
+		</listitem>
+		<listitem>
+			<para>
+				<emphasis>RequirementCodeService</emphasis>
+			</para>
+		</listitem>
+	</itemizedlist>
+	<sect3>
+	<title>RequirementManagerFunctionalService</title>
+	<para>Le service RequirementManagerFunctionalService permet d'établir le lien fonctionnel entre l'application des exigences et les autres applications du projet, notamment l'application SVN</para>
+	<programlisting language="java">
+	
+public interface RequirementManagerFunctionalService
+{
+   ...
+   
+   /**
+    * This method allows requirement tool to request the forge for searching the requirements references in
+    * source code of SCM.
+    * 
+    * @param pProjectId
+    *           Represents tool project id used in requirement side
+    * @param pRegex
+    *           Represents the regex to search for
+    * @param pFileRegex
+    *           Represents the file regex : can be null
+    * @param pUserName
+    *           Represents the user name who is doing the notification
+    * @return List<![CDATA[SCMSearchResultBean]]> a list of SCM search results
+    * @throws RequirementsManagementServiceException Exception in the Service
+    */
+   List<![CDATA[SCMSearchResultBean]]> searchRequirementInSourceCode(String pProjectId, String pRegex,
+         String pFileRegex, String pCodeRepositoryPath, String pUserName)
+               throws RequirementsManagementServiceException;
+
+}
+</programlisting>
+</sect3>
+<sect3>
+<title>RequirementCodeService</title>
+
+<para>Le service RequirementCodeService permet de mettre à jour les occurrences d'exigences détectées dans le code dans le référentiel de l'application des exigences.</para>
+<programlisting language="JAVA" ROLE="JAVA">
+public interface RequirementCodeService
+{
+	....
+
+   /**
+    * This method allows to update resources for a requirement
+    * 
+    * @param pProjectId Represents tool project id used in requirement side
+    * @param pRequirementName Requirement Name
+    * @param pRequirementVersion Requirement Version
+    * @param pResourceName Resource Name to update
+    * @param pResourceComponentName Resource Component Name to update
+    * @param pResourceLocation Resource Location
+    * @throws RequirementManagerServiceException Exception in the Service
+    */
+   void updateCodeResources(String pProjectId, final String pRequirementName,
+         final String pRequirementVersion,
+         final String pResourceName, final String pResourceComponentName, final String pResourceLocation)
+               throws RequirementManagerServiceException;
+
+   /**
+    * This method allows to clear code resources for all last versions of requirements
+    * 
+    * @param pProjectId Represents tool project id used in requirement side
+    * @throws RequirementManagerServiceException Exception in the Service
+    */
+   void clearCodeResourcesForLastVersion(String pProjectId) throws RequirementManagerServiceException;
+}
+
+</programlisting>
+</sect3>
+</sect2>
+
+<sect2>
+	<title>Implémentation du service RequirementManagerCodeHandler</title>
+	<para>Les implémentations du service RequirementManagerCodeHandler doivent se trouver dans le bundle <emphasis>novaforge-requirements-manager-impl</emphasis>
+	et plus précisément dans le package <emphasis>org.novaforge.forge.plugins.requirements.requirementmanager.internal.handlers</emphasis></para>
+	<para>Le bean associé à l'implémentation doit être déclarée dans le fichier <emphasis>OSGI-INF/blueprint/blueprint.xml</emphasis> afin d'être injecté via Blueprint à l'exécution.</para>
+	<para>Si l'on souhaite personnaliser l'analyseur, il faut développer une nouvelle implémentation et modifier la propriété <emphasis>class</emphasis> du bean avec le nom de package et de la classe de la nouvelle implémentation dans le fichier <emphasis>blueprint.xml</emphasis>.</para>
+	<programlisting language="XML" role="XML"><![CDATA[
+<bean id="requirementManagerCodeHandler" class="org.novaforge.forge.plugins.requirements.requirementmanager.internal.handlers.RequirementManagerCodeHandlerImpl" >
+    	<property name="requirementManagerFunctionalService" ref="requirementManagerFunctionalService" />
+    	<property name="requirementCodeService" ref="requirementCodeService" />
+</bean>]]>
+	</programlisting>
+</sect2>
+
+</chapter>

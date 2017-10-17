@@ -1,0 +1,239 @@
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.novaforge.products</groupId>
+		<artifactId>parent-3.8.0</artifactId>
+		<version>2.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<groupId>org.novaforge.products.process</groupId>
+	<artifactId>parent-3.8.0</artifactId>
+	<version>2.0</version>
+	<packaging>pom</packaging>
+	<name>NovaForge(tm) :: Products :: 3.8.0 :: Process</name>
+	<description>NovaForge(tm) :: Products :: 3.8.0 :: Process</description>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.novaforge.beaver</groupId>
+				<artifactId>beaver-deployment-plugin</artifactId>
+				<extensions>true</extensions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.novaforge.beaver</groupId>
+			<artifactId>beaver-deployment-plugin</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.novaforge.beaver</groupId>
+			<artifactId>beaver-context-apis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+	</dependencies>
+	<!-- Declaration of modules -->
+	<modules>		
+  
+		<!-- = Technical modules -->
+		<!-- PHP -->
+		<module>php/5.4.16-36/install/2.1</module>
+		<module>php/5.4.16-36/update/2.1</module>
+		<!-- Java/JDK et JRE -->
+		<module>jdk/7u80/install/2.1</module>
+		<module>jdk/8u112/install/2.1</module>
+		<module>jre/7u80/install/2.1</module>
+		<module>jre/8u112/install/2.1</module>
+		<!-- Apache -->
+		<module>httpd/2.4.6-40/install/2.1</module>
+		<module>httpd/2.4.6-40/update/2.1</module>
+		<module>httpd-ssl/2.4.6-40/install/2.1</module>
+		<module>httpd-ssl/2.4.6-40/update/2.1</module>
+		<!-- CAS -->
+		<module>cas/3.5.0/install/2.6</module>
+		<module>php-cas/1.3.4/install/2.1</module>
+		<!-- MariaDB -->
+		<module>mariadb/10.0.17/install/2.1</module>
+		<!-- Karaf -->
+		<module>karaf/3.0.1/install/2.7</module>
+		<!-- Certificates -->
+		<module>certificat/1.0/install/2.2</module>
+		<!-- Sendmail -->
+		<module>sendmail/8.14.7-4/install/2.2</module>
+		<!-- SMTP -->
+		<module>smtp/1.0/install/2.2</module>
+		<!-- NovaForge Servers and Runtime -->
+		<module>novaforge-aio/3.8.0/install/2.0</module>
+		<module>novaforge-aio/3.8.0/update/2.0</module>
+		<module>novaforge-dev/3.8.0/install/2.0</module>
+		<module>novaforge-front/3.8.0/install/2.0</module>
+		<module>novaforge-ged/3.8.0/install/2.0</module>
+		<module>novaforge-ged/3.8.0/update/2.0</module>
+		<module>novaforge-hpc/3.8.0/install/2.0</module>
+		<module>novaforge-hpc/3.8.0/update/2.0</module>
+		<module>novaforge-jira/3.8.0/install/2.0</module>
+		<module>novaforge-jira/3.8.0/update/2.0</module>
+		<module>novaforge-pic/3.8.0/install/2.0</module>
+		<module>novaforge-pic/3.8.0/update/2.0</module>
+		<module>novaforge-portal/3.8.0/install/2.0</module>
+		<module>novaforge-portal/3.8.0/update/2.0</module>
+		<module>novaforge-safran/3.8.0/install/2.0</module>
+		<module>novaforge-safran/3.8.0/update/2.0</module>
+		<module>novaforge-svn/3.8.0/install/2.0</module>
+		<module>novaforge-svn/3.8.0/update/2.0</module>
+		<module>novaforge-runtime/3.8.0/install/2.0</module>
+		<module>novaforge-runtime/3.8.0/update/2.0</module>
+
+		<!-- = Tools modules -->
+		<!-- Alfresco -->
+		<module>novaforge-connector-alfresco/3.8.0/install/2.0</module>
+		<module>novaforge-connector-alfresco/3.8.0/update/2.0</module>
+		<module>alfresco/5.0.d/install/2.1</module>
+		<!-- Dokuwiki -->
+		<module>novaforge-connector-dokuwiki/3.8.0/install/2.0</module>
+		<module>novaforge-connector-dokuwiki/3.8.0/update/2.0</module>
+		<module>dokuwiki/2016-06-26a/install/2.0</module>
+		<module>dokuwiki/2016-06-26a/update/2.0</module>
+		<!-- Git -->
+		<module>git/1.8.3.1-4/install/2.2</module>   
+		<!-- Gitlab -->
+		<module>novaforge-connector-gitlab/3.8.0/install/2.0</module>
+		<module>novaforge-connector-gitlab/3.8.0/update/2.0</module>
+		<module>gitlab/7.3.1/install/2.2</module>   
+		<!-- Jenkins -->
+		<module>novaforge-connector-jenkins/3.8.0/install/2.0</module>
+		<module>novaforge-connector-jenkins/3.8.0/update/2.0</module>
+		<module>jenkins/1.651.3/install/2.1</module>
+		<!-- Jira -->
+		<module>novaforge-connector-jira/3.8.0/install/2.0</module>
+		<module>novaforge-connector-jira/3.8.0/update/2.0</module>
+		<module>jira/6.0.7/install/2.2</module>
+		<!-- Limesurvey -->
+		<module>novaforge-connector-limesurvey/3.8.0/install/2.0</module>
+		<module>novaforge-connector-limesurvey/3.8.0/update/2.0</module>
+		<module>limesurvey/2.58.2+/install/2.0</module>
+		<module>limesurvey/2.58.2+/update/2.0</module>
+		<!-- Mantis -->
+		<module>novaforge-connector-mantis/3.8.0/install/2.0</module>
+		<module>novaforge-connector-mantis/3.8.0/update/2.0</module>
+		<module>mantis/2.0.0/install/2.0</module>
+		<module>mantis/2.0.0/update/2.0</module>
+		<!-- Mantis ARD (SAFRAN)-->
+		<module>novaforge-connector-mantis-ard/3.8.0/install/2.0</module>
+		<module>novaforge-connector-mantis-ard/3.8.0/update/2.0</module>
+		<module>mantis-ard/2.0.0/install/2.0</module>
+		<module>mantis-ard/2.0.0/update/2.0</module>
+		<!-- Mantis ARC (HPC)-->
+		<module>novaforge-connector-mantis-arc/3.8.0/install/2.0</module>
+		<module>novaforge-connector-mantis-arc/3.8.0/update/2.0</module>
+		<!-- Mantis STD (HPC)-->
+		<module>novaforge-connector-mantis-std/3.8.0/install/2.0</module>
+		<module>novaforge-connector-mantis-std/3.8.0/update/2.0</module>
+		<!-- Nexus -->
+		<module>novaforge-connector-nexus/3.8.0/install/2.0</module>
+		<module>novaforge-connector-nexus/3.8.0/update/2.0</module>
+		<module>nexus/3.4.0-02/install/2.0</module>
+		<module>nexus/3.4.0-02/update/2.0</module>
+		<!-- PhpBB -->
+		<module>novaforge-connector-phpbb/3.8.0/install/2.0</module>
+		<module>novaforge-connector-phpbb/3.8.0/update/2.0</module>
+		<module>phpbb/3.0.9/install/2.3</module>
+		<!-- Polarion -->
+		<module>novaforge-connector-svn-agent/3.8.0/install/2.0</module>
+		<module>novaforge-connector-svn-agent/3.8.0/update/2.0</module>
+		<module>polarion/3.1.0/install/2.6</module>
+		<module>polarion/3.1.0/update/2.5</module>
+		<!-- Sonar -->
+		<module>novaforge-connector-sonar/3.8.0/install/2.0</module>
+		<module>novaforge-connector-sonar/3.8.0/update/2.0</module>
+		<module>sonar/5.6.3/install/2.1</module>
+		<!-- Spip -->
+		<module>novaforge-connector-spip/3.8.0/install/2.0</module>
+		<module>novaforge-connector-spip/3.8.0/update/2.0</module>
+		<module>spip/3.1.1/install/2.1</module>
+		<!-- Subversion -->
+		<module>novaforge-connector-svn/3.8.0/install/2.0</module>
+		<module>novaforge-connector-svn/3.8.0/update/2.0</module>
+		<module>subversion/1.7.14-6/install/2.3</module>
+		<!-- Sympa -->
+		<module>novaforge-connector-sympa/3.8.0/install/2.0</module>
+		<module>novaforge-connector-sympa/3.8.0/update/2.0</module>
+		<module>sympa/6.2.14/install/2.1</module>
+		<module>sympa/6.2.14/update/2.1</module>
+		<!-- Testlink -->
+		<module>novaforge-connector-testlink/3.8.0/install/2.0</module>
+		<module>novaforge-connector-testlink/3.8.0/update/2.0</module>
+		<module>testlink/1.9.14/install/2.1</module>
+
+		<!-- = Applicative modules -->
+		<!-- Delivery -->
+		<module>novaforge-connector-delivery/3.8.0/install/2.0</module>
+		<module>novaforge-connector-delivery/3.8.0/update/2.0</module>
+		<!-- Distribution (SAFRAN) -->
+		<module>novaforge-connector-distribution/3.8.0/install/2.0</module>
+		<module>novaforge-connector-distribution/3.8.0/update/2.0</module>
+		<!-- Forge -->
+		<module>novaforge-connector-forge/3.8.0/install/2.0</module>
+		<module>novaforge-connector-forge/3.8.0/update/2.0</module>
+		<!-- Log -->
+		<module>novaforge-connector-log/3.8.0/install/2.0</module>
+		<module>novaforge-connector-log/3.8.0/update/2.0</module>
+		<!-- Management Module (SAFRAN) -->
+		<module>novaforge-connector-management-module/3.8.0/install/2.0</module>
+		<module>novaforge-connector-management-module/3.8.0/update/2.0</module>
+		<!-- Reference -->
+		<module>novaforge-connector-reference/3.8.0/install/2.0</module>
+		<module>novaforge-connector-reference/3.8.0/update/2.0</module>
+		<!-- Requirements -->
+		<module>novaforge-connector-requirements/3.8.0/install/2.0</module>
+		<module>novaforge-connector-requirements/3.8.0/update/2.0</module>
+		<!-- Technical -->
+		<module>novaforge-connector-technical/3.8.0/install/2.0</module>
+		<module>novaforge-connector-technical/3.8.0/update/2.0</module>	
+
+		<!-- = Tests modules -->
+		<module>novaforge-connector-itests/3.8.0/install/2.0</module>
+		<module>novaforge-connector-itests/3.8.0/update/2.0</module>
+		<module>novaforge-connector-itests-distributed-tool/3.8.0/install/2.0</module>
+		<module>novaforge-connector-itests-distributed-tool/3.8.0/update/2.0</module>
+		<module>novaforge-connector-itests-safran/3.8.0/install/2.0</module>
+		<module>novaforge-connector-itests-safran/3.8.0/update/2.0</module>
+
+		<!-- = Pages and User Guide modules -->
+		<module>novaforge-user-guide/3.8.0/install/2.0</module>
+		<module>novaforge-user-guide/3.8.0/update/2.0</module>
+		<module>novaforge-maintenance-page/3.8.0/install/2.0</module>
+		<module>novaforge-welcome-page/3.8.0/install/2.0</module>
+    
+ 	</modules>
+</project>

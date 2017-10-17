@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+
+
+
+<section version="5.0" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+
+			<title>Widget Issues Evoution</title>
+			<section>
+					<title>Binding Applications rule</title>
+					<para>
+						All Bugtracker management applications of all your projects can be binded to the widget. 
+						For configuring applications to bind, please refer to section <xref linkend="widgetCommonSetting" endterm="widgetCommonSettingXref" />.
+					</para>
+			</section>
+				<section>
+					<title>Overview</title>
+					<para>
+						This widget show the issues evolution, grouped by state, in the form of a stacked area chart.
+						You can hide or show issues state by clicking on state name and icon in the legend.
+					</para>
+					<figure>
+						<title>Example of widget Issues evolution overview
+						</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata align="center"
+									fileref="07-Widget-IssuesEvolution-Overview.png" />
+							</imageobject>
+						</mediaobject>
+					</figure>
+					
+				</section>
+				<section>
+					<title>Widget parameters</title>
+					<figure>
+						<title>Configuration of widget properties</title>
+						<mediaobject>
+							<imageobject>
+								<imagedata align="center"
+									fileref="07-Widget-IssuesEvolution-Setting.png" />
+							</imageobject>
+						</mediaobject>
+					</figure>
+					<para>
+						This menu allow you to :
+						<itemizedlist>
+							<listitem>
+								<para>Modify widget title in your dashboard, by editing the "name" field
+								</para>
+							</listitem>
+							<listitem>
+								<para>Select if you want to agregate all issues version, or only a specific one.
+								</para>
+							</listitem>
+							<listitem>
+								<para>Choose the evolution period you want to see (last 7 days, last 30 days or a custom date range period)
+								</para>
+							</listitem>
+							<listitem>
+								<para>Save your modifications</para>
+							</listitem>
+							<listitem>
+								<para>Return to dashboard, by clicking on the return button at top right.
+								</para>
+							</listitem>
+						</itemizedlist>
+					</para>
+				</section>
+</section>

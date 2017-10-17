@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+
+
+
+<section version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+  <title>Gérer vos tableaux de bord</title>
+
+  <para>Le tableau de bord est un outil développé en interne dans le but de vous permettre de voir en un endroit toutes les informations essentielles pour vous. Il permet de collecter et d'afficher, par l'intermédiaire de Widget, les informations de vos projets.
+  </para>
+  <para>
+    Le tableau de bord fournit les fonctionnalités suivantes :
+    <itemizedlist>
+      <listitem>
+        <para>Aggréger les informations de tous vos projets</para>
+      </listitem>
+      <listitem>
+        <para>Créer autant d'onglets que vous souhaitez pour organiser vos widgets</para>
+      </listitem>
+      <listitem>
+        <para>Ajouter autant de widgets que vous voulez, et les configurer indépendamment les uns des autres.</para>
+      </listitem>
+    </itemizedlist>
+  </para>
+  
+  <para>Il existe 2 tableaux de bord dans la forge, <xref linkend="dashboardUser" endterm="dashboardUserXref" />, qui est propre à chaque utilisateur, et <xref linkend="dashboardProject" endterm="dashboardProjectXref" />, qui est propre au projet. 
+  </para>
+
+  <section id="dashboardUser">
+    <title id="dashboardUserXref">Tableau de bord Utilisateur</title>
+    <para>
+      Chaque utilisateur de la forge en possède un et seulement lui peut le voir.
+      Ce tableau de bord sert de page d'accueil de la forge, une fois que l'utilisateur est identifié. Il est aussi accessible depuis le menu de gauche, dans la rubrique "Mon espace".
+    </para>
+    <figure>
+        <title>Aperçu de l'écran du tableau de bord</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center" fileref="05-05g-01-DashboardOverview.png"/>
+          </imageobject>
+        </mediaobject>
+    </figure>
+    <section id="DashboardTabBar">
+    	<title>Configuration des onglets</title>
+    	<figure>
+        	<title>Barre d'onglets du tableau de bord</title>
+        	<mediaobject>
+        		<imageobject>
+        			<imagedata align="center" fileref="05-05g-02-DashboardTab.png" width="204px" />
+        		</imageobject>
+        	</mediaobject>
+    	</figure>
+    	<para>
+    		Le bouton "+" de la barre d'onglet du tableau de bord permet d'ajouter un onglet à votre tableau de bord.
+    	</para>
+    	<para>
+    		Sur chaque onglet, le bouton "triangle" situé sur la droite de l'onglet, permet d'accéder à la configuration de cet onglet. Ce même bouton permet, une fois le menu de configuration ouvert, de refermer ce menu.
+    	</para>
+    </section>
+    <section id="DashboardTabConf">
+    	<title id="DashboardTabConfXref">Configure dashboard tabs</title>
+    	<figure>
+        	<title>Menu de configuration d'un onglet</title>
+        	<mediaobject>
+        		<imageobject>
+        			<imagedata align="center" fileref="05-05g-03-DashboardTabConfig.png"/>
+        		</imageobject>
+        	</mediaobject>
+    	</figure>
+    	<para>
+    		La configuration de l'onglet, vous permet de définir le nom de l'onglet, son icône et sa mise en page. Pour définir la mise en page de l'onglet, vous devez choisir le nombre de zones que vous souhaitez, puis leur placement, les unes par rapport aux autres. A noter que pour faciliter le repérage des zones, elles sont colorées en bleu sur votre tableau de bord dès que le menu de configuration est ouvert.
+    		Vous pouvez supprimer l'onglet depuis le menu de configuration (Les widgets de cet onglet seront retirés de votre tableau de bord, et leur configuration supprimée).
+    	</para>
+    	<para>
+    		Le dernier bouton à droite du menu de configuration, vous permet d'accéder à la section <xref linkend="dashboardAddWidget" endterm="dashboardAddWidgetXref" />.
+    	</para>
+    </section>
+    <section id="dashboardAddWidget">
+    	<title id="dashboardAddWidgetXref">Ajout de Widget</title>
+    	<figure>
+        	<title>Menu d'ajout de widget</title>
+        	<mediaobject>
+        		<imageobject>
+        			<imagedata align="center" fileref="05-05g-04-DashboardAddWidget.png"/>
+        		</imageobject>
+        	</mediaobject>
+    	</figure>
+    	<para>
+    		Depuis le menu d'ajout de widget, vous pouvez revenir <xref linkend="DashboardTabConf" endterm="DashboardTabConfXref" />.
+    	</para>
+    	<para>
+    		Vous avez la liste de tous les widgets disponibles. Vous pouvez effectuer une recherche ou trier la liste sur les catégories de widget. Ces catégories sont les mêmes que celles des applications disponibles dans la forge, un widget étant relié, ou non, à une ou plusieurs catégories d'application.
+    	</para>
+    	<para>
+    		Vous pouvez ajouter un widget à votre tableau de bord en cliquant sur le bouton "+" situé dans le coin de la vignette du widget.
+    		En cliquant sur la vignette d'un widget, vous aurez un descriptif de celui-ci, ainsi qu'un aperçu de celui-ci, s'il est disponible.
+    	</para>
+    	<para>
+    		Une fois le widget ajouté à votre tableau de bord, vous pouvez le déplacer d'une zone à l'autre, en le glissant-déposant.
+    	</para>
+    	<para>
+    		A noter, qu'un widget s'ajuste à la longueur d'une zone.
+    	</para>
+    </section>  
+    <section id="dashboardCommonWidgetActions">
+    	<title>Actions communes sur un widget</title>
+    	<figure>
+        	<title>Actions sur un widget</title>
+        	<mediaobject>
+        		<imageobject>
+        			<imagedata align="center" fileref="05-05g-05-DashboardCommonWidgetActions.png" width="412px"/>
+        		</imageobject>
+        	</mediaobject>
+    	</figure>
+    	<para>
+    		Sur tous les widgets, il y a 4 boutons, qui vous permettent de (de gauche à droite):
+    		<itemizedlist>
+      			<listitem>
+        			<para>Rafraîchir le widget</para>
+      			</listitem>
+      			<listitem>
+        			<para>Aller à la configuration du widget</para>
+      			</listitem>
+      			<listitem>
+        			<para>Ouvrir ou réduire le widget</para>
+      			</listitem>
+      			<listitem>
+        			<para>Enlever le widget de votre tableau de bord. <emphasis>Attention : sa configuration sera alors perdue</emphasis> </para>
+      			</listitem>
+      		</itemizedlist>
+    	</para>
+    </section>  
+  </section>
+
+  <section id="dashboardProject">
+    <title id="dashboardProjectXref">Tableau de bord Projet</title>
+    <para>
+      Chaque projet en possède un, c'est la page d'accueil à l'ouverture d'un projet.
+    </para>
+    <para>
+    	Le fonctionnement reste similaire au tableau de bord utilisateur, mais seul un administrateur du projet peut modifier les onglets, leur mise en page, les widgets présents et leur configuration.
+    </para>
+    <para>
+    	Un membre, en dehors d'un administrateur du projet, ne verra que les widgets sur lesquels il possède des droits sur les applications liées. Par exemple, un widget qui liste les 5 derniers commit sur le svn du projet, ne sera visible que par les utilisateurs ayant les droits de voir les sources du projet.
+    </para>
+  </section>
+</section>

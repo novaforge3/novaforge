@@ -1,0 +1,16 @@
+diff -rNU5 spip-patched-001/.htaccess spip/.htaccess
+--- spip-patched-001/.htaccess	2013-05-16 16:12:31.244027244 +0200
++++ spip/.htaccess	2013-05-16 16:39:09.614028367 +0200
+@@ -17,11 +17,11 @@
+ RewriteEngine On
+ 
+ #Mutualisation avec domaine/site
+ RewriteBase /spip/
+ 
+-RewriteCond %{REQUEST_URI} !^/spip/(config|squelettes-dist|ecrire|IMG|oo|plugins|sites|squelettes|tmp|local|prive)/(.*)
++RewriteCond %{REQUEST_URI} !^/spip/(config|squelettes-dist|ecrire|IMG|oo|plugins|sites|squelettes|tmp|local|prive|extensions)/(.*)
+ RewriteRule ^[^/]+/(.*) /spip/$1 [QSA,L]
+ 
+ ################ CONFIGURATION ######################
+ 
+ ### Configuration sous-repertoire

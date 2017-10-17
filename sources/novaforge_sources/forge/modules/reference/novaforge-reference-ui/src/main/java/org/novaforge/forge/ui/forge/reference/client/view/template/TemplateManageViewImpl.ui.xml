@@ -1,0 +1,75 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+		>
+
+	<ui:with field='res' type='org.novaforge.forge.ui.forge.reference.client.resources.ReferenceResources' />
+	<g:SplitLayoutPanel height="100%">
+		<g:west size='140' unit='PX'>
+			<g:ScrollPanel height="100%" alwaysShowScrollBars="false">
+				<g:VerticalPanel height="100%" spacing="5" verticalAlignment='ALIGN_TOP'>
+					<g:Label ui:field='templateManageTitle' addStyleNames="{res.style.zoneTitle}" />
+					<g:VerticalPanel addStyleNames="{res.style.leftPanelContent}">
+						<g:Grid>
+							<g:row>
+								<g:customCell>
+									<g:Label ui:field="detail" addStyleNames="{res.style.menuLabel}" />
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<g:Label ui:field="roles" addStyleNames="{res.style.menuLabel}" />
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<g:Label ui:field="applications" addStyleNames="{res.style.menuLabel}" />
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<g:Label ui:field="summary" addStyleNames="{res.style.menuLabel}" />
+								</g:customCell>
+							</g:row>
+						</g:Grid>
+					</g:VerticalPanel>
+				</g:VerticalPanel>
+			</g:ScrollPanel>
+		</g:west>
+		<g:center>
+			<g:ScrollPanel alwaysShowScrollBars="false" addStyleNames="{res.style.scrollBorderCell}">
+					<g:VerticalPanel spacing="5" verticalAlignment='ALIGN_TOP' height='100%' width='100%'
+						ui:field='verticalPanel'>
+						<g:VerticalPanel width='100%' ui:field='centerPanel' styleName="{res.style.borderCell}" />
+						<g:HorizontalPanel horizontalAlignment='ALIGN_CENTER' addStyleNames="{res.style.bottomButonPanel}">
+							<g:Button styleName="{res.style.important}" ui:field="buttonPrevious" />
+							<g:Button styleName="{res.style.important}" ui:field="buttonNext" />
+							<g:Button styleName="{res.style.important}" ui:field="buttonSave" />
+							<g:Button styleName="{res.style.important}" ui:field="buttonCancel" />
+						</g:HorizontalPanel>
+					</g:VerticalPanel>
+			</g:ScrollPanel>
+		</g:center>
+	</g:SplitLayoutPanel>
+</ui:UiBinder> 

@@ -1,0 +1,126 @@
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.novaforge.products.process</groupId>
+		<artifactId>parent-3.8.0</artifactId>
+		<version>2.0</version>
+		<relativePath>../../../../pom.xml</relativePath>
+	</parent>
+	<groupId>org.novaforge.products.process.install</groupId>
+	<artifactId>sympa-6.2.14</artifactId>
+	<packaging>beaver-process</packaging>
+	<version>2.1</version>
+	<name>NovaForge(tm) :: Products :: 3.8.0 :: Process :: Sympa :: Install :: 6.2.14 :: 2.1</name>
+	<description>NovaForge(tm) :: Products :: 3.8.0 :: Process :: Sympa :: Install :: 6.2.14 :: 2.1</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.novaforge.products.process.install</groupId>
+			<artifactId>sendmail-8.14.7-4</artifactId>
+			<version>2.2</version>
+			<type>beaver-process</type>
+		</dependency>	
+		<dependency>
+			<groupId>org.novaforge.products.process.install</groupId>
+			<artifactId>mariadb-10.0.17</artifactId>
+			<version>2.1</version>
+			<type>beaver-process</type>
+		</dependency>
+		<dependency>
+			<groupId>org.novaforge.products.process.install</groupId>
+			<artifactId>httpd-2.4.6-40</artifactId>
+			<version>2.1</version>
+			<type>beaver-process</type>
+		</dependency>
+		<dependency>
+			<groupId>org.novaforge.products.process.install</groupId>
+			<artifactId>novaforge_connector_sympa-3.8.0</artifactId>
+			<version>2.0</version>
+			<type>beaver-process</type>
+		</dependency>
+	</dependencies>
+
+	<properties>
+		<!-- Process info -->
+		<productId>sympa</productId>
+		<process>install</process>
+		<script>${process}.groovy</script>
+		<config>config.groovy</config>
+		<data>org.novaforge.products.data/sympa-distrib/6.2.14_0/tar.gz</data>
+		<!-- Process properties -->
+		<product.systemdService>sympa</product.systemdService>
+		<!-- Directories -->
+		<product.home>@{local:system}/sympa</product.home>
+		<product.datas>@{local:datas}/sympa</product.datas>
+		<product.logs>@{local:logs}/sympa</product.logs>
+		<product.bin>@{local:system}/sympa/bin</product.bin>
+		<product.list_data>@{product.datas}/list_data</product.list_data>
+		<product.aliases>@{product.datas}/sympa_aliases</product.aliases>
+		<product.bounce>@{product.datas}/bounce</product.bounce>
+		<product.arc>@{product.datas}/arc</product.arc>
+		<product.execDir>/usr/libexec/sympa</product.execDir>		
+		<!-- Conf -->
+		<product.rsyslogConf>/etc/rsyslog.d/sympa.conf</product.rsyslogConf>
+		<product.httpdConf>@{httpd.servicesLocal}/sympa.service</product.httpdConf>
+		<product.fcgiConf>@{httpd.modules}/fcgi.conf</product.fcgiConf>
+		<product.sympaConf>@{product.home}/sympa.conf</product.sympaConf>
+		<product.sympaWSDL>/usr/share/sympa/default/sympa.wsdl</product.sympaWSDL>
+		<product.constantFile>/usr/share/sympa/lib/Sympa/Constants.pm</product.constantFile>
+		<product.SOAPFile>/usr/share/sympa/lib/Sympa/SOAP.pm</product.SOAPFile>
+		<product.ListFile>/usr/share/sympa/lib/Sympa/List.pm</product.ListFile>
+		<product.AdminFile>/usr/share/sympa/lib/Sympa/Admin.pm</product.AdminFile>
+		<product.listAliases>/usr/share/sympa/default/list_aliases.tt2</product.listAliases>
+		<product.robotAliasesFile>/etc/aliases</product.robotAliasesFile>
+		<product.maxSize>10240000</product.maxSize>
+		<product.newAliases>newaliases</product.newAliases>
+		<product.groupAliasesDB>smmsp</product.groupAliasesDB>
+		<product.ownerAliasesDB>root</product.ownerAliasesDB>
+		<product.template>/usr/share/sympa/default</product.template>
+		<product.scenari>/usr/share/sympa/default/scenari</product.scenari>		
+		<product.messages>/usr/share/locale/fr/LC_MESSAGES</product.messages>
+		<product.css>/var/lib/sympa/static_content/css</product.css>
+		<!-- Files -->
+		<product.queueLink>/etc/smrsh/queue</product.queueLink>
+		<product.familyqueueLink>/etc/smrsh/familyqueue</product.familyqueueLink>
+		<product.bouncequeueLink>/etc/smrsh/bouncequeue</product.bouncequeueLink>
+		<product.newaliaseswrapper>@{product.execDir}/sympa_newaliases-wrapper</product.newaliaseswrapper>
+		<product.queue>@{product.execDir}/queue</product.queue>
+		<product.familyqueue>@{product.execDir}/familyqueue</product.familyqueue>
+		<product.bouncequeue>@{product.execDir}/bouncequeue</product.bouncequeue>
+		<!-- User properties -->
+		<product.user>sympa</product.user>
+		<product.group>sympa</product.group>
+		<product.root>root</product.root>
+		<!-- Database properties -->
+		<product.database>sympa</product.database>
+		<product.sqlUser>sympa</product.sqlUser>
+		<product.sqlPwd>sympa</product.sqlPwd>
+
+		<!-- Extends properties -->
+	</properties>
+</project>

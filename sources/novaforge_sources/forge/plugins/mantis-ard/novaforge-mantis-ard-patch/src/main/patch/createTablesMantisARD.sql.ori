@@ -1,0 +1,24 @@
+DROP DATABASE IF EXISTS mantis_ard;
+create database mantis_ard;
+
+#user usermantisard
+GRANT USAGE ON *.* TO 'usermantisard'@'hostname';
+DROP USER 'usermantisard'@'hostname';
+CREATE USER 'usermantisard'@'hostname' IDENTIFIED BY 'passmantisard';
+
+GRANT ALL PRIVILEGES ON * . * TO 'usermantisard'@'hostname' IDENTIFIED BY 'passmantisard' WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0 ;
+
+GRANT ALL PRIVILEGES ON `usermantisard\_%` . * TO 'usermantisard'@'hostname';
+
+GRANT USAGE ON *.* TO 'usermantisard'@'localhost';
+
+DROP USER 'usermantisard'@'localhost';
+
+CREATE USER 'usermantisard'@'localhost' IDENTIFIED BY 'passmantisard';
+
+GRANT ALL PRIVILEGES ON * . * TO 'usermantisard'@'localhost' IDENTIFIED BY 'passmantisard' WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0 ;
+
+GRANT ALL PRIVILEGES ON `usermantisard\_%` . * TO 'usermantisard'@'localhost';
+FLUSH PRIVILEGES;
+
+

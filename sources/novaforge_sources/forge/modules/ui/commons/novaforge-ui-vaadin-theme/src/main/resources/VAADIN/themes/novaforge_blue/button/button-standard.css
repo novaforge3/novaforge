@@ -1,0 +1,94 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+.v-button:hover {
+	background: #D6D3D6; /*fallback for non-CSS3 browsers*/
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #D6D3D6), color-stop(1, #E6E6E6)); /*old webkit*/
+	background: -webkit-linear-gradient(top, #D6D3D6, #E6E6E6);	/*newer webkit*/
+	background: -moz-linear-gradient(center top, #D6D3D6 5%, #E6E6E6 100%);	/*old gecko*/
+	background: -o-linear-gradient(top, #D6D3D6, #E6E6E6); /*opera 11.10+*/
+	background: linear-gradient(to bottom, #D6D3D6, #e6e6e6); /*firefox 16+, chrome 26+, IE10+, opera 12.10+, future browsers*/ 
+    filter:  progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#D6D3D6', endColorstr='#E6E6E6'); /* IE6 et IE7 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#D6D3D6', endColorstr='#E6E6E6')"; /* IE8 */
+   }
+   
+.v-button:active,
+.v-button-wrap:active,
+.v-button-caption:active,
+.v-button.v-pressed,
+.v-button-wrap.v-pressed,
+.v-button-caption.v-pressed {
+   position:relative;
+   top:1px;
+}
+   
+.v-button .v-button-wrap,
+.v-disabled.v-button .v-button-wrap {
+   background: transparent !important;
+   padding: 2px 15px 0 9px !important;	
+}
+
+.v-button .v-button-caption,
+.v-disabled.v-button .v-button-caption {
+	color:#ffffff;
+   font-family:arial;
+   font-size:15px;
+   font-weight:bold;
+   text-decoration:none;
+   text-shadow:1px 1px 0px #b3b3b3;
+   background: transparent !important;
+}
+
+.v-button .v-button-wrap img,
+.v-button .v-button-wrap .v-icon,
+.v-button .v-icon {
+	width:16px;
+}
+
+.v-button,
+.v-button:focus,
+.v-button-focus,
+.v-disabled.v-button {
+   -moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+   -webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+   box-shadow:inset 0px 1px 0px 0px #ffffff;
+   -moz-border-radius:6px 6px 6px 6px;
+   -webkit-border-radius:6px 6px 6px 6px;
+   -o-border-radius: 6px 6px 6px 6px;
+   border-radius: 6px 6px 6px 6px;
+   border:1px solid #dcdcdc;
+   display:inline-block;
+   padding:2px 10px;
+   
+	background: #E6E6E6; /*fallback for non-CSS3 browsers*/
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #E6E6E6), color-stop(1, #D6D3D6)); /*old webkit*/
+	background: -webkit-linear-gradient(top, #E6E6E6, #D6D3D6);	/*newer webkit*/
+	background: -moz-linear-gradient(center top, #E6E6E6 5%, #D6D3D6 100%);	/*old gecko*/
+	background: -o-linear-gradient(top, #E6E6E6, #D6D3D6); /*opera 11.10+*/
+	background: linear-gradient(to bottom, #E6E6E6, #D6D3D6); /*firefox 16+, chrome 26+, IE10+, opera 12.10+, future browsers*/
+    filter:  progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#E6E6E6', endColorstr='#D6D3D6'); /* IE6 et IE7 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#E6E6E6', endColorstr='#D6D3D6')"; /* IE8 */
+    
+}
+   

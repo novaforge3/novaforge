@@ -1,0 +1,157 @@
+#!/bin/sh
+#
+# chkconfig: - 85 15
+# description: Instance alfresco
+# processname: alfresco
+#
+# Utilisation :
+# en tant que root : 
+#  # /etc/init.d/alfresco start
+#  # /etc/init.d/alfresco stop
+#  # /etc/init.d/alfresco status
+#
+# en tant que @NOVAFORGE_USER 
+#  $ $NOVA_HOME/bin/alfresco start
+#  $ $NOVA_HOME/bin/alfresco stop
+#  $ $NOVA_HOME/bin/alfresco status
+
+
+# Variables d'environment
+export NOVA_HOME=@NOVA_HOME@
+export JAVA_HOME=@JAVA_HOME@
+export CATALINA_HOME=@ALFRESCO_HOME@
+export PATH=${CATALINA_HOME}/bin:${JAVA_HOME}/bin:${PATH}
+export JAVA_OPTS=""
+
+# timeout d'arret en secondes
+KILL_TIMEOUT=10
+
+NAME="tomcat"
+
+TRACES_FICHIER="@ALFRESCO_LOGS@/$(/bin/date +%Y%m%d-%H%M)-alfresco.log"
+[ ! -f ${TRACES_FICHIER} ] && touch ${TRACES_FICHIER}
+
+trace() {
+    t=$(date "+%Y-%m-%d %H:%M:%S")
+    echo "$t : $1"|tee -a $TRACES_FICHIER
+    [ "$(whoami)" = "root" ] && chown @NOVAFORGE_USER@:@NOVAFORGE_GROUP@ ${TRACES_FICHIER}
+}
+
+controle_stop() {
+    COMPTEUR_STATUS=0
+    while [ ${COMPTEUR_STATUS} -lt ${KILL_TIMEOUT} ]; do
+        PIDS=$(ps -ef | grep java | grep alfresco | grep -v grep | awk '{ print $2 }')
+        if [ -n "$PIDS" ]; then
+            sleep 1
+            let COMPTEUR_STATUS=COMPTEUR_STATUS+1
+        else
+            break;
+        fi
+    done
+
+    PIDS=$(ps -ef | grep java | grep alfresco | grep -v grep | awk '{ print $2 }')
+    COMPTEUR=$KILL_TIMEOUT
+    for PID in $PIDS ; do
+        if [ $COMPTEUR -eq 0 ];then
+                break;
+        fi
+        kill -15 $PID >> /dev/null 2>&1
+        while [ $COMPTEUR -gt 0 ]; do
+                kill -0 $PID >> /dev/null 2>&1
+                if [ $? -ne 0 ] ; then
+                    break
+                fi
+                sleep 1
+                COMPTEUR=$(( $COMPTEUR - 1 ))
+        done
+    done
+    return 0  
+}
+
+start() {
+    [ -d ${CATALINA_HOME}/work ] && rm -rf ${CATALINA_HOME}/work/* && rm -rf ${CATALINA_HOME}/temp/*
+    JAVA_OPTS="-Xms512m -Xmx1024m -XX:MaxPermSize=512m -Djava.io.tmpdir=@ALFRESCO_TMP_DIR@ -Dalfresco.novaforge.instance.wsdl=http://@HOSTNAMEFORGE@:@PORT_KARAF@/cxf/alfrescoInstance?wsdl"
+    JAVA_OPTS="$JAVA_OPTS -Dalfresco.cas.rest.server=@CASRESTURI@ -Djavax.net.ssl.keyStore=@KEYSTORE@ -Djavax.net.ssl.keyStorePassword=@KEYSTOREPWD@"
+    export JAVA_OPTS="$JAVA_OPTS -Djavax.net.ssl.trustStore=@KEYSTORE@ -Djavax.net.ssl.trustStorePassword=@KEYSTOREPWD@"
+    case $(whoami) in
+	root)
+	    trace "Utiliser l'utilisateur @NOVAFORGE_USER@ et le script $NOVA_HOME/bin/alfresco start"
+	    su @NOVAFORGE_USER@ -p -c "startup.sh"
+	    RET=$?
+	    ;;
+	@NOVAFORGE_USER@)
+	    trace "Starting $NAME daemon: "
+	    startup.sh >> ${TRACES_FICHIER}
+	    RET=$?
+	    ;;
+	*)
+	    trace "Utilisateur inconnu"
+	    RET=1
+    esac
+    return $RET
+}
+
+stop() {
+     RET=0
+    case $(whoami) in
+	root)
+	    trace "Utiliser l'utilisateur @NOVAFORGE_USER@ et le script $NOVA_HOME/bin/alfresco stop"
+	    PIDS=$(ps -ef | grep tomcat | grep alfresco | grep -v grep | awk '{ print $2 }')
+	    if [ -n "$PIDS" ]; then
+		su @NOVAFORGE_USER@ -p -c "${CATALINA_HOME}/bin/shutdown.sh >> ${TRACES_FICHIER} 2>&1"
+		controle_stop
+	    else
+		trace "alfresco deja stoppe"
+	    fi
+	    ;;
+	@NOVAFORGE_USER@)
+	    trace "Stopping $NAME daemon: "
+	    PIDS=$(ps -ef | grep tomcat | grep alfresco | grep -v grep | awk '{ print $2 }')
+	    if [ -n "$PIDS" ]; then
+		${CATALINA_HOME}/bin/shutdown.sh>> ${TRACES_FICHIER} 2>&1
+		controle_stop
+	    else
+		trace "alfresco deja stoppe"
+	    fi
+	    ;;
+	*)
+	    trace "Utilisateur inconnu"
+	    RET=1
+    esac
+    return $RET
+}
+
+status() {
+    PIDS=$(ps -ef | grep tomcat | grep alfresco | grep -v grep | awk '{ print $2 }')
+    if [ -n "$PIDS" ]; then
+		trace "alfresco: OK"
+    else
+		trace "alfresco: KO"
+    fi
+}
+
+case "$1" in
+    start)
+        start
+	RETVAL=$?
+	;;
+    stop)
+        stop
+	RETVAL=$?
+	;;
+    status)
+	status
+	;;
+    restart)
+	stop
+	sync
+	sleep 10
+	start 
+	;;
+    *)
+	echo "Usage: alfresco {start|stop|status|restart}"
+	RETVAL=1
+        ;;
+esac
+
+exit $RETVAL

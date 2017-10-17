@@ -1,0 +1,17 @@
+--- omniauth_callbacks_controller.rb	2015-01-05 10:45:18.920300262 +0100
++++ omniauth_callbacks_controller-patched.rb	2015-01-05 10:45:05.840300437 +0100
+@@ -42,11 +42,13 @@
+     if current_user
+       # Change a logged-in user's authentication method:
+       current_user.extern_uid = oauth['uid']
+       current_user.provider = oauth['provider']
+       current_user.save
+-      redirect_to profile_path
++      ## NovaForge :: redirect user to url given in parameter if exists or to default profile_path
++      redirect_url = params[:url] || profile_path
++      redirect_to redirect_url 
+     else
+       @user = Gitlab::OAuth::User.find(oauth)
+ 
+       # Create user if does not exist
+       # and allow_single_sign_on is true

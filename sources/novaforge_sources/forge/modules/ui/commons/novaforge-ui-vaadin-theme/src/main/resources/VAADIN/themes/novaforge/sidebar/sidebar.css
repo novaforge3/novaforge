@@ -1,0 +1,171 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+.sidebar-application-content  .sidebar {
+	background: #414243 url(img/sidebar-gradient.png) repeat-y top right;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.sidebar-application-content .sidebar .title .v-label {
+	position: relative;
+	z-index: 2;
+	white-space: normal;
+	font-size: 16px;
+	line-height: 1.1;
+	color: #fff;
+	text-shadow: 0 2px 2px rgba(0, 0, 0, .5);
+	text-align: center;
+	display: block !important;
+	padding: .8em .8em 1.2em;
+}
+
+.sidebar-application-content .sidebar .menu {
+	overflow: auto;
+	height: 100%;
+}
+
+.sidebar-application-content .sidebar .menu .v-nativebutton {
+	-webkit-appearance: none;
+	display: block;
+	padding: 10px 14px 10px;
+	width: 100%;
+	border: none;
+	margin: 0;
+	position: relative;
+	border-top: 1px solid #4b4c4d;
+	border-top-color: rgba(255, 255, 255, .05);
+	border-bottom: 1px solid #353637;
+	border-bottom-color: rgba(0, 0, 0, .18);
+	background: transparent;
+	color: #888a8c;
+	font-weight: normal;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, .5);
+	text-align: center;
+}
+
+.sidebar-application-content .sidebar .menu .v-nativebutton .v-icon {
+	width: 40px;
+	opacity: 0.5;
+}
+
+.sidebar-application-content .sidebar .menu:after {
+	content: "";
+	display: block;
+	border-top: 1px solid #4b4c4d;
+	border-top-color: rgba(255, 255, 255, .05);
+	height: 0;
+}
+
+.sidebar-application-content .sidebar .menu .v-nativebutton-caption {
+	font-size: 12px;
+	font-weight: 600;
+	display: block;
+	margin: .2em 0 0 0;
+	white-space: normal;
+}
+
+.sidebar-application-content .sidebar .menu .v-nativebutton:focus {
+	outline: none;
+}
+
+.sidebar-application-content .sidebar .menu .v-nativebutton:hover .v-icon
+	{
+	opacity: 1;
+}
+
+.sidebar-application-content .sidebar .menu .v-nativebutton:hover,.sidebar-application-content .sidebar .menu .v-nativebutton:focus
+	{
+	color: #e1e1e1;
+	opacity: 1;
+}
+
+.sidebar-application-content .sidebar .menu .v-nativebutton:before {
+	font-size: 24px;
+	line-height: 1;
+	margin: 0;
+}
+
+.v-webkit     & .sidebar-application-content .sidebar .menu .v-nativebutton:before
+	{
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e8e8e8),
+		color-stop(100%, #d3d3d3));
+	background: -webkit-linear-gradient(top, #fff 0%, #777 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+	opacity: .5;
+	-webkit-transition: opacity ease-in-out 200ms;
+	-moz-transition: opacity ease-in-out 200ms;
+	-ms-transition: opacity ease-in-out 200ms;
+	-o-transition: opacity ease-in-out 200ms;
+	transition: opacity ease-in-out 200ms;
+}
+
+.v-webkit     & .sidebar-application-content .menu .v-nativebutton:hover:before,.v-webkit 
+	   & .sidebar-application-content .menu .v-nativebutton:focus:before {
+	opacity: 1;
+}
+
+.sidebar-application-content .sidebar .menu .v-nativebutton:active {
+	background: rgba(0, 0, 0, .1);
+}
+
+.sidebar-application-content .sidebar .menu .v-nativebutton-selected {
+	color: #e1e1e1;
+	text-shadow: 0 2px 2px rgba(0, 0, 0, .5);
+	border-top-color: #262729;
+	border-bottom-color: #2b2c2e;
+	background: #333537;
+	background: -moz-linear-gradient(top, #2d2f30 0%, #333537 10%, #333537 90%, #2d2f30
+		100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2d2f30),
+		color-stop(10%, #333537), color-stop(90%, #333537),
+		color-stop(100%, #2d2f30));
+	background: -webkit-linear-gradient(top, #2d2f30 0%, #333537 10%, #333537 90%,
+		#2d2f30 100%);
+	background: -o-linear-gradient(top, #2d2f30 0%, #333537 10%, #333537 90%, #2d2f30
+		100%);
+	background: -ms-linear-gradient(top, #2d2f30 0%, #333537 10%, #333537 90%, #2d2f30
+		100%);
+	-webkit-transition: none;
+}
+
+.sidebar-application-content .sidebar .menu .v-nativebutton-selected .v-icon
+	{
+	width: 40px;
+	opacity: 1;
+}
+
+.v-webkit     & .sidebar-application-content .sidebar .menu .v-nativebutton-selected:before
+	{
+	text-shadow: none;
+	opacity: 1;
+}
+
+.sidebar-second-component {
+	overflow: auto;
+}

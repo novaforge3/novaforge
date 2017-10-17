@@ -1,0 +1,94 @@
+#!/bin/sh 
+
+## Variables
+export NEXUS_ROOT=@NEXUS_HOME@
+export PLEXUS_NEXUS_WORK=@NEXUS_DATAS@
+export PLEXUS_RUNTIME_TMP=@NEXUS_TMP@
+
+export JAVA_HOME=@JAVA_HOME@
+export PATH=$JAVA_HOME/bin:${PATH}
+export JAVA_OPTS=""
+
+DESC="Sonatype Nexus Server"
+PROCESS=$NEXUS_ROOT/bin/nexus
+
+
+start() {
+	local _PROCESS_NUMBER=`ps -ef | grep $PROCESS | grep -v grep | wc -l`
+	if [ $_PROCESS_NUMBER -eq 0 ]; then
+	    case "$(whoami)" in
+	        root)
+			    su @NOVAFORGE_USER@ -p -c "$NEXUS_ROOT/bin/nexus start"
+			    ;;
+		@NOVAFORGE_USER@)
+				$NEXUS_ROOT/bin/nexus start
+			    ;;
+		*)
+		    	echo -e "User unknown"
+	           	exit 1
+	    esac
+	else
+		echo -e "$DESC: \033[32mOK\033[0m"
+    fi
+}
+
+stop() {
+	local _PROCESS_NUMBER=`ps -ef | grep $PROCESS | grep -v grep | wc -l`
+	if [ $_PROCESS_NUMBER -ne 0 ]; then
+	    case "$(whoami)" in
+	        root)
+					su @NOVAFORGE_USER@ -p -c "$NEXUS_ROOT/bin/nexus stop"		    
+			    	;;
+			@NOVAFORGE_USER@)
+					$NEXUS_ROOT/bin/nexus stop		    
+			    	;;
+			*)
+				    echo -e "User unknown, use `@NOVAFORGE_USER@` instead."
+			        exit 1
+	    esac
+	else
+		echo -e "$DESC: \033[31mKO\033[0m"
+    fi
+}
+
+status() {
+	local _PROCESS_NUMBER=`ps -ef | grep $PROCESS | grep -v grep | wc -l`
+	if [ $_PROCESS_NUMBER -ne 0 ]; then
+		echo -e "$DESC: \033[32mOK\033[0m"
+	else
+		echo -e "$DESC: \033[31mKO\033[0m"
+	fi
+	RETVAL=0
+}
+
+case "$1" in
+    start)
+		echo "Starting '$DESC'"
+        start
+		RETVAL=$?
+		;;
+
+    stop)
+		echo "Stopping '$DESC'"
+        stop
+		RETVAL=$?
+		;;
+
+    status)
+        status
+		RETVAL=$?
+		;;
+
+    restart)
+		echo "Restarting '$DESC'"
+        stop
+		sync
+		sleep 10
+        start 
+		;;
+    *)
+		echo "Usage: @NEXUS_BIN@ {start|stop|status|restart}"
+		RETVAL=1
+esac
+
+exit $RETVAL

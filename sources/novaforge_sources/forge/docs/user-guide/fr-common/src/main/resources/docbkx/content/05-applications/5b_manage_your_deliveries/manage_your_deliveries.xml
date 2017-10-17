@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<section version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+		>
+	<title>Gérer vos livraisons</title>
+
+	<para>Le gestionnaire de livraison intégré est un outil développé en
+		interne dans le but d'optimiser et de
+		simplifier le processus de
+		livraison.
+	</para>
+	<para>
+		Le gestionnaire de livraison fournit les fonctionnalités suivantes:
+		<itemizedlist>
+			<listitem>
+				<para>Création de livraisons par version et par type
+					(Snapshot,Release, etc)</para>
+			</listitem>
+			<listitem>
+				<para>Récupération automatique des documents de votre projet
+					NovaForge</para>
+			</listitem>
+			<listitem>
+				<para>Récupération automatique des sources de votre projet NovaForge
+				</para>
+			</listitem>
+			<listitem>
+				<para>Récupération automatique des anomalies corrigées de votre
+					projet NovaForge</para>
+			</listitem>
+			<listitem>
+				<para>Ajouter des fichiers externes à votre livraison</para>
+			</listitem>
+			<listitem>
+				<para>Génération de rapports de livraison</para>
+			</listitem>
+			<listitem>
+				<para>Création de templates de rapports afin d'homogénéiser vos
+					livraisons.</para>
+			</listitem>
+		</itemizedlist>
+	</para>
+
+	<section>
+		<title>Pour commencer ...</title>
+
+		<para>
+			Vous devez ajouter l'application livraison à votre projet. Pour ce
+			faire, utiliser
+			<xref linkend="applications" />
+			.
+
+		</para>
+	</section>
+	<section>
+		<title>Créer votre première livraison</title>
+		<para>
+			Afin d'expliquer au mieux comment créer votre première
+			livraison, nous allons partir d'un exemple.
+			Notre projet se nomme
+			"NovaForge" et nous souhaitons livrer nos documents, nos sources et
+			générer un
+			rapport.
+		</para>
+		<para>
+			Pour ce faire nous allons suivre les étapes suivantes (Vous pouvez
+			aller directement à la
+			<xref linkend="delivery-associations" />
+			si les applications sont déjà présentes dans votre projet):
+			<orderedlist>
+				<listitem>
+					<para>Ajouter les applications nécessaires à votre projet NovaForge
+					</para>
+				</listitem>
+				<listitem>
+					<para>Configurer les associations inter-outils avec votre
+						gestionnaire de livraisons</para>
+				</listitem>
+				<listitem>
+					<para>Créer et configurer votre nouvelle livraison</para>
+				</listitem>
+				<listitem>
+					<para>Générer votre livraison</para>
+				</listitem>
+				<listitem>
+					<para>Finaliser votre livraison</para>
+				</listitem>
+			</orderedlist>
+		</para>
+		<section>
+			<title>Ajouter les applications nécessaires</title>
+			<para>
+				Avec l'outil de livraison, vous pouvez importer du contenu venant de
+				votre projet NovaForge tel que des
+				documents, des sources ou des
+				anomalies.
+				Vous devez donc avoir dans votre projet les applications
+				associées. Utilisez
+				<xref linkend="applications" />
+				pour ajouter une GED, un SVN et un Bugtracker à votre projet.
+			</para>
+			<para>
+				Vous devrez donc obtenir une liste d'applications :
+				<orderedlist>
+					<listitem>
+						<para>livraison</para>
+					</listitem>
+					<listitem>
+						<para>SVN</para>
+					</listitem>
+					<listitem>
+						<para>GED</para>
+					</listitem>
+					<listitem>
+						<para>Bugtracker</para>
+					</listitem>
+				</orderedlist>
+			</para>
+		</section>
+		<section id="delivery-associations">
+			<title>Configuration des associations</title>
+			<para>
+				Afin de pouvoir utiliser les informations stockées dans les
+				applications, NovaForge met à disposition un
+				mécanisme appelé
+				<emphasis role="bold">Association inter-outils</emphasis>
+				.
+				Vous pouvez utiliser la section
+				<xref linkend="associations" />
+				afin d'ajouter les associations suivantes :
+				<para>Associations pour Alfresco (GED)</para>
+				<para>Associations pour SVN</para>
+				<para>Associations pour Mantis (Bugtracker)</para>
+			</para>
+		</section>
+		<section>
+			<title>Créer et configurer votre nouvelle livraison</title>
+			<para>
+				Vous pouvez accéder à l'application livraison via l'élément en rouge
+				dans le menu de gauche :
+				<figure>
+					<title>Ouverture de votre outil de livraisons</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05a-04-AddDelivery.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</para>
+			<para>
+				Dans l'application livraison, cliquez sur
+				<emphasis>Créer une livraison</emphasis>
+				afin d'ouvrir le formulaire si dessous:
+				<figure>
+					<title>Formulaire de création d'une nouvelle livraison</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05a-05-AddDelivery.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+				La première partie du formulaire est à remplir de la façon suivante
+				:
+				<itemizedlist>
+					<listitem>
+						Nom : NovaForge (correspond à l'intitulé de votre
+						livraison)
+					</listitem>
+				</itemizedlist>
+				<itemizedlist>
+					<listitem>
+						Version : 3.5 (correspond à la version de votre
+						livraison)
+					</listitem>
+				</itemizedlist>
+				<itemizedlist>
+					<listitem>
+						Référence : novaforge_3.5 (correspond à l'identifiant de
+						votre livraison, par défaut nom_version)
+					</listitem>
+				</itemizedlist>
+				<itemizedlist>
+					<listitem>
+						Type : release (décrit le type de livraison)
+					</listitem>
+				</itemizedlist>
+				La seconde partie du formulaire décrit le contenu que vous souhaitez
+				ajouter à votre livraison. Dans
+				<xref linkend="delivery-associations" />
+				, nous avons ajouté une GED, un SVN et un Bugtracker à notre projet.
+				C'est ici que nous allons utiliser ces liens.
+				<para>
+					Cochez ainsi toutes les cases afin d'ajouter tous les contenus à
+					votre livraison. Le champ sur la droite
+					vous permet de nommer le
+					répertoire dans lequel le contenu sera ajouté. Par exemple, pour la
+					GED, le
+					dossier se nomme
+					<emphasis>Documents</emphasis>
+					, cela signifie que dans votre livraison vous retrouvez vos
+					documents dans ce répertoire.
+				</para>
+				<para>
+					La figure suivante présente l'écran de création d'une
+					livraison complété :
+				</para>
+				<figure>
+					<title>Formulaire de création d'une nouvelle livraison complété
+					</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05a-06-AddDelivery.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</para>
+			<para>
+				Vous pouvez maintenant enregistrer votre livraison. Vous allez
+				voir apparaître cinq onglets qui
+				vont chacun vous permettre de
+				configurer le contenu de votre livraison.
+			</para>
+		</section>
+		<section>
+			<title>Générer votre livraison</title>
+			<para>
+				Lorsque vous avez terminé de configurer votre livraison, vous pouvez
+				revenir sur l'écran initial. Vous
+				devriez voir apparaître dans la
+				liste votre nouvelle livraison. Dans la colonne
+				<emphasis>Actions</emphasis>
+				, vous allez voir l'icône "play"
+				<emphasis>Générer votre livraison</emphasis>
+				Cette génération va vous permettre de faire
+				un extrait de vos différents contenu et
+				d'avoir un aperçu de votre
+				livraison. Cependant la livraison n'est pas figée, il vous est
+				toujours possible
+				de l'éditer.
+				<figure>
+					<title>Génération de la livraison</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05a-07-AddDelivery.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+				Sur l'écran qui suit, vous avez la possibilité d'apporter des
+				corrections à votre livraison ou bien de
+				générer celle-ci. Il vous
+				suffira ensuite de télécharger le résultat en utilisant la flèche
+				dans la
+				colonne
+				<emphasis>Actions</emphasis>
+				.
+			</para>
+		</section>
+		<section>
+			<title>Finaliser votre livraison</title>
+			<para>
+				Lorsque vous avez généré votre livraison, vous pouvez
+				revenir sur l'écran initial. Vous
+				devriez voir apparaître dans la
+				liste votre nouvelle livraison. Dans la colonne
+				<emphasis>Actions</emphasis>
+				, vous allez voir l'icône "cadenas"
+				<emphasis>Finaliser votre livraison</emphasis>
+				Cette étape marque l'achèvement de votre livraison et la fige définitivement.
+				Aucune modification ne sera possible une fois cette étape passée hormis la suppression de la livraison.
+				<figure>
+					<title>Finalisation de la livraison</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05a-08-FinalizeDelivery.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>				.
+			</para>
+		</section>		
+		<section>
+			<title>Gérer le bon de livraison</title>
+			<para>
+				Si vous avez coché, lors de la définition de votre livraison, "Bon de
+				livraison" comme
+				contenu associé à votre livraison, vous avez la possibilité de choisir
+				entre les différents
+				bons de livraison disponibles.
+			</para>
+			<para>
+				Ce choix s'effectue alors via l'onglet "Bon de livraison" et
+				la liste déroulante "Listes des templates disponibles".
+			</para>
+			<section>
+				<title>Gérer les templates de bon de livraison</title>
+				<para>
+					Vous pouvez modifier, ajouter et supprimer des templates de bon de livraison via
+					l'action "Gérer
+					les templates de bon de livraison" disponible dans le panneau
+					d'accueil de l'application
+					de gestion des livraisons.
+				</para>
+			</section>
+			<section>
+				<title>Créer son propre bon de livraison</title>
+				<para>
+					L'ajout au gestionnaire de livraison d'un template de bon de livraison se
+					fait via
+					l'action "Créer un template" de l'accueil du gestionnaire de template.
+					Une description, un nom ainsi qu'un fichier technique .rtpdesign seront
+					demandés.
+				</para>
+			</section>
+			<section>
+				<title>Aide à la mise au point d'un nouveau .rtpdesign</title>
+				<para>
+					La création d'un nouveau fichier rtpdesign pour un bon de livraison
+					sera facilitée par
+					l'utilisation du projet "exemple". Ce dernier est téléchargeable via l'action
+					"Télécharger
+					le projet
+					exemple" de l'accueil du gestionnaire de template. Ce projet est un projet
+					maven
+					importable dans éclipse.
+					Il permet la mise au point du rapport sans utiliser la forge. Pour
+					se familiariser avec les outils disponibles, vous pouvez vous
+					reporter à
+					http://www.eclipse.org/birt/phoenix/.
+				</para>
+				<para>
+					Le projet donne une simulation des données
+					disponibles pour l'utilisation dans le rapport birt via le DeliveryDataProvider
+					:
+					<itemizedlist>
+						<listitem>List BugTrackerIssue getBugTrackerIssues(final String
+							pProjectId, final String
+							pReference)
+						</listitem>
+						<listitem>List ECMDocument getECMDocuments(final String
+							pProjectId, final String
+							pReference)
+						</listitem>
+						<listitem>List FileElement getFileElements(final String
+							pProjectId, final String
+							pReference)
+						</listitem>
+					</itemizedlist>
+
+					Le projet permet également de connaitre les informations
+					disponibles pour les objets
+					métiers :
+					<itemizedlist>
+						<listitem>BugTrackerIssue : getCategory(),getDescription() ...
+						</listitem>
+						<listitem>FileElement : getFileName(), getSize() ...</listitem>
+						<listitem>ECMDocument : getName(), getType() ...</listitem>
+					</itemizedlist>
+
+					Ces informations peuvent ensuite, à l'image du template par défaut
+					fourni avec le projet
+					d'édition,
+					être utilisées pour construire le rapport au sein du fichier rtpdesign.
+					L'exemple suivant illustre la récupération de la liste des
+					documents:
+
+					<programlisting language="java">
+						// Create instance of data provider
+						importPackage(
+						Packages.org.novaforge.forge.tools.deliverymanager.report );
+						dataProvider = new
+						DeliveryDataProvider();
+
+						//Load the Documents
+						documents =
+						dataProvider.getECMDocuments(params["projectId"].value,params["reference"].value);
+						]]
+						if(count sup documents.size()){
+						row["columnId"] = documents.get(count).getId();
+						row["columnName"] = documents.get(count).getName();
+						row["columnPath"] =
+						documents.get(count).getPath();
+						row["columnAuthor"] = documents.get(count).getAuthor();
+						row["columnLastModifiedAuthor"] =
+						documents.get(count).getLastModifiedAuthor();
+						row["columnCreatedDate"] = documents.get(count).getCreatedDate();
+						row["columnLastModifiedDate"] =
+						documents.get(count).getLastModifiedDate();
+
+						count++;
+						return true;
+						}
+					</programlisting>
+
+				</para>
+			</section>
+		</section>
+	</section>
+
+</section>

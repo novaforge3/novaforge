@@ -1,0 +1,11 @@
+--- gitlab-shell.rb.origin	2014-09-24 10:01:19.000000000 +0200
++++ gitlab-shell.rb	2014-12-15 16:46:20.744213619 +0100
+@@ -19,7 +19,7 @@
+ git_user = node['gitlab']['user']['username']
+ git_group = node['gitlab']['user']['group']
+ gitlab_shell_dir = "/opt/gitlab/embedded/service/gitlab-shell"
+-gitlab_shell_var_dir = "/var/opt/gitlab/gitlab-shell"
++gitlab_shell_var_dir = "@DATAS/gitlab-shell"
+ repositories_path = node['gitlab']['gitlab-rails']['gitlab_shell_repos_path']
+ ssh_dir = File.join(node['gitlab']['user']['home'], ".ssh")
+ authorized_keys = File.join(ssh_dir, "authorized_keys")

@@ -1,0 +1,80 @@
+DROP DATABASE IF EXISTS `plugin_svn_agent`;
+CREATE DATABASE `plugin_svn_agent`;
+
+USE plugin_svn_agent;
+
+DROP TABLE IF EXISTS `SVN_GROUP`;
+CREATE TABLE `SVN_GROUP` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `SVN_GROUP_MEMBERSHIP`;
+CREATE TABLE `SVN_GROUP_MEMBERSHIP` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `group_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKB64A092A119E3A82` (`user_id`),
+  KEY `FKB64A092AD61EE9D8` (`group_id`),
+  CONSTRAINT `FKB64A092A119E3A82` FOREIGN KEY (`user_id`) REFERENCES `SVN_USER` (`id`),
+  CONSTRAINT `FKB64A092AD61EE9D8` FOREIGN KEY (`group_id`) REFERENCES `SVN_GROUP` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `SVN_GROUP_PERMISSION`;
+CREATE TABLE `SVN_GROUP_PERMISSION` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `read_permission` tinyint(4) NOT NULL,
+  `recursive_permission` tinyint(4) NOT NULL,
+  `write_permission` tinyint(4) NOT NULL,
+  `group_id` bigint(20) NOT NULL,
+  `repository_path_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKE75247237DF81977` (`repository_path_id`),
+  KEY `FKE7524723D61EE9D8` (`group_id`),
+  CONSTRAINT `FKE75247237DF81977` FOREIGN KEY (`repository_path_id`) REFERENCES `SVN_REPOSITORY_PATH` (`id`),
+  CONSTRAINT `FKE7524723D61EE9D8` FOREIGN KEY (`group_id`) REFERENCES `SVN_GROUP` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `SVN_REPOSITORY`;
+CREATE TABLE `SVN_REPOSITORY` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `SVN_REPOSITORY_PATH`;
+CREATE TABLE `SVN_REPOSITORY_PATH` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `path` varchar(255) NOT NULL,
+  `repository_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKC4FCEE06DC69BB22` (`repository_id`),
+  CONSTRAINT `FKC4FCEE06DC69BB22` FOREIGN KEY (`repository_id`) REFERENCES `SVN_REPOSITORY` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `SVN_USER`;
+CREATE TABLE `SVN_USER` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `SVN_USER_PERMISSION`;
+CREATE TABLE `SVN_USER_PERMISSION` (
+  `repository_path_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `read_permission` tinyint(4) NOT NULL,
+  `recursive_permission` tinyint(4) NOT NULL,
+  `write_permission` tinyint(4) NOT NULL,
+  PRIMARY KEY (`repository_path_id`,`user_id`),
+  KEY `FK100B08CF7DF81977` (`repository_path_id`),
+  KEY `FK100B08CF119E3A82` (`user_id`),
+  CONSTRAINT `FK100B08CF119E3A82` FOREIGN KEY (`user_id`) REFERENCES `SVN_USER` (`id`),
+  CONSTRAINT `FK100B08CF7DF81977` FOREIGN KEY (`repository_path_id`) REFERENCES `SVN_REPOSITORY_PATH` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

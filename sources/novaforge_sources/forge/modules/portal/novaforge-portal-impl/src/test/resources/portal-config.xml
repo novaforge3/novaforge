@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<portal-config>
+	<uri-templates>
+		<uri-template id="adminproject">/project-management/?project=@projectId</uri-template>
+		<uri-template id="projectvalidation">/project-validation</uri-template>
+		<uri-template id="updateuser">/user-account/login/redirect.jsp?action=update</uri-template>
+		<uri-template id="novaforge">http://www.novaforge.org/</uri-template>
+	</uri-templates>
+	<navigation>
+		<forge>
+			<space id="public">
+				<name>Public</name>
+				<description>Space test description</description>
+				<apps>
+					<external-app id="novaforge">
+						<name>NovaForge</name>
+					</external-app>
+				</apps>
+			</space>
+			<space roles="Super Administrator" id="forgeTestSpace">
+				<name>Forge Test Space</name>
+				<description>Space test description</description>
+				<apps>
+					<external-app id="adminproject" roles="Super Administrator,Administrator">
+						<name>adminproject</name>
+					</external-app>
+					<external-app id="projectvalidation">
+						<name>projectvalidation</name>
+					</external-app>
+				</apps>
+			</space>
+			<space roles="Administrator" id="forgeTestSpace2">
+				<name>Forge Test Space2</name>
+				<description>Space test description</description>
+			</space>
+		</forge>
+		<project>
+			<space roles="Administrator" id="projectTestSpace" permissions="project:@projectId:*">
+				<name>Project Test Space</name>
+				<description>Space test description</description>
+			</space>
+		</project>
+		<account>
+			<space id='myaccount' display="authenticated">
+				<name>@userName</name>
+				<description>Space test description</description>
+				<apps>
+					<external-app id="updateuser">
+						<name>My Account</name>
+					</external-app>
+					<internal-app id="logout">
+						<name>Logout</name>
+					</internal-app>
+				</apps>
+			</space>
+		</account>
+	</navigation>
+</portal-config>
+

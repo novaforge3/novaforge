@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<section version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+	<para>Cette section présente une vue globale de l'architecture logique de NovaForge, en montrant les
+		composants et leurs
+		interconnexions.
+	</para>
+	<para>
+		La figure ci-dessous présente les composants haut niveau de la forge. Chaque élément est détaillé
+		dans le chapitre sur l'architecture applicative.
+		<itemizedlist>
+			<listitem>
+				<para>
+					En rouge,
+					<emphasis role="bold">les acteurs externes</emphasis>
+					à NovaForge qui sont des utilisateurs via leur
+					navigateur web ou des outils externes tel que Eclipse par
+					exemple.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					En vert,
+					<emphasis role="bold">les services de présentations</emphasis>
+					responsables de la visualisation par les utilisateurs des informations de la forge.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					En bleu foncé,
+					<emphasis role="bold">les services de métiers</emphasis>
+					responsables des fonctionnalités coeurs de la forge.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					En bleu clair,
+					<emphasis role="bold">les services de persistance</emphasis>
+					responsables du stockage des données dans la forge.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					En jaune,
+					<emphasis role="bold">les services d'intégration</emphasis>
+					permettant à la forge d'intégrer des produits externes offrant ainsi des services spécifiques aux
+					utilisateurs tels qu'un gestionnaire de document, ou de sources.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					En orange,
+					<emphasis role="bold">les services transverses</emphasis>
+					permettant aux autres composants de se reposer sur des briques partagées gérant l'activité au sein de la
+					forge,la sécurité
+					(identification, authentification et permissions) ou la communication (mail,message
+					etc) ou bien d'utiliser des services de base (manipulation de fichiers, manipulation de textes etc).
+				</para>
+			</listitem>
+		</itemizedlist>
+	</para>
+	<figure>
+		<title>Vue globale de l'architecture logique</title>
+		<mediaobject>
+			<imageobject>
+				<imagedata align="center" fileref="032-overview.png" width="450px" />
+			</imageobject>
+		</mediaobject>
+	</figure>
+</section>

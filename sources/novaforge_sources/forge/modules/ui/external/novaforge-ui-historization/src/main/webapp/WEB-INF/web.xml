@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<web-app>
+	<filter>
+		<filter-name>CAS Single Sign Out Filter</filter-name>
+		<filter-class>org.jasig.cas.client.session.SingleSignOutFilter</filter-class>
+	</filter>
+	<filter>
+		<filter-name>NovaForgeShiroFilter</filter-name>
+		<filter-class>org.apache.shiro.web.servlet.IniShiroFilter</filter-class>
+		<init-param>
+			<param-name>config</param-name>
+			<param-value>
+				[main]
+				casFilter = org.apache.shiro.cas.CasFilter
+
+				casRealm = org.novaforge.forge.core.security.realms.ForgeJPARealm
+				casRealm.casEndPoint = /logging/shiro-cas
+
+				casSubjectFactory = org.apache.shiro.cas.CasSubjectFactory
+				securityManager.subjectFactory = $casSubjectFactory
+
+				casUser = org.novaforge.forge.core.security.filter.CasAuthFilter
+				casUser.casEndPoint = /logging/shiro-cas
+
+				userAuth = org.novaforge.forge.core.security.filter.UserAuthFilter
+
+				[urls]
+				/shiro-cas = casFilter
+				/Logging.html = casUser
+				/logging/logging.nocache.js = casUser
+				/logging/** = userAuth
+			</param-value>
+		</init-param>
+	</filter>
+
+
+	<filter-mapping>
+		<filter-name>CAS Single Sign Out Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>NovaForgeShiroFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<listener>
+		<listener-class>org.jasig.cas.client.session.SingleSignOutHttpSessionListener</listener-class>
+	</listener>
+
+	<!-- Servlets -->
+	<servlet>
+		<servlet-name>historization</servlet-name>
+		<servlet-class>org.novaforge.forge.ui.historization.server.HistorizationServiceImpl</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>download</servlet-name>
+		<servlet-class>org.novaforge.forge.ui.historization.server.DownloadServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>historization</servlet-name>
+		<url-pattern>/historization/historization</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>download</servlet-name>
+		<url-pattern>/historization/download</url-pattern>
+	</servlet-mapping>
+
+	<!-- Default page to serve -->
+	<welcome-file-list>
+		<welcome-file>Historization.html</welcome-file>
+	</welcome-file-list>
+
+</web-app>

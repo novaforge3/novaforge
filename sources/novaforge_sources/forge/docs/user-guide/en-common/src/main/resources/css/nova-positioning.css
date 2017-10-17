@@ -1,0 +1,139 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+body { background-color: white; font: 12px Verdana, Geneva, sans-serif; color: black; }
+p, ul, ol, li { font: 10pt Verdana, Geneva, sans-serif; }
+h1 { font: bold 15pt Arial, Helvetica, geneva; }
+h2 { font: bold 14pt Arial, Helvetica, geneva; }
+#content h1, #content h2, #content a:-webkit-any-link, #header h1, #navheader a:-webkit-any-link { color: #0066A1 !important; }
+
+#header {
+    background: white url(header-bg.gif) repeat-x !important;
+    position: fixed;
+    width: 100%;
+    height: 95px;
+    top: 0;
+    right: 0;
+    bottom: auto;
+    left: 0;
+    border-bottom: 2px solid #cccccc;
+    z-index: 2000;
+    background-color: white;
+}
+
+#leftnavigation {
+    overflow: auto;
+    position: fixed;
+    height: auto;
+    top: 90px;
+    bottom: 0;
+    left: 0;
+    width: 280px;
+    z-index: 1500;
+    border-right:2px solid #CCCCCC;
+    background-color: white;
+}
+
+.ui-corner-top a, .ui-corner-top a:link, .ui-corner-top a:visited {color: #2e6e9e !important; text-decoration: none;}
+.ui-tabs-selected a, .ui-tabs-selected a:link, .ui-tabs-selected a:visited {color: #0066A1 !important; text-decoration: none;}
+
+#content {
+    position: relative;
+    top: 90px; /* left: 240px;*/
+    right: auto; /*  bottom: 20px;  */
+    margin: 0px 0px 0px 280px;
+    width: auto;
+    height: inherit;
+    padding-left: 5px;
+    padding-right: 30px;
+    color: #000000;
+    /*border-left: 2px solid #cccccc; overflow :scroll;*/
+    z-index: 1000;
+    background-color: white;
+
+    max-width: 70em;
+    min-width:800px;
+}
+
+#navheader {
+    position: fixed;
+    top: 65px;
+    right:4px;
+}
+
+#content h1, #content h2 { color: #cc0000; }
+.navfooter { bottom: 2%; }
+.highlight { background-color: #c5d3c3; }
+.highlightButton{ font-size: 0; }
+
+/*  Show Hide TOC tree */
+.pointLeft {
+    background: url("../images/showHideTreeIcons.png") 0 0 no-repeat;
+    height: 28px;
+    width: 15px;
+    display: block;
+    font-size: 0;
+    cursor: pointer;
+}
+.pointRight {
+    background: url("../images/showHideTreeIcons.png") -15px 0 no-repeat;
+    height: 28px;
+    display: block;
+    font-size: 0;
+    cursor: pointer;
+}
+
+/* Search results Styling */
+.searchExpression {
+    color: #0050A0;
+    background-color: #EBEFF8;
+    font-size: 12pt;
+}
+.searchresult li a {
+    text-decoration: none;
+    color: #0050A0;
+}
+.searchresult li {
+    color: #0050A0;
+}
+.shortdesclink {
+    color: gray;
+    font-size: 9pt;
+}
+.searchText {
+    border: #BFCEE9 solid 1pt;
+    width: 11em
+}
+.searchButton {
+	margin-left: 3px;
+    background: #EBEFF8;
+    color: #0050A0;
+    border: #BFCEE9 solid 1pt;
+    font-weight: bold;
+    font-size: 10pt
+}
+
+.title, div.toc>p{
+	font-weight: bold;
+	}	

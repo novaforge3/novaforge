@@ -1,0 +1,191 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+						 xmlns:g="urn:import:com.google.gwt.user.client.ui"
+						 xmlns:common="urn:import:org.novaforge.forge.ui.commons.client.validation">
+	<ui:with field='res'
+		type='org.novaforge.forge.ui.commons.client.resources.CommonsResources' />
+	<ui:with field='msg'
+		type='org.novaforge.forge.tools.deliverymanager.ui.client.properties.DeliveryManagement' />
+	<ui:with field='delRes'
+		type='org.novaforge.forge.tools.deliverymanager.ui.client.ressources.DeliveryManagementRessources' />
+
+	<g:ScrollPanel alwaysShowScrollBars="false">
+		<g:VerticalPanel spacing="5" width='100%'>
+			<g:Label ui:field="deliveryDetailTitle" addStyleNames="{res.css.zoneTitle}"
+				text="{msg.summaryDeliveryTitle}" />
+			<g:VerticalPanel addStyleNames="{res.css.zonePanel}">
+				<g:Label ui:field="deliveryInfo"
+					addStyleNames="{res.css.important},{delRes.css.infoAction}" text="{msg.deliveryInfo}" />
+				<g:Grid ui:field="generalGrid" addStyleNames="{res.css.infoGrid}">
+					<g:row>
+						<g:customCell>
+							<g:Label ui:field="nameLabel" addStyleNames="{res.css.gridLabel}" />
+						</g:customCell>
+						<g:customCell>
+							<common:TextBoxValidation ui:field="nameTB" />
+						</g:customCell>
+					</g:row>
+					<g:row>
+						<g:customCell>
+							<g:Label ui:field="versionLabel" addStyleNames="{res.css.gridLabel}" />
+						</g:customCell>
+						<g:customCell>
+							<common:TextBoxValidation ui:field="versionTB" />
+						</g:customCell>
+					</g:row>
+					<g:row>
+						<g:customCell>
+							<g:Label ui:field="referenceLabel" addStyleNames="{res.css.gridLabel}" />
+						</g:customCell>
+						<g:customCell>
+							<common:TextBoxValidation ui:field="referenceTB" />
+						</g:customCell>
+					</g:row>
+					<g:row>
+						<g:customCell>
+							<g:Label ui:field="typeLabel" addStyleNames="{res.css.gridLabel}" />
+						</g:customCell>
+						<g:customCell>
+							<common:SuggestBoxValidation
+								ui:field='typeSuggest' />
+						</g:customCell>
+					</g:row>
+				</g:Grid>
+			</g:VerticalPanel>
+			<g:Label ui:field="deliveryContentTitle" addStyleNames="{res.css.zoneTitle}"
+				title="{msg.deliveryContentTitle}" />
+			<g:VerticalPanel addStyleNames="{res.css.zonePanel}">
+				<g:Label ui:field="contentInfo"
+					addStyleNames="{res.css.important},{delRes.css.infoAction}" text="{msg.contentInfo}" />
+				<g:Grid ui:field="contentGrid" addStyleNames="{res.css.infoGrid}">
+					<g:row>
+						<g:customCell>
+							<g:Label ui:field="ecmLabel" addStyleNames="{res.css.gridLabel}"
+								text="{msg.ecmContent}" />
+						</g:customCell>
+						<g:customCell>
+							<g:SimplePanel width="1px">
+								<g:CheckBox ui:field="ecmCheck" checked="false"
+									title="{msg.addContentToolTip}" />
+							</g:SimplePanel>
+						</g:customCell>
+						<g:customCell>
+							<g:HorizontalPanel verticalAlignment="MIDDLE">
+								<g:TextBox ui:field="ecmDirectory" visible="false"
+									title="{msg.directoryToolTip}" />
+								<g:Label ui:field="ecmUnavailable" visible="false"
+									text="{msg.ecmUnavailable}" addStyleNames="{res.css.orange}" />
+							</g:HorizontalPanel>
+						</g:customCell>
+					</g:row>
+					<g:row>
+						<g:customCell>
+							<g:Label ui:field="scmLabel" addStyleNames="{res.css.gridLabel}"
+								text="{msg.scmContent}" />
+						</g:customCell>
+						<g:customCell>
+							<g:SimplePanel addStyleNames="{res.css.gridLabel}">
+								<g:CheckBox ui:field="scmCheck" checked="false"
+									title="{msg.addContentToolTip}" />
+							</g:SimplePanel>
+						</g:customCell>
+						<g:customCell>
+							<g:HorizontalPanel verticalAlignment="MIDDLE">
+								<g:TextBox ui:field="scmDirectory" visible="false"
+									title="{msg.directoryToolTip}" />
+								<g:Label ui:field="scmUnavailable" visible="false"
+									text="{msg.scmUnavailable}" addStyleNames="{res.css.orange}" />
+							</g:HorizontalPanel>
+						</g:customCell>
+					</g:row>
+					<g:row>
+						<g:customCell>
+							<g:Label ui:field="binaryLabel" addStyleNames="{res.css.gridLabel}"
+								text="{msg.binaryContent}" />
+						</g:customCell>
+						<g:customCell>
+							<g:SimplePanel addStyleNames="{res.css.gridLabel}">
+								<g:CheckBox ui:field="binaryCheck" checked="false"
+									title="{msg.addContentToolTip}" />
+							</g:SimplePanel>
+						</g:customCell>
+						<g:customCell>
+							<g:HorizontalPanel verticalAlignment="MIDDLE">
+								<g:TextBox ui:field="binaryDirectory" visible="false"
+									title="{msg.directoryToolTip}" />
+								<g:Label ui:field="binaryUnavailable" visible="false"
+									text="{msg.binaryUnavailable}" addStyleNames="{res.css.orange}" />
+							</g:HorizontalPanel>
+						</g:customCell>
+					</g:row>
+					<g:row>
+						<g:customCell>
+							<g:Label ui:field="noteLabel" addStyleNames="{res.css.gridLabel}"
+								text="{msg.noteContent}" />
+						</g:customCell>
+						<g:customCell>
+							<g:HorizontalPanel addStyleNames="{res.css.gridLabel}">
+								<g:CheckBox ui:field="noteCheck" checked="false"
+									title="{msg.addContentToolTip}" />
+							</g:HorizontalPanel>
+						</g:customCell>
+						<g:customCell>
+							<g:HorizontalPanel verticalAlignment="MIDDLE">
+								<g:TextBox ui:field="noteDirectory" visible="false"
+									title="{msg.directoryToolTip}" />
+								<g:Label ui:field="noteUnavailable" visible="false"
+									text="{msg.noteUnavailable}" addStyleNames="{res.css.orange}" />
+							</g:HorizontalPanel>
+						</g:customCell>
+					</g:row>
+					<g:row>
+						<g:customCell>
+							<g:Label ui:field="bugLabel" addStyleNames="{res.css.gridLabel}"
+								text="{msg.bugContent}" />
+						</g:customCell>
+						<g:customCell>
+							<g:SimplePanel addStyleNames="{res.css.gridLabel}">
+								<g:CheckBox ui:field="bugCheck" checked="false"
+									title="{msg.addContentToolTip}" />
+							</g:SimplePanel>
+						</g:customCell>
+						<g:customCell>
+							<g:SimplePanel>
+								<g:Label ui:field="bugUnavailable" visible="false"
+									text="{msg.bugUnavailable}" addStyleNames="{res.css.orange}" />
+							</g:SimplePanel>
+						</g:customCell>
+					</g:row>
+				</g:Grid>
+			</g:VerticalPanel>
+			<g:VerticalPanel spacing="5" width='100%'
+				horizontalAlignment="ALIGN_CENTER">
+				<g:HorizontalPanel spacing="5">
+					<g:Button addStyleNames="{res.css.important}" ui:field="buttonSaveDelivery" />
+				</g:HorizontalPanel>
+			</g:VerticalPanel>
+		</g:VerticalPanel>
+	</g:ScrollPanel>
+</ui:UiBinder> 

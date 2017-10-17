@@ -1,0 +1,5 @@
+[localrepo]
+name=Beaver Temporary Repo
+baseurl=file://@REPO_PATH@
+enabled=1
+gpgcheck=0

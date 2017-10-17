@@ -1,0 +1,26 @@
+[Unit]
+Description=Alfresco ECM Server
+Requires=@MARIADB_SERVICE@.service
+After=@MARIADB_SERVICE@.service
+
+[Service]
+Type=oneshot
+
+## User configuration
+User=@NOVAFORGE_USER@
+Group=@NOVAFORGE_GROUP@
+
+## Scripts
+ExecStart=@ALFRESCO_BIN@ start 
+ExecStop=@ALFRESCO_BIN@ stop
+RemainAfterExit=yes
+
+## Give a reasonable amount of time for the server to start up/shut down
+TimeoutSec=300
+
+## Place temp files in a secure directory, not /tmp
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+

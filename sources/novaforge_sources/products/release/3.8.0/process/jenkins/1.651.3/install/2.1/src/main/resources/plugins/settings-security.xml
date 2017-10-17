@@ -1,0 +1,3 @@
+<settingsSecurity>
+  <relocation>@JENKINS_M2_GLOBAL@/settings-security.xml</relocation>
+</settingsSecurity>>

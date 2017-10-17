@@ -1,0 +1,444 @@
+diff -rNU5 spip-3.1.1/ecrire/base/abstract_sql.php spip/ecrire/base/abstract_sql.php
+--- spip-3.1.1/ecrire/base/abstract_sql.php	2016-09-05 14:24:05.025000000 +0200
++++ spip/ecrire/base/abstract_sql.php	2016-12-21 21:32:14.000000000 +0100
+@@ -2,10 +2,11 @@
+ 
+ /* *************************************************************************\
+  *  SPIP, Systeme de publication pour l'internet                           *
+  *                                                                         *
+  *  Copyright (c) 2001-2016                                                *
++ *  Copyright (C) 2011-2014, BULL SAS, NovaForge Version 3 and above.      *
+  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
+  *                                                                         *
+  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
+  *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
+ \***************************************************************************/
+@@ -237,10 +238,15 @@
+ 	$limit = '',
+ 	$having = array(),
+ 	$serveur = '',
+ 	$option = true
+ ) {
++	//patch novaforge
++	if (isset($GLOBALS['novaforge_force_serveur'])){
++		$serveur='mysql';
++	}
++	
+ 	$f = sql_serveur('select', $serveur, $option === 'continue' or $option === false);
+ 	if (!is_string($f) or !$f) {
+ 		return false;
+ 	}
+ 
+@@ -408,10 +414,14 @@
+  *     - false en cas de serveur indiponible ou d'erreur
+  *
+  *     Ce retour n'est pas pertinent pour savoir si l'opération est correctement réalisée.
+  **/
+ function sql_alter($q, $serveur = '', $option = true) {
++	//patch novaforge
++	if (isset($GLOBALS['novaforge_force_serveur'])){
++		$serveur='mysql';
++	}
+ 	$f = sql_serveur('alter', $serveur, $option === 'continue' or $option === false);
+ 	if (!is_string($f) or !$f) {
+ 		return false;
+ 	}
+ 	$r = $f($q, $serveur, $option !== false);
+@@ -440,10 +450,14 @@
+  * @return array
+  *    Tableau de cles (colonnes SQL ou alias) / valeurs (valeurs dans la colonne de la table ou calculee)
+  *    presentant une ligne de resultat d'une selection
+  */
+ function sql_fetch($res, $serveur = '', $option = true) {
++	//patch novaforge
++	if (isset($GLOBALS['novaforge_force_serveur'])){
++		$serveur='mysql';
++	}
+ 	$f = sql_serveur('fetch', $serveur, $option === 'continue' or $option === false);
+ 	if (!is_string($f) or !$f) {
+ 		return false;
+ 	}
+ 
+@@ -644,10 +658,14 @@
+  *     - continue -> ne pas échouer en cas de serveur SQL indisponible
+  * @return bool
+  *     True si réussi
+  */
+ function sql_free($res, $serveur = '', $option = true) {
++	//patch novaforge
++	if (isset($GLOBALS['novaforge_force_serveur'])){
++		$serveur='mysql';
++	}
+ 	$f = sql_serveur('free', $serveur, $option === 'continue' or $option === false);
+ 	if (!is_string($f) or !$f) {
+ 		return false;
+ 	}
+ 
+@@ -738,10 +756,14 @@
+  *     - int|true identifiant de l'élément inséré (si possible), ou true, si réussite
+  *     - Texte de la requête si demandé,
+  *     - False en cas d'erreur.
+  **/
+ function sql_insertq($table, $couples = array(), $desc = array(), $serveur = '', $option = true) {
++	//patch novaforge
++	if (isset($GLOBALS['novaforge_force_serveur'])){
++		$serveur='mysql';
++	}
+ 	$f = sql_serveur('insertq', $serveur, $option === 'continue' or $option === false);
+ 	if (!is_string($f) or !$f) {
+ 		return false;
+ 	}
+ 	$r = $f($table, $couples, $desc, $serveur, $option !== false);
+@@ -888,10 +910,14 @@
+  *     - true si réussite
+  *     - Texte de la requête si demandé,
+  *     - False en cas d'erreur.
+  **/
+ function sql_updateq($table, $exp, $where = '', $desc = array(), $serveur = '', $option = true) {
++	//patch novaforge
++	if (isset($GLOBALS['novaforge_force_serveur'])){
++		$serveur='mysql';
++	}
+ 	$f = sql_serveur('updateq', $serveur, $option === 'continue' or $option === false);
+ 	if (!is_string($f) or !$f) {
+ 		return false;
+ 	}
+ 	$r = $f($table, $exp, $where, $desc, $serveur, $option !== false);
+@@ -1736,10 +1762,14 @@
+ 	$limit = '',
+ 	$having = array(),
+ 	$serveur = '',
+ 	$option = true
+ ) {
++	//patch novaforge
++	if (isset($GLOBALS['novaforge_force_serveur'])){
++		$serveur='mysql';
++	}
+ 	if (preg_match('/\s+as\s+(\w+)$/i', $select, $c)) {
+ 		$id = $c[1];
+ 	} elseif (!preg_match('/\W/', $select)) {
+ 		$id = $select;
+ 	} else {
+diff -rNU5 spip-3.1.1/ecrire/base/connect_sql.php spip/ecrire/base/connect_sql.php
+--- spip-3.1.1/ecrire/base/connect_sql.php	2016-09-05 14:24:04.885000000 +0200
++++ spip/ecrire/base/connect_sql.php	2016-12-21 21:32:14.000000000 +0100
+@@ -2,10 +2,11 @@
+ 
+ /***************************************************************************\
+  *  SPIP, Systeme de publication pour l'internet                           *
+  *                                                                         *
+  *  Copyright (c) 2001-2016                                                *
++ *  Copyright (C) 2011-2014, BULL SAS, NovaForge Version 3 and above.      *
+  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
+  *                                                                         *
+  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
+  *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
+ \***************************************************************************/
+@@ -51,10 +52,15 @@
+ 		return $GLOBALS['connexions'][$index];
+ 	}
+ 
+ 	include_spip('base/abstract_sql');
+ 	$install = (_request('exec') == 'install');
++	
++	//patch novaforge
++	if (isset($GLOBALS['novaforge_site_install'])){
++		$install='true';
++	}
+ 
+ 	// Premiere connexion ?
+ 	if (!($old = isset($GLOBALS['connexions'][$index]))) {
+ 		$f = (!preg_match('/^[\w\.]*$/', $serveur))
+ 			? '' // nom de serveur mal ecrit
+diff -rNU5 spip-3.1.1/ecrire/inc/bandeau.php spip/ecrire/inc/bandeau.php
+--- spip-3.1.1/ecrire/inc/bandeau.php	2016-09-05 14:24:06.723000000 +0200
++++ spip/ecrire/inc/bandeau.php	2016-12-21 21:32:14.000000000 +0100
+@@ -2,10 +2,11 @@
+ 
+ /***************************************************************************\
+  *  SPIP, Systeme de publication pour l'internet                           *
+  *                                                                         *
+  *  Copyright (c) 2001-2016                                                *
++ *  Copyright (C) 2011-2014, BULL SAS, NovaForge Version 3 and above.      *
+  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
+  *                                                                         *
+  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
+  *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
+ \***************************************************************************/
+diff -rNU5 spip-3.1.1/ecrire/inc/commencer_page.php spip/ecrire/inc/commencer_page.php
+--- spip-3.1.1/ecrire/inc/commencer_page.php	2016-09-05 14:24:07.751000000 +0200
++++ spip/ecrire/inc/commencer_page.php	2016-12-21 21:32:14.000000000 +0100
+@@ -2,10 +2,11 @@
+ 
+ /***************************************************************************\
+  *  SPIP, Systeme de publication pour l'internet                           *
+  *                                                                         *
+  *  Copyright (c) 2001-2016                                                *
++ *  Copyright (C) 2011-2014, BULL SAS, NovaForge Version 3 and above.      *
+  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
+  *                                                                         *
+  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
+  *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
+ \***************************************************************************/
+diff -rNU5 spip-3.1.1/ecrire/inc/utils.php spip/ecrire/inc/utils.php
+--- spip-3.1.1/ecrire/inc/utils.php	2016-09-05 14:24:05.487000000 +0200
++++ spip/ecrire/inc/utils.php	2016-12-21 21:32:14.000000000 +0100
+@@ -2,10 +2,11 @@
+ 
+ /***************************************************************************\
+  *  SPIP, Systeme de publication pour l'internet                           *
+  *                                                                         *
+  *  Copyright (c) 2001-2016                                                *
++ *  Copyright (C) 2011-2014, BULL SAS, NovaForge Version 3 and above.      *
+  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
+  *                                                                         *
+  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
+  *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
+ \***************************************************************************/
+@@ -1738,10 +1739,12 @@
+ 	$http = (
+ 		(isset($_SERVER["SCRIPT_URI"]) and
+ 			substr($_SERVER["SCRIPT_URI"], 0, 5) == 'https')
+ 		or (isset($_SERVER['HTTPS']) and
+ 			test_valeur_serveur($_SERVER['HTTPS']))
++		OR (isset($_SERVER['HTTP_X_FORWARDED_SERVER']) AND
++		    strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https') 
+ 	) ? 'https' : 'http';
+ 	if (isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+ 		$host = strtr($_SERVER['HTTP_X_FORWARDED_HOST'], "<>?\"' \r\n", '________');
+ 	} else {
+ 		// note : HTTP_HOST contient le :port si necessaire
+@@ -1783,12 +1786,23 @@
+ 				$GLOBALS['REQUEST_URI'] .= '?' . $_SERVER['QUERY_STRING'];
+ 			}
+ 		}
+ 	}
+ 
+-	$url[$profondeur] = url_de_($http, $host, $GLOBALS['REQUEST_URI'], $profondeur);
+-
++	/**
++	* Patch to define the correct scheme and hostname 
++	* when this function is called by an process on the same server 
++	* (here located on 127.0.0.1) 	
++	**/
++	$host=$_SERVER['HTTP_HOST']; 
++	if ($host == "127.0.0.1" AND gethostname()) 
++	{ 
++		$host = gethostname();
++		$http = 'https';
++	}	
++ 
++	$url[$profondeur] = url_de_($http,$host,$GLOBALS['REQUEST_URI'],$profondeur);
+ 	return $url[$profondeur];
+ }
+ 
+ /**
+  * fonction testable de construction d'une url appelee par url_de_base()
+diff -rNU5 spip-3.1.1/ecrire/inc_version.php spip/ecrire/inc_version.php
+--- spip-3.1.1/ecrire/inc_version.php	2016-09-05 14:24:03.324000000 +0200
++++ spip/ecrire/inc_version.php	2016-12-21 21:32:14.000000000 +0100
+@@ -2,10 +2,11 @@
+ 
+ /***************************************************************************\
+  *  SPIP, Systeme de publication pour l'internet                           *
+  *                                                                         *
+  *  Copyright (c) 2001-2016                                                *
++ *  Copyright (C) 2011-2014, BULL SAS, NovaForge Version 3 and above.      *
+  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
+  *                                                                         *
+  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
+  *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
+ \***************************************************************************/
+@@ -434,24 +435,27 @@
+ 	or autoriser_sans_cookie(_request('exec'))
+ 	or _request('action') == 'cookie'
+ 	or _request('action') == 'converser'
+ 	or _request('action') == 'test_dirs')
+ ) {
+-
+ 	// Si on peut installer, on lance illico
+-	if (test_espace_prive()) {
+-		include_spip('inc/headers');
+-		redirige_url_ecrire("install");
+-	} else {
+-		// Si on est dans le site public, dire que qq s'en occupe
+-		include_spip('inc/minipres');
+-		utiliser_langue_visiteur();
+-		echo minipres(_T('info_travaux_titre'), "<p style='text-align: center;'>" . _T('info_travaux_texte') . "</p>");
+-		exit;
+-	}
++		if (test_espace_prive()) {
++			include_spip('inc/headers');					
++			//patch novaforge					
++			if (!isset($GLOBALS['novaforge_site_install'])){
++				redirige_url_ecrire("install");
++			}
++		} else {
++			// Si on est dans le site public, dire que qq s'en occupe
++				include_spip('inc/minipres');
++				utiliser_langue_visiteur();
++				echo minipres(_T('info_travaux_titre'), "<p style='text-align: center;'>"._T('info_travaux_texte')."</p>");
++				exit;
++		}
+ 	// autrement c'est une install ad hoc (spikini...), on sait pas faire
+-}
++	}
++
+ 
+ // memoriser un tri sessionne eventuel
+ if (isset($_REQUEST['var_memotri'])
+ 	and $t = $_REQUEST['var_memotri']
+ 	and (strncmp($t, 'trisession', 10) == 0 or strncmp($t, 'senssession', 11) == 0)
+diff -rNU5 spip-3.1.1/ecrire/install/etape_fin.php spip/ecrire/install/etape_fin.php
+--- spip-3.1.1/ecrire/install/etape_fin.php	2016-09-05 14:24:08.201000000 +0200
++++ spip/ecrire/install/etape_fin.php	2016-12-21 21:32:14.000000000 +0100
+@@ -2,10 +2,11 @@
+ 
+ /***************************************************************************\
+  *  SPIP, Systeme de publication pour l'internet                           *
+  *                                                                         *
+  *  Copyright (c) 2001-2016                                                *
++ *  Copyright (C) 2011-2014, BULL SAS, NovaForge Version 3 and above.      *
+  *  Arnaud Martin, Antoine Pitrou, Philippe Riviere, Emmanuel Saint-James  *
+  *                                                                         *
+  *  Ce programme est un logiciel libre distribue sous licence GNU/GPL.     *
+  *  Pour plus de details voir le fichier COPYING.txt ou l'aide en ligne.   *
+ \***************************************************************************/
+@@ -51,19 +52,24 @@
+ 
+ 	// Verifier la securite des htaccess
+ 	// Si elle ne fonctionne pas, prevenir
+ 	$msg = install_verifier_htaccess();
+ 	if ($msg) {
+-		$cible = _T('public:accueil_site');
+-		$cible = generer_form_ecrire('accueil', '', '', $cible);
+-		echo minipres('AUTO', $msg . $cible);
++		//patch novaforge: moving msg from web console to error log.
++		error_log("ERROR: problem when executing install_verifier_htaccess :" . $msg);
++		//		$cible = _T('public:accueil_site');
++		//		$cible = generer_form_ecrire('accueil', '','', $cible);
++		//		echo minipres('AUTO', $msg . $cible);
+ 		// ok, deboucher dans l'espace prive
+ 	} else {
+-		redirige_url_ecrire('accueil');
++			//patch novaforge
++			//redirige_url_ecrire('accueil');
++			spip_log("New spip site has been successfully installed for connect file: " . $f);
+ 	}
+ }
+ 
++
+ function install_verifier_htaccess() {
+ 	if (verifier_htaccess(_DIR_TMP, true)
+ 		and verifier_htaccess(_DIR_CONNECT, true)
+ 	) {
+ 		return '';
+diff -rNU5 spip-3.1.1/plugins-dist/cicas/action/logout.php spip/plugins-dist/cicas/action/logout.php
+--- spip-3.1.1/plugins-dist/cicas/action/logout.php	2016-09-05 14:25:41.750000000 +0200
++++ spip/plugins-dist/cicas/action/logout.php	2017-01-03 15:28:35.672964900 +0100
+@@ -64,11 +64,12 @@
+ //------- Debut ajout CI -----
+ 		if ($ciauthcas) {
+ 	
+ 			include_spip('inc/cicas_commun');
+ 			// import phpCAS lib
+-			include_spip('CAS');
++			//include_spip('CAS');
++            require_once('CAS/CAS.php');
+ 
+ 			// Pour la solution hybride utilisation d'un cookie
+ 			if(isset($_COOKIE['cicas_sso']))
+ 				spip_setcookie('cicas_sso', '', time() - 3600);
+ 			
+diff -rNU5 spip-3.1.1/plugins-dist/cicas/cicas_erreur2_fonctions.php spip/plugins-dist/cicas/cicas_erreur2_fonctions.php
+--- spip-3.1.1/plugins-dist/cicas/cicas_erreur2_fonctions.php	2016-09-05 14:25:41.561000000 +0200
++++ spip/plugins-dist/cicas/cicas_erreur2_fonctions.php	2016-12-30 12:54:51.205100800 +0100
+@@ -14,11 +14,13 @@
+ 	global $visiteur_session;
+ 
+ 	include_spip('inc/cicas_commun');
+ 	
+ 	// import phpCAS lib
+-	include_spip('CAS');
++	//*** patch NF ****
++	//include_spip('CAS');
++	require_once('CAS/CAS.php');
+ 
+ 	// Pour la solution hybride utilisation d'un cookie
+ 	if(isset($_COOKIE['cicas_sso']))
+ 		spip_setcookie('cicas_sso', '', time() - 3600);
+ 	
+diff -rNU5 spip-3.1.1/plugins-dist/cicas/inc/cicas_commun.php spip/plugins-dist/cicas/inc/cicas_commun.php
+--- spip-3.1.1/plugins-dist/cicas/inc/cicas_commun.php	2016-09-05 14:25:42.956000000 +0200
++++ spip/plugins-dist/cicas/inc/cicas_commun.php	2017-01-03 16:07:52.098940700 +0100
+@@ -640,11 +640,15 @@
+ 	
+ 	    $ci_svu .= '/serviceValidate';
+ 	
+ 		phpCAS::setServerServiceValidateURL($ci_svu);
+ 	}	
+-	
++
++	phpCAS::setNoClearTicketsFromUrl(); 
++	phpCAS::setSingleSignoutCallback('handlelogoutRequest');
++	phpCAS::handleLogoutRequests(false);
++
+ 	// langue
+ 	phpCAS::setLang(cicas_lang_phpcas($_GET['lang']));
+ 	
+ 	// enlever le pied de page de CAS 
+ 	phpCAS::SetHTMLFooter('<hr>');
+@@ -652,6 +656,21 @@
+ 	// Pour les versions r�centes de phpCAS
+ 	phpCAS::setNoCasServerValidation();
+ 	
+ }
+ 
+-?>
+\ No newline at end of file
++function handlelogoutRequest($ticket) {
++        $dir = opendir(_DIR_SESSIONS);
++        $t = time() - (4*_RENOUVELLE_ALEA);
++        while(($f = readdir($dir)) !== false) {
++                if (preg_match(",^\D*(\d+)_\w{32}\.php[3]?$,", $f, $regs)){
++                        $f = _DIR_SESSIONS . $f;
++                        if (@file_exists($f)) {
++                                include_once($f);
++                                if (($GLOBALS['visiteur_session']['ticket'] == $ticket) OR ($t > filemtime($f)))
++                                        spip_unlink($f);
++
++                        }
++                }
++        }
++}
++?>
+diff -rNU5 spip-3.1.1/plugins-dist/cicas/inc/cicas_login.php spip/plugins-dist/cicas/inc/cicas_login.php
+--- spip-3.1.1/plugins-dist/cicas/inc/cicas_login.php	2016-09-05 14:25:42.977000000 +0200
++++ spip/plugins-dist/cicas/inc/cicas_login.php	2017-01-03 11:47:26.945619400 +0100
+@@ -18,11 +18,11 @@
+ include_spip('inc/headers');
+ 
+ include_spip('inc/cicas_commun');
+ 
+ // import phpCAS lib
+-include_spip('CAS');
++require_once('CAS/CAS.php');
+ 
+ 
+ // redirection par defaut
+ $ciredirect = generer_url_public('');
+ 
+@@ -192,11 +192,12 @@
+ 		// en gerant la duree demandee pour son cookie 
+ 		if ($session_remember !== NULL)
+ 			$auteur['cookie'] = $session_remember;
+ 		$session = charger_fonction('session', 'inc');
+ 		$session($auteur);
+-	
++		$session();
++        session_set('ticket',phpCAS::getTicket());
+ 		// Si on est admin, poser le cookie de correspondance
+ 		if (isset($auteur['statut'])) {
+ 			if ($auteur['statut'] == '0minirezo') {
+ 				include_spip('inc/cookie');
+ 				spip_setcookie('spip_admin', '@'.$auteur['login'],time() + 7 * 24 * 3600);

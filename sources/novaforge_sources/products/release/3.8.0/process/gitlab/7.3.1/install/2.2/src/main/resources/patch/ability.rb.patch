@@ -1,0 +1,59 @@
+--- ability.rb	2014-12-17 10:52:10.895873497 +0100
++++ ability-patched.rb	2014-12-17 13:52:57.296220583 +0100
+@@ -164,20 +164,23 @@
+         :modify_project_snippet,
+         :modify_merge_request,
+         :admin_issue,
+         :admin_milestone,
+         :admin_project_snippet,
+-        :admin_team_member,
++        #NovaForge :: Master cannot manage team member
++	#:admin_team_member,
+         :admin_merge_request,
+         :admin_note,
+         :admin_wiki,
+         :admin_project
+       ]
+     end
+ 
+     def project_admin_rules
+       project_master_rules + [
++        ## NovaForge :: Add permission to admin project info
++        :admin_project_info,
+         :change_namespace,
+         :change_visibility_level,
+         :rename_project,
+         :remove_project,
+         :archive_project
+@@ -190,11 +193,13 @@
+       if user.admin? || group.users.include?(user) || ProjectsFinder.new.execute(user, group: group).any?
+         rules << :read_group
+       end
+ 
+       # Only group masters and group owners can create new projects in group
+-      if group.has_master?(user) || group.has_owner?(user) || user.admin?
++      ## NovaForge :: Master cannot create projects
++      #if group.has_master?(user) || group.has_owner?(user) || user.admin?
++      if group.has_owner?(user) || user.admin?
+         rules += [
+           :create_projects,
+         ]
+       end
+ 
+@@ -255,12 +260,13 @@
+       can_manage = group_abilities(user, group).include?(:manage_group)
+       if can_manage && (user != target_user)
+         rules << :modify
+         rules << :destroy
+       end
+-      if !group.last_owner?(user) && (can_manage || (user == target_user))
+-        rules << :destroy
+-      end
++      ## NovaForge :: Avoid user to delete himself
++      #if !group.last_owner?(user) && (can_manage || (user == target_user))
++        #rules << :destroy
++      #end
+       rules
+     end
+   end
+ end

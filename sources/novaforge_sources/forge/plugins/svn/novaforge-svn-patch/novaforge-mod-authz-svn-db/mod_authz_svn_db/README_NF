@@ -1,0 +1,29 @@
+The source code of the mod_authz_svn_db has been modified in order to add an Apache Directive just to know if the module is active or not.
+This directive is :
+
+* AuthzSVNDBIsActive	<On|Off>
+	Optional
+	Default: 			Off
+	Description:	    If enabled, mod_authz_svn_db will be active.
+	Notes:				This allow to use in the same apache vhost differents tools without having error logs about bad module configuration.
+	Warnings:			None
+	
+To compile this module, you need to be on the target system (Centos5 x86_64) and to install the following packages :
+- gcc
+- mysql-devel
+- httpd-devel
+- subversion-devel
+- mod_dav_svn
+
+To compile it :
+- go to the mysql directory.
+- enter the following compilation line :
+apxs -c -I/usr/include/subversion-1 -I.. -L/usr/lib64/mysql -lmysqlclient mod_authz_svn_db_mysql.c
+
+- to build and install the final DSO :
+apxs -ie -n authz_svn_db_mysql_module mod_authz_svn_db_mysql.la
+
+the library mod_authz_svn_db_mysql.so will be installed in:
+/usr/lib64/httpd/modules
+
+There is no automatic assembly and installation. you need to copy the DSO in the packaging if you make any modification in sources. 

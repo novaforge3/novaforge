@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<section version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+		>
+	Cette section décrit les contraintes importantes pour l’architecture du logiciel.
+	<itemizedlist spacing="compact">
+		<listitem>
+			<para>
+				<emphasis role="bold">Sécurité des informations</emphasis>
+				<para>La sécurité des informations transitant entre l'utilisateur et NovaForge est un aspect
+					important.
+					Elle
+					doit passer par une sécurisation du réseau, une sécurisation des accès à NovaForge et une
+					sécurisation des
+					données utilisateurs.
+				</para>
+			</para>
+		</listitem>
+		<listitem>
+			<para>
+				<emphasis role="bold">Sauvegarde des données</emphasis>
+				<para>Les données gérées au sein de NovaForge ont une importance capitale pour l'utilisateur quel qu'il
+					soit. Ces données se
+					doivent d'être sauvegardées permettant ainsi la remise en état de l'application
+					après
+					panne.
+				</para>
+			</para>
+		</listitem>
+		<listitem>
+			<para>
+				<emphasis role="bold">Performance</emphasis>
+				<para>NovaForge doit répondre à des contraintes de performances standard pour une application web. Après
+					300ms d'attente, l'utilisateur doit être informé par un élement visuel qu'une action est en cours de
+					traitement. Après 1500ms, l'indicateur visuel doit avertir l'utilisateur que le processus sera long. Au
+					dela, une boite de
+					dialogue ou un indicateur d'avancement doivent lui être affichés.
+				</para>
+			</para>
+		</listitem>
+	</itemizedlist>
+</section>

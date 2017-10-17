@@ -1,0 +1,133 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+ 
+ 
+input[type="radio"]:not(:checked),
+input[type="radio"]:checked {
+  position: absolute;
+  left: -9999px;
+}
+ 
+input[type="radio"]:not(:checked) + label,
+input[type="radio"]:checked + label {
+  position: relative;
+  padding-left: 25px; 
+  cursor: pointer;   
+}
+
+/* Box design */
+/* :before create the box */
+input[type="radio"]:not(:checked) + label:before
+ {
+  content: '';
+  position: absolute;
+  left:0;
+  top: -5px;
+  width: 20px; height: 20px; 
+  border: 1px solid #0066A1;
+  background: #fefefe; /* Old browsers */
+  background: -moz-linear-gradient(top,  #fefefe 0%, #d1d1d1 49%, #dbdbdb 50%, #e2e2e2 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fefefe), color-stop(49%,#d1d1d1), color-stop(50%,#dbdbdb), color-stop(100%,#e2e2e2)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #fefefe 0%,#d1d1d1 49%,#dbdbdb 50%,#e2e2e2 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #fefefe 0%,#d1d1d1 49%,#dbdbdb 50%,#e2e2e2 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #fefefe 0%,#d1d1d1 49%,#dbdbdb 50%,#e2e2e2 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #fefefe 0%,#d1d1d1 49%,#dbdbdb 50%,#e2e2e2 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#e2e2e2',GradientType=0 ); /* IE6-9 */
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+}
+
+input[type="radio"]:checked + label:before {
+  content: '';
+  position: absolute;
+  left:0;
+  top: -5px;
+  width: 20px; height: 20px; 
+  border: 1px solid #0066A1;
+  background: #66a3c7; /* Old browsers */
+  background: -moz-linear-gradient(top,  #66a3c7 0%, #2977a0 50%, #0066a1 51%, #2b8ec6 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#66a3c7), color-stop(50%,#2977a0), color-stop(51%,#0066a1), color-stop(100%,#2b8ec6)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #66a3c7 0%,#2977a0 50%,#0066a1 51%,#2b8ec6 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #66a3c7 0%,#2977a0 50%,#0066a1 51%,#2b8ec6 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #66a3c7 0%,#2977a0 50%,#0066a1 51%,#2b8ec6 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  #66a3c7 0%,#2977a0 50%,#0066a1 51%,#2b8ec6 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#66a3c7', endColorstr='#2b8ec6',GradientType=0 ); /* IE6-9 */
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+}
+ 
+/* Box properties */
+input[type="radio"]:not(:checked) + label:after,
+input[type="radio"]:checked + label:after {
+  content: '◯'; 
+  position: absolute;
+  font-size: 20px;
+  color: white;
+  transition: all .2s;
+}
+/* Uncheck box*/
+input[type="radio"]:not(:checked) + label:after {
+  opacity: 0; /* box not visible */
+  transform: scale(0); /* set size 0 */
+}
+/* Check box */
+input[type="radio"]:checked + label:after {
+  opacity: 1; /* box visible */
+  transform: scale(1); /* set original size */
+}
+
+/* Box desactivated */
+input[type="radio"]:disabled:not(:checked) + label:before,
+input[type="radio"]:disabled:checked + label:before {
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  -o-box-shadow: none;
+  border-color: #bbb;
+  background-color: #ddd;
+}
+/* Check style when box is checked and desactivated */
+input[type="radio"]:disabled:checked + label:after {
+  color: #999;
+}
+/* Label style when box is desactivated */
+input[type="radio"]:disabled + label {
+  color: #aaa;
+}
+ 
+/* Box when focus */
+input[type="radio"]:not(:checked):focus + label:before {
+  border: 1px solid #66A3C7;
+}
+
+.radio-synchro {
+	padding-top:5px;
+}
+.radio-synchro .v-radiobutton{
+	margin-bottom:15px;
+	padding-left:18px;
+}

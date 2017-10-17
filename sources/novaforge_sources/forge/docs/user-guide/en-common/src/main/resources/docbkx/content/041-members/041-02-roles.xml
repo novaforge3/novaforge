@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<sect1 version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+       xmlns:xlink="http://www.w3.org/1999/xlink"
+       xmlns:xi="http://www.w3.org/2001/XInclude"
+       xmlns:ns5="http://www.w3.org/2000/svg"
+       xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+       xmlns:ns3="http://www.w3.org/1999/xhtml"
+       xmlns:db="http://docbook.org/ns/docbook">
+  <title>Manage roles</title>
+
+  <para>A role contains a number of permissions such as access to an application or the right to modify the project. 
+  NovaForge allows the project manager to create its own roles and the correspondence between these roles and the roles of tools available.</para>
+
+  <sect2>
+    <title>Create a role</title>
+     <sect3>
+     <title>Under the forge project </title>
+     <para>In section <emphasis
+    role="bold">«Project administration/Your memberships/Your roles/Create a role»</emphasis>, you can create a role.</para>
+     
+    
+       
+     </sect3>
+     <sect3>
+     <title>Under a specific project</title>
+     <para>In section <emphasis
+    role="bold">«Project administration/Your memberships/Your roles/Create a role»</emphasis>, you can create a role and optionally can be linked to an application role.</para>
+      
+     </sect3>
+     
+ </sect2>
+     
+     <para>Once the role is created it can be changed : <emphasis
+    role="bold">«Edit the role information»</emphasis> of column <emphasis role="bold">«ACTIONS»</emphasis>.</para>
+     
+     
+  
+</sect1>

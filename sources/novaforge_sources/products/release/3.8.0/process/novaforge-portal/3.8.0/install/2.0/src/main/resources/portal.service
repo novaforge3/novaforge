@@ -1,0 +1,28 @@
+## Technical proxy
+ProxyPass /cxf http://@KARAF_HOST@:@KARAF_PORT@/cxf
+ProxyPassReverse /cxf http://@KARAF_HOST@:@KARAF_PORT@/cxf
+ProxyPass /system/console http://@KARAF_HOST@:@KARAF_PORT@/system/console
+ProxyPassReverse /system/console http://@KARAF_HOST@:@KARAF_PORT@/system/console
+
+## Portal UI proxy
+ProxyPass /portal http://@KARAF_HOST@:@KARAF_PORT@/portal
+ProxyPassReverse /portal http://@KARAF_HOST@:@KARAF_PORT@/portal
+##Redict root to portal
+RewriteEngine On
+RewriteRule ^/$ /portal [R]
+
+## GWT UI proxy
+ProxyPass /historization http://@KARAF_HOST@:@KARAF_PORT@/historization
+ProxyPassReverse /historization http://@KARAF_HOST@:@KARAF_PORT@/historization
+ProxyPass /technical-logs http://@KARAF_HOST@:@KARAF_PORT@/technical-logs
+ProxyPassReverse /technical-logs http://@KARAF_HOST@:@KARAF_PORT@/technical-logs
+ProxyPass /distribution http://@KARAF_HOST@:@KARAF_PORT@/distribution
+ProxyPassReverse /distribution http://@KARAF_HOST@:@KARAF_PORT@/distribution
+ProxyPass /forge-reference http://@KARAF_HOST@:@KARAF_PORT@/forge-reference
+ProxyPassReverse /forge-reference http://@KARAF_HOST@:@KARAF_PORT@/forge-reference
+  
+## Others proxy
+ProxyPass /distribution http://@KARAF_HOST@:@KARAF_PORT@/distribution
+ProxyPassReverse /distribution http://@KARAF_HOST@:@KARAF_PORT@/distribution
+ProxyPass /forge-reference http://@KARAF_HOST@:@KARAF_PORT@/forge-reference
+ProxyPassReverse /forge-reference http://@KARAF_HOST@:@KARAF_PORT@/forge-reference

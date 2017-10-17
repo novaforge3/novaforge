@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<chapter version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+    >
+	
+ <title>Manage Nexus public proxies</title>
+ <para>Nexus can be used as a proxy to act as a local cache for artifacts from third party repositories.
+ By default, the following deposits are configured as proxy : </para>
+ <itemizedlist>
+   <listitem>
+      <para><emphasis>Apache Snapshots</emphasis> for remote repository : <emphasis>http://repository.apache.org/snapshots/</emphasis></para>
+   </listitem>
+   <listitem>
+      <para><emphasis>Central</emphasis> for remote repository : <emphasis>http://repo1.maven.org/maven2/</emphasis></para>
+   </listitem>
+   <listitem>
+      <para><emphasis>Codehaus Snapshots</emphasis> for remote repository : <emphasis>http://nexus.codehaus.org/snapshots/</emphasis></para>
+   </listitem>  
+</itemizedlist>
+<para>It is possible to add other proxies using the management interface.</para>
+<para>"Anonymous" user is used to allow public access to repositories</para>
+<figure>
+	<title>Use of anonymous user</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center" fileref="nexus_anonymous_user.png"/>
+      </imageobject>
+    </mediaobject>
+ </figure>
+<sect2>
+<para>To enable access to nexus proxies and to download without artifacts authentication from theses repositories, the anonymous user must have the following role : <emphasis>Anonymous Proxy Role</emphasis></para>
+<para>This role is configured in Nexus with permissions "view" and "read" for each of the default proxy mentioned above</para>
+<para>If we add a new proxy, do not forget to add the permissions associated to the Role "Anonymous Proxy Role"</para>
+ <figure>
+	<title>Use of "Anonymous Proxy Role"</title>
+	 <mediaobject>
+      <imageobject>
+        <imagedata align="center" fileref="nexus_anonymous_proxy_role.png"/>
+      </imageobject>
+    </mediaobject>
+ </figure>
+</sect2>
+<sect2>
+<para>To let Nexus access the remote repository in order to serve as a proxy, you may need to configure a http proxy : </para>
+ <figure>
+	<title>Configuration of http proxy</title>
+	<mediaobject>
+      <imageobject>
+        <imagedata align="center" fileref="nexus_http_proxy_config.png"/>
+      </imageobject>
+    </mediaobject>
+</figure>
+</sect2>
+<sect2>
+<para>Attention to the default proxy configuration which is blocked when the remote repository is unreachable</para>
+ <para>It may be useful to disable this property if e.g. the http proxy was omitted during the first connection attempt.</para>
+  <figure>
+	<title>Configuration of nexus proxy</title>
+	 <mediaobject>
+      <imageobject>
+        <imagedata align="center" fileref="nexus_proxy_configuration.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+   <itemizedlist>
+   <listitem>
+  <para>It is also useful to check other parameters such as :the connection to the remote repository on "Routing" tab.</para>
+  </listitem>
+   <listitem>
+  <para>The connection to the remote repository on "Routing" tab.</para>
+  </listitem>
+  <para>The disk space associated with the storage cache proxy.</para>
+  <listitem>
+  <para>The cache expiration conditions.</para>
+  </listitem>
+  <para>Create periodic synchronize tasks with the remote repository.</para>
+  <listitem>
+  <para>On the user side, it may be necessary to force the update of artifacts with the -U option in the maven command line.</para>
+  </listitem>
+  </itemizedlist>
+</sect2>
+</chapter>

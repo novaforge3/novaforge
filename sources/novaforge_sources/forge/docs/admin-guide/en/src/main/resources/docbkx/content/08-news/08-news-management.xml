@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<chapter version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+		>
+
+	<title>News management</title>
+		<para>You can manage 4 kind of element, in the news management tool :
+		</para>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis>News</emphasis>
+					: Internationnalized content (title, summary and text), shown at
+					the
+					bottom of the public page. Can be filtered.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>Announcement</emphasis>
+					: Internationnalized content (title, summary and text), shown at
+					the
+					middle of the public page, more visible than news
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>Information</emphasis>
+					: Permanent internationnalized information, shown at the top of
+					public page.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis>Categories</emphasis>
+					: Categorize News and Announcement, definied by an
+					internationnalized label and a color.
+				</para>
+			</listitem>
+		</itemizedlist>
+
+		<sect1>
+			<title>Public</title>
+			<sect2>
+			<title>Overview page</title>
+			<figure>
+				<title>News Public page</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="News-Public.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+			<para>On the public page, the information layout is the bordered
+				panel on top, the announcement layout is in the middle, with the
+				background and news layout is at bottom, containing the news list
+				and the news filters. </para>
+			<para>News, announcement, information and category content will be shown in user language, if you have filled it, if not in the required default language of the forge.</para>
+			<para>User can click on News and Announcement to view the full content of the element on details page.</para>
+			<para>On the top of News public page, you have the administration
+				button to go
+				to the news administration.
+			</para>
+			</sect2>
+			<sect2>
+			<title>Details page</title>
+			<para>On details page, user have the full content of a news/announcement.</para>
+			<figure>
+				<title>Details page</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="News-details.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+			</sect2>
+		</sect1>
+		<sect1>
+			<title>Administration</title>
+			<para>On the administration home page you have four buttons to
+				manage the four elements (news, announcement, information and
+				categories) and at the bottom, a button to go back to the public
+				page. </para>
+			<figure>
+				<title>Administration home page</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="News-Admin-home.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+			<para>On each administration page (except information page), you will see the element list (announcements list, if you are on announcement administration). You will be able to publish, edit and delete element with action buttons in the last column of the table.
+			 And a create button is available on top of the page.</para>
+			<sect2>
+				<title>News and Announcement</title>
+				<para>For a news and announcement, you have to fill a publish date, set if published, a title, a summary and a content. Title and summary will be shown in the public page, content will be shown on the news details page.</para>
+				<para>You can link with a category</para>
+				<figure>
+					<title>Create a news/announcement</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="News-create-news.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</sect2>
+			<sect2>
+				<title>Information</title>
+				<para>Fill the information title and content, at least in default language (represented by a red star).</para>
+				<figure>
+					<title>Update information</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="News-create-infos.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</sect2>
+			<sect2>
+				<title>Categories</title>
+				<para>When you create a category, you must fill at least the label in default language (represented by a red star), and choose a color to associate to the category.</para>
+				<figure>
+					<title>Create a category</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="News-create-category.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</sect2>
+		</sect1>
+</chapter>

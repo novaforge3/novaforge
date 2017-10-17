@@ -1,0 +1,22 @@
+diff -rNU5 phpBB3-003/api/soap/pc_project_api.php phpBB3/api/soap/pc_project_api.php
+--- phpBB3-003/api/soap/pc_project_api.php	2013-12-12 09:53:15.505322405 +0100
++++ phpBB3/api/soap/pc_project_api.php	2013-12-12 09:56:08.037326207 +0100
+@@ -181,16 +181,16 @@
+ 	$message .= "Unknown Adminuser/Admin password";			
+ 	return false;
+ }
+ 
+ function pc_project_update($pAdminUserName, $pAdminPassword, $pForumId, $pForumName, $pForumDescription) {
+-
++	global $db;
+ 	$log_status = login_db($pAdminUserName, $pAdminPassword);			
+ 	if($log_status['status']==LOGIN_SUCCESS)
+ 	{
+ 		$sql = "UPDATE " . FORUMS_TABLE . 
+-			"SET forum_name = '".$pForumName.
++			" SET forum_name = '".$pForumName.
+ 			"', forum_desc = '".$pForumDescription.
+ 			"' WHERE forum_id = ".$pForumId;		
+ 				
+ 		$db->sql_query($sql);		
+ 		return true;

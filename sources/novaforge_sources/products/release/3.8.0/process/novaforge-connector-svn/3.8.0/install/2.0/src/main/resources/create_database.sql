@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS `plugin_svn`;
+CREATE DATABASE `plugin_svn`;

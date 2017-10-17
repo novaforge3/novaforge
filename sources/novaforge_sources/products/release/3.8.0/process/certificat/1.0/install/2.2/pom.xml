@@ -1,0 +1,79 @@
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.novaforge.products.process</groupId>
+		<artifactId>parent-3.8.0</artifactId>
+		<version>2.0</version>
+		<relativePath>../../../../pom.xml</relativePath>
+	</parent>
+	<groupId>org.novaforge.products.process.install</groupId>
+	<artifactId>certificat-1.0</artifactId>
+	<packaging>beaver-process</packaging>
+	<version>2.2</version>
+	<name>NovaForge(tm) :: Products :: 3.8.0 :: Process :: Certificat :: Install :: 1.0 :: 2.2</name>
+	<description>NovaForge(tm) :: Products :: 3.8.0 :: Process :: Certificat :: Install :: 1.0 :: 2.2</description>
+	
+	<properties>
+		<!-- Process info -->
+		<productId>certificat</productId>
+		<process>install</process>
+		<script>${process}.groovy</script>
+		<config>config.groovy</config>
+		<!-- Process properties -->
+		<product.home>@{local:system}/crt</product.home>
+		<product.name>novaforge</product.name>
+		
+		<!-- Generate mode -->
+		<product.generate>true</product.generate>
+		<product.p12Source></product.p12Source>
+		
+		<!-- P12 information -->
+		<product.p12>@{product.home}/@{product.name}.p12</product.p12>
+		<product.p12PwdIn>N0V4FoRG3_1</product.p12PwdIn>
+		<product.p12PwdOut>@{product.p12PwdIn}</product.p12PwdOut>
+		
+		<!-- PKS information -->
+		<product.jks>@{product.home}/@{product.name}.jks</product.jks>
+		<product.jksPwd>novaforge_1</product.jksPwd>
+		<product.jksAlias>@{local:host}</product.jksAlias>
+		<product.keysize>2048</product.keysize>
+		
+		<!-- Certificat information -->
+		<product.key>@{product.home}/@{product.name}.key</product.key>
+		<product.csr>@{product.home}/@{product.name}.crt</product.csr>
+		
+		<product.days>365</product.days>
+		<product.country>FR</product.country>
+		<product.location>Echirolles</product.location>
+		<product.organization>Bull</product.organization>
+		<product.organizationUnit>@{product.organization}</product.organizationUnit>
+		<product.commonName>@{local:host}</product.commonName>
+		<product.email>novaforge-support@bmt.bull.net</product.email>
+		<!-- Extends properties -->
+	</properties>
+</project>

@@ -1,0 +1,10 @@
+--- unicorn.rb.erb	2014-10-27 11:34:00.000000000 +0100
++++ unicorn-patchd.rb.erb	2014-10-28 11:35:50.273581290 +0100
+@@ -48,5 +48,7 @@
+ <%- if @stdout_path %>
+ # Where stdout gets logged
+ stdout_path '<%= @stdout_path %>'
+ 
+ <%- end %>
++
++ENV['RAILS_RELATIVE_URL_ROOT'] = "/gitlab"

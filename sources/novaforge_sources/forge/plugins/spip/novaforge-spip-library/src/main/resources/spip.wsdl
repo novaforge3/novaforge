@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:tns="http://novaforge.bull.net" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/"
+             targetNamespace="http://novaforge.bull.net">
+<types>
+<xsd:schema targetNamespace="http://novaforge.bull.net"
+>
+ <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+ <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/" />
+ <xsd:complexType name="StringArray">
+  <xsd:complexContent>
+   <xsd:restriction base="SOAP-ENC:Array">
+    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="xsd:string[]"/>
+   </xsd:restriction>
+  </xsd:complexContent>
+ </xsd:complexType>
+ <xsd:complexType name="UserData">
+  <xsd:all>
+   <xsd:element name="nom" type="xsd:string"/>
+   <xsd:element name="email" type="xsd:string"/>
+   <xsd:element name="login" type="xsd:string"/>
+   <xsd:element name="pass" type="xsd:string"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="UserSite">
+  <xsd:all>
+   <xsd:element name="url_site" type="xsd:string"/>
+   <xsd:element name="nom_site" type="xsd:string"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="UserInfo">
+  <xsd:all>
+   <xsd:element name="nom" type="xsd:string"/>
+   <xsd:element name="id" type="xsd:string"/>
+   <xsd:element name="login" type="xsd:string"/>
+   <xsd:element name="email" type="xsd:string"/>
+   <xsd:element name="webmestre" type="xsd:string"/>
+   <xsd:element name="statut" type="xsd:string"/>
+   <xsd:element name="nom_site" type="xsd:string"/>
+   <xsd:element name="url_site" type="xsd:string"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="SiteInfo">
+  <xsd:all>
+   <xsd:element name="url_site" type="xsd:string"/>
+   <xsd:element name="nom_site" type="xsd:string"/>
+   <xsd:element name="email_webmaster" type="xsd:string"/>
+   <xsd:element name="descriptif_site" type="xsd:string"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="SiteInput">
+  <xsd:all>
+   <xsd:element name="site_id" type="xsd:string"/>
+   <xsd:element name="nom_site" type="xsd:string"/>
+   <xsd:element name="descriptif_site" type="xsd:string"/>
+  </xsd:all>
+ </xsd:complexType>
+</xsd:schema>
+</types>
+<message name="connectRequest">
+  <part name="login" type="xsd:string" />
+  <part name="password" type="xsd:string" /></message>
+<message name="connectResponse">
+  <part name="return" type="xsd:string" /></message>
+<message name="get_rolesRequest"></message>
+<message name="get_rolesResponse">
+  <part name="return" type="tns:StringArray" /></message>
+<message name="add_userRequest">
+  <part name="username" type="xsd:string" />
+  <part name="password" type="xsd:string" />
+  <part name="userData" type="tns:UserData" /></message>
+<message name="add_userResponse">
+  <part name="return" type="xsd:integer" /></message>
+<message name="get_user_infoRequest">
+  <part name="username" type="xsd:string" />
+  <part name="password" type="xsd:string" />
+  <part name="login" type="xsd:string" /></message>
+<message name="get_user_infoResponse">
+  <part name="return" type="tns:UserInfo" /></message>
+<message name="get_user_idRequest">
+  <part name="username" type="xsd:string" />
+  <part name="password" type="xsd:string" />
+  <part name="login" type="xsd:string" /></message>
+<message name="get_user_idResponse">
+  <part name="return" type="xsd:integer" /></message>
+<message name="update_userRequest">
+  <part name="username" type="xsd:string" />
+  <part name="password" type="xsd:string" />
+  <part name="login" type="xsd:string" />
+  <part name="userData" type="tns:UserData" /></message>
+<message name="update_userResponse">
+  <part name="return" type="xsd:boolean" /></message>
+<message name="delete_userRequest">
+  <part name="username" type="xsd:string" />
+  <part name="password" type="xsd:string" />
+  <part name="login" type="xsd:string" /></message>
+<message name="delete_userResponse">
+  <part name="return" type="xsd:boolean" /></message>
+<message name="create_siteRequest">
+  <part name="username" type="xsd:string" />
+  <part name="password" type="xsd:string" />
+  <part name="siteInput" type="tns:SiteInput" /></message>
+<message name="create_siteResponse">
+  <part name="return" type="xsd:string" /></message>
+<message name="delete_siteRequest">
+  <part name="username" type="xsd:string" />
+  <part name="password" type="xsd:string" />
+  <part name="siteId" type="xsd:string" /></message>
+<message name="delete_siteResponse">
+  <part name="return" type="xsd:boolean" /></message>
+<message name="update_siteRequest">
+  <part name="username" type="xsd:string" />
+  <part name="password" type="xsd:string" />
+  <part name="siteInput" type="tns:SiteInput" /></message>
+<message name="update_siteResponse">
+  <part name="return" type="xsd:boolean" /></message>
+<message name="get_siteRequest">
+  <part name="username" type="xsd:string" />
+  <part name="password" type="xsd:string" /></message>
+<message name="get_siteResponse">
+  <part name="return" type="tns:SiteInfo" /></message>
+<message name="add_user_siteRequest">
+  <part name="username" type="xsd:string" />
+  <part name="password" type="xsd:string" />
+  <part name="login" type="xsd:string" />
+  <part name="siteId" type="xsd:string" />
+  <part name="role" type="xsd:string" /></message>
+<message name="add_user_siteResponse">
+  <part name="return" type="xsd:integer" /></message>
+<portType name="SpipConnectPortType">
+  <operation name="connect">
+    <documentation>Return the connected user or error message !</documentation>
+    <input message="tns:connectRequest"/>
+    <output message="tns:connectResponse"/>
+  </operation>
+  <operation name="get_roles">
+    <documentation>get available roles for spip (statut,webmestre properties of spip_auteurs).</documentation>
+    <input message="tns:get_rolesRequest"/>
+    <output message="tns:get_rolesResponse"/>
+  </operation>
+  <operation name="add_user">
+    <documentation>Return the user id</documentation>
+    <input message="tns:add_userRequest"/>
+    <output message="tns:add_userResponse"/>
+  </operation>
+  <operation name="get_user_info">
+    <documentation>Return result message</documentation>
+    <input message="tns:get_user_infoRequest"/>
+    <output message="tns:get_user_infoResponse"/>
+  </operation>
+  <operation name="get_user_id">
+    <documentation>Return the user id</documentation>
+    <input message="tns:get_user_idRequest"/>
+    <output message="tns:get_user_idResponse"/>
+  </operation>
+  <operation name="update_user">
+    <documentation>Return true if has been updated</documentation>
+    <input message="tns:update_userRequest"/>
+    <output message="tns:update_userResponse"/>
+  </operation>
+  <operation name="delete_user">
+    <documentation>Return true if has been deleted</documentation>
+    <input message="tns:delete_userRequest"/>
+    <output message="tns:delete_userResponse"/>
+  </operation>
+  <operation name="create_site">
+    <documentation>Return the created site</documentation>
+    <input message="tns:create_siteRequest"/>
+    <output message="tns:create_siteResponse"/>
+  </operation>
+  <operation name="delete_site">
+    <documentation>Return true if site been deleted</documentation>
+    <input message="tns:delete_siteRequest"/>
+    <output message="tns:delete_siteResponse"/>
+  </operation>
+  <operation name="update_site">
+    <documentation>Return true if has been updated</documentation>
+    <input message="tns:update_siteRequest"/>
+    <output message="tns:update_siteResponse"/>
+  </operation>
+  <operation name="get_site">
+    <documentation>Return result message</documentation>
+    <input message="tns:get_siteRequest"/>
+    <output message="tns:get_siteResponse"/>
+  </operation>
+  <operation name="add_user_site">
+    <documentation>Return result message</documentation>
+    <input message="tns:add_user_siteRequest"/>
+    <output message="tns:add_user_siteResponse"/>
+  </operation>
+</portType>
+<binding name="SpipConnectBinding" type="tns:SpipConnectPortType">
+  <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+  <operation name="connect">
+    <soap:operation soapAction="http://localhost/spip/ecrire/nf_spipconnect.php/connect" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="get_roles">
+    <soap:operation soapAction="http://localhost/spip/ecrire/nf_spipconnect.php/get_roles" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="add_user">
+    <soap:operation soapAction="http://localhost/spip/ecrire/nf_spipconnect.php/add_user" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="get_user_info">
+    <soap:operation soapAction="http://localhost/spip/ecrire/nf_spipconnect.php/get_user_info" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="get_user_id">
+    <soap:operation soapAction="http://localhost/spip/ecrire/nf_spipconnect.php/get_user_id" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="update_user">
+    <soap:operation soapAction="http://localhost/spip/ecrire/nf_spipconnect.php/update_user" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="delete_user">
+    <soap:operation soapAction="http://localhost/spip/ecrire/nf_spipconnect.php/delete_user" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="create_site">
+    <soap:operation soapAction="http://localhost/spip/ecrire/nf_spipconnect.php/create_site" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="delete_site">
+    <soap:operation soapAction="http://localhost/spip/ecrire/nf_spipconnect.php/delete_site" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="update_site">
+    <soap:operation soapAction="http://localhost/spip/ecrire/nf_spipconnect.php/update_site" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="get_site">
+    <soap:operation soapAction="http://localhost/spip/ecrire/nf_spipconnect.php/get_site" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="add_user_site">
+    <soap:operation soapAction="http://localhost/spip/ecrire/nf_spipconnect.php/add_user_site" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://novaforge.bull.net" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+</binding>
+<service name="SpipConnect">
+  <port name="SpipConnectPort" binding="tns:SpipConnectBinding">
+    <soap:address location="http://localhost/spip/ecrire/nf_spipconnect.php"/>
+  </port>
+</service>
+</definitions>
+

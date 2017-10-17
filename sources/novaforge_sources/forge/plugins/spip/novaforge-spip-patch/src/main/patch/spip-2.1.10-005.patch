@@ -1,0 +1,24 @@
+diff -rNU5 spip-004/extensions/cicas/inc/cicas_login.php spip/extensions/cicas/inc/cicas_login.php
+--- spip-004/extensions/cicas/inc/cicas_login.php	2013-07-02 15:48:17.993405430 +0200
++++ spip/extensions/cicas/inc/cicas_login.php	2013-07-02 16:05:19.053407129 +0200
+@@ -123,17 +123,18 @@
+ 		// URL cible de l'operation de connexion
+ 		$cible = cicas_url_cible();
+ 
+ 		//  bloquer ici le visiteur qui tente d'abuser de ses droits
+ 		if (isset($auteur['statut'])) {
+-			if (cicas_is_url_prive($cible)) {
++			//patch NF 2/07/2013: removing cicas_is_url_prive test because $cible is not considered as private when access is done from the forge portal (in opposite to direct access). Then the public url is always added to the page allowing to access public site for user having visitor (6forum) role from the forge portal.
++			//if (cicas_is_url_prive($cible)) {
+ 				if ($auteur['statut']=='6forum'){
+ 					$ciredirect = generer_url_public("cicas_erreur3");
+ 					// redirection immediate
+ 					redirige_par_entete($ciredirect);
+ 				}
+-			}
++			//}
+ 		}
+ 		
+ 		// on a ete authentifie, construire la session
+ 		// en gerant la duree demandee pour son cookie 
+ 		if ($session_remember !== NULL)

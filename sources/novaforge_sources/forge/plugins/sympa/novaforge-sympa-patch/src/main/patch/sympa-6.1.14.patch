@@ -1,0 +1,1331 @@
+diff -rNU5 sympa-6.1.14.orig/soap/sympasoap.pm sympa-6.1.14/soap/sympasoap.pm
+--- sympa-6.1.14.orig/soap/sympasoap.pm	2012-07-20 15:50:47.000000000 +0200
++++ sympa-6.1.14/soap/sympasoap.pm	2012-12-05 13:32:16.000000000 +0100
+@@ -863,11 +863,11 @@
+     my $gecos = $user_entry->{'gecos'};
+     
+     
+     ## Really delete and rewrite to disk.
+     my $u;
+-    unless ($u = $list->delete_user('users' => [$email], 'exclude' =>' 1')){
++    unless ($u = $list->delete_user('users' => [$email], 'exclude' =>' 0')){
+ 	my $error = "Unable to delete user $email from list $listname for command 'del'";
+ 	&do_log('info', 'DEL %s %s from %s failed, '.$error);
+ 	die SOAP::Fault->faultcode('Server')
+ 	    ->faultstring('Unable to remove subscriber informations')
+ 	    ->faultdetail('Database access failed');	  
+@@ -1419,7 +1419,530 @@
+ 	return '';
+     }
+     
+     return $string
+ }
++## ## ## ## ## ## ## ## ## ## 
++##  Patch NovaForge Start ## 
++## ## ## ## ## ## ## ## ## ## 
++
++## This subroutine allows to create a user in database
++## Parameters are :
++## 1. class
++## 2. email
++## 3. gecos
++## 4. passwd
++## 5. lang
++
++## returns OK if the user is successfully created
++sub createUser {
++    my ($class) = shift;
++    my ($email) = shift;
++    my ($gecos) = shift;
++    my ($passwd) = shift;
++    my ($lang) = shift;
+ 
++    my $remote_application_name = $ENV{'remote_application_name'};
++
++    &Log::do_log('info', 'SOAP createUser(email = %s,gecos = %s,passwd = %s,lang = %s) via proxy application %s', $email,$gecos,$passwd,$lang,$remote_application_name);
++
++    unless ($email and $gecos and $passwd and $lang) {
++	&do_log('err', 'createUser(): incorrect number of parameters');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Incorrect number of parameters : Use <email> <gecos> <passwd> <lang>')
++	    ->faultdetail('Use <email> <gecos> <passwd> <lang>');
++    }
++
++# check the validity of the email
++    unless (&tools::valid_email($email)) {
++	&do_log('err', 'createUser(): invalid email');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to add user : Invalid email')
++	    ->faultdetail('Invalid email');
++    }
++
++# check the user doesn't already exists
++    if (&List::is_user_db($email)) {
++	&do_log('err', 'createUser(): a user with this email already exists');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to add user : Email already exists')
++	    ->faultdetail('Email already exists');
++    }
++
++    unless (&List::add_user_db({'email' => $email,
++				'password' => $passwd,
++				'lang' => $lang,
++				'gecos' => $gecos})) {
++	&do_log('err', 'createUser(): add_user_db_failed');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to add user : add_user_db_failed')
++	    ->faultdetail('add_user_db_failed');
++    }
++
++    return "OK";
++}
++
++
++## This subroutine allows to check if an user exists in SYMPA Organization
++## Parameters are :
++## 1. class
++## 2. email
++
++## returns OK if the user exists, KO if not exists
++sub isUser {
++    my ($class) = shift;
++    my ($email) = shift;
++
++    my $remote_application_name = $ENV{'remote_application_name'};
++
++    &Log::do_log('info', 'SOAP isUser(email = %s) via proxy application %s', $email,$remote_application_name);
++
++    unless ($email) {
++	&do_log('err', 'isUser(): incorrect number of parameters');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Incorrect number of parameters : Use <email> ')
++	    ->faultdetail('Use <email>');
++    }
++
++# check the user doesn't already exists
++    if (&List::is_user_db($email)) {
++    	return "OK";
++    }else{
++    	return "KO";
++    }
++}
++
++
++## This subroutine allows to delete a user in database and to unsubscribe it to all the lists he is subscribing
++## Parameters are :
++## 1. email
++## ENV variables needed are : SYMPA_ROBOT the robot domain name
++
++## returns OK if the user is successfully deleted
++sub deleteUser {
++    my ($class) = shift;
++    my ($email) = shift;
++
++    my $remote_application_name = $ENV{'remote_application_name'};
++    my $robot = $ENV{'SYMPA_ROBOT'};
++
++    &Log::do_log('info', 'SOAP deleteUser(email = %s) via proxy application %s', $email,$remote_application_name);
++
++    unless ($email) {
++	&do_log('err', 'deleteUser(): incorrect number of parameters');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Incorrect number of parameters : Use  <email>')
++	    ->faultdetail('Use : <email> ');
++    }
++
++# check the user exists
++    unless (&List::is_user_db($email)) {
++	&do_log('err', 'deleteUser(): no user found with this email');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to delete user : No user found with this email')
++	    ->faultdetail('No user found with this email');
++    }
++
++    my (@users) = ($email);
++
++# delete the user from the user table
++    unless (&List::delete_user_db(@users)) {
++	&do_log('err', 'deleteUser(): delete_user_db_failed for email = %s', $email);
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to delete user : delete_user_db_failed')
++	    ->faultdetail('delete_user_db_failed');
++    }
++
++# delete the user from the lists he is subscriber
++    my %listnames;
++    
++    foreach my $role ('member','owner','editor') {
++	foreach my $list( &List::get_which($email,$robot,$role) ){    
++	    my $name = $list->{'name'};
++            &Log::do_log('info', 'SOAP updateUserEmail(user is subscriber of listname = %s)',$name);
++	    $listnames{$name} = $list;
++	}
++    }
++
++    foreach my $name (keys %listnames) {
++	    my $list = $listnames{$name};
++            my $listname = $list->{'name'};
++            &del($class,$listname,$email);
++    }
++
++    return "OK";
++}
++
++
++## This subroutine allows to delete a user on all the lists of a specified topic
++## Parameters are :
++## 1. email
++## 2. topic name
++## ENV variables needed are : SYMPA_ROBOT the robot domain name
++
++## returns OK if the user is successfully deleted of all the lists of the topic
++sub deleteUserOnTopic {
++    my ($class) = shift;
++    my ($email) = shift;
++    my ($topicname) = shift;
++
++    my $remote_application_name = $ENV{'remote_application_name'};
++    my $robot = $ENV{'SYMPA_ROBOT'};
++
++    &Log::do_log('info', 'SOAP deleteUserOnTopic(email = %s, topicname = %s) via proxy application %s', $email,$$topicname,$remote_application_name);
++
++    unless ($email and $topicname) {
++	&do_log('err', 'deleteUserOnTopic(): incorrect number of parameters');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Incorrect number of parameters : Use <email> <topicname>')
++	    ->faultdetail('Use : <email> <topicname> ');
++    }
++
++# check the user exists
++    unless (&List::is_user_db($email)) {
++	&do_log('err', 'deleteUserOnTopic(): no user found with this email');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to delete user : No user found with this email')
++	    ->faultdetail('No user found with this email');
++    }
++
++    my (@users) = ($email);
++
++# delete the user from the lists of the topic where he is subscriber
++    my %listnames;
++    
++    foreach my $role ('member','owner','editor') {
++	foreach my $list( &List::get_which($email,$robot,$role) ){    
++	    my $name = $list->{'name'};
++            &Log::do_log('info', 'SOAP updateUserEmail(user is subscriber of listname = %s)',$name);
++	    $listnames{$name} = $list;
++	}
++    }
++
++    foreach my $name (keys %listnames) {
++	    my $list = $listnames{$name};
++            my $listname = $list->{'name'};
++	    my @topics =   $list->{'admin'}{'topics'};
++	    &do_log('info', 'deleteUserOnTopic(): topic= %s', $topics[0][0]);
++	    if (@topics and $topics[0][0] eq $topicname) {
++		 &do_log('info', 'deleteUserOnTopic(): delete the user on list = %s', $listname);
++		 &del($class,$listname,$email);
++	    }
++    }
++
++    return "OK";
++}
++
++
++
++## This subroutine allows to update a user in database except for its email (use updateUserEmail instead)
++## Parameters are :
++## 1. class
++## 2. email
++## 3. gecos
++## 4. passwd
++## 5. lang
++
++## returns OK if the user is successfully updated
++sub updateUser {
++    my ($class) = shift;
++    my ($email) = shift;
++    my ($gecos) = shift;
++    my ($passwd) = shift;
++    my ($lang) = shift;
++
++    my $remote_application_name = $ENV{'remote_application_name'};
++
++    &Log::do_log('info', 'SOAP updateUser(email = %s,gecos = %s,passwd = %s,lang = %s) via proxy application %s',$email,$gecos,$passwd,$lang,$remote_application_name);
++
++    unless ($email and $gecos and $passwd and $lang) {
++	&do_log('err', 'updateUser(): incorrect number of parameters');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Incorrect number of parameters : Use <old_email> <email> <gecos> <passwd> <lang>')
++	    ->faultdetail('Use : <old_email> <email> <gecos> <passwd> <lang>');
++    }
++
++# check the exists
++    unless (&List::is_user_db($email)) {
++	&do_log('err', 'updateUser(): no user found with this email');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to update user : No user found with this email')
++	    ->faultdetail('No user found with this email');
++    }
++
++    unless (&List::update_user_db($email, {'gecos' => $gecos,'password' => $passwd,'lang' => $lang })) {
++	&do_log('err', 'updateUser(): update_user_db_failed');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to update user : update_user_db_failed')
++	    ->faultdetail('update_user_db_failed');
++    }
++
++    return "OK";
++}
++
++## This subroutine allows to update a user'email in database. It updates also all lists where user is subscriber
++## Parameters are :
++## 1. class
++## 2. old_email
++## 3. new_email
++## ENV variables needed are : SYMPA_ROBOT the robot domain name
++
++## returns OK if the user is successfully updated
++sub updateUserEmail {
++    my ($class) = shift;
++    my ($old_email) = shift;
++    my ($new_email) = shift;
++
++    my $remote_application_name = $ENV{'remote_application_name'};
++    my $robot = $ENV{'SYMPA_ROBOT'};
++
++    &Log::do_log('info', 'SOAP updateUserEmail(old_email = %s,email = %s) via proxy application %s',$old_email,$new_email,$remote_application_name);
++
++    unless ($old_email and $new_email) {
++	&do_log('err', 'updateUserEmail(): incorrect number of parameters');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Incorrect number of parameters : Use <old_email> <email>')
++	    ->faultdetail('Use : <old_email> <email> ');
++    }
++
++# check the user exists
++    unless (&List::is_user_db($old_email)) {
++	&do_log('err', 'updateUserEmail(): no user found with this email');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to update user email : No user found with this email')
++	    ->faultdetail('No user found with this email');
++    }
++
++# check the validity of the email
++    unless (&tools::valid_email($new_email)) {
++	&do_log('err', 'updateUserEmail(): invalid email');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to update user : Invalid emai')
++	    ->faultdetail('Invalid email');
++    }
++
++# check the new email is not used
++    if (&List::is_user_db($new_email)) {
++	&do_log('err', 'updateUserEmail(): an user with the new email has been found');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to update user email : An user with the new email has been found')
++	    ->faultdetail('An user with the new email has been found');
++    }
++
++# loop on all the list where the user is subscriber to change the email_subscriber field
++    my %listnames;
++    
++    foreach my $role ('member','owner','editor') {
++	foreach my $list( &List::get_which($old_email,$robot,$role) ){    
++	    my $name = $list->{'name'};
++            &Log::do_log('info', 'SOAP updateUserEmail(user is subscriber of listname = %s)',$name);
++	    $listnames{$name} = $list;
++	}
++    }
++
++    my $user = {};
++    $user->{'email'} = $new_email;
++
++    foreach my $name (keys %listnames) {
++	    my $list = $listnames{$name};
++
++	    unless ($list->update_user($old_email,$user)) {	    
++		&do_log('err', 'updateUserEmail(): update_user_failed');
++		die SOAP::Fault->faultcode('Client')
++		    ->faultstring('Unable to update user : update_user_failed')
++		    ->faultdetail('update_user_failed');
++	    }
++    }
++
++# update the email field in the user table
++    unless (&List::update_user_db($old_email, {'email' => $new_email})) {
++	&do_log('err', 'updateUserEmail(): update_user_db_failed');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to update user : update_user_db_failed')
++	    ->faultdetail('update_user_db_failed');
++    }
++    
++    return "OK";
++}
++
++## This subroutine allows to create a new subtopic. it creates the categorytopic if it doesn't exists
++## Parameters are :
++## 1. class
++## 2. name --- the id of the topic
++## 3. category --- the category of the topic (ie the parent topic title-- the parent topic id is extracted from subtopic id)
++## 4. title --- the title of the topic
++## 5. visibility --- the visibility of the topic and of the subtopic (the same)
++
++## ENV variables needed are : SYMPA_ROBOT the robot domain name
++
++## returns OK if the user is successfully updated
++sub createTopic {
++    my ($class) = shift;
++    my ($name) = shift;
++    my ($category) = shift;
++    my ($title) = shift;
++    my ($visibility) = shift;
++
++    my $remote_application_name = $ENV{'remote_application_name'};
++    my $robot = $ENV{'SYMPA_ROBOT'};
++
++    &Log::do_log('info', 'SOAP createTopic(name = %s,title = %s) via proxy application %s',$name,$title,$remote_application_name);
++
++# check the subtopic doesn't exists
++    my $ret = &List::exist_subtopic($robot, $name);
++    if ( $ret eq "true"){
++	&do_log('err', 'createTopic(): subtopic does already exists');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to create subtopic : subtopic does already exists')
++	    ->faultdetail('SubTopic does already exists');
++    }
++
++# create the parent topic if it does not exist
++    my @tab = split '/', $name;
++    my $parent_topic_name = $tab[0];
++
++    my %topics;
++    unless (%topics = &List::load_topics($robot)) {
++	&do_log('err', 'createTopic(): load_topics_failed');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to create topic : load_topics_failed')
++	    ->faultdetail('load_topics_failed');
++    }
++
++    my $parentExists = 'false';
++    foreach my $topic_name (keys %topics) {
++	if ($topic_name eq $parent_topic_name){
++		$parentExists = 'true';
++	}
++    }
++
++    unless ($parentExists eq "true") {
++	    unless (&List::create_topic($robot,$parent_topic_name,$category,$visibility)) {
++		die SOAP::Fault->faultcode('Client')
++		    ->faultstring('Unable to create parent topic : create_topic_failed')
++		    ->faultdetail('create_topic_failed');
++	    }
++    }
++
++# create the sub topic
++    unless (&List::create_topic($robot, $name,$title,$visibility)) {
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to create subtopic : create_topic_failed')
++	    ->faultdetail('create_topic_failed');
++    }
++
++    return "OK";
++}
++
++## This subroutine allows to update a subtopic title
++## Parameters are :
++## 1. class
++## 2. name --- the id of the topic
++## 3. title --- the new title of the topic
++## ENV variables needed are : SYMPA_ROBOT the robot domain name
++
++## returns OK if the user is successfully updated
++sub updateTopic {
++    my ($class) = shift;
++    my ($name) = shift;
++    my ($title) = shift;
++
++    my $remote_application_name = $ENV{'remote_application_name'};
++    my $robot = $ENV{'SYMPA_ROBOT'};
++
++    &Log::do_log('info', 'SOAP updateTopic(name = %s,title = %s) via proxy application %s',$name,$title,$remote_application_name);
++
++
++# check the subtopic exists
++    my $ret = &List::exist_subtopic($robot, $name);
++    unless ( $ret and $ret eq "true"){
++	&do_log('err', 'deleteTopic(): subtopic does not exists');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to delete subtopic : Topic does not exists')
++	    ->faultdetail('Topic does not exists');
++    }
++
++# get the title before
++    my $title_before;
++    unless ($title_before = &List::get_subtopic_title($robot,$name)) {
++	&do_log('err', 'updateTopic(): get_subtopic_title_failed');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to get the title subtopic : get_subtopic_title_failed')
++	    ->faultdetail('get_subtopic_title_failed');
++    }
++
++    unless (&List::replace_topic_title($robot,$name,$title_before,$title)) {
++	&do_log('err', 'updateTopic(): replace_topic_title_failed');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to update topic : replace_topic_title_failed')
++	    ->faultdetail('replace_topic_title_failed');
++    }
++
++    return "OK";
++}
++
++
++## This subroutine allows to delete a subtopic, delete all the lists linked to the subtopic and the topic parent if no more subtopics exists
++## Parameters are :
++## 1. class
++## 2. name --- the id of the topic
++## ENV variables needed are : SYMPA_ROBOT the robot domain name
++
++## returns OK if the subtopic is successfully deleted
++sub deleteTopic {
++    my ($class) = shift;
++    my ($name) = shift;
++
++    my $remote_application_name = $ENV{'remote_application_name'};
++    my $robot = $ENV{'SYMPA_ROBOT'};
++
++    &Log::do_log('info', 'SOAP deleteTopic(name = %s) via proxy application %s',$name,$remote_application_name);
++
++# check the subtopic exists
++    my $ret = &List::exist_subtopic($robot, $name);
++    unless ( $ret and $ret eq "true"){
++	&do_log('err', 'deleteTopic(): subtopic does not exists');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to delete subtopic : Topic does not exists')
++	    ->faultdetail('Topic does not exists');
++    }
++
++# delete the topic in the topics.conf file
++    unless (&List::delete_topic($robot,$name)) {
++	&do_log('err', 'deleteTopic(): delete_topic_failed');
++	die SOAP::Fault->faultcode('Client')
++	    ->faultstring('Unable to delete topic : delete_topic_failed')
++	    ->faultdetail('delete_topic_failed');
++    }
++
++# delete all the lists linked to the topic
++    my $all_lists = &List::get_lists($robot);
++    foreach my $list ( @$all_lists ) {
++	my $listname = $list->{'name'};
++        my @topics =   $list->{'admin'}{'topics'};
++	if (@topics and $topics[0][0] eq $name) {
++		&do_log('info', 'deleteTopic(): close the list = %s', $listname);
++		&closeList($class,$listname);
++	}
++    }
++
++# delete the topic if no subtopic exists no more
++    my @tab = split '/', $name;
++    my $parent_topic_name = $tab[0];
++    my $count = &List::count_subtopics($robot, $parent_topic_name);
++    if ($count == 0) {
++	    unless (&List::delete_topic($robot,$parent_topic_name)) {
++		&do_log('err', 'deleteTopic(): delete_topic_failed');
++		die SOAP::Fault->faultcode('Client')
++		    ->faultstring('Unable to delete parent topic : delete_topic_failed')
++		    ->faultdetail('delete_topic_failed');
++	    }
++    }
++
++
++    return "OK";
++}
++
++## ## ## ## ## ## ## ## ## ## 
++##  Patch NovaForge End ## 
++## ## ## ## ## ## ## ## ## ## 
+ 1;
+diff -rNU5 sympa-6.1.14.orig/soap/sympa.wsdl sympa-6.1.14/soap/sympa.wsdl
+--- sympa-6.1.14.orig/soap/sympa.wsdl	2010-03-30 12:10:06.000000000 +0200
++++ sympa-6.1.14/soap/sympa.wsdl	2012-12-05 13:32:16.000000000 +0100
+@@ -232,10 +232,97 @@
+ 
+ <message name="checkCookieResponse">
+ 	<part name="email" type="xsd:string"/>
+ </message>
+ 
++<!-- Patch NovaForge Begin -->
++<message name="isUserRequest">
++   <part name="email" type="xsd:string"/>
++</message>
++
++<message name="isUserResponse">
++   <part name="return" type="xsd:boolean"/>
++</message>
++
++<message name="createUserRequest">
++   <part name="email" type="xsd:string"/>
++   <part name="gecos" type="xsd:string"/>
++   <part name="passwd" type="xsd:string"/>
++   <part name="lang" type="xsd:string"/>
++</message>
++
++<message name="createUserResponse">
++   <part name="return" type="xsd:boolean"/>
++</message>
++
++<message name="deleteUserRequest">
++   <part name="email" type="xsd:string"/>
++</message>
++
++<message name="deleteUserResponse">
++   <part name="return" type="xsd:boolean"/>
++</message>
++
++<message name="deleteUserOnTopicRequest">
++   <part name="email" type="xsd:string"/>
++   <part name="topic" type="xsd:string"/>
++</message>
++
++<message name="deleteUserOnTopicResponse">
++   <part name="return" type="xsd:boolean"/>
++</message>
++
++<message name="updateUserEmailRequest">
++   <part name="old_email" type="xsd:string"/>
++   <part name="new_email" type="xsd:string"/>
++</message>
++
++<message name="updateUserEmailResponse">
++   <part name="return" type="xsd:boolean"/>
++</message>
++
++<message name="updateUserRequest">
++   <part name="email" type="xsd:string"/>
++   <part name="gecos" type="xsd:string"/>
++   <part name="passwd" type="xsd:string"/>
++   <part name="lang" type="xsd:string"/>
++</message>
++
++<message name="updateUserResponse">
++   <part name="return" type="xsd:boolean"/>
++</message>
++
++<message name="createTopicRequest">
++   <part name="name" type="xsd:string"/>
++   <part name="category" type="xsd:string"/>
++   <part name="title" type="xsd:string"/>
++   <part name="visibility" type="xsd:string"/>
++</message>
++
++<message name="createTopicResponse">
++   <part name="return" type="xsd:boolean"/>
++</message>
++
++<message name="updateTopicRequest">
++   <part name="name" type="xsd:string"/>
++   <part name="title" type="xsd:string"/>
++</message>
++
++<message name="updateTopicResponse">
++   <part name="return" type="xsd:boolean"/>
++</message>
++
++<message name="deleteTopicRequest">
++   <part name="name" type="xsd:string"/>
++</message>
++
++<message name="deleteTopicResponse">
++   <part name="return" type="xsd:boolean"/>
++</message>
++<!-- Patch NovaForge End -->
++
++
+ 
+ <!-- portType part -->
+ 
+ <portType name="SympaPort">
+ 	<operation name="info">
+@@ -312,10 +399,48 @@
+ 	</operation>
+ 	<operation name="checkCookie">
+ 		<input message="tns:checkCookieRequest" />
+ 		<output message="tns:checkCookieResponse" />
+ 	</operation>
++<!-- Patch NovaForge Begin -->
++   <operation name="isUser">
++      <input message="tns:isUserRequest" />
++      <output message="tns:isUserResponse" />
++   </operation>   
++   <operation name="createUser">
++      <input message="tns:createUserRequest" />
++      <output message="tns:createUserResponse" />
++   </operation>
++   <operation name="deleteUser">
++      <input message="tns:deleteUserRequest" />
++      <output message="tns:deleteUserResponse" />
++   </operation>
++   <operation name="deleteUserOnTopic">
++      <input message="tns:deleteUserOnTopicRequest" />
++      <output message="tns:deleteUserOnTopicResponse" />
++   </operation>
++   <operation name="updateUser">
++      <input message="tns:updateUserRequest" />
++      <output message="tns:updateUserResponse" />
++   </operation>
++   <operation name="updateUserEmail">
++      <input message="tns:updateUserEmailRequest" />
++      <output message="tns:updateUserEmailResponse" />
++   </operation>
++   <operation name="createTopic">
++      <input message="tns:createTopicRequest" />
++      <output message="tns:createTopicResponse" />
++   </operation>
++   <operation name="updateTopic">
++      <input message="tns:updateTopicRequest" />
++      <output message="tns:updateTopicResponse" />
++   </operation>
++   <operation name="deleteTopic">
++      <input message="tns:deleteTopicRequest" />
++      <output message="tns:deleteTopicResponse" />
++   </operation>
++<!-- Patch NovaForge End -->
+ </portType>
+ 
+ 
+ <!-- Binding part -->
+ 
+@@ -566,10 +691,129 @@
+ 				<soap:body use="encoded"
+ 					namespace="urn:sympasoap" 
+ 					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+ 			</output>
+ 	</operation>
++   <!-- Patch NovaForge Begin -->
++   <operation name="isUser">
++      <soap:operation soapAction="urn:sympasoap#isUser"/>
++         <input>
++            <soap:body use="encoded" 
++               namespace="urn:sympasoap" 
++               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
++         </input>
++         <output>
++            <soap:body use="encoded"
++               namespace="urn:sympasoap" 
++               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
++         </output>
++   </operation>
++   <operation name="createUser">
++      <soap:operation soapAction="urn:sympasoap#createUser"/>
++         <input>
++            <soap:body use="encoded" 
++               namespace="urn:sympasoap" 
++               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
++         </input>
++         <output>
++            <soap:body use="encoded"
++               namespace="urn:sympasoap" 
++               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
++         </output>
++   </operation>   
++   <operation name="deleteUser">
++      <soap:operation soapAction="urn:sympasoap#deleteUser"/>
++         <input>
++            <soap:body use="encoded" 
++               namespace="urn:sympasoap" 
++               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
++         </input>
++         <output>
++            <soap:body use="encoded"
++               namespace="urn:sympasoap" 
++               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
++         </output>
++   </operation>      
++   <operation name="deleteUserOnTopic">
++      <soap:operation soapAction="urn:sympasoap#deleteUserOnTopic"/>
++         <input>
++            <soap:body use="encoded" 
++               namespace="urn:sympasoap" 
++               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
++         </input>
++         <output>
++            <soap:body use="encoded"
++               namespace="urn:sympasoap" 
++               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
++         </output>
++   </operation>
++   <operation name="updateUser">
++      <soap:operation soapAction="urn:sympasoap#updateUser"/>
++         <input>
++            <soap:body use="encoded" 
++               namespace="urn:sympasoap" 
++               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
++         </input>
++         <output>
++            <soap:body use="encoded"
++               namespace="urn:sympasoap" 
++               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
++         </output>
++   </operation>  
++   <operation name="updateUserEmail">
++      <soap:operation soapAction="urn:sympasoap#updateUserEmail"/>
++         <input>
++            <soap:body use="encoded" 
++               namespace="urn:sympasoap" 
++               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
++         </input>
++         <output>
++            <soap:body use="encoded"
++               namespace="urn:sympasoap" 
++               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
++         </output>
++   </operation>
++   <operation name="createTopic">
++      <soap:operation soapAction="urn:sympasoap#createTopic"/>
++         <input>
++            <soap:body use="encoded" 
++               namespace="urn:sympasoap" 
++               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
++         </input>
++         <output>
++            <soap:body use="encoded"
++               namespace="urn:sympasoap" 
++               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
++         </output>
++   </operation>
++   <operation name="updateTopic">
++      <soap:operation soapAction="urn:sympasoap#updateTopic"/>
++         <input>
++            <soap:body use="encoded" 
++               namespace="urn:sympasoap" 
++               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
++         </input>
++         <output>
++            <soap:body use="encoded"
++               namespace="urn:sympasoap" 
++               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
++         </output>
++   </operation>
++   <operation name="deleteTopic">
++      <soap:operation soapAction="urn:sympasoap#deleteTopic"/>
++         <input>
++            <soap:body use="encoded" 
++               namespace="urn:sympasoap" 
++               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
++         </input>
++         <output>
++            <soap:body use="encoded"
++               namespace="urn:sympasoap" 
++               encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
++         </output>
++   </operation>
++   <!-- Patch NovaForge End -->
+ </binding>
+ 
+ <!-- service part -->
+ 
+ 
+diff -rNU5 sympa-6.1.14.orig/src/lib/Conf.pm sympa-6.1.14/src/lib/Conf.pm
+--- sympa-6.1.14.orig/src/lib/Conf.pm	2012-07-23 13:01:07.000000000 +0200
++++ sympa-6.1.14/src/lib/Conf.pm	2012-12-05 13:32:16.000000000 +0100
+@@ -1119,10 +1119,11 @@
+ 				    'service_validate_path' => '.*',
+ 				    'proxy_path' => '.*',
+ 				    'proxy_validate_path' => '.*',
+ 				    'auth_service_name' => '.*',
+ 				    'authentication_info_url' => 'http(s)?:/.*',
++				    'novaforge_email_by_netid' => 'on|off',
+ 				    'ldap_host' => '[\w\.\-]+(:\d+)?(\s*,\s*[\w\.\-]+(:\d+)?)*',
+ 				    'ldap_bind_dn' => '.+',
+ 				    'ldap_bind_password' => '.+',
+ 				    'ldap_timeout'=> '\d+',
+ 				    'ldap_suffix'=> '.+',
+diff -rNU5 sympa-6.1.14.orig/src/lib/List.pm sympa-6.1.14/src/lib/List.pm
+--- sympa-6.1.14.orig/src/lib/List.pm	2012-07-25 12:05:38.000000000 +0200
++++ sympa-6.1.14/src/lib/List.pm	2012-12-05 13:32:16.000000000 +0100
+@@ -10394,10 +10394,255 @@
+     $sth->finish();
+ 
+     return $total;
+ }
+ 
++
++## ## ## ## ## ## ## ## ## ## 
++##  Patch NovaForge Start  ## 
++## ## ## ## ## ## ## ## ## ## 
++
++## This subroutine allows to replace the title of a topic by another
++## Parameters are :
++## 1. robot
++## 1. name the name of the topic (id)
++## 2. title_before
++## 3. title_after
++sub replace_topic_title {
++    my $robot = shift;
++    my $name = shift;
++    my $title_before = shift;
++    my $title_after = shift;
++
++    my $file = &tools::get_filename('etc',{},'topics.conf',$robot);
++    my $tmp_file = "$Conf::Conf{'etc'}/tmp.txt";
++
++    unless (open (FILE, "<", $file)) {
++	&do_log('err',"Unable to open config file $file");
++    }
++
++    unless (open (TMP_FILE, ">", $tmp_file)) {
++	&do_log('err',"Unable to open temporary file $tmp_file");
++    }
++
++    my $i = 0;
++    my $k = 0;
++    while (<FILE>) {
++	# we are searching the name
++	if (/^$name\b/) {
++		$k = $i;
++	}
++	
++	# if we find the name at line k, we change the title at line k+1
++        if ($i == $k+1 and s/$title_before/$title_after/) {
++             print TMP_FILE ;
++        }
++        else {
++            print TMP_FILE;
++        }  
++        $i++;
++    }
++
++    close TMP_FILE and close FILE;
++
++    unlink $file;
++    rename $tmp_file, $file;
++}
++
++
++## This subroutine allows to create a topic
++## Parameters are :
++## 1. robot
++## 2. name --- the id of the topic
++##�3. title --- the title of the topic
++##�4. visibility --- the visibility of the topic
++sub create_topic {
++    my $robot = shift;
++    my $name = shift;
++    my $title = shift;
++    my $visibility = shift;
++
++    my $conf_file = &tools::get_filename('etc',{},'topics.conf',$robot);
++
++    unless (open (FILE, ">>", $conf_file)) {
++	&do_log('err',"Unable to open config file $conf_file");
++	return undef;
++    }
++
++    print FILE "$name\n";
++    print FILE "title  $title\n";
++    print FILE "visibility  $visibility\n";
++    print FILE "\n";
++
++    close FILE;
++}
++
++
++
++## This subroutine allows to delete a topic
++## Parameters are :
++## 1. robot
++## 1. name the name of the topic (id)
++sub delete_topic {
++    my $robot = shift;
++    my $name = shift;
++
++    my $file = &tools::get_filename('etc',{},'topics.conf',$robot);
++    my $tmp_file = "$Conf::Conf{'etc'}/tmp.txt";
++
++    unless (open (FILE, "<", $file)) {
++	&do_log('err',"Unable to open config file $file");
++	return undef;
++    }
++
++    unless (open (TMP_FILE, ">", $tmp_file)) {
++	&do_log('err',"Unable to open temporary file $tmp_file");
++	return undef;
++    }
++
++    my $i = 0;
++    my $k = 0;
++    my $found;
++    while (<FILE>) {
++	# we are searching the name
++	if (/^$name\b/) {
++		$k = $i;
++		$found = 1;
++	}
++
++	# if we find the name at line k, we do not copy the lines k, k+1, k+2
++	unless ($found and ($i - $k <= 3)){       
++		print TMP_FILE;
++        } 
++        $i++;
++    }
++
++    close TMP_FILE and close FILE;
++
++    unlink $file;
++    rename $tmp_file, $file;
++}
++
++
++## This subroutine returns the number of subtopics
++## Parameters are :
++## 1. robot
++## 1. name the name of the topic (id)
++sub count_subtopics {    
++    my $robot = shift ;
++    my $name = shift ;
++
++    my $count_subtopics = 0;
++
++    do_log('info', 'List::count_subtopics(%s,%s)',$robot,$name);
++    my %all_topics;
++
++    unless (%all_topics = &List::load_topics($robot)) {
++	&do_log('err', 'count_subtopics(): load_topics_failed');
++	return undef;
++    }
++
++    foreach my $top (keys %all_topics) {
++	my $topic = $all_topics{$top};
++        if ($top eq $name){
++		foreach my $subtop (keys %{$topic->{'sub'}}) {	
++			$count_subtopics++;
++		}
++        }
++    }
++
++    return $count_subtopics;
++}
++
++## This subroutine returns true if the subtopic exists
++## Parameters are :
++## 1. robot
++## 1. name the name of the subtopic (id)
++sub exist_subtopic {    
++    my $robot = shift ;
++    my $name = shift ;
++
++    my $exists = "false";
++
++    my %all_topics;
++
++    my @tab = split '/', $name;
++    my $parent_topic_name = $tab[0];
++    my $subtopic_name = $tab[1];
++
++    unless ($parent_topic_name and $subtopic_name){
++	&do_log('err', 'exist_subtopic(): problem on the subtopic structure name with name=%s', $name);
++    	return undef;
++    }
++
++    unless (%all_topics = &List::load_topics($robot)) {
++	&do_log('err', 'exist_subtopic(): load_topics_failed');
++	return undef;
++    }
++
++    foreach my $top (keys %all_topics) {
++	my $topic = $all_topics{$top};
++        if ($top eq $parent_topic_name){
++		foreach my $subtop (keys %{$topic->{'sub'}}) {	
++			if ($subtop eq $subtopic_name){
++				$exists = "true";
++			}
++		}
++        }
++    }
++
++    return $exists;
++}
++
++
++## This subroutine returns the subtopic title
++## Parameters are :
++## 1. robot
++## 1. name the name of the subtopic (id)
++sub get_subtopic_title {    
++    my $robot = shift ;
++    my $name = shift ;
++
++    my $title;
++
++    my %all_topics;
++
++    my @tab = split '/', $name;
++    my $parent_topic_name = $tab[0];
++    my $subtopic_name = $tab[1];
++	&do_log('info', 'get_subtopic_title(): parent_topic_name=%s', $parent_topic_name);
++	&do_log('info', 'get_subtopic_title(): subtopic_name=%s', $subtopic_name);
++
++    unless ($parent_topic_name and $subtopic_name){
++	&do_log('err', 'exist_subtopic(): problem on the subtopic structure name with name=%s', $name);
++    	return undef;
++    }
++
++    unless (%all_topics = &List::load_topics($robot)) {
++	&do_log('err', 'get_subtopic_title(): load_topics_failed');
++	return undef;
++    }
++
++    foreach my $top (keys %all_topics) {
++	my $topic = $all_topics{$top};
++        if ($top eq $parent_topic_name){
++	&do_log('info', 'get_subtopic_title(): top=%s', $top);
++		foreach my $subtop (keys %{$topic->{'sub'}}) {	
++			if ($subtop eq $subtopic_name){
++				$title = $topic->{'sub'}{$subtop}{'current_title'};
++			}
++		}
++        }
++    }
++
++    return $title;
++}
++
++## ## ## ## ## ## ## ## ## ## 
++##  Patch NovaForge End    ## 
++## ## ## ## ## ## ## ## ## ## 
++
+ ## Loads the list of topics if updated
+ sub load_topics {
+     
+     my $robot = shift ;
+     do_log('debug2', 'List::load_topics(%s)',$robot);
+diff -rNU5 sympa-6.1.14.orig/web_tt2/create_list_request.tt2 sympa-6.1.14/web_tt2/create_list_request.tt2
+--- sympa-6.1.14.orig/web_tt2/create_list_request.tt2	2010-03-30 12:10:09.000000000 +0200
++++ sympa-6.1.14/web_tt2/create_list_request.tt2	2012-12-05 13:32:16.000000000 +0100
+@@ -84,11 +84,13 @@
+ 	  [% FOREACH subtopic = topic.value.sub %]
+ 	     <option value="[% topic.key %]/[% subtopic.key %]">[% topic.value.current_title %] / [% subtopic.value.current_title %]</option>
+ 	  [% END %]
+ 	  [% END %]
+ 	[% END %]
++<!-- NovaForge : do not display other option
+ 	<option value="other">[%|loc%]Other[%END%]</option>
++-->
+      </select>
+      <br />
+ 
+   <img class="align_top" src="[% icons_url %]/unknown.png" alt="[%|loc%]Help[%END%]" title="[%|loc%]A few lines describing the list[%END%]" />
+   <label for="info" class="align_top"><strong>[%|loc%]Description:[%END%]</strong></label>
+diff -rNU5 sympa-6.1.14.orig/web_tt2/home.tt2 sympa-6.1.14/web_tt2/home.tt2
+--- sympa-6.1.14.orig/web_tt2/home.tt2	2010-04-26 18:24:02.000000000 +0200
++++ sympa-6.1.14/web_tt2/home.tt2	2012-12-05 13:32:16.000000000 +0100
+@@ -12,11 +12,13 @@
+  <div id="global_mailing_lists">
+  
+       <ul class="mailing_lists_menu">
+     [% FOREACH topic = topics %]
+       [% IF topic.id == 'topicsless' %]
++<!-- NovaForge Patch do not propose Others category
+        <li><a href="[% path_cgi %]/lists/[% topic.id %]"><strong>[%|loc%]Others[%END%]</strong></a></li>
++-->
+       [% ELSE %]
+        <li><a href="[% path_cgi %]/lists/[% topic.id %]"><strong>[% topic.current_title %]</strong></a></li>
+       [% END %]
+ 
+       [% IF topic.sub.size %]
+diff -rNU5 sympa-6.1.14.orig/web_tt2/loginbanner.tt2 sympa-6.1.14/web_tt2/loginbanner.tt2
+--- sympa-6.1.14.orig/web_tt2/loginbanner.tt2	2012-07-05 16:39:53.000000000 +0200
++++ sympa-6.1.14/web_tt2/loginbanner.tt2	2012-12-05 13:32:16.000000000 +0100
+@@ -48,16 +48,19 @@
+ 
+ [% IF use_passwd == '1' %]
+ [% IF authentication_info_url %]
+    <a class="menuLinks" href="[%authentication_info_url%]">[%|loc%]Authentication help[% END %]</a><br />
+ [% ELSE %]
++<!-- NovaForge : do not display the link allowing the user registering -->
++<!--
+   <div class="remember">
+   <b>
+   <a href="[% path_cgi %]/firstpasswd/[% escaped_init_email %]">[%|loc%]First login?[%END%]</a><br />
+   <a href="[% path_cgi %]/renewpasswd/[% escaped_init_email %]">[%|loc%]Lost password?[%END%]</a>
+   </b>
+   </div>
++-->
+ [% END %]
+ [% END %]
+ 
+   </div>
+ <!-- end loginbanner.tt2 -->
+diff -rNU5 sympa-6.1.14.orig/web_tt2/login_menu.tt2 sympa-6.1.14/web_tt2/login_menu.tt2
+--- sympa-6.1.14.orig/web_tt2/login_menu.tt2	2010-03-30 12:10:09.000000000 +0200
++++ sympa-6.1.14/web_tt2/login_menu.tt2	2012-12-05 13:32:16.000000000 +0100
+@@ -37,13 +37,15 @@
+   </fieldset>
+   </form>
+ </div>
+ [% END %]
+ 
++<!-- NovaForge : do not display preferences link
+ <div class="prefs">
+ <a href="[% path_cgi %]/pref" >[%|loc%]Your preferences[%END%]</a>
+ </div>
++-->
+ 
+ [% ELSE %] 
+ [% PROCESS 'loginbanner.tt2' %]
+ 
+ [% END %]
+diff -rNU5 sympa-6.1.14.orig/web_tt2/setlang.tt2 sympa-6.1.14/web_tt2/setlang.tt2
+--- sympa-6.1.14.orig/web_tt2/setlang.tt2	2010-03-30 12:10:09.000000000 +0200
++++ sympa-6.1.14/web_tt2/setlang.tt2	2012-12-05 13:33:45.000000000 +0100
+@@ -1,6 +1,7 @@
+ <!-- $Id: setlang.tt2 5675 2009-04-28 13:59:12Z david.verdin $ -->
++<!-- NovaForge V3 : the user language preference is disabled in the webapp
+ <div id="setlang">
+ <form action="[% path_cgi %]" method="post">
+ <fieldset>
+      <input type="hidden" name="action" value="set_lang"/>
+      <input type="hidden" name="previous_action" value="[% action %]"/>
+@@ -18,6 +19,7 @@
+      </noscript>
+ [% END %]
+ </fieldset>
+ </form>
+ </div>
++-->
+ <!-- end setlang.tt2 -->
+diff -rNU5 sympa-6.1.14.orig/wwsympa/Auth.pm sympa-6.1.14/wwsympa/Auth.pm
+--- sympa-6.1.14.orig/wwsympa/Auth.pm	2010-11-15 10:27:47.000000000 +0100
++++ sympa-6.1.14/wwsympa/Auth.pm	2012-12-05 13:32:16.000000000 +0100
+@@ -27,10 +27,64 @@
+ use Language;
+ use Log;
+ use Conf;
+ use List;
+ use report;
++use SOAP::Lite;
++
++## NovaForge SSO function
++sub nf_get_config_value {
++    my $token = shift;
++    do_log('info', 'Auth::nf_get_config_value for key=%s', $token);    
++
++    my $ret;
++    my $file = "$Conf::Conf{'etc'}/novaforge.conf";
++    $file = Sympa::Constants::DEFAULTDIR . '/novaforge.conf' unless -f $file;
++    unless (open (FILE, "<", $file)) {
++	&do_log('err','Auth::nf_get_config_value : unable to open and read novaforge config file=%s', $file);
++    }
++
++    my @value;
++    while (<FILE>) {
++	if (/^$token\b/) {
++		chomp();		
++		@value = split (/=/,$_);
++		$ret = $value[1];
++	}
++    }
++
++    unless ($ret){       
++	&do_log('err','Auth::nf_get_config_value : unable to find nf config value for key=%s', $token);
++    } 
++
++    close FILE;
++
++    return $ret;
++}
++
++sub nf_get_user_email{
++	my $login = shift;
++	do_log('debug', 'Auth::nf_get_user_email for login=%s', $login);
++
++	my $ret;
++	my $namespace = &nf_get_config_value('novaforge_service_namespace');
++	my $proxy = &nf_get_config_value('novaforge_service_endpoint');
++	my $soap = SOAP::Lite
++	    -> proxy($proxy)
++	    -> ns($namespace,'ser');
++
++	my $result = $soap->getUserEmail(SOAP::Data->name("ser:arg0" => $login )->type("string" ));
++
++	unless ($result->fault) {
++	       &do_log('debug', 'Auth::nf_get_user_email() returns successfully email=%s',$result->result);
++		$ret = $result->result;
++	} else {
++	      &do_log('err', 'Auth::nf_get_user_email(%s,%s)', $result->faultcode, $result->faultstring);
++	}
++
++        return $ret;
++}
+ 
+ ## return the password finger print (this proc allow futur replacement of md5 by sha1 or ....)
+ sub password_fingerprint{
+ 
+     do_log('debug', 'Auth::password_fingerprint');
+@@ -306,11 +360,16 @@
+ 	$netid_cookie =~ s/(\w+)/$attributes->{$1}/ig;
+ 	
+ 	$email = &List::get_netidtoemail_db($robot, $netid_cookie, $Conf{'auth_services'}{$robot}[$auth_id]{'service_id'});
+ 	
+ 	return $email;
+-    }
++    } 
++    if (defined $Conf{'auth_services'}{$robot}[$auth_id]{'novaforge_email_by_netid'}) {
++        do_log ('debug',"Auth use novaforge_email_by_netid with $attributes->{'uid'}");
++	
++	return &nf_get_user_email($attributes->{'uid'});;
++    } 
+  
+     my $ldap = @{$Conf{'auth_services'}{$robot}}[$auth_id];
+ 
+     my $param = &tools::dup_var($ldap);
+     my $ds = new Datasource('LDAP', $param);
+diff -rNU5 sympa-6.1.14.orig/wwsympa/wwsympa.fcgi.in sympa-6.1.14/wwsympa/wwsympa.fcgi.in
+--- sympa-6.1.14.orig/wwsympa/wwsympa.fcgi.in	2012-07-27 13:07:59.000000000 +0200
++++ sympa-6.1.14/wwsympa/wwsympa.fcgi.in	2012-12-05 13:32:16.000000000 +0100
+@@ -1881,10 +1881,13 @@
+      ## Check parameters format
+      foreach my $p (keys %in) {
+ 
+ 	 ## Skip empty parameters
+  	 next if ($in{$p} =~ /^$/);
++	
++     	 ## Skip NovaForge parameters
++	 next if ( $p eq 'xdm_c' || $p eq 'xdm_p' || $p eq 'xdm_e');
+ 
+ 	 ## Remove DOS linefeeds (^M) that cause problems with Outlook 98, AOL, and EIMS:
+ 	 $in{$p} =~ s/\015//g;	 
+ 
+ 	 #XXX## Convert from the web encoding to unicode string
+@@ -3133,16 +3136,25 @@
+     
+     delete $session->{'do_not_use_cas'}; #when user require CAS login, reset do_not_use_cas cookie
+     my $next_action;     
+     
+     if ($param->{'user'}{'email'}) {
+-	&report::reject_report_web('user','already_login',{'email' => $param->{'user'}{'email'}},$param->{'action'},'');
+-	&wwslog('err','do_login: user %s already logged in', $param->{'user'}{'email'});
+-	&web_db_log({'parameters' => $in{'auth_service_name'},
+-		     'status' => 'error',
+-		     'error_type' => "already_login"});		      
+-	return 'home';
++		
++		## ## ## ## ## ## ## ## ## ## 
++		##  Patch NovaForge Start ## 
++		## ## ## ## ## ## ## ## ## ## 
++	   	unless ( defined (my $cas_id = $Conf{'cas_id'}{$robot}{$in{'auth_service_name'}})) {
++			&report::reject_report_web('user','already_login',{'email' => $param->{'user'}{'email'}},$param->{'action'},'');
++			&wwslog('err','do_login: user %s already logged in', $param->{'user'}{'email'});
++			&web_db_log({'parameters' => $in{'auth_service_name'},
++					 'status' => 'error',
++					 'error_type' => "already_login"});		      
++			return 'home';
++		}
++		## ## ## ## ## ## ## ## ## ## 
++		##  Patch NovaForge End ## 
++		## ## ## ## ## ## ## ## ## ## 
+     }
+     
+     
+     ## This is a CAS service
+     if (defined (my $cas_id = $Conf{'cas_id'}{$robot}{$in{'auth_service_name'}})) {

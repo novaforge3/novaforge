@@ -1,0 +1,13 @@
+<IfModule mod_proxy.c>
+	
+	## Redirect all
+	SSLProxyEngine On
+	ProxyPass / http://@PORTAL_HOST@/
+	ProxyPassReverse / https://@PORTAL_HOST@/	
+	
+	ProxyHTMLEnable On 
+	ProxyHTMLExtended On
+	ProxyHTMLURLMap https://@PORTAL_HOST@/ /
+	RequestHeader  unset  Accept-Encoding
+
+</IfModule>

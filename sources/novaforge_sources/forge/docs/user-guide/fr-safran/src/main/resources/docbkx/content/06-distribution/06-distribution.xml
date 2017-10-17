@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<chapter
+  version="5.0"
+  xmlns="http://docbook.org/ns/docbook"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:ns5="http://www.w3.org/2000/svg"
+  xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+  xmlns:ns3="http://www.w3.org/1999/xhtml"
+  xmlns:db="http://docbook.org/ns/docbook"
+  xml:lang="fr"
+>
+  <title>Distribution des forges</title>
+  <sect1 id="distribution_intro">
+    <title>Principe des forges distribuées</title>
+    <para>
+      L'administrateur peut :</para>
+       <itemizedlist>
+        <listitem>
+           Définir, gérer l'organisation des forges en arborescence et configurer le lien vers la forge mère et/ou les forges filles à partir de la forge courante.
+        </listitem>
+        <listitem>
+         Demander l'affiliation ou le désabonnement auprès de la forge mère,valider ou
+      invalider les demandes venant des forges filles, visualiser l'Annuaire des forges.
+       </listitem>
+        <listitem>
+          Outil : Définir un nouveau outils à propager aux forges filles.
+       </listitem>
+      </itemizedlist>
+     <para> L'organisation des forges se limite à 3 niveaux : <emphasis
+    role="bold">central, zonal et local.</emphasis></para>
+     <para> Pour une
+      organisation donnée, il ne peut y avoir qu'une forge centrale. Cette dernière est définie lors
+      de l'installation. Elle est figée et ne peut pas s'abonner auprès d'une autres forges, mais
+      elle peut avoir une ou plusieurs forges filles.</para>
+      <para> Pour une forge non centrale, son niveau est
+      déduit du niveau de la forge mère et il n'est pas figé dans l'organisation.
+      </para><para> Une fois la forge
+      installée, tant qu'elle n'est pas abonnée à une forge mère et qu'aucune forge n'y est abonnée,
+      cette forge est considérée comme 'orpheline' dans l'organisation. </para>
+    <para>Les figures suivantes décrivent les éventuelles évolutions du niveau d'une forge. </para> 
+
+    <figure>
+      <title>Principe d'affiliation des forges distribuées</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata
+            align="center"
+            fileref="06-00-use.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </sect1>
+  <sect1>
+  <title>Les flux des forges distribuées</title>
+  <para>Les flux ascendants à remonter d'une forge fille à sa forge mère concernent les indicateurs (indicateurs de
+      la forge, indicateurs de projet, etc)</para>
+    <para>Les forges distribuées permettent de partager un référentiel d'information depuis la forge mère vers une forge fille ou un grappe de forge fille (flux descendants)
+    
+      Les flux descendants concernent la création ou la mise à jour des
+      objets du référentiel de chacune des forges affiliées :
+      
+      <itemizedlist>
+        <listitem>
+          Le projet référentiel : les documentations, méthodologie via des applications partagées
+        </listitem>
+        <listitem>
+          Des templates projets : projet type comme « TMA », etc.
+       </listitem>
+        <listitem>
+          Des outils : nouveaux outils (hors les outils standard de la forge) partagées par l'administrateur ou par les utilisateurs.
+       </listitem>
+      </itemizedlist>
+    </para>
+  </sect1>
+  <sect1>
+    <title>Administrer la distribution</title>
+    <para>
+      Les figures suivantes présentent les interfaces du portail de forge permettant
+      d'administrer la
+      distribution.
+   </para>
+    <para>
+      L'administrateur de la forge gère la distribution dans le projet de forge à travers le menu "<emphasis role="bold">Administration/Distribution</emphasis>".
+   </para>
+   <para>
+      Une forge mère peut accepter ou refuser des demandes d'affiliation de forges filles.
+        </para>
+    <figure>
+      <title>Onglet permettant la gestion d'une forge mère</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata
+            align="center"
+            fileref="06-03-mother.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>
+      Une forge fille peut demander à s'abonner ou se désabonner d'une forge mère.
+      </para>
+    <figure>
+      <title>Onglet permettant la gestion d'une forge fille</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata
+            align="center"
+            fileref="06-04-daughter.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>
+      L'administrateur peut déclencher une synchronisation manuelle de la grappe de forge en
+      sélectionnant les domaines fonctionnels impactés.
+      </para>
+    <figure>
+      <title>Onglet permettant la synchronisation</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata
+            align="center"
+            fileref="06-05-synchroNow.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>
+      L'administrateur peut déclencher une synchronisation programmée de la grappe de forge.
+      </para>
+    <figure>
+      <title>Onglet permettant la synchronisation différée</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata
+            align="center"
+            fileref="06-06-synchroTime.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </sect1>
+</chapter>

@@ -1,0 +1,14 @@
+From: [% fromlist %]
+Subject: [% FILTER qencode %][%|loc(list.name,date)%]%1 Summary %2[%END%][%END%]
+X-Sympa-NoWrap: yes
+
+[%|loc(list.name,date)%]%1 summary %2[%END%]
+
+[% FOREACH m = msg_list -%]
+[%|wrap(0,2)%]* [% m.id %] - [% m.subject %] - [% m.from %][%END#wrap%]
+
+  
+
+[% END -%]
+
+[%|loc(list.name)%]To get information about this %1 list, please contact the forge administrator.[%END%]

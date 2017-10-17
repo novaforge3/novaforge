@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+
+
+<section version="5.0" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+	<title>Managing your Documents with Alfresco</title>
+
+	<para>Alfresco is an open source documentary management tool (GED). It
+		is used to store documents, handle their versions, apply workflows to
+		them, change their format, manage access rights and authorizations,
+		enter their metadata, etc.</para>
+
+	<para>
+		Alfresco offers the following main features:
+		<itemizedlist>
+			<listitem>
+				<para>Management of numerous document types (Word, Excel, Adobe PDF,
+					etc.)</para>
+			</listitem>
+
+			<listitem>
+				<para>Management of metadata associated with the documents (title,
+					author, description, version, etc.)</para>
+			</listitem>
+
+			<listitem>
+				<para>Extraction of metadata from office type files to enter
+					document metadata</para>
+			</listitem>
+
+			<listitem>
+				<para>Document classification: multiple tree structures</para>
+			</listitem>
+
+			<listitem>
+				<para>Work spaces combining documents, locks, discussions and
+					collaborative work</para>
+			</listitem>
+
+			<listitem>
+				<para>
+					Various document access modes:
+					<itemizedlist>
+						<listitem>
+							<para>Web access: via a web browser.</para>
+						</listitem>
+
+						<listitem>
+							<para>Access by network directory (CIFS protocol, for stations
+								running Microsoft Windows)</para>
+						</listitem>
+
+						<listitem>
+							<para>Access by webdav (operates with all client workstations)
+							</para>
+						</listitem>
+					</itemizedlist>
+				</para>
+			</listitem>
+		</itemizedlist>
+	</para>
+
+	<para>
+		Alfresco user documentation is available via online help, available
+		from the web interface:
+		<ulink url="http://docs.alfresco.com/community/topics/sh-uh-welcome.html">Online help</ulink>. 
+		This link is also available at https://&lt;nom_serveur_novaforge&gt;/alfresco-default/alfresco/,
+		link :
+	    <ulink url="http://docs.alfresco.com/">Online Documentation</ulink>.
+	</para>
+
+	<para>We will not reproduce the Alfresco documentation here, but simply
+		explain how to configure one way of accessing documents which users
+		may find useful: webdav mode.</para>
+
+	<section>
+		<title>Configuring your webdav access</title>
+
+		<para>The WebDav (Web-based Distributed Authoring and Versioning)
+			protocol is used to retrieve, submit, synchronize and publish files
+			and folders on remote machines. It therefore allows several users to
+			publish a file simultaneously by temporarily blocking its access
+			during the operation. </para>
+
+		<para>Via WebDAV, NovaForgeTM allows you to create a connection with
+			the project document repository in order to publish, create, rename
+			and delete files of folders. To do this, a WebDav connection must be
+			configured on your workstation. This procedure is described below.
+		</para>
+
+		<para>After configuring the connection, you will be able to navigate
+			through the project document repository using your WebDav client
+			explorer. This will enable you in particular to easily create a file
+			hierarchy or handle your files by click/drag. </para>
+
+		<para>Important: We strongly recommend that you do not edit files
+			directly from the WebDav client. In the event of a communication
+			failure between your workstation and NovaForgeTM, you could lose data
+			concerning the current work. To edit a file, you are recommended to
+			copy it into your local repository and publish the new document
+			version after making the change. </para>
+
+		<orderedlist>
+			<listitem>
+				<para>Give a right click on the Workstation icon. Now choose the Map
+					Network Drive option and choose the Sign up for online storage
+					option.</para>
+
+				<figure>
+					<title>Map Network Drive</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05b-01-ConnecterLectReseau.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</listitem>
+
+			<listitem>
+				<para>Now click Next:</para>
+
+				<figure>
+					<title>Add a network place</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05b-02-AjoutFavoriReseau.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</listitem>
+
+			<listitem>
+				<para>Click &quot;Choose another network location&quot; then
+					&quot;Next&quot;</para>
+
+				<figure>
+					<title>Choose another network location</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center"
+								fileref="05-05b-03-ChoisirEmplacementReseau.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</listitem>
+
+			<listitem>
+				<para>You are then prompted to enter the address of the WebDav
+					location: enter it according to the following principle:</para>
+
+				<para>https://&lt;nom_serveur_novaforge&gt;/alfresco-default/alfresco/webdav/sites/:
+					to access the documents of all projects that the user is entitled
+					to access.</para>
+
+				<para>https://&lt;nom_serveur_novaforge&gt;/alfresco-default/alfresco/webdav/sites/&lt;project_id&gt;/documentLibrary:
+					to access documents of the project labeled project_id</para>
+			</listitem>
+
+
+			<listitem>
+				<para>You have to enter the forge connection identifiers</para>
+				<para> Notice : WebDAV protocol doesn't support special characters on password and folder names.</para>
+			</listitem>
+			<listitem>
+				<para>The document repository can then be accessed as network drive
+				</para>
+			</listitem>
+		</orderedlist>
+	</section>
+</section>

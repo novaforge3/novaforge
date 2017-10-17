@@ -1,0 +1,7 @@
+Alias /@DEFAULT_ALIAS@/@TOOL_ALIAS@ "@HOME@/"
+
+<Directory @HOME@>
+        Options Indexes MultiViews FollowSymLinks
+        AllowOverride all
+        Require all granted
+</Directory>

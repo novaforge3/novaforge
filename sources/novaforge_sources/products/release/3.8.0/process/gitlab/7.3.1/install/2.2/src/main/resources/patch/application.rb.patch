@@ -1,0 +1,15 @@
+--- application.rb	2014-10-28 14:13:33.149548824 +0100
++++ application-patched.rb	2014-10-28 14:14:31.649548623 +0100
+@@ -60,11 +60,11 @@
+     # 4) In ../gitlab-shell/config.yml: gitlab_url: "http://127.0.0.1/gitlab"
+     # 5) In lib/support/nginx/gitlab : do not use asset gzipping, remove block starting with "location ~ ^/(assets)/"
+     #
+     # To update the path, run: sudo -u git -H bundle exec rake assets:precompile RAILS_ENV=production
+     #
+-    # config.relative_url_root = "/gitlab"
++    config.relative_url_root = "/gitlab"
+ 
+     config.middleware.use Rack::Attack
+ 
+     # Allow access to GitLab API from other domains
+     config.middleware.use Rack::Cors do

@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+
+
+<section version="5.0" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+		>
+	<title>Managing your deliveries</title>
+
+	<para>The integrated delivery manager is a tool developed internally to
+		optimize and simplify the delivery process.
+	</para>
+	<para>
+		The delivery manager offers the following features:
+		<itemizedlist>
+			<listitem>
+				<para>Creation of deliveries by version and by type (Snapshot,
+					Release, etc.)</para>
+			</listitem>
+			<listitem>
+				<para>Automatic retrieval of your NovaForge project documents</para>
+			</listitem>
+			<listitem>
+				<para>Automatic retrieval of your NovaForge project sources</para>
+			</listitem>
+			<listitem>
+				<para>Automatic retrieval of the corrected bugs of your NovaForge
+					project</para>
+			</listitem>
+			<listitem>
+				<para>Addition of external files to your delivery</para>
+			</listitem>
+			<listitem>
+				<para>Generation of delivery reports</para>
+			</listitem>
+			<listitem>
+				<para>Creation of report templates to standardize your deliveries.
+				</para>
+			</listitem>
+		</itemizedlist>
+	</para>
+
+	<section>
+		<title>To start...</title>
+
+		<para>
+			You must add the delivery application to your project. To do this,
+			use
+			<xref linkend="applications" />
+			. 
+
+		</para>
+	</section>
+	<section>
+		<title>Creating your first delivery</title>
+		<para>
+			To explain as clearly as possible how to create your first delivery,
+			we will start from an example. Our project is called
+			&quot;NovaForge&quot;, we want to deliver our
+			documents and our sources and generate a report. You will therefore proceed as
+			follows (you can go directly to
+			<xref linkend="delivery-associations" />
+			if the applications are already present in your project):
+			<orderedlist>
+				<listitem>
+					<para>Add the necessary applications to your NovaForge project
+					</para>
+				</listitem>
+				<listitem>
+					<para>Configure the inter-tool communication using your delivery
+						manager</para>
+				</listitem>
+				<listitem>
+					<para>Create and configure your new delivery</para>
+				</listitem>
+				<listitem>
+					<para>Generate your delivery</para>
+				</listitem>
+				<listitem>
+					<para>Conclude your delivery</para>
+				</listitem>				
+			</orderedlist>
+		</para>
+		<section>
+			<title>Adding the necessary applications</title>
+			<para>
+				Using the delivery tool, you can import content such as documents,
+				sources or bugs from your NovaForge. You must therefore have the
+				associated applications in your project.
+				Use
+				<xref linkend="applications" />
+				to add a GED, an SVN and a Bugtracker to your project.
+			</para>
+			<para>
+				You should obtain your project applications :
+				<orderedlist>
+					<listitem>
+						<para>delivery</para>
+					</listitem>
+					<listitem>
+						<para>SVN</para>
+					</listitem>
+					<listitem>
+						<para>GED</para>
+					</listitem>
+					<listitem>
+						<para>Bugtracker</para>
+					</listitem>
+				</orderedlist>
+			</para>
+		</section>
+		<section id="delivery-associations">
+			<title>Configuring inter-tool communications</title>
+			<para>
+				In order to use the information stored in the applications,
+				NovaForge provides a mechanism called
+				<emphasis role="bold">Inter-tool communication</emphasis>
+				. You can use section
+				<xref linkend="associations" />
+				to add the following associations :
+				<para>Associations for Alfresco (GED)</para>
+				<para>Associations for SVN</para>
+				<para>Associations for Mantis (Bugtracker)</para>
+			</para>
+		</section>
+		<section>
+			<title>Create and configure your new delivery</title>
+			<para>
+				You can access the delivery application via the item circled in red
+				in the left menu:
+				<figure>
+					<title>Open your delivery tool</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05a-04-AddDelivery.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</para>
+			<para>
+				In the delivery application, click
+				<emphasis>Create a delivery</emphasis>
+				to open the following form:
+				<figure>
+					<title>Create new delivery form</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05a-05-AddDelivery.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+				Complete the first section of the form as follows:
+				<itemizedlist>
+					<listitem>
+						Name:
+						<emphasis>corresponds to the title of your delivery</emphasis>
+						(e.g. NovaForge)
+					</listitem>
+				</itemizedlist>
+				<itemizedlist>
+					<listitem>
+						Version:
+						<emphasis>corresponds to the version of your delivery</emphasis>
+						(e.g. 3.5)
+					</listitem>
+				</itemizedlist>
+				<itemizedlist>
+					<listitem>
+						Reference:
+						<emphasis>corresponds to the identifier of your delivery, by
+							default name_version</emphasis>
+						(e.g. novaforge_3.5)
+					</listitem>
+				</itemizedlist>
+				<itemizedlist>
+					<listitem>
+						Type:
+						<emphasis>describes the delivery type</emphasis>
+						(e.g. release)
+					</listitem>
+				</itemizedlist>
+				The second section of the form describes the content you want to add
+				to your delivery. In
+				<xref linkend="delivery-associations" />
+				, we added a GED, an SVN and a Bugtracker to our project, and we
+				will now use these links.
+				<para>
+					Tick all the boxes to add all the contents to your delivery. Use
+					the field on the right to name the directory where the content will
+					be added. For example, for the GED,
+					the folder is called
+					<emphasis>Documents</emphasis>
+					, which means that in your delivery, you will find your documents
+					in this directory.
+				</para>
+				<para>
+					The following figure shows the create delivery screen completed:
+				</para>
+				<figure>
+					<title>Create new delivery form completed</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05a-06-AddDelivery.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</para>
+			<para>
+				You can now save your delivery. Five tabs will be displayed, each one
+				allowing you to configure the content of your delivery.
+			</para>
+		</section>
+		<section>
+			<title>Generating your delivery</title>
+			<para>
+				You can return to the initial screen when you have finished
+				configuring your delivery. Your new delivery should be displayed in
+				the list. In column
+				<emphasis>Actions</emphasis>
+				, you will see the play icon
+				<emphasis>Generate the delivery</emphasis>
+				(in red below). This generation allows you to make an extraction of
+				your various contents and obtain an overview of your delivery. The
+				delivery is not frozen, however, you
+				can still edit it.
+				<figure>
+					<title>Generate the delivery</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05a-07-AddDelivery.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+				On the following screen, you can make corrections to your delivery
+				or generate it.
+				Afterwards, simply download the result using the arrow in column
+				<emphasis>Actions</emphasis>
+				.
+			</para>
+		</section>
+		<section>
+			<title>Conclude your delivery</title>
+			<para>
+				You can return to the initial screen when you have generated
+				your delivery. Your new delivery should be displayed in
+				the list. In column
+				<emphasis>Actions</emphasis>
+				, you will see the padlock icon
+				<emphasis>Conclude your delivery</emphasis>
+				This step shows the end of the delivery and locks it once for all.
+				No modification will be possible next this step done except for removing the delivery
+				<figure>
+					<title>Conclusion of the delivery</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05a-08-FinalizeDelivery.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>				.
+			</para>
+		</section>
+		<section>
+			<title>Generate your delivery Note</title>
+			<para>
+				At the delivery setting, if you checked "Delivery Note" as content associated with your
+				delivery, then you can choose one between all available delivery notes.
+			</para>
+			<para>
+				This choice is then made via the "Delivery Note" tab and the "List of available templates" list.
+			</para>
+			<section>
+				<title>Manage templates of delivery note</title>
+				<para>
+					You can edit, add and delete templates of delivery note via 
+					the tab "Manage your delivery note templates" available in the Home panel.
+			</para>
+				
+			</section>
+			<section>
+				<title>Create its own delivery note</title>
+				<para>
+					You can create a delivery note template via the "Create a template" button. 
+					Fill in the "Name", "Description" fields and ".rtpdesign" file
+				</para>
+			</section>
+			<section>
+				<title>How to create a .rtpdesign file</title>
+				<para>
+					A maven, importable to eclipse, "example project" is proposed to help you to create your own file.
+					Click "Download the example project" to get it;  
+					It allows you to produce reports. Please refer to link
+					http://www.eclipse.org/birt/phoenix/.
+				</para>
+				<para>
+					The project provides a data simulation, 
+					available for the use in birt report via DeliveryDataProvider
+					:
+					<itemizedlist>
+						<listitem>List BugTrackerIssue getBugTrackerIssues(final String
+							pProjectId, final String
+							pReference)
+						</listitem>
+						<listitem>List ECMDocument getECMDocuments(final String
+							pProjectId, final String
+							pReference)
+						</listitem>
+						<listitem>List FileElement getFileElements(final String
+							pProjectId, final String
+							pReference)
+						</listitem>
+					</itemizedlist>
+
+					The project also helps to know the information 
+					available for business objects :
+					<itemizedlist>
+						<listitem>BugTrackerIssue : getCategory(),getDescription() ...
+						</listitem>
+						<listitem>FileElement : getFileName(), getSize() ...</listitem>
+						<listitem>ECMDocument : getName(), getType() ...</listitem>
+					</itemizedlist>
+
+					This information can then, like the default template provided with the project 
+					editing, be used to build the report in the rtpdesign file.
+					The following example shows how to retrieve the list of documents:
+
+					<programlisting language="java">
+						// Create instance of data provider
+						importPackage(
+						Packages.org.novaforge.forge.tools.deliverymanager.report );
+						dataProvider = new
+						DeliveryDataProvider();
+
+						//Load the Documents
+						documents =
+						dataProvider.getECMDocuments(params["projectId"].value,params["reference"].value);
+						]]
+						if(count sup documents.size()){
+						row["columnId"] = documents.get(count).getId();
+						row["columnName"] = documents.get(count).getName();
+						row["columnPath"] =
+						documents.get(count).getPath();
+						row["columnAuthor"] = documents.get(count).getAuthor();
+						row["columnLastModifiedAuthor"] =
+						documents.get(count).getLastModifiedAuthor();
+						row["columnCreatedDate"] = documents.get(count).getCreatedDate();
+						row["columnLastModifiedDate"] =
+						documents.get(count).getLastModifiedDate();
+
+						count++;
+						return true;
+						}
+					</programlisting>
+
+				</para>
+			</section>
+
+
+
+		</section>
+	</section>
+</section>

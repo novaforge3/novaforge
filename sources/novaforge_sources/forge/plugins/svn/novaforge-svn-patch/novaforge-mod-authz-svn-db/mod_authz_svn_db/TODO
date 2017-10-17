@@ -1,0 +1,15 @@
+This is the list of known issues that need to be completed with the
+authz_svn_db module:
+
+ * Buffer overrun protections (these are probably necessary, I just need
+time to think of where they can occur)
+ * Write/Finish SQL statement in the README
+ * Write the configuration of subversion repositories in the README (the
+ tutorial/walkthrough)
+ * Enumerate the apache directives in the README
+ * pkg-config the pgsql module makefile/make platform independent as much
+ as possible.
+ * Explain the SQL database schema in README.
+ * Create some examples customizing the Apache Directives in README.
+ * Figure out why Postgres doesn't care about passwords
+ * Test to see if passwords are used and accessible to the sub-modules

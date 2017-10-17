@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+
+
+
+
+	http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+	
+	<!--  Configuration for Camel JMS Route -->
+	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
+	
+	<!--  Configuration for Camel JMS Route -->
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<argument ref="jmsConfig" />
+	</bean>
+	
+	<!-- References used by Route Builders -->
+
+	<reference id="pluginsManager" interface="org.novaforge.forge.core.plugins.services.PluginsManager" />
+	<reference id="projectService" interface="org.novaforge.forge.core.organization.services.ProjectService" />
+	<reference id="membershipHandler" interface="org.novaforge.forge.core.organization.handlers.MembershipHandler" />
+	<reference id="applicationService" interface="org.novaforge.forge.core.organization.services.ApplicationService" />
+	<reference id="compositionService" interface="org.novaforge.forge.core.organization.services.CompositionService" />
+	<reference id="pluginArtefactFactory" interface="org.novaforge.forge.core.plugins.services.PluginArtefactFactory" />
+	<reference id="historizationService" interface="org.novaforge.forge.commons.technical.historization.services.HistorizationService" />
+	
+	<!-- Direct Route Builders Beans (from core to plugin) -->
+
+	<bean id="pluginProjectRouteBuilder" class="org.novaforge.forge.commons.route.internal.PluginProjectRoute">
+		<property name="pluginsManager" ref="pluginsManager" />
+		<property name="projectService" ref="projectService" />
+		<property name="membershipHandler" ref="membershipHandler" />
+		<property name="applicationService" ref="applicationService" />
+	</bean>
+
+	<bean id="pluginUserRouteBuilder" class="org.novaforge.forge.commons.route.internal.PluginUserRoute">
+		<property name="pluginsManager" ref="pluginsManager" />
+	</bean>
+	
+	<bean id="pluginGroupRouteBuilder" class="org.novaforge.forge.commons.route.internal.PluginGroupRoute">
+		<property name="pluginsManager" ref="pluginsManager" />
+	</bean>
+
+	<bean id="pluginMembershipRouteBuilder" class="org.novaforge.forge.commons.route.internal.PluginMembershipRoute">
+		<property name="pluginsManager" ref="pluginsManager" />
+	</bean>
+
+	<bean id="pluginRolesMappingRouteBuilder" class="org.novaforge.forge.commons.route.internal.PluginRolesMappingRoute">
+		<property name="pluginsManager" ref="pluginsManager" />
+		<property name="membershipHandler" ref="membershipHandler" />
+	</bean>
+
+	<bean id="applicationAssociationRouteBuilder" class="org.novaforge.forge.commons.route.internal.ApplicationAssociationRoute">
+		<property name="pluginsManager" ref="pluginsManager" />
+		<property name="compositionService" ref="compositionService" />
+		<property name="pluginArtefactFactory" ref="pluginArtefactFactory" />
+	</bean>	
+	
+	<!-- CallBack Route Builders Beans (from plugin to core in response to direct messaging)-->
+
+	<bean id="callbackPluginProjectRouteBuilder" class="org.novaforge.forge.commons.route.internal.CallbackPluginProjectRoute">
+		<property name="historizationService" ref="historizationService" />
+		<property name="applicationService" ref="applicationService" />
+	</bean>
+
+	<bean id="callbackPluginUserRouteBuilder" class="org.novaforge.forge.commons.route.internal.CallbackPluginUserRoute">
+		<property name="historizationService" ref="historizationService" />
+	</bean>
+
+	<bean id="callbackPluginMembershipRouteBuilder" class="org.novaforge.forge.commons.route.internal.CallbackPluginMembershipRoute">
+		<property name="historizationService" ref="historizationService" />
+	</bean>
+
+	<bean id="callbackPluginRolesMappingRouteBuilder" class="org.novaforge.forge.commons.route.internal.CallbackPluginRolesMappingRoute">
+		<property name="historizationService" ref="historizationService" />
+	</bean>
+
+	<bean id="callbackPluginDataRouteBuilder" class="org.novaforge.forge.commons.route.internal.CallbackPluginDataRoute">
+		<property name="historizationService" ref="historizationService" />
+	</bean>		
+	
+	<!-- Routes definition -->
+
+	<camelContext id="coreCamelContext" xmlns="http://camel.apache.org/schema/blueprint">
+		<routeBuilder ref="pluginProjectRouteBuilder" />
+		<routeBuilder ref="pluginUserRouteBuilder" />
+		<routeBuilder ref="pluginMembershipRouteBuilder" />
+		<routeBuilder ref="pluginRolesMappingRouteBuilder" />
+		<routeBuilder ref="applicationAssociationRouteBuilder" />
+		<routeBuilder ref="pluginGroupRouteBuilder" />
+
+		<routeBuilder ref="callbackPluginProjectRouteBuilder" />
+		<routeBuilder ref="callbackPluginUserRouteBuilder" />
+		<routeBuilder ref="callbackPluginMembershipRouteBuilder" />
+		<routeBuilder ref="callbackPluginRolesMappingRouteBuilder" />
+		<routeBuilder ref="callbackPluginDataRouteBuilder" />
+	</camelContext>
+
+</blueprint>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="portal-config">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="settings" minOccurs="1" maxOccurs="1" />
+				<xs:element ref="uri-templates" minOccurs="1" maxOccurs="1" />
+				<xs:element ref="navigation" minOccurs="1" maxOccurs="1" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="settings">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="setting" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="setting">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute name="id" use="required" type="xs:string" />
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="uri-templates">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="uri-template" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="uri-template">
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:anyURI">
+					<xs:attribute name="id" use="required" type="xs:string" />
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="navigation">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="forge" minOccurs="1" maxOccurs="1" />
+				<xs:element ref="project" minOccurs="1" maxOccurs="1" />
+				<xs:element ref="account" minOccurs="1" maxOccurs="1" />
+				<xs:element ref="link" minOccurs="1" maxOccurs="1" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="forge">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="1" ref="default-app" />
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="space" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="project">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="1" ref="default-app" />
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="space" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="link">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="external-app" />
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="internal-app" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="account">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="space" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="displayType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="always" />
+			<xs:enumeration value="authenticated" />
+			<xs:enumeration value="unauthenticated" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="default-app">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element maxOccurs="1" ref="external-app" />
+				<xs:element maxOccurs="1" ref="internal-app" />
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="space">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="name" minOccurs="1" maxOccurs="1" type="xs:string" />
+				<xs:element name="description" minOccurs="0" maxOccurs="1" type="xs:string" />
+				<xs:element minOccurs="0" maxOccurs="1" ref="apps" />
+			</xs:sequence>
+			<xs:attribute name="id" use="required" type="xs:string" />
+			<xs:attribute name="permissions" type="xs:string" />
+			<xs:attribute name="roles" type="xs:string" />
+			<xs:attribute name="display" type="displayType" default="authenticated" />
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="apps">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="external-app" />
+				<xs:element minOccurs="0" maxOccurs="unbounded" ref="internal-app" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="external-app">
+		<xs:complexType>
+			<xs:complexContent>
+				<xs:extension base="app" />
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="internal-app" type="app">
+	</xs:element>
+	<xs:complexType name="app">
+		<xs:sequence>
+			<xs:element name="name" minOccurs="1" maxOccurs="1" type="xs:string" />
+			<xs:element name="description" minOccurs="0" maxOccurs="1" type="xs:string" />
+			<xs:element name="img" minOccurs="0" maxOccurs="1" type="xs:string" />
+		</xs:sequence>
+		<xs:attribute name="id" use="required" type="xs:string" />
+		<xs:attribute name="auth" type="xs:boolean" default="false" />
+		<xs:attribute name="display" type="displayType" default="always" />
+		<xs:attribute name="permissions" type="xs:string" />
+		<xs:attribute name="roles" type="xs:string" />
+		<xs:attribute name="uuid" type="xs:ID" />
+	</xs:complexType>
+</xs:schema>

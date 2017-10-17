@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+									xmlns:tns="http://services.plugins.core.forge.novaforge.org/"
+									xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+									name="PluginInstanceServiceService"
+									targetNamespace="http://services.plugins.core.forge.novaforge.org/">
+	<wsdl:types>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://services.plugins.core.forge.novaforge.org/"
+			attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://services.plugins.core.forge.novaforge.org/">
+			<xs:element name="getToolProjectId" type="tns:getToolProjectId" />
+			<xs:element name="getToolProjectIdResponse" type="tns:getToolProjectIdResponse" />
+			<xs:complexType name="getToolProjectId">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="arg0" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="getToolProjectIdResponse">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="return" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="PluginServiceException" type="tns:PluginServiceException" />
+			<xs:complexType name="PluginServiceException">
+				<xs:sequence>
+					<xs:element maxOccurs="unbounded" minOccurs="0" name="classContext" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="getToolProjectIdResponse">
+		<wsdl:part element="tns:getToolProjectIdResponse" name="parameters"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="getToolProjectId">
+		<wsdl:part element="tns:getToolProjectId" name="parameters"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="PluginServiceException">
+		<wsdl:part element="tns:PluginServiceException" name="PluginServiceException"></wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="PluginInstanceService">
+		<wsdl:operation name="getToolProjectId">
+			<wsdl:input message="tns:getToolProjectId" name="getToolProjectId"></wsdl:input>
+			<wsdl:output message="tns:getToolProjectIdResponse" name="getToolProjectIdResponse"></wsdl:output>
+			<wsdl:fault message="tns:PluginServiceException" name="PluginServiceException"></wsdl:fault>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="PluginInstanceServiceServiceSoapBinding" type="tns:PluginInstanceService">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="getToolProjectId">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="getToolProjectId">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="getToolProjectIdResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+			<wsdl:fault name="PluginServiceException">
+				<soap:fault name="PluginServiceException" use="literal" />
+			</wsdl:fault>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="PluginInstanceServiceService">
+		<wsdl:port binding="tns:PluginInstanceServiceServiceSoapBinding" name="PluginInstanceServicePort">
+			<soap:address location="http://127.0.0.1:8181/cxf/pluginInstance" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

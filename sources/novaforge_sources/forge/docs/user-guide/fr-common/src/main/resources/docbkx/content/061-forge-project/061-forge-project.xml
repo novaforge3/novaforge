@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<chapter version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:ns5="http://www.w3.org/2000/svg"
+         xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+         xmlns:ns3="http://www.w3.org/1999/xhtml"
+         xmlns:db="http://docbook.org/ns/docbook">
+	<title>Gérer le projet de Forge</title>
+
+	<para>Il existe dans Novaforge deux espaces spéciaux: le projet de
+		Forge et
+		le référentiel de forge. Nous allons voir dans ce chapitre à quoi sert
+		le
+		projet de Forge et comment l'administrer.
+	</para>
+
+	<sect1>
+		<title>But du projet de Forge</title>
+
+		<para>Le but du projet de forge est de partager des
+			applications et de l'information avec tous les utilisateurs de la forge.
+			Ceux-ci sont par défaut membres de ce projet.
+		</para>
+
+		<para>Le cas d'utilisation simple est le partage d'information (bonnes
+			pratiques, wiki technique) au sein d'une entreprise. On peut
+			facilement
+			imaginer de donner un wiki ou une application de gestion documentaire à
+			tous les utilisateurs de la forge.
+		</para>
+	</sect1>
+
+	<sect1>
+		<title>Administration du projet de Forge</title>
+
+		<para>
+			Du point de vue technique le projet de forge est un projet comme
+			les autres. Il est administrable par l'administrateur de
+			forge uniquement via le menu
+			<emphasis role="bold">"Administration du projet/Le projet de forge".</emphasis>
+		</para>
+
+		<figure>
+			<title>Administrer le projet de forge</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="061-01-ForgeProjectMenu.png"
+						width="300px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+		<para>
+			Mis à part les rôles particuliers du projet de forge, ce projet
+			s'administre de la même façon que n'importe quel autre projet. Les
+			rôles
+			sont disponibles sous la rubrique
+			<emphasis role="bold">"Vos affiliations"</emphasis>
+			:
+			<itemizedlist>
+				<listitem>
+					<para>Administrateur: administrateur du projet de forge</para>
+				</listitem>
+
+				<listitem>
+					<para>Super Administrateur: administrateur de la forge (
+						administrateur de tous les projets de la forge)
+					</para>
+				</listitem>
+
+				<listitem>
+					<para>Member: membre de la forge</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+
+		<figure>
+			<title>Rôles du projet de forge</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="061-02-ForgeProjectRoles.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+		<para />
+
+		<para>
+			Comme pour les autres projets on peut créer un espace applicatif et
+			ainsi lui ajouter des applications à l'aide de la rubrique
+			<emphasis role="bold">"Vos applications"</emphasis>
+		</para>
+
+
+	</sect1>
+</chapter>

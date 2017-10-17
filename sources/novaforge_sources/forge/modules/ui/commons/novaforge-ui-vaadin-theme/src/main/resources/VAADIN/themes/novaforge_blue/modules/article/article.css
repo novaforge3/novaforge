@@ -1,0 +1,80 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+ 
+ 
+ .nf-informationLayout {
+ 	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+	border: 1px solid #66A3C7;
+	overflow: hidden;
+	box-sizing: border-box;
+	box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.14), 0px 0px 0px 1px rgba(0, 0, 0, 0.07);
+	-moz-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.14), 0px 0px 0px 1px rgba(0, 0, 0, 0.07);
+	-webkit-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.14), 0px 0px 0px 1px rgba(0, 0, 0, 0.07);
+	-o-box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.14), 0px 0px 0px 1px rgba(0, 0, 0, 0.07)v;
+ }
+ .nf-announcementLayout {
+	text-align: center !important;
+	text-overflow: ellipsis !important;
+}
+
+.nf-announcementLayout .v-label-h1 {
+		color: white !important;
+		cursor: pointer;
+		text-shadow: none !important;
+}
+
+.nf-categoryDefaultColorLayout {
+	background-color: #66A3C7;
+	color: white;
+}
+
+.nf-news-footer {
+	color: white;
+}
+
+.v-itemlayout-slot > div:hover .nf-news-footer {
+	color: #a3a3a3;
+}
+
+.nf-newsLayout .v-itemlayout-slot-selected,
+.nf-newsLayout .v-itemlayout-slot-selected:focus {
+	border: none !important;
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	-o-box-shadow: none !important;
+	box-shadow: none !important;
+	filter: none !important;
+}
+
+.nf-newsbox {
+	cursor: pointer;
+}
+
+.v-accordion-item-nf-accordion-required .v-captiontext:after {
+		content: ' *';
+		color: red;
+}

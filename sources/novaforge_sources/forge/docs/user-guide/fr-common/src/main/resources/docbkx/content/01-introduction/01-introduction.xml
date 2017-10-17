@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<chapter version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+	<title>Introduction</title>
+
+	<section>
+		<title>Ce document</title>
+
+		<para>NovaForgeTM est une plate-forme collaborative sécurisée qui
+			offre
+			des fonctionnalités pour gérer les projets et faciliter le développement
+			de logiciels.Ce document est divisé en plusieurs chapitres. Dans les
+			premiers chapitres, vous apprendrez les actions de base telles que la
+			création d'un compte, la navigation à travers la forge ainsi que la
+			création et la gestion d'un projet. Le reste des chapitres décrit
+			chaque
+			fonctionnalité incluse dans NovaForgeTM.
+		</para>
+	</section>
+
+	<section>
+		<title>Nouveautés de la Version 3</title>
+
+		<para>La version 3 de NovaForgeTM se base sur une architecture
+			complètement nouvelle suivant les patterns SOA (Architecture Orientée
+			Service). La forge est en effet décomposée en services fonctionnels
+			(gestion de faits techniques, gestion documentaire, gestion de
+			configuration, gestion des exigences, etc...). Chaque service
+			fonctionnel
+			est ensuite implémenté par une ou plusieurs solutions techniques (par
+			exemple une solution technique au service fonctionnel "gestion de
+			faits
+			techniques" est Mantis). L'ensemble de ces services est accessible depuis
+			un portail collaboratif sécurisé qui gère les droits des utilisateurs
+			aux
+			différents produits, leur identification et les liens entre outils.
+		</para>
+
+		<para>NovaForge v3 intégre une quinzaine d'outils :</para>
+
+		<itemizedlist>
+			<listitem>
+				<para>Des outils Open Source leader : Mantis, Jenkins, Alfresco,
+					SVN,
+					Testlink, Sonar, Nexus, LimeSurvey, DokuWiki, PhpBB, Sympa,
+					etc...
+				</para>
+			</listitem>
+
+			<listitem>
+				<para>Des outils spécifiques NovaForge qui permettent de gérer le
+					suivi des exigences, de gérer les livraisons...
+				</para>
+			</listitem>
+		</itemizedlist>
+
+		<para>Un des principes de base de NovaForge v3 est le concept de
+			plugin :
+			chaque composant est intégré sous forme de plugin. Ce principe apporte une
+			grande flexibilité à NovaForge aussi bien au niveau utilisation que
+			mise
+			en place. Il est en effet relativement facile de rajouter des
+			composants.
+			L'architecture facilite donc l'intégration d'un nouveau service
+			fonctionnel ou d'un nouveau composant technique. Du point de vue
+			utilisabilité, la notion de plugin donne la possibilité d'instancier
+			plusieurs instances d'un même composant dans un projet (par exemple
+			plusieurs Mantis pour un projet : un Mantis externe et un interne). De
+			plus, il est possible de définir de la communication entre les plugins
+			pour par exemple créer un bug directement depuis l'outil de test ou
+			pour
+			depuis l'outil livraison, récupérer les sources depuis le SVN, des
+			documents depuis la gestion documentaire et les bugs depuis le
+			gestionnaire de bugs.
+		</para>
+
+		<para>Parmi les nombreuses autres nouvelles fonctionnalités de
+			NovaForge
+			v3, la suite de la documentation décrit la notion de template projet, le
+			projet référence, le module de gestion des livraisons, le module de
+			suivi
+			des exigences, et bien plus !
+		</para>
+	</section>
+</chapter>

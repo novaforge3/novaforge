@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<hudson.plugins.sonar.SonarPublisher_-DescriptorImpl plugin="jenkins-sonar-plugin@2.2">
+	<installations>
+		<hudson.plugins.sonar.SonarInstallation>
+			<name>Sonar</name>
+			<disabled>false</disabled>
+			<serverUrl>@BASE_URL@/@SONAR_DEFAULT_ALIAS@/@SONAR_TOOL_ALIAS@</serverUrl>
+      <serverVersion>5.2</serverVersion>
+			<serverPublicUrl>@BASE_URL@/@SONAR_DEFAULT_ALIAS@/@SONAR_TOOL_ALIAS@</serverPublicUrl>
+			<mojoVersion></mojoVersion>
+			<databaseUrl>jdbc:mysql://@MYSQL_HOST@:@MYSQL_PORT@/sonar</databaseUrl>
+			<databaseDriver>com.mysql.jdbc.Driver</databaseDriver>
+			<databaseLogin>sonar</databaseLogin>
+			<databasePassword>c29uYXI=</databasePassword>
+			<additionalProperties></additionalProperties>
+			<triggers>
+				<skipScmCause>false</skipScmCause>
+				<skipUpstreamCause>false</skipUpstreamCause>
+				<envVar></envVar>
+			</triggers>
+			<sonarLogin>admin</sonarLogin>
+			<sonarPassword>YWRtaW4=</sonarPassword>
+		</hudson.plugins.sonar.SonarInstallation>
+	</installations>
+</hudson.plugins.sonar.SonarPublisher_-DescriptorImpl>

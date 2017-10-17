@@ -1,0 +1,59 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+.v-contextmenu {
+	background: #f8f8f9;
+	border: none;
+	border-radius: 3px 3px 3px 3px;
+	-webkit-border-radius: 3px 3px 3px 3px;
+	-moz-border-radius: 3px 3px 3px 3px;
+	-o-border-radius: 3px 3px 3px 3px;
+	overflow: hidden;
+	padding: 4px 0;
+}
+.v-contextmenu .gwt-MenuItem {
+	padding: 1px 12px 1px 8px;
+	height: 16px;
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	cursor: default;
+}
+.v-contextmenu .gwt-MenuItem .v-icon {
+	margin-right: 3px;
+}
+.v-contextmenu .gwt-MenuItem-selected {
+	background: transparent repeat-x;
+	background-image: url(img/sel-bg.png); /** sprite-ref: verticals; sprite-alignment: repeat */
+	color: #fff;
+	text-shadow: #83b257 0 1px 0;
+}
+.v-ie .v-contextmenu .gwt-MenuItem-selected {
+	background-image: url(img/sel-bg.png);
+	background-position: left top;
+}
+.v-contextmenu .gwt-MenuItem-selected div {
+	background: transparent;
+	cursor: default;
+}

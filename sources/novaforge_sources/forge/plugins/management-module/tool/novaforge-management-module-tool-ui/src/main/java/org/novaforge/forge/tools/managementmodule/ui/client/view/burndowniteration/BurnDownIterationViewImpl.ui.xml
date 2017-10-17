@@ -1,0 +1,92 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+						 xmlns:g="urn:import:com.google.gwt.user.client.ui"
+						 xmlns:common="urn:import:org.novaforge.forge.tools.managementmodule.ui.client.view.commons">
+	<ui:with field='res'
+		type='org.novaforge.forge.tools.managementmodule.ui.client.ressources.ManagementModuleRessources' />
+	<g:DockLayoutPanel width="99%" height="100%" unit="PX" addStyleNames="{res.css.borderCell}" >
+		<g:north size="95">
+			<g:VerticalPanel width="100%" spacing="5" >
+			  <g:HorizontalPanel horizontalAlignment='ALIGN_LEFT' width="100%">
+				<g:HorizontalPanel spacing="5" addStyleNames="{res.css.gridRowPair}"
+					horizontalAlignment='ALIGN_LEFT' width="100%">
+					<g:Grid  ui:field="infoGrid">
+						<g:row>
+							<g:customCell>
+								<g:HorizontalPanel spacing="5" horizontalAlignment="ALIGN_LEFT">
+									<g:Label addStyleNames="{res.css.important}" ui:field="iterationNameLabel" width="70px"/>
+									<g:Label addStyleNames="{res.css.labelCell}" ui:field="iterationName" width="190px"/>
+								</g:HorizontalPanel>
+							</g:customCell>
+							<g:customCell>
+								<g:HorizontalPanel spacing="5" horizontalAlignment="ALIGN_LEFT">
+									<g:Label addStyleNames="{res.css.important}" ui:field="lotLabel" width="50px" />
+									<g:Label addStyleNames="{res.css.labelCell}" ui:field="lot" width="190px" />
+								</g:HorizontalPanel>
+							</g:customCell>
+							<g:customCell>
+								<g:HorizontalPanel spacing="5" horizontalAlignment="ALIGN_LEFT">
+									<g:Label addStyleNames="{res.css.important}" ui:field="parentLotLabel" width="80px"/>
+									<g:Label addStyleNames="{res.css.labelCell}"  ui:field="parentLot" width="190px" />
+								</g:HorizontalPanel>
+							</g:customCell>
+							<g:customCell>
+								<g:HorizontalPanel spacing="5" horizontalAlignment="ALIGN_LEFT">
+									<g:Label addStyleNames="{res.css.important}" ui:field="startDateLabel" width="100px"/>
+									<g:Label addStyleNames="{res.css.labelCell}" ui:field="startDate" />
+								</g:HorizontalPanel>
+							</g:customCell>
+							<g:customCell>
+								<g:HorizontalPanel spacing="5" horizontalAlignment="ALIGN_LEFT">
+									<g:Label addStyleNames="{res.css.important}" ui:field="endDateLabel" width="90px" />
+									<g:Label addStyleNames="{res.css.labelCell}" ui:field="endDate" />
+								</g:HorizontalPanel>
+							</g:customCell>							
+						</g:row>
+					</g:Grid>
+				</g:HorizontalPanel>
+			  </g:HorizontalPanel>
+			  <g:HorizontalPanel addStyleNames="{res.css.actionPanel}" horizontalAlignment='ALIGN_LEFT' width="100%">
+				<g:HorizontalPanel spacing="5" horizontalAlignment='ALIGN_LEFT'>
+						<g:Label addStyleNames="{res.css.important}" ui:field="iterationLBLabel" />
+						<common:CustomListBox addStyleNames="{res.css.labelCell}" ui:field="iterationLB" />
+						<g:Label addStyleNames="{res.css.important}" ui:field="disciplineLabel" />
+						<common:CustomListBox addStyleNames="{res.css.labelCell}" ui:field="disciplineLB" />
+						<g:Button addStyleNames="{res.css.important}" ui:field="buttonGenerateDiagram" />
+						<g:Button addStyleNames="{res.css.important}" ui:field="buttonHomeReturn" />
+				</g:HorizontalPanel>
+			  </g:HorizontalPanel>
+			</g:VerticalPanel>
+		</g:north>
+		<g:center>
+		 <g:ScrollPanel alwaysShowScrollBars="true">
+		  <g:VerticalPanel height="100%" width="100%" horizontalAlignment="ALIGN_CENTER" spacing="2">
+			<g:VerticalPanel ui:field="diagramsPanel" horizontalAlignment="ALIGN_CENTER" spacing="2">
+			</g:VerticalPanel>
+		  </g:VerticalPanel>
+		 </g:ScrollPanel>
+		</g:center>
+	</g:DockLayoutPanel>
+</ui:UiBinder> 

@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="ASCII"?>
+<graal:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:graal="http://org.obeonetwork.graal/1.0" xmlns:interaction="http://www.obeonetwork.org/dsl/interaction/1.0.0" xmi:id="_kUTgQA7CEeG-VsbBTBiIOA" name="Module 6 : G&#xe9;rer le r&#xe9;f&#xe9;rentiel">
+  <behaviours xsi:type="interaction:Interaction" xmi:id="_Of-fYDYhEeGUarZ1nKomqg" name="new Interaction">
+    <participants xmi:id="_B-02gDYiEeGUarZ1nKomqg" name="OutilGestionR&#xe9;f&#xe9;rentiel : "/>
+    <participants xmi:id="_F6go8DYiEeGUarZ1nKomqg" name="OutilGestionTest"/>
+    <messages xsi:type="interaction:CallMessage" xmi:id="_bWx9QDYiEeGUarZ1nKomqg" name="Mettre &#xe0; jour le r&#xe9;f&#xe9;rentiel unique des exigences" startingEnd="_bWx9QTYiEeGUarZ1nKomqg" finishingEnd="_bWx9QjYiEeGUarZ1nKomqg"/>
+    <messages xsi:type="interaction:CallMessage" xmi:id="_BjzR8DYjEeGUarZ1nKomqg" name="Envoyer exigences modifi&#xe9;es" startingEnd="_BjzR8TYjEeGUarZ1nKomqg" finishingEnd="_BjzR8jYjEeGUarZ1nKomqg"/>
+    <messages xsi:type="interaction:ReturnMessage" xmi:id="_UH44MDYjEeGUarZ1nKomqg" name="Renvoyer cas de test modifi&#xe9;s" startingEnd="_UH44MTYjEeGUarZ1nKomqg" finishingEnd="_UH44MjYjEeGUarZ1nKomqg"/>
+    <executions xmi:id="_uyKX4DYiEeGUarZ1nKomqg" description="Si le r&#xe9;f&#xe9;rentiel &#xe0; &#xe9;volu&#xe9; depuis la derni&#xe8;re mise &#xe0; jour" name="Si le r&#xe9;f&#xe9;rentiel &#xe0; &#xe9;volu&#xe9; depuis la derni&#xe8;re mise &#xe0; jour" startingEnd="_uyKX4TYiEeGUarZ1nKomqg" finishingEnd="_uyKX4jYiEeGUarZ1nKomqg" owner="_B-02gDYiEeGUarZ1nKomqg"/>
+    <executions xmi:id="_WHyBcDYlEeGUarZ1nKomqg" name="Synchro des cas de test" startingEnd="_WHyBcTYlEeGUarZ1nKomqg" finishingEnd="_WHyBcjYlEeGUarZ1nKomqg" owner="_B-02gDYiEeGUarZ1nKomqg"/>
+    <ends xmi:id="_bWx9QTYiEeGUarZ1nKomqg" name="send_Mettre &#xe0; jour le r&#xe9;f&#xe9;rentiel unique des exigences" context="_B-02gDYiEeGUarZ1nKomqg" owner="_bWx9QDYiEeGUarZ1nKomqg"/>
+    <ends xmi:id="_bWx9QjYiEeGUarZ1nKomqg" name="receive_Mettre &#xe0; jour le r&#xe9;f&#xe9;rentiel unique des exigences" context="_B-02gDYiEeGUarZ1nKomqg" owner="_bWx9QDYiEeGUarZ1nKomqg"/>
+    <ends xmi:id="_uyKX4TYiEeGUarZ1nKomqg" context="_B-02gDYiEeGUarZ1nKomqg" owner="_uyKX4DYiEeGUarZ1nKomqg"/>
+    <ends xmi:id="_BjzR8TYjEeGUarZ1nKomqg" name="send_Envoyer exigences modifi&#xe9;es" context="_B-02gDYiEeGUarZ1nKomqg" owner="_BjzR8DYjEeGUarZ1nKomqg"/>
+    <ends xmi:id="_BjzR8jYjEeGUarZ1nKomqg" name="receive_Envoyer exigences modifi&#xe9;es" context="_F6go8DYiEeGUarZ1nKomqg" owner="_BjzR8DYjEeGUarZ1nKomqg"/>
+    <ends xmi:id="_uyKX4jYiEeGUarZ1nKomqg" context="_B-02gDYiEeGUarZ1nKomqg" owner="_uyKX4DYiEeGUarZ1nKomqg"/>
+    <ends xmi:id="_WHyBcTYlEeGUarZ1nKomqg" context="_B-02gDYiEeGUarZ1nKomqg" owner="_WHyBcDYlEeGUarZ1nKomqg"/>
+    <ends xmi:id="_UH44MTYjEeGUarZ1nKomqg" name="send_Renvoyer cas de test modifi&#xe9;s" context="_F6go8DYiEeGUarZ1nKomqg" owner="_UH44MDYjEeGUarZ1nKomqg"/>
+    <ends xmi:id="_UH44MjYjEeGUarZ1nKomqg" name="receive_Renvoyer cas de test modifi&#xe9;s" context="_B-02gDYiEeGUarZ1nKomqg" owner="_UH44MDYjEeGUarZ1nKomqg"/>
+    <ends xmi:id="_WHyBcjYlEeGUarZ1nKomqg" context="_B-02gDYiEeGUarZ1nKomqg" owner="_WHyBcDYlEeGUarZ1nKomqg"/>
+  </behaviours>
+  <tasks xsi:type="graal:Task" xmi:id="_CWCcsDVeEeGUarZ1nKomqg" name="G&#xe9;rer le r&#xe9;f&#xe9;rentiel de la forge" id="T1" uses="_EmbK8DVeEeGUarZ1nKomqg _8oPVUFMKEeG3ZavNRuoWzA _jx0_8FMLEeG3ZavNRuoWzA">
+    <nodes xsi:type="graal:TaskReference" xmi:id="_G-RMEDVeEeGUarZ1nKomqg" task="_EmbK8DVeEeGUarZ1nKomqg"/>
+    <nodes xsi:type="graal:TaskReference" xmi:id="_JBRHgFMLEeG3ZavNRuoWzA" task="_8oPVUFMKEeG3ZavNRuoWzA"/>
+    <nodes xsi:type="graal:TaskReference" xmi:id="_qSwWUFMLEeG3ZavNRuoWzA" task="_jx0_8FMLEeG3ZavNRuoWzA"/>
+    <nodes xsi:type="graal:InitialNode" xmi:id="_69zJsGxZEeGaIYmCTV3mXw"/>
+  </tasks>
+  <tasks xsi:type="graal:Task" xmi:id="_EmbK8DVeEeGUarZ1nKomqg" name="G&#xe9;rer les templates projet" id="T2" uses="_44i1QDViEeGUarZ1nKomqg _9dMsMDViEeGUarZ1nKomqg _FjwjoDVjEeGUarZ1nKomqg" actors="_E7pycFfsEeGSH_1iSIFASw">
+    <nodes xsi:type="graal:TaskReference" xmi:id="_7yW7ADViEeGUarZ1nKomqg" outgoingTransitions="_y94VYFfXEeGGKrmzTGQGJg" incomingTransitions="_w3piUFfPEeGGKrmzTGQGJg" task="_44i1QDViEeGUarZ1nKomqg"/>
+    <nodes xsi:type="graal:TaskReference" xmi:id="_AnQ0cDVjEeGUarZ1nKomqg" incomingTransitions="_0xPDAFfPEeGGKrmzTGQGJg _y94VYFfXEeGGKrmzTGQGJg _Bb0loFfYEeGGKrmzTGQGJg" task="_9dMsMDViEeGUarZ1nKomqg"/>
+    <nodes xsi:type="graal:TaskReference" xmi:id="_HTOWIDVjEeGUarZ1nKomqg" outgoingTransitions="_Bb0loFfYEeGGKrmzTGQGJg" incomingTransitions="_9xGhAFfPEeGGKrmzTGQGJg" task="_FjwjoDVjEeGUarZ1nKomqg"/>
+    <nodes xsi:type="graal:InitialNode" xmi:id="_jNI6IFfPEeGGKrmzTGQGJg" outgoingTransitions="_u-WeYFfPEeGGKrmzTGQGJg"/>
+    <nodes xsi:type="graal:AppliAction" xmi:id="_liiEMFfPEeGGKrmzTGQGJg" outgoingTransitions="_uiGnQFfPEeGGKrmzTGQGJg" incomingTransitions="_u-WeYFfPEeGGKrmzTGQGJg" name="R&#xe9;cup&#xe9;rer la liste des templates projets"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_pWBj8FfPEeGGKrmzTGQGJg" outgoingTransitions="_w3piUFfPEeGGKrmzTGQGJg" incomingTransitions="_wO6uYFfPEeGGKrmzTGQGJg" name="Cr&#xe9;er un template projet"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_rfE7IFfPEeGGKrmzTGQGJg" outgoingTransitions="_wO6uYFfPEeGGKrmzTGQGJg _0IWeEFfPEeGGKrmzTGQGJg _6byyEFfPEeGGKrmzTGQGJg" incomingTransitions="_uiGnQFfPEeGGKrmzTGQGJg _0vPawFfWEeGGKrmzTGQGJg _4qKYMFfWEeGGKrmzTGQGJg" name="Afficher &#xe9;cran liste  des templates projet"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_xwbkcFfPEeGGKrmzTGQGJg" outgoingTransitions="_0xPDAFfPEeGGKrmzTGQGJg _9xGhAFfPEeGGKrmzTGQGJg _tNUhcFfWEeGGKrmzTGQGJg" incomingTransitions="_0IWeEFfPEeGGKrmzTGQGJg" name="S&#xe9;lectionner un template projet"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_5HM9sFfPEeGGKrmzTGQGJg" outgoingTransitions="__n31YFfPEeGGKrmzTGQGJg" incomingTransitions="_6byyEFfPEeGGKrmzTGQGJg" name="Annuler"/>
+    <nodes xsi:type="graal:AbortNode" xmi:id="_7On9MFfPEeGGKrmzTGQGJg" incomingTransitions="__n31YFfPEeGGKrmzTGQGJg"/>
+    <nodes xsi:type="graal:AppliAction" xmi:id="_mQtUoFfWEeGGKrmzTGQGJg" outgoingTransitions="_4qKYMFfWEeGGKrmzTGQGJg _CkmoEFfXEeGGKrmzTGQGJg _Gp7esFfXEeGGKrmzTGQGJg" incomingTransitions="_zQZeMFfWEeGGKrmzTGQGJg" name="Supprimer template projet"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_p6-m8FfWEeGGKrmzTGQGJg" outgoingTransitions="_yAR6IFfWEeGGKrmzTGQGJg" incomingTransitions="_tNUhcFfWEeGGKrmzTGQGJg" name="Supprimer template projet"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_t--A0FfWEeGGKrmzTGQGJg" outgoingTransitions="_zQZeMFfWEeGGKrmzTGQGJg _0vPawFfWEeGGKrmzTGQGJg" incomingTransitions="_yAR6IFfWEeGGKrmzTGQGJg" name="&quot;Confirmer-vous la suppression ?&quot;"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_9KizIFfWEeGGKrmzTGQGJg" incomingTransitions="_CkmoEFfXEeGGKrmzTGQGJg" name="MSG_INFOR_Deletion_template_projet"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_Feat0FfXEeGGKrmzTGQGJg" incomingTransitions="_Gp7esFfXEeGGKrmzTGQGJg" name="MSG_ERR_Deletion_template_projet"/>
+    <nodes xsi:type="graal:AppliAction" xmi:id="_Zgfk8FfrEeGSH_1iSIFASw" name="Pr&#xe9;parer templates par d&#xe9;faut"/>
+    <transitions xmi:id="_uiGnQFfPEeGGKrmzTGQGJg" source="_liiEMFfPEeGGKrmzTGQGJg" target="_rfE7IFfPEeGGKrmzTGQGJg"/>
+    <transitions xmi:id="_u-WeYFfPEeGGKrmzTGQGJg" source="_jNI6IFfPEeGGKrmzTGQGJg" target="_liiEMFfPEeGGKrmzTGQGJg"/>
+    <transitions xmi:id="_wO6uYFfPEeGGKrmzTGQGJg" source="_rfE7IFfPEeGGKrmzTGQGJg" target="_pWBj8FfPEeGGKrmzTGQGJg"/>
+    <transitions xmi:id="_w3piUFfPEeGGKrmzTGQGJg" source="_pWBj8FfPEeGGKrmzTGQGJg" target="_7yW7ADViEeGUarZ1nKomqg"/>
+    <transitions xmi:id="_0IWeEFfPEeGGKrmzTGQGJg" source="_rfE7IFfPEeGGKrmzTGQGJg" target="_xwbkcFfPEeGGKrmzTGQGJg"/>
+    <transitions xmi:id="_0xPDAFfPEeGGKrmzTGQGJg" source="_xwbkcFfPEeGGKrmzTGQGJg" target="_AnQ0cDVjEeGUarZ1nKomqg"/>
+    <transitions xmi:id="_6byyEFfPEeGGKrmzTGQGJg" source="_rfE7IFfPEeGGKrmzTGQGJg" target="_5HM9sFfPEeGGKrmzTGQGJg"/>
+    <transitions xmi:id="_9xGhAFfPEeGGKrmzTGQGJg" source="_xwbkcFfPEeGGKrmzTGQGJg" target="_HTOWIDVjEeGUarZ1nKomqg"/>
+    <transitions xmi:id="__n31YFfPEeGGKrmzTGQGJg" source="_5HM9sFfPEeGGKrmzTGQGJg" target="_7On9MFfPEeGGKrmzTGQGJg" kind="interrupt"/>
+    <transitions xmi:id="_tNUhcFfWEeGGKrmzTGQGJg" source="_xwbkcFfPEeGGKrmzTGQGJg" target="_p6-m8FfWEeGGKrmzTGQGJg"/>
+    <transitions xmi:id="_yAR6IFfWEeGGKrmzTGQGJg" source="_p6-m8FfWEeGGKrmzTGQGJg" target="_t--A0FfWEeGGKrmzTGQGJg"/>
+    <transitions xmi:id="_zQZeMFfWEeGGKrmzTGQGJg" guard="Oui" source="_t--A0FfWEeGGKrmzTGQGJg" target="_mQtUoFfWEeGGKrmzTGQGJg"/>
+    <transitions xmi:id="_0vPawFfWEeGGKrmzTGQGJg" guard="Non" source="_t--A0FfWEeGGKrmzTGQGJg" target="_rfE7IFfPEeGGKrmzTGQGJg"/>
+    <transitions xmi:id="_4qKYMFfWEeGGKrmzTGQGJg" source="_mQtUoFfWEeGGKrmzTGQGJg" target="_rfE7IFfPEeGGKrmzTGQGJg"/>
+    <transitions xmi:id="_CkmoEFfXEeGGKrmzTGQGJg" source="_mQtUoFfWEeGGKrmzTGQGJg" target="_9KizIFfWEeGGKrmzTGQGJg"/>
+    <transitions xmi:id="_Gp7esFfXEeGGKrmzTGQGJg" source="_mQtUoFfWEeGGKrmzTGQGJg" target="_Feat0FfXEeGGKrmzTGQGJg"/>
+    <transitions xmi:id="_y94VYFfXEeGGKrmzTGQGJg" source="_7yW7ADViEeGUarZ1nKomqg" target="_AnQ0cDVjEeGUarZ1nKomqg"/>
+    <transitions xmi:id="_Bb0loFfYEeGGKrmzTGQGJg" source="_HTOWIDVjEeGUarZ1nKomqg" target="_AnQ0cDVjEeGUarZ1nKomqg"/>
+  </tasks>
+  <tasks xsi:type="graal:Task" xmi:id="_zsZggDViEeGUarZ1nKomqg" name="G&#xe9;rer le r&#xe9;f&#xe9;rentiel" id="T8" uses="_CWCcsDVeEeGUarZ1nKomqg _wRMk8DViEeGUarZ1nKomqg _bIFyUDVkEeGUarZ1nKomqg">
+    <nodes xsi:type="graal:TaskReference" xmi:id="_2GngMDViEeGUarZ1nKomqg" task="_CWCcsDVeEeGUarZ1nKomqg"/>
+    <nodes xsi:type="graal:TaskReference" xmi:id="_2pMBwDViEeGUarZ1nKomqg" task="_wRMk8DViEeGUarZ1nKomqg"/>
+    <nodes xsi:type="graal:TaskReference" xmi:id="_eD_iwDVkEeGUarZ1nKomqg" task="_bIFyUDVkEeGUarZ1nKomqg"/>
+    <nodes xsi:type="graal:InitialNode" xmi:id="_qjIuEGxZEeGaIYmCTV3mXw"/>
+  </tasks>
+  <tasks xsi:type="graal:Task" xmi:id="_44i1QDViEeGUarZ1nKomqg" name="Cr&#xe9;er un template projet" id="T9" uses="_9dMsMDViEeGUarZ1nKomqg">
+    <nodes xsi:type="graal:InitialNode" xmi:id="_sdZUsENvEeGhOeqTIW6DGA" outgoingTransitions="_tnszgFfaEeGGKrmzTGQGJg"/>
+    <nodes xsi:type="graal:AbortNode" xmi:id="_9jujgENvEeGhOeqTIW6DGA"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_b58pIENyEeGhOeqTIW6DGA" outgoingTransitions="_5iRvIFfaEeGGKrmzTGQGJg" incomingTransitions="_4dmmEFfaEeGGKrmzTGQGJg" name="MSG_ERR_Creation_template_NOM_Template"/>
+    <nodes xsi:type="graal:FinalNode" xmi:id="_eZiRAENyEeGhOeqTIW6DGA" incomingTransitions="_6RZe8FfaEeGGKrmzTGQGJg"/>
+    <nodes xsi:type="graal:TaskReference" xmi:id="_atx8oFfZEeGGKrmzTGQGJg" outgoingTransitions="_4dmmEFfaEeGGKrmzTGQGJg _6RZe8FfaEeGGKrmzTGQGJg _UW-cgFfiEeGGKrmzTGQGJg" incomingTransitions="_tnszgFfaEeGGKrmzTGQGJg _5iRvIFfaEeGGKrmzTGQGJg _VbNgsFfiEeGGKrmzTGQGJg" task="_9dMsMDViEeGUarZ1nKomqg"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_TKRY0FfiEeGGKrmzTGQGJg" outgoingTransitions="_VbNgsFfiEeGGKrmzTGQGJg" incomingTransitions="_UW-cgFfiEeGGKrmzTGQGJg" name="MSG_ERR_Creation_template"/>
+    <transitions xmi:id="_tnszgFfaEeGGKrmzTGQGJg" source="_sdZUsENvEeGhOeqTIW6DGA" target="_atx8oFfZEeGGKrmzTGQGJg"/>
+    <transitions xmi:id="_4dmmEFfaEeGGKrmzTGQGJg" source="_atx8oFfZEeGGKrmzTGQGJg" target="_b58pIENyEeGhOeqTIW6DGA" kind="abort"/>
+    <transitions xmi:id="_5iRvIFfaEeGGKrmzTGQGJg" source="_b58pIENyEeGhOeqTIW6DGA" target="_atx8oFfZEeGGKrmzTGQGJg"/>
+    <transitions xmi:id="_6RZe8FfaEeGGKrmzTGQGJg" source="_atx8oFfZEeGGKrmzTGQGJg" target="_eZiRAENyEeGhOeqTIW6DGA"/>
+    <transitions xmi:id="_UW-cgFfiEeGGKrmzTGQGJg" source="_atx8oFfZEeGGKrmzTGQGJg" target="_TKRY0FfiEeGGKrmzTGQGJg" kind="interrupt"/>
+    <transitions xmi:id="_VbNgsFfiEeGGKrmzTGQGJg" source="_TKRY0FfiEeGGKrmzTGQGJg" target="_atx8oFfZEeGGKrmzTGQGJg"/>
+  </tasks>
+  <tasks xsi:type="graal:Task" xmi:id="_9dMsMDViEeGUarZ1nKomqg" name="Modifier un template projet" id="T10">
+    <nodes xsi:type="graal:InitialNode" xmi:id="_GJMSwEEmEeGhOeqTIW6DGA" outgoingTransitions="_dJatIEEmEeGhOeqTIW6DGA _nc4WYFfiEeGGKrmzTGQGJg"/>
+    <nodes xsi:type="graal:AppliAction" xmi:id="_HY6OMEEmEeGhOeqTIW6DGA" outgoingTransitions="_Uj3MkEEmEeGhOeqTIW6DGA _ckKD8EEmEeGhOeqTIW6DGA" incomingTransitions="_dJatIEEmEeGhOeqTIW6DGA" name="Chargement du template"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_Ijt0cEEmEeGhOeqTIW6DGA" outgoingTransitions="_WTLOEEEmEeGhOeqTIW6DGA" incomingTransitions="_Uj3MkEEmEeGhOeqTIW6DGA" name="MSG_ERR_Chargement_templates"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_JjyKUEEmEeGhOeqTIW6DGA" outgoingTransitions="_hBEUIEEmEeGhOeqTIW6DGA _lEoasFfkEeGGKrmzTGQGJg _6nCPYFfoEeGGKrmzTGQGJg" incomingTransitions="_ckKD8EEmEeGhOeqTIW6DGA _UdKSMEEnEeGhOeqTIW6DGA _nc4WYFfiEeGGKrmzTGQGJg _HeU5oFfjEeGGKrmzTGQGJg _u3yW0FfkEeGGKrmzTGQGJg" name="Afficher &#xe9;cran modification du template"/>
+    <nodes xsi:type="graal:AbortNode" xmi:id="_VI-EwEEmEeGhOeqTIW6DGA" incomingTransitions="_WTLOEEEmEeGhOeqTIW6DGA"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_pUlpgEEmEeGhOeqTIW6DGA" outgoingTransitions="_QaVV8EEnEeGhOeqTIW6DGA" incomingTransitions="_hBEUIEEmEeGhOeqTIW6DGA" name="Valider"/>
+    <nodes xsi:type="graal:AppliAction" xmi:id="_4axlgEEmEeGhOeqTIW6DGA" outgoingTransitions="_H5sxoEEnEeGhOeqTIW6DGA _M-sVgEEnEeGhOeqTIW6DGA __z7ZwFfiEeGGKrmzTGQGJg _ESOxEFfjEeGGKrmzTGQGJg" incomingTransitions="_QaVV8EEnEeGhOeqTIW6DGA" name="Mise &#xe0; jour template"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_-sNuYEEmEeGhOeqTIW6DGA" outgoingTransitions="_JK560EEnEeGhOeqTIW6DGA" incomingTransitions="_H5sxoEEnEeGhOeqTIW6DGA" name="MSG_Confirmation_Update_template"/>
+    <nodes xsi:type="graal:UserView" xmi:id="__gz0EEEmEeGhOeqTIW6DGA" outgoingTransitions="_UdKSMEEnEeGhOeqTIW6DGA" incomingTransitions="_M-sVgEEnEeGhOeqTIW6DGA" name="MSG_ERR_Update_Template"/>
+    <nodes xsi:type="graal:FinalNode" xmi:id="_IeDb4EEnEeGhOeqTIW6DGA" incomingTransitions="_JK560EEnEeGhOeqTIW6DGA"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_7F3vMFfiEeGGKrmzTGQGJg" outgoingTransitions="_HeU5oFfjEeGGKrmzTGQGJg" incomingTransitions="__z7ZwFfiEeGGKrmzTGQGJg" name="MSG_ERR_Update_Template_NOM_template"/>
+    <nodes xsi:type="graal:AbortNode" xmi:id="_DTf38FfjEeGGKrmzTGQGJg" incomingTransitions="_ESOxEFfjEeGGKrmzTGQGJg"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_sbG5AFfkEeGGKrmzTGQGJg" outgoingTransitions="_u3yW0FfkEeGGKrmzTGQGJg" incomingTransitions="_uhVlsFfkEeGGKrmzTGQGJg" name="MAJ &#xe9;cran template"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_3XhmcFfoEeGGKrmzTGQGJg" incomingTransitions="_6nCPYFfoEeGGKrmzTGQGJg" name="Valider / d&#xe9;valider template"/>
+    <transitions xmi:id="_Uj3MkEEmEeGhOeqTIW6DGA" source="_HY6OMEEmEeGhOeqTIW6DGA" target="_Ijt0cEEmEeGhOeqTIW6DGA"/>
+    <transitions xmi:id="_WTLOEEEmEeGhOeqTIW6DGA" source="_Ijt0cEEmEeGhOeqTIW6DGA" target="_VI-EwEEmEeGhOeqTIW6DGA"/>
+    <transitions xmi:id="_ckKD8EEmEeGhOeqTIW6DGA" source="_HY6OMEEmEeGhOeqTIW6DGA" target="_JjyKUEEmEeGhOeqTIW6DGA"/>
+    <transitions xmi:id="_dJatIEEmEeGhOeqTIW6DGA" source="_GJMSwEEmEeGhOeqTIW6DGA" target="_HY6OMEEmEeGhOeqTIW6DGA"/>
+    <transitions xmi:id="_hBEUIEEmEeGhOeqTIW6DGA" source="_JjyKUEEmEeGhOeqTIW6DGA" target="_pUlpgEEmEeGhOeqTIW6DGA"/>
+    <transitions xmi:id="_H5sxoEEnEeGhOeqTIW6DGA" source="_4axlgEEmEeGhOeqTIW6DGA" target="_-sNuYEEmEeGhOeqTIW6DGA"/>
+    <transitions xmi:id="_JK560EEnEeGhOeqTIW6DGA" guard="OK" source="_-sNuYEEmEeGhOeqTIW6DGA" target="_IeDb4EEnEeGhOeqTIW6DGA"/>
+    <transitions xmi:id="_M-sVgEEnEeGhOeqTIW6DGA" source="_4axlgEEmEeGhOeqTIW6DGA" target="__gz0EEEmEeGhOeqTIW6DGA"/>
+    <transitions xmi:id="_QaVV8EEnEeGhOeqTIW6DGA" source="_pUlpgEEmEeGhOeqTIW6DGA" target="_4axlgEEmEeGhOeqTIW6DGA"/>
+    <transitions xmi:id="_UdKSMEEnEeGhOeqTIW6DGA" source="__gz0EEEmEeGhOeqTIW6DGA" target="_JjyKUEEmEeGhOeqTIW6DGA"/>
+    <transitions xmi:id="_nc4WYFfiEeGGKrmzTGQGJg" guard="cas cr&#xe9;ation" source="_GJMSwEEmEeGhOeqTIW6DGA" target="_JjyKUEEmEeGhOeqTIW6DGA"/>
+    <transitions xmi:id="__z7ZwFfiEeGGKrmzTGQGJg" source="_4axlgEEmEeGhOeqTIW6DGA" target="_7F3vMFfiEeGGKrmzTGQGJg"/>
+    <transitions xmi:id="_ESOxEFfjEeGGKrmzTGQGJg" guard="cas erreur de cr&#xe9;ation" source="_4axlgEEmEeGhOeqTIW6DGA" target="_DTf38FfjEeGGKrmzTGQGJg" kind="interrupt"/>
+    <transitions xmi:id="_HeU5oFfjEeGGKrmzTGQGJg" source="_7F3vMFfiEeGGKrmzTGQGJg" target="_JjyKUEEmEeGhOeqTIW6DGA"/>
+    <transitions xmi:id="_lEoasFfkEeGGKrmzTGQGJg" source="_JjyKUEEmEeGhOeqTIW6DGA" target="_cZRNEVfkEeGGKrmzTGQGJg"/>
+    <transitions xmi:id="_uhVlsFfkEeGGKrmzTGQGJg" source="_cZRNElfkEeGGKrmzTGQGJg" target="_sbG5AFfkEeGGKrmzTGQGJg"/>
+    <transitions xmi:id="_u3yW0FfkEeGGKrmzTGQGJg" source="_sbG5AFfkEeGGKrmzTGQGJg" target="_JjyKUEEmEeGhOeqTIW6DGA"/>
+    <transitions xmi:id="_6nCPYFfoEeGGKrmzTGQGJg" source="_JjyKUEEmEeGhOeqTIW6DGA" target="_3XhmcFfoEeGGKrmzTGQGJg"/>
+    <subActivities xsi:type="graal:Loop" xmi:id="_cZRNEFfkEeGGKrmzTGQGJg" upperBound="-1">
+      <nodes xsi:type="graal:InitialNode" xmi:id="_cZRNEVfkEeGGKrmzTGQGJg" outgoingTransitions="_lmqwwFfkEeGGKrmzTGQGJg _m0tRMFfkEeGGKrmzTGQGJg _oRBeMFfkEeGGKrmzTGQGJg" incomingTransitions="_lEoasFfkEeGGKrmzTGQGJg"/>
+      <nodes xsi:type="graal:FinalNode" xmi:id="_cZRNElfkEeGGKrmzTGQGJg" outgoingTransitions="_uhVlsFfkEeGGKrmzTGQGJg" incomingTransitions="_joKcsFfkEeGGKrmzTGQGJg _kIuMEFfkEeGGKrmzTGQGJg _knWBwFfkEeGGKrmzTGQGJg"/>
+      <nodes xsi:type="graal:UserAction" xmi:id="_YZlrcFfkEeGGKrmzTGQGJg" outgoingTransitions="_knWBwFfkEeGGKrmzTGQGJg" incomingTransitions="_oRBeMFfkEeGGKrmzTGQGJg" name="Ajout / supression correspondance r&#xf4;les projet / r&#xf4;les outils "/>
+      <nodes xsi:type="graal:UserAction" xmi:id="_KIb6AFfkEeGGKrmzTGQGJg" outgoingTransitions="_joKcsFfkEeGGKrmzTGQGJg" incomingTransitions="_lmqwwFfkEeGGKrmzTGQGJg" name="Ajout / suppression cat&#xe9;gories et applications "/>
+      <nodes xsi:type="graal:UserAction" xmi:id="_UagmwFfkEeGGKrmzTGQGJg" outgoingTransitions="_kIuMEFfkEeGGKrmzTGQGJg" incomingTransitions="_m0tRMFfkEeGGKrmzTGQGJg" name="Ajout / suppression r&#xf4;les"/>
+      <transitions xmi:id="_joKcsFfkEeGGKrmzTGQGJg" source="_KIb6AFfkEeGGKrmzTGQGJg" target="_cZRNElfkEeGGKrmzTGQGJg"/>
+      <transitions xmi:id="_kIuMEFfkEeGGKrmzTGQGJg" source="_UagmwFfkEeGGKrmzTGQGJg" target="_cZRNElfkEeGGKrmzTGQGJg"/>
+      <transitions xmi:id="_knWBwFfkEeGGKrmzTGQGJg" source="_YZlrcFfkEeGGKrmzTGQGJg" target="_cZRNElfkEeGGKrmzTGQGJg"/>
+      <transitions xmi:id="_lmqwwFfkEeGGKrmzTGQGJg" source="_cZRNEVfkEeGGKrmzTGQGJg" target="_KIb6AFfkEeGGKrmzTGQGJg"/>
+      <transitions xmi:id="_m0tRMFfkEeGGKrmzTGQGJg" source="_cZRNEVfkEeGGKrmzTGQGJg" target="_UagmwFfkEeGGKrmzTGQGJg"/>
+      <transitions xmi:id="_oRBeMFfkEeGGKrmzTGQGJg" source="_cZRNEVfkEeGGKrmzTGQGJg" target="_YZlrcFfkEeGGKrmzTGQGJg"/>
+    </subActivities>
+  </tasks>
+  <tasks xsi:type="graal:Task" xmi:id="_FjwjoDVjEeGUarZ1nKomqg" name="Consulter un template projet" id="T12" uses="_9dMsMDViEeGUarZ1nKomqg">
+    <nodes xsi:type="graal:InitialNode" xmi:id="_Pje4YEElEeGhOeqTIW6DGA" outgoingTransitions="_XJRIgFfjEeGGKrmzTGQGJg"/>
+    <nodes xsi:type="graal:FinalNode" xmi:id="_xE8c4EElEeGhOeqTIW6DGA" incomingTransitions="_X4ipUFfjEeGGKrmzTGQGJg"/>
+    <nodes xsi:type="graal:TaskReference" xmi:id="_dY4Q8FfZEeGGKrmzTGQGJg" outgoingTransitions="_X4ipUFfjEeGGKrmzTGQGJg" incomingTransitions="_XJRIgFfjEeGGKrmzTGQGJg" task="_9dMsMDViEeGUarZ1nKomqg"/>
+    <transitions xmi:id="_XJRIgFfjEeGGKrmzTGQGJg" source="_Pje4YEElEeGhOeqTIW6DGA" target="_dY4Q8FfZEeGGKrmzTGQGJg"/>
+    <transitions xmi:id="_X4ipUFfjEeGGKrmzTGQGJg" source="_dY4Q8FfZEeGGKrmzTGQGJg" target="_xE8c4EElEeGhOeqTIW6DGA"/>
+  </tasks>
+  <tasks xsi:type="graal:Task" xmi:id="_872dMDVjEeGUarZ1nKomqg" name="D&#xe9;poser un outil" id="T20">
+    <nodes xsi:type="graal:InitialNode" xmi:id="_J4mm0D3QEeGb7MMMYEOMgw" outgoingTransitions="_uWHFsD3QEeGb7MMMYEOMgw"/>
+    <nodes xsi:type="graal:AppliAction" xmi:id="_Mq-AwD3QEeGb7MMMYEOMgw" outgoingTransitions="_vA4hAD3QEeGb7MMMYEOMgw _wON20D3QEeGb7MMMYEOMgw" incomingTransitions="_uWHFsD3QEeGb7MMMYEOMgw" name="Chargement liste outils r&#xe9;f&#xe9;rentiel"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_Qb7J4D3QEeGb7MMMYEOMgw" outgoingTransitions="_w8aZkD3QEeGb7MMMYEOMgw" incomingTransitions="_vA4hAD3QEeGb7MMMYEOMgw _9vOkwD3QEeGb7MMMYEOMgw" name="Affichage liste outils r&#xe9;f&#xe9;rentiel"/>
+    <nodes xsi:type="graal:AppliAction" xmi:id="_WLYnED3QEeGb7MMMYEOMgw" outgoingTransitions="_x3tkMD3QEeGb7MMMYEOMgw _3cmJED3QEeGb7MMMYEOMgw" incomingTransitions="_w8aZkD3QEeGb7MMMYEOMgw" name="Ajout outils espace outils r&#xe9;f&#xe9;rentiel"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_d3HjsD3QEeGb7MMMYEOMgw" outgoingTransitions="_z-uUAD3QEeGb7MMMYEOMgw" incomingTransitions="_x3tkMD3QEeGb7MMMYEOMgw" name="Affichage liste outils r&#xe9;f&#xe9;rentiel avec la mise &#xe0; jour"/>
+    <nodes xsi:type="graal:FinalNode" xmi:id="_lcTMYD3QEeGb7MMMYEOMgw" incomingTransitions="_z-uUAD3QEeGb7MMMYEOMgw"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_orRp0D3QEeGb7MMMYEOMgw" outgoingTransitions="_BQ-NMD3REeGb7MMMYEOMgw" incomingTransitions="_wON20D3QEeGb7MMMYEOMgw" name="MSG_ERR_Chargement_liste_outils_r&#xe9;f&#xe9;rentiel"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_2XTU8D3QEeGb7MMMYEOMgw" outgoingTransitions="_9vOkwD3QEeGb7MMMYEOMgw" incomingTransitions="_3cmJED3QEeGb7MMMYEOMgw" name="MSG_ERR_Ajout_Outil_r&#xe9;f&#xe9;rentiel"/>
+    <nodes xsi:type="graal:AbortNode" xmi:id="_Ak3VID3REeGb7MMMYEOMgw" incomingTransitions="_BQ-NMD3REeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_uWHFsD3QEeGb7MMMYEOMgw" source="_J4mm0D3QEeGb7MMMYEOMgw" target="_Mq-AwD3QEeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_vA4hAD3QEeGb7MMMYEOMgw" source="_Mq-AwD3QEeGb7MMMYEOMgw" target="_Qb7J4D3QEeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_wON20D3QEeGb7MMMYEOMgw" source="_Mq-AwD3QEeGb7MMMYEOMgw" target="_orRp0D3QEeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_w8aZkD3QEeGb7MMMYEOMgw" source="_Qb7J4D3QEeGb7MMMYEOMgw" target="_WLYnED3QEeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_x3tkMD3QEeGb7MMMYEOMgw" source="_WLYnED3QEeGb7MMMYEOMgw" target="_d3HjsD3QEeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_z-uUAD3QEeGb7MMMYEOMgw" source="_d3HjsD3QEeGb7MMMYEOMgw" target="_lcTMYD3QEeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_3cmJED3QEeGb7MMMYEOMgw" source="_WLYnED3QEeGb7MMMYEOMgw" target="_2XTU8D3QEeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_9vOkwD3QEeGb7MMMYEOMgw" source="_2XTU8D3QEeGb7MMMYEOMgw" target="_Qb7J4D3QEeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_BQ-NMD3REeGb7MMMYEOMgw" source="_orRp0D3QEeGb7MMMYEOMgw" target="_Ak3VID3REeGb7MMMYEOMgw"/>
+  </tasks>
+  <tasks xsi:type="graal:Task" xmi:id="_NbTSMDVkEeGUarZ1nKomqg" name="Diffuser outils" id="T21">
+    <nodes xsi:type="graal:InitialNode" xmi:id="_EcF-AD3UEeGb7MMMYEOMgw" outgoingTransitions="_72jzID31EeGb7MMMYEOMgw"/>
+    <nodes xsi:type="graal:AppliAction" xmi:id="_otfG8D3pEeGb7MMMYEOMgw" outgoingTransitions="_8aBskD31EeGb7MMMYEOMgw" incomingTransitions="_72jzID31EeGb7MMMYEOMgw" name="Chargement liste outils r&#xe9;f&#xe9;rentiel"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_s0fYkD3pEeGb7MMMYEOMgw" outgoingTransitions="_9qWE8D31EeGb7MMMYEOMgw" incomingTransitions="_8aBskD31EeGb7MMMYEOMgw _KpElMD32EeGb7MMMYEOMgw" name="Affichage liste outils r&#xe9;f&#xe9;rentiel"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_3wZFcD3pEeGb7MMMYEOMgw" outgoingTransitions="_VeQ0gEamEeGM89_GjjgmSg" incomingTransitions="_9qWE8D31EeGb7MMMYEOMgw" name="S&#xe9;lection des outils  &#xe0; diffuser"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_9NOhkD3pEeGb7MMMYEOMgw" outgoingTransitions="__k-loD31EeGb7MMMYEOMgw" incomingTransitions="_PQjVEEamEeGM89_GjjgmSg _P0KYcEamEeGM89_GjjgmSg" name="Valider"/>
+    <nodes xsi:type="graal:AppliAction" xmi:id="_Ay_uYD3qEeGb7MMMYEOMgw" outgoingTransitions="_AJVP4D32EeGb7MMMYEOMgw _B3KDoD32EeGb7MMMYEOMgw" incomingTransitions="__k-loD31EeGb7MMMYEOMgw" name="Diffusion Outil"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_3Iwy0D3rEeGb7MMMYEOMgw" outgoingTransitions="_QxHI4EamEeGM89_GjjgmSg" incomingTransitions="_AJVP4D32EeGb7MMMYEOMgw" name="MSG_CONF_Diffusion_outil"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_3fHdUD3rEeGb7MMMYEOMgw" outgoingTransitions="_KpElMD32EeGb7MMMYEOMgw" incomingTransitions="_B3KDoD32EeGb7MMMYEOMgw" name="MSG_ERR_Diffusion_Outil"/>
+    <nodes xsi:type="graal:FinalNode" xmi:id="_5S5IED3rEeGb7MMMYEOMgw" incomingTransitions="_Rzt1YEamEeGM89_GjjgmSg"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_lgn6UEalEeGM89_GjjgmSg" outgoingTransitions="_NhYdgEamEeGM89_GjjgmSg" incomingTransitions="_VeQ0gEamEeGM89_GjjgmSg" name="Saisir les param&#xe8;tres de diffusion"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_wdIEIEalEeGM89_GjjgmSg" outgoingTransitions="_P0KYcEamEeGM89_GjjgmSg" incomingTransitions="_OHh3gEamEeGM89_GjjgmSg" name="Saisir la date de diffusion"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_09Av0EalEeGM89_GjjgmSg" outgoingTransitions="_PQjVEEamEeGM89_GjjgmSg" incomingTransitions="_Ot-zgEamEeGM89_GjjgmSg" name="Saisir l'heure de la diffusion"/>
+    <nodes xsi:type="graal:Operator" xmi:id="_6KgIYEalEeGM89_GjjgmSg" outgoingTransitions="_OHh3gEamEeGM89_GjjgmSg _Ot-zgEamEeGM89_GjjgmSg" incomingTransitions="_NhYdgEamEeGM89_GjjgmSg"/>
+    <nodes xsi:type="graal:AppliAction" xmi:id="__xUm8EalEeGM89_GjjgmSg" outgoingTransitions="_Rzt1YEamEeGM89_GjjgmSg" incomingTransitions="_QxHI4EamEeGM89_GjjgmSg" name="Notification de la diffusion"/>
+    <transitions xmi:id="_72jzID31EeGb7MMMYEOMgw" source="_EcF-AD3UEeGb7MMMYEOMgw" target="_otfG8D3pEeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_8aBskD31EeGb7MMMYEOMgw" source="_otfG8D3pEeGb7MMMYEOMgw" target="_s0fYkD3pEeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_9qWE8D31EeGb7MMMYEOMgw" source="_s0fYkD3pEeGb7MMMYEOMgw" target="_3wZFcD3pEeGb7MMMYEOMgw"/>
+    <transitions xmi:id="__k-loD31EeGb7MMMYEOMgw" source="_9NOhkD3pEeGb7MMMYEOMgw" target="_Ay_uYD3qEeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_AJVP4D32EeGb7MMMYEOMgw" source="_Ay_uYD3qEeGb7MMMYEOMgw" target="_3Iwy0D3rEeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_B3KDoD32EeGb7MMMYEOMgw" source="_Ay_uYD3qEeGb7MMMYEOMgw" target="_3fHdUD3rEeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_KpElMD32EeGb7MMMYEOMgw" source="_3fHdUD3rEeGb7MMMYEOMgw" target="_s0fYkD3pEeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_NhYdgEamEeGM89_GjjgmSg" source="_lgn6UEalEeGM89_GjjgmSg" target="_6KgIYEalEeGM89_GjjgmSg"/>
+    <transitions xmi:id="_OHh3gEamEeGM89_GjjgmSg" source="_6KgIYEalEeGM89_GjjgmSg" target="_wdIEIEalEeGM89_GjjgmSg"/>
+    <transitions xmi:id="_Ot-zgEamEeGM89_GjjgmSg" source="_6KgIYEalEeGM89_GjjgmSg" target="_09Av0EalEeGM89_GjjgmSg"/>
+    <transitions xmi:id="_PQjVEEamEeGM89_GjjgmSg" source="_09Av0EalEeGM89_GjjgmSg" target="_9NOhkD3pEeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_P0KYcEamEeGM89_GjjgmSg" source="_wdIEIEalEeGM89_GjjgmSg" target="_9NOhkD3pEeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_QxHI4EamEeGM89_GjjgmSg" source="_3Iwy0D3rEeGb7MMMYEOMgw" target="__xUm8EalEeGM89_GjjgmSg"/>
+    <transitions xmi:id="_Rzt1YEamEeGM89_GjjgmSg" source="__xUm8EalEeGM89_GjjgmSg" target="_5S5IED3rEeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_VeQ0gEamEeGM89_GjjgmSg" source="_3wZFcD3pEeGb7MMMYEOMgw" target="_lgn6UEalEeGM89_GjjgmSg"/>
+  </tasks>
+  <tasks xsi:type="graal:Task" xmi:id="_bIFyUDVkEeGUarZ1nKomqg" name="Les m&#xe9;thodologies" id="T23" uses="_i9XFcDVkEeGUarZ1nKomqg _mbsNgDVkEeGUarZ1nKomqg _nzdRsDVkEeGUarZ1nKomqg">
+    <nodes xsi:type="graal:TaskReference" xmi:id="_mAamwDVkEeGUarZ1nKomqg" task="_i9XFcDVkEeGUarZ1nKomqg"/>
+    <nodes xsi:type="graal:TaskReference" xmi:id="_qop9MDVkEeGUarZ1nKomqg" task="_mbsNgDVkEeGUarZ1nKomqg"/>
+    <nodes xsi:type="graal:TaskReference" xmi:id="_rOWrQDVkEeGUarZ1nKomqg" task="_nzdRsDVkEeGUarZ1nKomqg"/>
+  </tasks>
+  <tasks xsi:type="graal:Task" xmi:id="_i9XFcDVkEeGUarZ1nKomqg" name="Acc&#xe9;der " id="T24"/>
+  <tasks xsi:type="graal:Task" xmi:id="_mbsNgDVkEeGUarZ1nKomqg" name="Initialiser" id="T25">
+    <nodes xsi:type="graal:InitialNode" xmi:id="_mzUikD00EeGb7MMMYEOMgw" outgoingTransitions="_gyKb8D01EeGb7MMMYEOMgw"/>
+    <nodes xsi:type="graal:AppliAction" xmi:id="_32-34D00EeGb7MMMYEOMgw" outgoingTransitions="_O_j9AD01EeGb7MMMYEOMgw _p3TbgD01EeGb7MMMYEOMgw" incomingTransitions="_gyKb8D01EeGb7MMMYEOMgw" name="Chargement  de la liste des outils"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_AU77oD01EeGb7MMMYEOMgw" outgoingTransitions="_xojxUD01EeGb7MMMYEOMgw _yQWKED01EeGb7MMMYEOMgw _zL82sD01EeGb7MMMYEOMgw _0Kh-0D01EeGb7MMMYEOMgw" incomingTransitions="_O_j9AD01EeGb7MMMYEOMgw _zB_0AD02EeGb7MMMYEOMgw" name="Affichage liste outils"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_GuRcQD01EeGb7MMMYEOMgw" outgoingTransitions="_5mUSEFMuEeG3ZavNRuoWzA" incomingTransitions="_xojxUD01EeGb7MMMYEOMgw" name="Initialisation contenu GED"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_Mp8wgD01EeGb7MMMYEOMgw" outgoingTransitions="_8m-msFMuEeG3ZavNRuoWzA" incomingTransitions="_yQWKED01EeGb7MMMYEOMgw" name="Initalisation Wiki"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_NUHu4D01EeGb7MMMYEOMgw" outgoingTransitions="_9QjvMFMuEeG3ZavNRuoWzA" incomingTransitions="_zL82sD01EeGb7MMMYEOMgw" name="Initalisation Site Phare"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_OArS4D01EeGb7MMMYEOMgw" outgoingTransitions="_94Cl8FMuEeG3ZavNRuoWzA" incomingTransitions="_0Kh-0D01EeGb7MMMYEOMgw" name="Initalisation Liste diffusion"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_o0i-AD01EeGb7MMMYEOMgw" outgoingTransitions="_wumDcD01EeGb7MMMYEOMgw" incomingTransitions="_p3TbgD01EeGb7MMMYEOMgw" name="Err_affichage_liste_outils"/>
+    <nodes xsi:type="graal:AbortNode" xmi:id="_v0ekkD01EeGb7MMMYEOMgw" incomingTransitions="_wumDcD01EeGb7MMMYEOMgw"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_Bsu_kD02EeGb7MMMYEOMgw" outgoingTransitions="_vNUBcD02EeGb7MMMYEOMgw" incomingTransitions="_oBUU0D02EeGb7MMMYEOMgw" name="Affichage projet r&#xe9;f&#xe9;rentiel"/>
+    <nodes xsi:type="graal:AppliAction" xmi:id="_ceX2ED02EeGb7MMMYEOMgw" outgoingTransitions="_oBUU0D02EeGb7MMMYEOMgw _uN_ScD02EeGb7MMMYEOMgw" incomingTransitions="__stokFMuEeG3ZavNRuoWzA" name="Initalisation projet r&#xe9;f&#xe9;rentiel"/>
+    <nodes xsi:type="graal:FinalNode" xmi:id="_g_c0kD02EeGb7MMMYEOMgw" incomingTransitions="_vNUBcD02EeGb7MMMYEOMgw"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_om348D02EeGb7MMMYEOMgw" outgoingTransitions="_zB_0AD02EeGb7MMMYEOMgw" incomingTransitions="_uN_ScD02EeGb7MMMYEOMgw" name="MSG_ERR_Init_projet_r&#xe9;f&#xe9;rentiel"/>
+    <nodes xsi:type="graal:Operator" xmi:id="_4yKRQFMuEeG3ZavNRuoWzA" outgoingTransitions="__stokFMuEeG3ZavNRuoWzA" incomingTransitions="_5mUSEFMuEeG3ZavNRuoWzA _8m-msFMuEeG3ZavNRuoWzA _9QjvMFMuEeG3ZavNRuoWzA _94Cl8FMuEeG3ZavNRuoWzA" kind="or"/>
+    <transitions xmi:id="_O_j9AD01EeGb7MMMYEOMgw" source="_32-34D00EeGb7MMMYEOMgw" target="_AU77oD01EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_gyKb8D01EeGb7MMMYEOMgw" source="_mzUikD00EeGb7MMMYEOMgw" target="_32-34D00EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_p3TbgD01EeGb7MMMYEOMgw" source="_32-34D00EeGb7MMMYEOMgw" target="_o0i-AD01EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_wumDcD01EeGb7MMMYEOMgw" source="_o0i-AD01EeGb7MMMYEOMgw" target="_v0ekkD01EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_xojxUD01EeGb7MMMYEOMgw" source="_AU77oD01EeGb7MMMYEOMgw" target="_GuRcQD01EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_yQWKED01EeGb7MMMYEOMgw" source="_AU77oD01EeGb7MMMYEOMgw" target="_Mp8wgD01EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_zL82sD01EeGb7MMMYEOMgw" source="_AU77oD01EeGb7MMMYEOMgw" target="_NUHu4D01EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_0Kh-0D01EeGb7MMMYEOMgw" source="_AU77oD01EeGb7MMMYEOMgw" target="_OArS4D01EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_oBUU0D02EeGb7MMMYEOMgw" source="_ceX2ED02EeGb7MMMYEOMgw" target="_Bsu_kD02EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_uN_ScD02EeGb7MMMYEOMgw" source="_ceX2ED02EeGb7MMMYEOMgw" target="_om348D02EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_vNUBcD02EeGb7MMMYEOMgw" source="_Bsu_kD02EeGb7MMMYEOMgw" target="_g_c0kD02EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_zB_0AD02EeGb7MMMYEOMgw" source="_om348D02EeGb7MMMYEOMgw" target="_AU77oD01EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_5mUSEFMuEeG3ZavNRuoWzA" source="_GuRcQD01EeGb7MMMYEOMgw" target="_4yKRQFMuEeG3ZavNRuoWzA"/>
+    <transitions xmi:id="_8m-msFMuEeG3ZavNRuoWzA" source="_Mp8wgD01EeGb7MMMYEOMgw" target="_4yKRQFMuEeG3ZavNRuoWzA"/>
+    <transitions xmi:id="_9QjvMFMuEeG3ZavNRuoWzA" source="_NUHu4D01EeGb7MMMYEOMgw" target="_4yKRQFMuEeG3ZavNRuoWzA"/>
+    <transitions xmi:id="_94Cl8FMuEeG3ZavNRuoWzA" source="_OArS4D01EeGb7MMMYEOMgw" target="_4yKRQFMuEeG3ZavNRuoWzA"/>
+    <transitions xmi:id="__stokFMuEeG3ZavNRuoWzA" source="_4yKRQFMuEeG3ZavNRuoWzA" target="_ceX2ED02EeGb7MMMYEOMgw"/>
+  </tasks>
+  <tasks xsi:type="graal:Task" xmi:id="_nzdRsDVkEeGUarZ1nKomqg" name="Mettre &#xe0; jour" id="T26">
+    <nodes xsi:type="graal:InitialNode" xmi:id="_9V9-MD02EeGb7MMMYEOMgw" outgoingTransitions="_q4L-0D03EeGb7MMMYEOMgw"/>
+    <nodes xsi:type="graal:AppliAction" xmi:id="_BNUqQD03EeGb7MMMYEOMgw" outgoingTransitions="_isQfMD03EeGb7MMMYEOMgw _r14WID03EeGb7MMMYEOMgw" incomingTransitions="_q4L-0D03EeGb7MMMYEOMgw" name="Chargement liste outils r&#xe9;f&#xe9;rentiel"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_HN66wD03EeGb7MMMYEOMgw" outgoingTransitions="_tsfScD03EeGb7MMMYEOMgw _uv2M4D03EeGb7MMMYEOMgw _wECYoD03EeGb7MMMYEOMgw _xbD18D03EeGb7MMMYEOMgw" incomingTransitions="_r14WID03EeGb7MMMYEOMgw _k_hF0D04EeGb7MMMYEOMgw" name="Affichage liste outils"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_LULlgD03EeGb7MMMYEOMgw" outgoingTransitions="_EP0VcD04EeGb7MMMYEOMgw" incomingTransitions="_tsfScD03EeGb7MMMYEOMgw" name="Mise &#xe0; jour GED"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_L4ZF0D03EeGb7MMMYEOMgw" outgoingTransitions="_E-wfED04EeGb7MMMYEOMgw" incomingTransitions="_uv2M4D03EeGb7MMMYEOMgw" name="Mise &#xe0; jour wiki"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_OnVYUD03EeGb7MMMYEOMgw" outgoingTransitions="_GUlpkD04EeGb7MMMYEOMgw" incomingTransitions="_wECYoD03EeGb7MMMYEOMgw" name="Mise &#xe0; jour site Phare"/>
+    <nodes xsi:type="graal:UserAction" xmi:id="_QGjIUD03EeGb7MMMYEOMgw" outgoingTransitions="_HrUL8D04EeGb7MMMYEOMgw" incomingTransitions="_xbD18D03EeGb7MMMYEOMgw" name="Mise &#xe0; jour liste diffusion"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_hl7JQD03EeGb7MMMYEOMgw" outgoingTransitions="_pHrqgD03EeGb7MMMYEOMgw" incomingTransitions="_isQfMD03EeGb7MMMYEOMgw" name="MSG_ERR_Chargement_liste_outil"/>
+    <nodes xsi:type="graal:AbortNode" xmi:id="_oZCb0D03EeGb7MMMYEOMgw" incomingTransitions="_pHrqgD03EeGb7MMMYEOMgw"/>
+    <nodes xsi:type="graal:Operator" xmi:id="_zSkKID03EeGb7MMMYEOMgw" outgoingTransitions="_IpTeMD04EeGb7MMMYEOMgw" incomingTransitions="_EP0VcD04EeGb7MMMYEOMgw _E-wfED04EeGb7MMMYEOMgw _GUlpkD04EeGb7MMMYEOMgw _HrUL8D04EeGb7MMMYEOMgw" kind="or"/>
+    <nodes xsi:type="graal:AppliAction" xmi:id="_5q3I8D03EeGb7MMMYEOMgw" outgoingTransitions="_MMPZcD04EeGb7MMMYEOMgw _Vp0uMD04EeGb7MMMYEOMgw" incomingTransitions="_IpTeMD04EeGb7MMMYEOMgw" name="Mise &#xe0; jour projet r&#xe9;f&#xe9;rentiel"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_-U4oED03EeGb7MMMYEOMgw" outgoingTransitions="_NtP5MD04EeGb7MMMYEOMgw" incomingTransitions="_MMPZcD04EeGb7MMMYEOMgw" name="Affichage projet r&#xe9;f&#xe9;rentiel"/>
+    <nodes xsi:type="graal:FinalNode" xmi:id="_CDmVgD04EeGb7MMMYEOMgw" incomingTransitions="_NtP5MD04EeGb7MMMYEOMgw"/>
+    <nodes xsi:type="graal:UserView" xmi:id="_UUvxoD04EeGb7MMMYEOMgw" outgoingTransitions="_k_hF0D04EeGb7MMMYEOMgw" incomingTransitions="_Vp0uMD04EeGb7MMMYEOMgw" name="MSG_ERR_Update_Projet_Ref&#xe9;rentiel"/>
+    <transitions xmi:id="_isQfMD03EeGb7MMMYEOMgw" source="_BNUqQD03EeGb7MMMYEOMgw" target="_hl7JQD03EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_pHrqgD03EeGb7MMMYEOMgw" source="_hl7JQD03EeGb7MMMYEOMgw" target="_oZCb0D03EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_q4L-0D03EeGb7MMMYEOMgw" source="_9V9-MD02EeGb7MMMYEOMgw" target="_BNUqQD03EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_r14WID03EeGb7MMMYEOMgw" source="_BNUqQD03EeGb7MMMYEOMgw" target="_HN66wD03EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_tsfScD03EeGb7MMMYEOMgw" source="_HN66wD03EeGb7MMMYEOMgw" target="_LULlgD03EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_uv2M4D03EeGb7MMMYEOMgw" source="_HN66wD03EeGb7MMMYEOMgw" target="_L4ZF0D03EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_wECYoD03EeGb7MMMYEOMgw" source="_HN66wD03EeGb7MMMYEOMgw" target="_OnVYUD03EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_xbD18D03EeGb7MMMYEOMgw" source="_HN66wD03EeGb7MMMYEOMgw" target="_QGjIUD03EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_EP0VcD04EeGb7MMMYEOMgw" source="_LULlgD03EeGb7MMMYEOMgw" target="_zSkKID03EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_E-wfED04EeGb7MMMYEOMgw" source="_L4ZF0D03EeGb7MMMYEOMgw" target="_zSkKID03EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_GUlpkD04EeGb7MMMYEOMgw" source="_OnVYUD03EeGb7MMMYEOMgw" target="_zSkKID03EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_HrUL8D04EeGb7MMMYEOMgw" source="_QGjIUD03EeGb7MMMYEOMgw" target="_zSkKID03EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_IpTeMD04EeGb7MMMYEOMgw" source="_zSkKID03EeGb7MMMYEOMgw" target="_5q3I8D03EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_MMPZcD04EeGb7MMMYEOMgw" source="_5q3I8D03EeGb7MMMYEOMgw" target="_-U4oED03EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_NtP5MD04EeGb7MMMYEOMgw" source="_-U4oED03EeGb7MMMYEOMgw" target="_CDmVgD04EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_Vp0uMD04EeGb7MMMYEOMgw" source="_5q3I8D03EeGb7MMMYEOMgw" target="_UUvxoD04EeGb7MMMYEOMgw"/>
+    <transitions xmi:id="_k_hF0D04EeGb7MMMYEOMgw" source="_UUvxoD04EeGb7MMMYEOMgw" target="_HN66wD03EeGb7MMMYEOMgw"/>
+  </tasks>
+  <tasks xsi:type="graal:TasksGroup" xmi:id="_MnjK8DfeEeGlouIALIGdsw" name="G&#xe9;rer le r&#xe9;f&#xe9;rentiel des exigences" id="G1">
+    <tasks xsi:type="graal:Task" xmi:id="_wRMk8DViEeGUarZ1nKomqg" name="G&#xe9;rer le r&#xe9;f&#xe9;rentiel des exigences" id="T7" uses="_1tDewDVkEeGUarZ1nKomqg __chNsDVkEeGUarZ1nKomqg _1A2qcDexEeGlouIALIGdsw _SG6sEFirEeGivKFKNFarkg" actors="_1rn-8DqUEeG0QJHBpfKeRw">
+      <nodes xsi:type="graal:TaskReference" xmi:id="_R6mIADVkEeGUarZ1nKomqg" task="_PtohMDVkEeGUarZ1nKomqg"/>
+      <nodes xsi:type="graal:TaskReference" xmi:id="_FHNfoDVlEeGUarZ1nKomqg" outgoingTransitions="_Bk7IYDXYEeGUarZ1nKomqg _FYrTgDasEeGUarZ1nKomqg" incomingTransitions="_49cVMDXXEeGUarZ1nKomqg" task="_1tDewDVkEeGUarZ1nKomqg"/>
+      <nodes xsi:type="graal:TaskReference" xmi:id="_Fra_8DVlEeGUarZ1nKomqg" outgoingTransitions="__UbFYDXXEeGUarZ1nKomqg __6o9gDarEeGUarZ1nKomqg" incomingTransitions="_4PHPkDXXEeGUarZ1nKomqg" task="__chNsDVkEeGUarZ1nKomqg"/>
+      <nodes xsi:type="graal:InitialNode" xmi:id="_ts0AYDXVEeGUarZ1nKomqg" outgoingTransitions="_1KXXEDXVEeGUarZ1nKomqg"/>
+      <nodes xsi:type="graal:UserView" xmi:id="_wqOMsDXVEeGUarZ1nKomqg" outgoingTransitions="_5Td6cDXVEeGUarZ1nKomqg __ZCKgDXVEeGUarZ1nKomqg _DRPyMDXWEeGUarZ1nKomqg _7qql4DXWEeGUarZ1nKomqg _RMuZIDXXEeGUarZ1nKomqg _ht2CEDXXEeGUarZ1nKomqg" incomingTransitions="_FTkkYDXYEeGUarZ1nKomqg _VJoEwDahEeGUarZ1nKomqg _4Pj1QDa4EeGUarZ1nKomqg" name="Afficher &#xe9;cran &quot;R&#xe9;f&#xe9;rentiel d'exigences&quot;"/>
+      <nodes xsi:type="graal:UserAction" xmi:id="_2Tap0DXVEeGUarZ1nKomqg" incomingTransitions="_5Td6cDXVEeGUarZ1nKomqg" name="Demander la Synchronisation manuelle"/>
+      <nodes xsi:type="graal:UserAction" xmi:id="_7xIPsDXVEeGUarZ1nKomqg" outgoingTransitions="_BDlAwDXWEeGUarZ1nKomqg" incomingTransitions="__ZCKgDXVEeGUarZ1nKomqg" name="Choisir la vue fonctionnelle"/>
+      <nodes xsi:type="graal:AppliAction" xmi:id="_AAcv0DXWEeGUarZ1nKomqg" outgoingTransitions="_KUKbUDXWEeGUarZ1nKomqg _GyQWkDahEeGUarZ1nKomqg" incomingTransitions="_BDlAwDXWEeGUarZ1nKomqg" name="R&#xe9;cuperer liste des exigences"/>
+      <nodes xsi:type="graal:UserAction" xmi:id="_Bwxd8DXWEeGUarZ1nKomqg" outgoingTransitions="_E3ySMDXWEeGUarZ1nKomqg" incomingTransitions="_DRPyMDXWEeGUarZ1nKomqg" name="Annuler"/>
+      <nodes xsi:type="graal:AbortNode" xmi:id="_EKS6EDXWEeGUarZ1nKomqg" incomingTransitions="_E3ySMDXWEeGUarZ1nKomqg"/>
+      <nodes xsi:type="graal:UserView" xmi:id="_ICWwwDXWEeGUarZ1nKomqg" outgoingTransitions="_94D1EDXXEeGUarZ1nKomqg _ZIIBMDbOEeGZAbEqkuAzhg" incomingTransitions="_KUKbUDXWEeGUarZ1nKomqg __6o9gDarEeGUarZ1nKomqg _FYrTgDasEeGUarZ1nKomqg _rc4TUDbAEeGUarZ1nKomqg _v0IncDbAEeGUarZ1nKomqg" name="Afficher liste des exigences fonctionnelles"/>
+      <nodes xsi:type="graal:UserAction" xmi:id="_QjXvkDXWEeGUarZ1nKomqg" outgoingTransitions="_v6VLYDXWEeGUarZ1nKomqg" incomingTransitions="_7qql4DXWEeGUarZ1nKomqg" name="Choisir la vue par le code"/>
+      <nodes xsi:type="graal:AppliAction" xmi:id="_sQZ3UDXWEeGUarZ1nKomqg" outgoingTransitions="_2k1UgDXWEeGUarZ1nKomqg _Hph80DahEeGUarZ1nKomqg" incomingTransitions="_v6VLYDXWEeGUarZ1nKomqg" name="R&#xe9;cup&#xe9;rer liste des exigences cod&#xe9;es"/>
+      <nodes xsi:type="graal:UserView" xmi:id="_1odL0DXWEeGUarZ1nKomqg" outgoingTransitions="_8_AtMDXXEeGUarZ1nKomqg _rc4TUDbAEeGUarZ1nKomqg" incomingTransitions="_2k1UgDXWEeGUarZ1nKomqg" name="Afficher la liste des exigences cod&#xe9;es"/>
+      <nodes xsi:type="graal:UserAction" xmi:id="_-DPm0DXWEeGUarZ1nKomqg" outgoingTransitions="_CkouYDXXEeGUarZ1nKomqg" incomingTransitions="_RMuZIDXXEeGUarZ1nKomqg" name="Choisir la vue par les tests"/>
+      <nodes xsi:type="graal:AppliAction" xmi:id="_BVrA4DXXEeGUarZ1nKomqg" outgoingTransitions="_JnrTUDXXEeGUarZ1nKomqg _RsDKoDahEeGUarZ1nKomqg" incomingTransitions="_CkouYDXXEeGUarZ1nKomqg" name="R&#xe9;cup&#xe9;rer liste des exigences testables"/>
+      <nodes xsi:type="graal:UserView" xmi:id="_ExBGYDXXEeGUarZ1nKomqg" outgoingTransitions="_-tY6kDXXEeGUarZ1nKomqg _v0IncDbAEeGUarZ1nKomqg" incomingTransitions="_JnrTUDXXEeGUarZ1nKomqg" name="Afficher liste des exigences testables"/>
+      <nodes xsi:type="graal:UserAction" xmi:id="_fSL38DXXEeGUarZ1nKomqg" outgoingTransitions="_24jsUDXXEeGUarZ1nKomqg" incomingTransitions="_ht2CEDXXEeGUarZ1nKomqg" name="Choisir la vue des avertissements"/>
+      <nodes xsi:type="graal:Operator" xmi:id="_zqFlMDXXEeGUarZ1nKomqg" outgoingTransitions="_4PHPkDXXEeGUarZ1nKomqg _49cVMDXXEeGUarZ1nKomqg" incomingTransitions="_24jsUDXXEeGUarZ1nKomqg"/>
+      <nodes xsi:type="graal:UserAction" xmi:id="_6kE70DXXEeGUarZ1nKomqg" outgoingTransitions="_FTkkYDXYEeGUarZ1nKomqg" incomingTransitions="_8_AtMDXXEeGUarZ1nKomqg _94D1EDXXEeGUarZ1nKomqg _-tY6kDXXEeGUarZ1nKomqg __UbFYDXXEeGUarZ1nKomqg _Bk7IYDXYEeGUarZ1nKomqg" name="Annuler"/>
+      <nodes xsi:type="graal:UserView" xmi:id="_jojB4DagEeGUarZ1nKomqg" outgoingTransitions="_VJoEwDahEeGUarZ1nKomqg" incomingTransitions="_GyQWkDahEeGUarZ1nKomqg _Hph80DahEeGUarZ1nKomqg _RsDKoDahEeGUarZ1nKomqg" name="MSG_ERR_Loading_exigences"/>
+      <nodes xsi:type="graal:AppliAction" xmi:id="_0gil0Da4EeGUarZ1nKomqg" outgoingTransitions="_4Pj1QDa4EeGUarZ1nKomqg" incomingTransitions="_1KXXEDXVEeGUarZ1nKomqg" name="R&#xe9;cup&#xe9;rer date de derni&#xe8;re mise &#xe0; jour / synchronisation du r&#xe9;f&#xe9;rentiel d'exigence"/>
+      <nodes xsi:type="graal:UserAction" xmi:id="_Kn7uMDbOEeGZAbEqkuAzhg" outgoingTransitions="_dOZTADbOEeGZAbEqkuAzhg" incomingTransitions="_ZIIBMDbOEeGZAbEqkuAzhg" name="S&#xe9;lectionner exigence"/>
+      <nodes xsi:type="graal:UserView" xmi:id="_ZnHqUDbOEeGZAbEqkuAzhg" incomingTransitions="_p_IakDbOEeGZAbEqkuAzhg" name="Afficher description fonctionnelle de l'exigence"/>
+      <nodes xsi:type="graal:AppliAction" xmi:id="_joBukDbOEeGZAbEqkuAzhg" outgoingTransitions="_p_IakDbOEeGZAbEqkuAzhg" incomingTransitions="_dOZTADbOEeGZAbEqkuAzhg" name="R&#xe9;cup&#xe9;rer la description fonctionnelle de l'exigence"/>
+      <nodes xsi:type="graal:TaskReference" xmi:id="_8grSADexEeGlouIALIGdsw" task="_1A2qcDexEeGlouIALIGdsw"/>
+      <nodes xsi:type="graal:TaskReference" xmi:id="_jdjAsFirEeGivKFKNFarkg" task="_SG6sEFirEeGivKFKNFarkg"/>
+      <transitions xmi:id="_1KXXEDXVEeGUarZ1nKomqg" source="_ts0AYDXVEeGUarZ1nKomqg" target="_0gil0Da4EeGUarZ1nKomqg"/>
+      <transitions xmi:id="_5Td6cDXVEeGUarZ1nKomqg" source="_wqOMsDXVEeGUarZ1nKomqg" target="_2Tap0DXVEeGUarZ1nKomqg"/>
+      <transitions xmi:id="__ZCKgDXVEeGUarZ1nKomqg" source="_wqOMsDXVEeGUarZ1nKomqg" target="_7xIPsDXVEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_BDlAwDXWEeGUarZ1nKomqg" source="_7xIPsDXVEeGUarZ1nKomqg" target="_AAcv0DXWEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_DRPyMDXWEeGUarZ1nKomqg" source="_wqOMsDXVEeGUarZ1nKomqg" target="_Bwxd8DXWEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_E3ySMDXWEeGUarZ1nKomqg" source="_Bwxd8DXWEeGUarZ1nKomqg" target="_EKS6EDXWEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_KUKbUDXWEeGUarZ1nKomqg" source="_AAcv0DXWEeGUarZ1nKomqg" target="_ICWwwDXWEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_v6VLYDXWEeGUarZ1nKomqg" source="_QjXvkDXWEeGUarZ1nKomqg" target="_sQZ3UDXWEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_2k1UgDXWEeGUarZ1nKomqg" source="_sQZ3UDXWEeGUarZ1nKomqg" target="_1odL0DXWEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_7qql4DXWEeGUarZ1nKomqg" source="_wqOMsDXVEeGUarZ1nKomqg" target="_QjXvkDXWEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_CkouYDXXEeGUarZ1nKomqg" source="_-DPm0DXWEeGUarZ1nKomqg" target="_BVrA4DXXEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_JnrTUDXXEeGUarZ1nKomqg" source="_BVrA4DXXEeGUarZ1nKomqg" target="_ExBGYDXXEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_RMuZIDXXEeGUarZ1nKomqg" source="_wqOMsDXVEeGUarZ1nKomqg" target="_-DPm0DXWEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_ht2CEDXXEeGUarZ1nKomqg" source="_wqOMsDXVEeGUarZ1nKomqg" target="_fSL38DXXEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_24jsUDXXEeGUarZ1nKomqg" source="_fSL38DXXEeGUarZ1nKomqg" target="_zqFlMDXXEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_4PHPkDXXEeGUarZ1nKomqg" source="_zqFlMDXXEeGUarZ1nKomqg" target="_Fra_8DVlEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_49cVMDXXEeGUarZ1nKomqg" source="_zqFlMDXXEeGUarZ1nKomqg" target="_FHNfoDVlEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_8_AtMDXXEeGUarZ1nKomqg" source="_1odL0DXWEeGUarZ1nKomqg" target="_6kE70DXXEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_94D1EDXXEeGUarZ1nKomqg" source="_ICWwwDXWEeGUarZ1nKomqg" target="_6kE70DXXEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_-tY6kDXXEeGUarZ1nKomqg" source="_ExBGYDXXEeGUarZ1nKomqg" target="_6kE70DXXEeGUarZ1nKomqg"/>
+      <transitions xmi:id="__UbFYDXXEeGUarZ1nKomqg" source="_Fra_8DVlEeGUarZ1nKomqg" target="_6kE70DXXEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_Bk7IYDXYEeGUarZ1nKomqg" source="_FHNfoDVlEeGUarZ1nKomqg" target="_6kE70DXXEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_FTkkYDXYEeGUarZ1nKomqg" source="_6kE70DXXEeGUarZ1nKomqg" target="_wqOMsDXVEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_GyQWkDahEeGUarZ1nKomqg" source="_AAcv0DXWEeGUarZ1nKomqg" target="_jojB4DagEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_Hph80DahEeGUarZ1nKomqg" source="_sQZ3UDXWEeGUarZ1nKomqg" target="_jojB4DagEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_RsDKoDahEeGUarZ1nKomqg" source="_BVrA4DXXEeGUarZ1nKomqg" target="_jojB4DagEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_VJoEwDahEeGUarZ1nKomqg" source="_jojB4DagEeGUarZ1nKomqg" target="_wqOMsDXVEeGUarZ1nKomqg"/>
+      <transitions xmi:id="__6o9gDarEeGUarZ1nKomqg" source="_Fra_8DVlEeGUarZ1nKomqg" target="_ICWwwDXWEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_FYrTgDasEeGUarZ1nKomqg" source="_FHNfoDVlEeGUarZ1nKomqg" target="_ICWwwDXWEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_4Pj1QDa4EeGUarZ1nKomqg" source="_0gil0Da4EeGUarZ1nKomqg" target="_wqOMsDXVEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_rc4TUDbAEeGUarZ1nKomqg" guard="Sur s&#xe9;lection d'une exigence" source="_1odL0DXWEeGUarZ1nKomqg" target="_ICWwwDXWEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_v0IncDbAEeGUarZ1nKomqg" guard="Sur s&#xe9;lection d'une exigence" source="_ExBGYDXXEeGUarZ1nKomqg" target="_ICWwwDXWEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_ZIIBMDbOEeGZAbEqkuAzhg" source="_ICWwwDXWEeGUarZ1nKomqg" target="_Kn7uMDbOEeGZAbEqkuAzhg"/>
+      <transitions xmi:id="_dOZTADbOEeGZAbEqkuAzhg" source="_Kn7uMDbOEeGZAbEqkuAzhg" target="_joBukDbOEeGZAbEqkuAzhg"/>
+      <transitions xmi:id="_p_IakDbOEeGZAbEqkuAzhg" source="_joBukDbOEeGZAbEqkuAzhg" target="_ZnHqUDbOEeGZAbEqkuAzhg"/>
+    </tasks>
+    <tasks xsi:type="graal:Task" xmi:id="_PtohMDVkEeGUarZ1nKomqg" name="Mettre &#xe0; jour le r&#xe9;f&#xe9;rentiel de Forge &#xe0; partir du r&#xe9;f&#xe9;rentiel OBEO  (partie CRUD Exigence)" id="T22">
+      <nodes xsi:type="graal:InitialNode" xmi:id="_OZws0DXYEeGUarZ1nKomqg" outgoingTransitions="_XVwXcDXYEeGUarZ1nKomqg"/>
+      <nodes xsi:type="graal:AppliAction" xmi:id="_Rqzm0DXYEeGUarZ1nKomqg" outgoingTransitions="_05vu4DXaEeGUarZ1nKomqg _Ed38UDalEeGUarZ1nKomqg _PbHtADalEeGUarZ1nKomqg _hxVPUDalEeGUarZ1nKomqg _j7dkkDalEeGUarZ1nKomqg _WYtVQDfZEeGlouIALIGdsw" incomingTransitions="_fox9kDXYEeGUarZ1nKomqg _xMPiYDXaEeGUarZ1nKomqg _Ua5ZsDalEeGUarZ1nKomqg _V50OwDalEeGUarZ1nKomqg _tYv-YDalEeGUarZ1nKomqg _wkTUYDalEeGUarZ1nKomqg _XTRgEDfZEeGlouIALIGdsw" name="Mettre &#xe0; jour r&#xe9;f&#xe9;rentiel puis transmettre exigences modifi&#xe9;es &#xe0; outils en attente"/>
+      <nodes xsi:type="graal:AppliEvent" xmi:id="_Yv6BQDXYEeGUarZ1nKomqg" outgoingTransitions="_xMPiYDXaEeGUarZ1nKomqg _jIxY0DakEeGUarZ1nKomqg _zqmzcDakEeGUarZ1nKomqg" incomingTransitions="_wb9U8DXaEeGUarZ1nKomqg _m9mVUDakEeGUarZ1nKomqg _0RDIYDakEeGUarZ1nKomqg" name="Recevoir modification d'affectation de test sur exigence"/>
+      <nodes xsi:type="graal:Operator" xmi:id="_Zk8L0DXYEeGUarZ1nKomqg" outgoingTransitions="_fox9kDXYEeGUarZ1nKomqg _wb9U8DXaEeGUarZ1nKomqg" incomingTransitions="_XVwXcDXYEeGUarZ1nKomqg" kind="or"/>
+      <nodes xsi:type="graal:FinalNode" xmi:id="_ypXAoDXaEeGUarZ1nKomqg" incomingTransitions="_05vu4DXaEeGUarZ1nKomqg"/>
+      <nodes xsi:type="graal:UserView" xmi:id="_6u9S4DaXEeGUarZ1nKomqg" outgoingTransitions="_m9mVUDakEeGUarZ1nKomqg" incomingTransitions="_jIxY0DakEeGUarZ1nKomqg" name="MSG_ERR_Logging_sync_cas_test"/>
+      <nodes xsi:type="graal:UserView" xmi:id="_w2cpwDakEeGUarZ1nKomqg" outgoingTransitions="_0RDIYDakEeGUarZ1nKomqg" incomingTransitions="_zqmzcDakEeGUarZ1nKomqg" name="MSG_INFOR_Logging_sync_cas_test"/>
+      <nodes xsi:type="graal:UserView" xmi:id="_4YWU8DakEeGUarZ1nKomqg" outgoingTransitions="_V50OwDalEeGUarZ1nKomqg" incomingTransitions="_Ed38UDalEeGUarZ1nKomqg" name="MSG_ERR_Logging_sync_cas_test"/>
+      <nodes xsi:type="graal:UserView" xmi:id="_JqUMADalEeGUarZ1nKomqg" outgoingTransitions="_Ua5ZsDalEeGUarZ1nKomqg" incomingTransitions="_PbHtADalEeGUarZ1nKomqg" name="MSG_ERR_Logging_maj_exigences"/>
+      <nodes xsi:type="graal:UserView" xmi:id="_RAl2ADalEeGUarZ1nKomqg" outgoingTransitions="_wkTUYDalEeGUarZ1nKomqg" incomingTransitions="_hxVPUDalEeGUarZ1nKomqg" name="MSG_INFO_Logging_maj_exigences"/>
+      <nodes xsi:type="graal:UserView" xmi:id="_a2du8DalEeGUarZ1nKomqg" outgoingTransitions="_tYv-YDalEeGUarZ1nKomqg" incomingTransitions="_j7dkkDalEeGUarZ1nKomqg" name="MSG_INFO_Logging_sync_exigences"/>
+      <nodes xsi:type="graal:UserView" xmi:id="_2AjiMDfYEeGlouIALIGdsw" outgoingTransitions="_XTRgEDfZEeGlouIALIGdsw" incomingTransitions="_WYtVQDfZEeGlouIALIGdsw" name="MSG_ERR_Doublon_Exigence"/>
+      <transitions xmi:id="_XVwXcDXYEeGUarZ1nKomqg" source="_OZws0DXYEeGUarZ1nKomqg" target="_Zk8L0DXYEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_fox9kDXYEeGUarZ1nKomqg" source="_Zk8L0DXYEeGUarZ1nKomqg" target="_Rqzm0DXYEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_wb9U8DXaEeGUarZ1nKomqg" source="_Zk8L0DXYEeGUarZ1nKomqg" target="_Yv6BQDXYEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_xMPiYDXaEeGUarZ1nKomqg" source="_Yv6BQDXYEeGUarZ1nKomqg" target="_Rqzm0DXYEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_05vu4DXaEeGUarZ1nKomqg" source="_Rqzm0DXYEeGUarZ1nKomqg" target="_ypXAoDXaEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_jIxY0DakEeGUarZ1nKomqg" source="_Yv6BQDXYEeGUarZ1nKomqg" target="_6u9S4DaXEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_m9mVUDakEeGUarZ1nKomqg" source="_6u9S4DaXEeGUarZ1nKomqg" target="_Yv6BQDXYEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_zqmzcDakEeGUarZ1nKomqg" source="_Yv6BQDXYEeGUarZ1nKomqg" target="_w2cpwDakEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_0RDIYDakEeGUarZ1nKomqg" source="_w2cpwDakEeGUarZ1nKomqg" target="_Yv6BQDXYEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_Ed38UDalEeGUarZ1nKomqg" source="_Rqzm0DXYEeGUarZ1nKomqg" target="_4YWU8DakEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_PbHtADalEeGUarZ1nKomqg" source="_Rqzm0DXYEeGUarZ1nKomqg" target="_JqUMADalEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_Ua5ZsDalEeGUarZ1nKomqg" source="_JqUMADalEeGUarZ1nKomqg" target="_Rqzm0DXYEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_V50OwDalEeGUarZ1nKomqg" source="_4YWU8DakEeGUarZ1nKomqg" target="_Rqzm0DXYEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_hxVPUDalEeGUarZ1nKomqg" source="_Rqzm0DXYEeGUarZ1nKomqg" target="_RAl2ADalEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_j7dkkDalEeGUarZ1nKomqg" source="_Rqzm0DXYEeGUarZ1nKomqg" target="_a2du8DalEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_tYv-YDalEeGUarZ1nKomqg" source="_a2du8DalEeGUarZ1nKomqg" target="_Rqzm0DXYEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_wkTUYDalEeGUarZ1nKomqg" source="_RAl2ADalEeGUarZ1nKomqg" target="_Rqzm0DXYEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_WYtVQDfZEeGlouIALIGdsw" source="_Rqzm0DXYEeGUarZ1nKomqg" target="_2AjiMDfYEeGlouIALIGdsw"/>
+      <transitions xmi:id="_XTRgEDfZEeGlouIALIGdsw" source="_2AjiMDfYEeGlouIALIGdsw" target="_Rqzm0DXYEeGUarZ1nKomqg"/>
+    </tasks>
+    <tasks xsi:type="graal:Task" xmi:id="__chNsDVkEeGUarZ1nKomqg" name="Pr&#xe9;parer la vue consolid&#xe9;e des exigences non couvertes par du code" id="T28">
+      <nodes xsi:type="graal:InitialNode" xmi:id="_GvU0QDYmEeGUarZ1nKomqg" outgoingTransitions="_LYTxkDYmEeGUarZ1nKomqg"/>
+      <nodes xsi:type="graal:AppliAction" xmi:id="_KUztMDYmEeGUarZ1nKomqg" outgoingTransitions="_OoVX4DYmEeGUarZ1nKomqg _e4xmcDaoEeGUarZ1nKomqg" incomingTransitions="_LYTxkDYmEeGUarZ1nKomqg" name="Pr&#xe9;parer la vue consolid&#xe9;e des exigences non couvertes par du code"/>
+      <nodes xsi:type="graal:UserView" xmi:id="_NCZ74DYmEeGUarZ1nKomqg" outgoingTransitions="_RjpScDYmEeGUarZ1nKomqg _tl5a0DarEeGUarZ1nKomqg" incomingTransitions="_OoVX4DYmEeGUarZ1nKomqg _ftExMDaoEeGUarZ1nKomqg" name="Afficher la vue consolid&#xe9;e des exigences non couvertes par du code"/>
+      <nodes xsi:type="graal:FinalNode" xmi:id="_Q0tI0DYmEeGUarZ1nKomqg" incomingTransitions="_RjpScDYmEeGUarZ1nKomqg _JgIREDasEeGUarZ1nKomqg"/>
+      <nodes xsi:type="graal:UserView" xmi:id="_ZmM5kDaoEeGUarZ1nKomqg" outgoingTransitions="_ftExMDaoEeGUarZ1nKomqg" incomingTransitions="_e4xmcDaoEeGUarZ1nKomqg" name="MSG_ERR_Loading_exigences"/>
+      <nodes xsi:type="graal:UserAction" xmi:id="_rgOu0DarEeGUarZ1nKomqg" outgoingTransitions="_JgIREDasEeGUarZ1nKomqg" incomingTransitions="_tl5a0DarEeGUarZ1nKomqg" name="S&#xe9;lectionner une exigence"/>
+      <transitions xmi:id="_LYTxkDYmEeGUarZ1nKomqg" source="_GvU0QDYmEeGUarZ1nKomqg" target="_KUztMDYmEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_OoVX4DYmEeGUarZ1nKomqg" source="_KUztMDYmEeGUarZ1nKomqg" target="_NCZ74DYmEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_RjpScDYmEeGUarZ1nKomqg" source="_NCZ74DYmEeGUarZ1nKomqg" target="_Q0tI0DYmEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_e4xmcDaoEeGUarZ1nKomqg" source="_KUztMDYmEeGUarZ1nKomqg" target="_ZmM5kDaoEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_ftExMDaoEeGUarZ1nKomqg" source="_ZmM5kDaoEeGUarZ1nKomqg" target="_NCZ74DYmEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_tl5a0DarEeGUarZ1nKomqg" source="_NCZ74DYmEeGUarZ1nKomqg" target="_rgOu0DarEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_JgIREDasEeGUarZ1nKomqg" guard="vers vue fonctionnelle" source="_rgOu0DarEeGUarZ1nKomqg" target="_Q0tI0DYmEeGUarZ1nKomqg"/>
+    </tasks>
+    <tasks xsi:type="graal:Task" xmi:id="_1tDewDVkEeGUarZ1nKomqg" name="Pr&#xe9;parer la vue consolid&#xe9;e des exigences non couvertes par des cas de test" id="T27">
+      <nodes xsi:type="graal:InitialNode" xmi:id="_UfGW8DYmEeGUarZ1nKomqg" outgoingTransitions="_YWwlADYmEeGUarZ1nKomqg"/>
+      <nodes xsi:type="graal:AppliAction" xmi:id="_Wh7xYDYmEeGUarZ1nKomqg" outgoingTransitions="_bwncwDYmEeGUarZ1nKomqg _pckVUDaoEeGUarZ1nKomqg" incomingTransitions="_YWwlADYmEeGUarZ1nKomqg" name="Pr&#xe9;parer la vue consolid&#xe9;e des exigences non couvertes par des cas de test"/>
+      <nodes xsi:type="graal:UserView" xmi:id="_ZCtsEDYmEeGUarZ1nKomqg" outgoingTransitions="_dwwvkDYmEeGUarZ1nKomqg _cgrJ0DasEeGUarZ1nKomqg" incomingTransitions="_bwncwDYmEeGUarZ1nKomqg _qOfhgDaoEeGUarZ1nKomqg" name="Afficher la vue consolid&#xe9;e des exigences non couvertes par des cas de test"/>
+      <nodes xsi:type="graal:FinalNode" xmi:id="_cw1joDYmEeGUarZ1nKomqg" incomingTransitions="_dwwvkDYmEeGUarZ1nKomqg _c8h_YDasEeGUarZ1nKomqg"/>
+      <nodes xsi:type="graal:UserView" xmi:id="_n-1zEDaoEeGUarZ1nKomqg" outgoingTransitions="_qOfhgDaoEeGUarZ1nKomqg" incomingTransitions="_pckVUDaoEeGUarZ1nKomqg" name="MSG_ERR_Loading_exigences"/>
+      <nodes xsi:type="graal:UserAction" xmi:id="_ZSSiQDasEeGUarZ1nKomqg" outgoingTransitions="_c8h_YDasEeGUarZ1nKomqg" incomingTransitions="_cgrJ0DasEeGUarZ1nKomqg" name="S&#xe9;lectionner exigence"/>
+      <transitions xmi:id="_YWwlADYmEeGUarZ1nKomqg" source="_UfGW8DYmEeGUarZ1nKomqg" target="_Wh7xYDYmEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_bwncwDYmEeGUarZ1nKomqg" source="_Wh7xYDYmEeGUarZ1nKomqg" target="_ZCtsEDYmEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_dwwvkDYmEeGUarZ1nKomqg" source="_ZCtsEDYmEeGUarZ1nKomqg" target="_cw1joDYmEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_pckVUDaoEeGUarZ1nKomqg" source="_Wh7xYDYmEeGUarZ1nKomqg" target="_n-1zEDaoEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_qOfhgDaoEeGUarZ1nKomqg" source="_n-1zEDaoEeGUarZ1nKomqg" target="_ZCtsEDYmEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_cgrJ0DasEeGUarZ1nKomqg" source="_ZCtsEDYmEeGUarZ1nKomqg" target="_ZSSiQDasEeGUarZ1nKomqg"/>
+      <transitions xmi:id="_c8h_YDasEeGUarZ1nKomqg" guard="vers vue fonctionnelle" source="_ZSSiQDasEeGUarZ1nKomqg" target="_cw1joDYmEeGUarZ1nKomqg"/>
+    </tasks>
+    <tasks xsi:type="graal:Task" xmi:id="_1A2qcDexEeGlouIALIGdsw" name="G&#xe9;rer la mont&#xe9;e de version d'une exigence" id="T29">
+      <nodes xsi:type="graal:InitialNode" xmi:id="_9aMT8DexEeGlouIALIGdsw" outgoingTransitions="_dxVaYDeyEeGlouIALIGdsw"/>
+      <nodes xsi:type="graal:AppliAction" xmi:id="__-2pEDexEeGlouIALIGdsw" outgoingTransitions="_zK5Y8DeyEeGlouIALIGdsw" incomingTransitions="_dxVaYDeyEeGlouIALIGdsw" name="OBEO Designer - Recup&#xe9;rer liste des exigences"/>
+      <nodes xsi:type="graal:UserView" xmi:id="_neajsDeyEeGlouIALIGdsw" outgoingTransitions="_COC9IDe1EeGlouIALIGdsw" incomingTransitions="_zK5Y8DeyEeGlouIALIGdsw _ikaVkDe3EeGlouIALIGdsw _ruUgYDe3EeGlouIALIGdsw" name="OBEO Designer - Vue exigence"/>
+      <nodes xsi:type="graal:UserAction" xmi:id="_9eLKIDezEeGlouIALIGdsw" outgoingTransitions="_Tii44De3EeGlouIALIGdsw" incomingTransitions="_COC9IDe1EeGlouIALIGdsw" name="Choisir version (ne peut &#xea;tre qu'ascendante)"/>
+      <nodes xsi:type="graal:AppliAction" xmi:id="_q9vC4De1EeGlouIALIGdsw" outgoingTransitions="_ikaVkDe3EeGlouIALIGdsw" incomingTransitions="_hagHMDe3EeGlouIALIGdsw" name="Enregistrer version"/>
+      <nodes xsi:type="graal:UserAction" xmi:id="_tOkdEDe1EeGlouIALIGdsw" outgoingTransitions="_hagHMDe3EeGlouIALIGdsw _ruUgYDe3EeGlouIALIGdsw" incomingTransitions="_Tii44De3EeGlouIALIGdsw" name="Demander confirmation Oui / Non"/>
+      <transitions xmi:id="_dxVaYDeyEeGlouIALIGdsw" source="_9aMT8DexEeGlouIALIGdsw" target="__-2pEDexEeGlouIALIGdsw"/>
+      <transitions xmi:id="_zK5Y8DeyEeGlouIALIGdsw" source="__-2pEDexEeGlouIALIGdsw" target="_neajsDeyEeGlouIALIGdsw"/>
+      <transitions xmi:id="_COC9IDe1EeGlouIALIGdsw" source="_neajsDeyEeGlouIALIGdsw" target="_9eLKIDezEeGlouIALIGdsw"/>
+      <transitions xmi:id="_Tii44De3EeGlouIALIGdsw" source="_9eLKIDezEeGlouIALIGdsw" target="_tOkdEDe1EeGlouIALIGdsw"/>
+      <transitions xmi:id="_hagHMDe3EeGlouIALIGdsw" guard="Oui" source="_tOkdEDe1EeGlouIALIGdsw" target="_q9vC4De1EeGlouIALIGdsw"/>
+      <transitions xmi:id="_ikaVkDe3EeGlouIALIGdsw" source="_q9vC4De1EeGlouIALIGdsw" target="_neajsDeyEeGlouIALIGdsw"/>
+      <transitions xmi:id="_ruUgYDe3EeGlouIALIGdsw" guard="Non" source="_tOkdEDe1EeGlouIALIGdsw" target="_neajsDeyEeGlouIALIGdsw"/>
+    </tasks>
+    <tasks xsi:type="graal:Task" xmi:id="_a4bsYFioEeGivKFKNFarkg" name="Interfacer le r&#xe9;f&#xe9;rentiel d'exigence" id="T37" uses="_PtohMDVkEeGUarZ1nKomqg _Lz0oQFipEeGivKFKNFarkg">
+      <nodes xsi:type="graal:InitialNode" xmi:id="_h31ugFioEeGivKFKNFarkg" outgoingTransitions="_G_QGAFipEeGivKFKNFarkg"/>
+      <nodes xsi:type="graal:AppliAction" xmi:id="_CnNuwFipEeGivKFKNFarkg" outgoingTransitions="_6QfFoFiuEeGivKFKNFarkg _M53FcFi4EeGivKFKNFarkg" incomingTransitions="_G_QGAFipEeGivKFKNFarkg" name="Proposer un service d'acc&#xe8;s XML/RPC pour l'acc&#xe8;s au r&#xe9;f&#xe9;rentiel d'exigence"/>
+      <nodes xsi:type="graal:TaskReference" xmi:id="_tVTooFiuEeGivKFKNFarkg" incomingTransitions="_6QfFoFiuEeGivKFKNFarkg" task="_PtohMDVkEeGUarZ1nKomqg"/>
+      <nodes xsi:type="graal:TaskReference" xmi:id="_KTGekFi4EeGivKFKNFarkg" incomingTransitions="_M53FcFi4EeGivKFKNFarkg" task="_Lz0oQFipEeGivKFKNFarkg"/>
+      <transitions xmi:id="_G_QGAFipEeGivKFKNFarkg" source="_h31ugFioEeGivKFKNFarkg" target="_CnNuwFipEeGivKFKNFarkg"/>
+      <transitions xmi:id="_6QfFoFiuEeGivKFKNFarkg" guard="Sur appel type CRUD" source="_CnNuwFipEeGivKFKNFarkg" target="_tVTooFiuEeGivKFKNFarkg"/>
+      <transitions xmi:id="_M53FcFi4EeGivKFKNFarkg" guard="Sur appel type association pour maintenir le p&#xe9;rim&#xe8;tre en unit&#xe9; de p&#xe9;rim&#xe8;tre / exigence coh&#xe9;rent" source="_CnNuwFipEeGivKFKNFarkg" target="_KTGekFi4EeGivKFKNFarkg"/>
+    </tasks>
+    <tasks xsi:type="graal:Task" xmi:id="_Lz0oQFipEeGivKFKNFarkg" name="Mettre &#xe0; jour le r&#xe9;f&#xe9;rentiel de Forge &#xe0; partir du r&#xe9;f&#xe9;rentiel OBEO  (partie Associer Unit&#xe9; de p&#xe9;rim&#xe8;tre &#xe0; exigence)" id="T17">
+      <nodes xsi:type="graal:InitialNode" xmi:id="_pOmHYFitEeGivKFKNFarkg" outgoingTransitions="_SIgDoFivEeGivKFKNFarkg"/>
+      <nodes xsi:type="graal:AppliAction" xmi:id="_OV7J4FivEeGivKFKNFarkg" outgoingTransitions="_S7yhwFivEeGivKFKNFarkg" incomingTransitions="_SIgDoFivEeGivKFKNFarkg" name="Mise &#xe0; jour et transmission des deltas vers module &quot;referentiel de pilotage&quot;"/>
+      <nodes xsi:type="graal:FinalNode" xmi:id="_PGOlcFivEeGivKFKNFarkg" incomingTransitions="_S7yhwFivEeGivKFKNFarkg"/>
+      <transitions xmi:id="_SIgDoFivEeGivKFKNFarkg" source="_pOmHYFitEeGivKFKNFarkg" target="_OV7J4FivEeGivKFKNFarkg"/>
+      <transitions xmi:id="_S7yhwFivEeGivKFKNFarkg" source="_OV7J4FivEeGivKFKNFarkg" target="_PGOlcFivEeGivKFKNFarkg"/>
+    </tasks>
+    <tasks xsi:type="graal:Task" xmi:id="_SG6sEFirEeGivKFKNFarkg" name="Mettre &#xe0; jour le r&#xe9;f&#xe9;rentiel de Forge &#xe0; partir du r&#xe9;f&#xe9;rentiel OBEO" id="T38" uses="_a4bsYFioEeGivKFKNFarkg" actors="_0GlTwDqUEeG0QJHBpfKeRw">
+      <nodes xsi:type="graal:InitialNode" xmi:id="_k8iHMFirEeGivKFKNFarkg" outgoingTransitions="_JUb34FitEeGivKFKNFarkg"/>
+      <nodes xsi:type="graal:AppliAction" xmi:id="_Ic2IkFitEeGivKFKNFarkg" outgoingTransitions="_wUGKcFitEeGivKFKNFarkg" incomingTransitions="_JUb34FitEeGivKFKNFarkg" name="R&#xe9;cup&#xe9;rer les exigences sous SVN, r&#xe9;cup&#xe9;rer le r&#xe9;f&#xe9;rentiel d'exigence et pour chaque type d'action appeler les m&#xe9;thode du CRUD (pas de gestion m&#xe9;tier, juste du comparatif)"/>
+      <nodes xsi:type="graal:FinalNode" xmi:id="_0r_XwFitEeGivKFKNFarkg" incomingTransitions="_1WpeUFitEeGivKFKNFarkg"/>
+      <transitions xmi:id="_JUb34FitEeGivKFKNFarkg" source="_k8iHMFirEeGivKFKNFarkg" target="_Ic2IkFitEeGivKFKNFarkg"/>
+      <transitions xmi:id="_wUGKcFitEeGivKFKNFarkg" guard="Pour chaque action de type CRUD" source="_Ic2IkFitEeGivKFKNFarkg" target="_tg_JoVitEeGivKFKNFarkg"/>
+      <transitions xmi:id="_1WpeUFitEeGivKFKNFarkg" source="_tg_JolitEeGivKFKNFarkg" target="_0r_XwFitEeGivKFKNFarkg"/>
+      <subActivities xsi:type="graal:Loop" xmi:id="_tg_JoFitEeGivKFKNFarkg" upperBound="-1">
+        <nodes xsi:type="graal:InitialNode" xmi:id="_tg_JoVitEeGivKFKNFarkg" outgoingTransitions="_zR6mcFitEeGivKFKNFarkg" incomingTransitions="_wUGKcFitEeGivKFKNFarkg"/>
+        <nodes xsi:type="graal:FinalNode" xmi:id="_tg_JolitEeGivKFKNFarkg" outgoingTransitions="_1WpeUFitEeGivKFKNFarkg" incomingTransitions="_z6C9cFitEeGivKFKNFarkg"/>
+        <nodes xsi:type="graal:TaskReference" xmi:id="__UsRQFisEeGivKFKNFarkg" outgoingTransitions="_z6C9cFitEeGivKFKNFarkg" incomingTransitions="_zR6mcFitEeGivKFKNFarkg" task="_a4bsYFioEeGivKFKNFarkg"/>
+        <transitions xmi:id="_zR6mcFitEeGivKFKNFarkg" source="_tg_JoVitEeGivKFKNFarkg" target="__UsRQFisEeGivKFKNFarkg"/>
+        <transitions xmi:id="_z6C9cFitEeGivKFKNFarkg" source="__UsRQFisEeGivKFKNFarkg" target="_tg_JolitEeGivKFKNFarkg"/>
+      </subActivities>
+    </tasks>
+  </tasks>
+  <tasks xsi:type="graal:Task" xmi:id="_8oPVUFMKEeG3ZavNRuoWzA" name="Diffusion outils r&#xe9;f&#xe9;rentiel" id="T35" uses="_872dMDVjEeGUarZ1nKomqg _NbTSMDVkEeGUarZ1nKomqg">
+    <nodes xsi:type="graal:TaskReference" xmi:id="_JwWbEFMLEeG3ZavNRuoWzA" task="_872dMDVjEeGUarZ1nKomqg"/>
+    <nodes xsi:type="graal:TaskReference" xmi:id="_KdM6AFMLEeG3ZavNRuoWzA" task="_NbTSMDVkEeGUarZ1nKomqg"/>
+    <nodes xsi:type="graal:InitialNode" xmi:id="_idlDkGxWEeGaIYmCTV3mXw"/>
+  </tasks>
+  <tasks xsi:type="graal:Task" xmi:id="_jx0_8FMLEeG3ZavNRuoWzA" name="Sychronisation projet r&#xe9;f&#xe9;rentiel" id="T36"/>
+  <actors xmi:id="_0GlTwDqUEeG0QJHBpfKeRw" name="Forge"/>
+  <actors xmi:id="_1rn-8DqUEeG0QJHBpfKeRw" name="Participants &#xe0; un projet"/>
+  <actors xmi:id="_E7pycFfsEeGSH_1iSIFASw" name="Administrateur fonctionnel"/>
+  <useCases xmi:id="_3PXBkFfrEeGSH_1iSIFASw" name="UC35 - G&#xe9;rer les templates projet" tasks="_44i1QDViEeGUarZ1nKomqg _9dMsMDViEeGUarZ1nKomqg _FjwjoDVjEeGUarZ1nKomqg _EmbK8DVeEeGUarZ1nKomqg _i9XFcDVkEeGUarZ1nKomqg _872dMDVjEeGUarZ1nKomqg _NbTSMDVkEeGUarZ1nKomqg _8oPVUFMKEeG3ZavNRuoWzA _zsZggDViEeGUarZ1nKomqg _CWCcsDVeEeGUarZ1nKomqg _mbsNgDVkEeGUarZ1nKomqg _bIFyUDVkEeGUarZ1nKomqg _nzdRsDVkEeGUarZ1nKomqg _jx0_8FMLEeG3ZavNRuoWzA"/>
+  <useCases xmi:id="_iBEy8Fi8EeGdkrU7O_ESjA" name="UC36 - G&#xe9;rer le r&#xe9;f&#xe9;rentiel des exigences" tasks="_wRMk8DViEeGUarZ1nKomqg _PtohMDVkEeGUarZ1nKomqg __chNsDVkEeGUarZ1nKomqg _1tDewDVkEeGUarZ1nKomqg _1A2qcDexEeGlouIALIGdsw _a4bsYFioEeGivKFKNFarkg _Lz0oQFipEeGivKFKNFarkg _SG6sEFirEeGivKFKNFarkg"/>
+</graal:System>

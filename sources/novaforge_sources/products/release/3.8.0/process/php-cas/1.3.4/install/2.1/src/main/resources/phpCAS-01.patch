@@ -1,0 +1,27 @@
+diff -rNU5 CAS-1.3.4/CAS.php CAS/CAS.php
+--- CAS-1.3.4/CAS.php	2015-11-16 21:44:38.000000000 +0100
++++ CAS/CAS.php	2016-08-17 10:19:31.849400500 +0200
+@@ -1580,10 +1580,23 @@
+         } catch (Exception $e) {
+             phpCAS :: error(get_class($e) . ': ' . $e->getMessage());
+         }
+     }
+ 
++     /**      
++     * Retrieve a Ticket from the CAS server request.
++     *
++     * @return string Ticket
++     */
++    public static function getTicket()
++    {
++        if (!is_object(self::$_PHPCAS_CLIENT)) {
++            phpCAS :: error('this method should not be called before ' . __CLASS__ . '::client() or ' . __CLASS__ . '::proxy()');
++        }
++        return self::$_PHPCAS_CLIENT->getTicket();
++    }
++
+     /**
+      * Set the certificate of the CAS server CA and if the CN should be properly
+      * verified.
+      *
+      * @param string $cert        CA certificate file name

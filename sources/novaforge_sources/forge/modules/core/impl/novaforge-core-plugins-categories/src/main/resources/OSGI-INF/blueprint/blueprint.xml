@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+	
+	<!-- Category Services -->
+	<bean id="fieldDescriptorBuilder" class="org.novaforge.forge.plugins.categories.impl.builder.FieldDescriptorBuilderImpl" />
+	<service ref="fieldDescriptorBuilder" interface="org.novaforge.forge.core.plugins.services.FieldDescriptorBuilder" />
+
+	<service id="bugTrackerDefinitionService" interface="org.novaforge.forge.core.plugins.categories.CategoryDefinitionService">
+		<bean class="org.novaforge.forge.plugins.categories.impl.definitions.BugTrackerDefinitionServiceImpl"
+			init-method='start'>
+			<property name="fieldDescriptorBuilder" ref="fieldDescriptorBuilder" />
+		</bean>
+	</service>
+	<service id="testManagementDefinitionService" interface="org.novaforge.forge.core.plugins.categories.CategoryDefinitionService">
+		<bean class="org.novaforge.forge.plugins.categories.impl.definitions.TestManagementDefinitionServiceImpl"
+			init-method='start'>
+			<property name="fieldDescriptorBuilder" ref="fieldDescriptorBuilder" />
+		</bean>
+	</service>
+	<service id="ECMDefinitionService" interface="org.novaforge.forge.core.plugins.categories.CategoryDefinitionService">
+		<bean class="org.novaforge.forge.plugins.categories.impl.definitions.ECMDefinitionServiceImpl"
+			init-method='start'>
+			<property name="fieldDescriptorBuilder" ref="fieldDescriptorBuilder" />
+		</bean>
+	</service>
+        <service id="devopsDefinitionService" interface="org.novaforge.forge.core.plugins.categories.CategoryDefinitionService">
+                <bean class="org.novaforge.forge.plugins.categories.impl.definitions.DevOpsManagementDefinitionServiceImpl"
+                        init-method='start'>
+                        <property name="fieldDescriptorBuilder" ref="fieldDescriptorBuilder" />
+                </bean>
+        </service>
+
+	<service id="wikiDefinitionService" interface="org.novaforge.forge.core.plugins.categories.CategoryDefinitionService">
+		<bean class="org.novaforge.forge.plugins.categories.impl.definitions.WikiDefinitionServiceImpl"
+			init-method='start'>
+			<property name="fieldDescriptorBuilder" ref="fieldDescriptorBuilder" />
+		</bean>
+	</service>
+	<service id="CIDefinitionService" interface="org.novaforge.forge.core.plugins.categories.CategoryDefinitionService">
+		<bean class="org.novaforge.forge.plugins.categories.impl.definitions.CIDefinitionServiceImpl"
+			init-method='start'>
+			<property name="fieldDescriptorBuilder" ref="fieldDescriptorBuilder" />
+		</bean>
+	</service>
+	<service id="forumDefinitionService" interface="org.novaforge.forge.core.plugins.categories.CategoryDefinitionService">
+		<bean class="org.novaforge.forge.plugins.categories.impl.definitions.ForumDefinitionServiceImpl"
+			init-method='start'>
+			<property name="fieldDescriptorBuilder" ref="fieldDescriptorBuilder" />
+		</bean>
+	</service>
+	<service id="mailingListDefinitionService" interface="org.novaforge.forge.core.plugins.categories.CategoryDefinitionService">
+		<bean class="org.novaforge.forge.plugins.categories.impl.definitions.MailingListDefinitionServiceImpl"
+			init-method='start'>
+			<property name="fieldDescriptorBuilder" ref="fieldDescriptorBuilder" />
+		</bean>
+	</service>
+	<service id="qualityDefinitionService" interface="org.novaforge.forge.core.plugins.categories.CategoryDefinitionService">
+		<bean class="org.novaforge.forge.plugins.categories.impl.definitions.QualityDefinitionServiceImpl"
+			init-method='start'>
+			<property name="fieldDescriptorBuilder" ref="fieldDescriptorBuilder" />
+		</bean>
+	</service>
+	<service id="repositoryManagementDefinitionService" interface="org.novaforge.forge.core.plugins.categories.CategoryDefinitionService">
+		<bean
+			class="org.novaforge.forge.plugins.categories.impl.definitions.RepositoryManagementDefinitionServiceImpl"
+			init-method='start'>
+			<property name="fieldDescriptorBuilder" ref="fieldDescriptorBuilder" />
+		</bean>
+	</service>
+	<service id="SCMDefinitionService" interface="org.novaforge.forge.core.plugins.categories.CategoryDefinitionService">
+		<bean class="org.novaforge.forge.plugins.categories.impl.definitions.SCMDefinitionServiceImpl"
+			init-method='start'>
+			<property name="fieldDescriptorBuilder" ref="fieldDescriptorBuilder" />
+		</bean>
+	</service>
+	<service id="surveyDefinitionService" interface="org.novaforge.forge.core.plugins.categories.CategoryDefinitionService">
+		<bean class="org.novaforge.forge.plugins.categories.impl.definitions.SurveyDefinitionServiceImpl"
+			init-method='start'>
+			<property name="fieldDescriptorBuilder" ref="fieldDescriptorBuilder" />
+		</bean>
+	</service>
+	<service id="deliveryDefinitionService" interface="org.novaforge.forge.core.plugins.categories.CategoryDefinitionService">
+		<bean class="org.novaforge.forge.plugins.categories.impl.definitions.DeliveryDefinitionServiceImpl"
+			init-method='start'>
+			<property name="fieldDescriptorBuilder" ref="fieldDescriptorBuilder" />
+		</bean>
+	</service>
+	<service id="CMSDefinitionService" interface="org.novaforge.forge.core.plugins.categories.CategoryDefinitionService">
+		<bean class="org.novaforge.forge.plugins.categories.impl.definitions.CMSDefinitionServiceImpl"
+			init-method='start'>
+			<property name="fieldDescriptorBuilder" ref="fieldDescriptorBuilder" />
+		</bean>
+	</service>
+	<service id="requirementsDefinitionService" interface="org.novaforge.forge.core.plugins.categories.CategoryDefinitionService">
+		<bean class="org.novaforge.forge.plugins.categories.impl.definitions.RequirementsDefinitionServiceImpl"
+			init-method='start'>
+			<property name="fieldDescriptorBuilder" ref="fieldDescriptorBuilder" />
+		</bean>
+	</service>
+	<service id="managementDefinitionService" interface="org.novaforge.forge.core.plugins.categories.CategoryDefinitionService">
+		<bean class="org.novaforge.forge.plugins.categories.impl.definitions.ManagementDefinitionServiceImpl"
+			init-method='start'>
+			<property name="fieldDescriptorBuilder" ref="fieldDescriptorBuilder" />
+		</bean>
+	</service>
+	<service id="ARDDefinitionService" interface="org.novaforge.forge.core.plugins.categories.CategoryDefinitionService">
+		<bean class="org.novaforge.forge.plugins.categories.impl.definitions.ARDDefinitionServiceImpl"
+			init-method='start'>
+			<property name="fieldDescriptorBuilder" ref="fieldDescriptorBuilder" />
+		</bean>
+	</service>
+</blueprint>

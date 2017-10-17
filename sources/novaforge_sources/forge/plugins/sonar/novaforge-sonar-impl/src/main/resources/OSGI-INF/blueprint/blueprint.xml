@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
+					 xmlns:cxf="http://cxf.apache.org/blueprint/core"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd 
+    http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+
+    http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
+
+	<reference id="webServerConfigurator" interface="org.novaforge.forge.commons.webserver.configuration.services.WebServerConfigurator" />
+	<reference id="normalizeService" interface="org.novaforge.forge.commons.technical.normalize.NormalizeService" />
+	<reference id="sonarRestClient" interface="org.novaforge.forge.plugins.quality.sonar.ws.SonarRestClient" />
+	<reference id="sonarWSContextFactory" interface="org.novaforge.forge.plugins.quality.sonar.ws.SonarWSContextFactory" />
+	<reference id="sonarConfigurationService" interface="org.novaforge.forge.plugins.quality.sonar.services.SonarConfigurationService" />
+	<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/pluginSonar)" />
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+
+	<bean id="instanceConfigurationDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.InstanceConfigurationDAOImpl">
+		<jpa:context unitname="plugins.sonar" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="rolesMappingDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.RolesMappingDAOImpl">
+		<jpa:context unitname="plugins.sonar" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="toolInstanceDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.ToolInstanceDAOImpl">
+		<jpa:context unitname="plugins.sonar" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="uuidDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.UuidDAOImpl">
+		<jpa:context unitname="plugins.sonar" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+
+	<bean id="sonarRoleMappingService" class="org.novaforge.forge.plugins.quality.sonar.internal.services.SonarRoleMappingServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="rolesMappingDAO" ref="rolesMappingDAO" />
+	</bean>
+	<bean id="sonarMembershipService" class="org.novaforge.forge.plugins.quality.sonar.internal.services.SonarMembershipServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="pluginRoleMappingService" ref="sonarRoleMappingService" />
+		<property name="sonarRestClient" ref="sonarRestClient" />
+		<property name="sonarWSContextFactory" ref="sonarWSContextFactory" />
+		<property name="pluginConfigurationService" ref="sonarConfigurationService" />
+	</bean>
+	<bean id="sonarProjectService" class="org.novaforge.forge.plugins.quality.sonar.internal.services.SonarProjectServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="normalizeService" ref="normalizeService" />
+		<property name="pluginRoleMappingService" ref="sonarRoleMappingService" />
+		<property name="sonarRestClient" ref="sonarRestClient" />
+				<property name="sonarWSContextFactory" ref="sonarWSContextFactory" />
+		<property name="pluginConfigurationService" ref="sonarConfigurationService" />
+	</bean>
+	<bean id="sonarUserService" class="org.novaforge.forge.plugins.quality.sonar.internal.services.SonarUserServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="sonarRestClient" ref="sonarRestClient" />
+		<property name="sonarWSContextFactory" ref="sonarWSContextFactory" />
+		<property name="pluginConfigurationService" ref="sonarConfigurationService" />
+	</bean>
+	<bean id="sonarToolInstanceProvider" class="org.novaforge.forge.plugins.commons.services.DefaultToolInstanceProvider">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="pluginConfigurationService" ref="sonarConfigurationService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+	<bean id="sonarInstanceService" class="org.novaforge.forge.plugins.commons.services.DefaultPluginInstanceService">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+	</bean>
+	<cxf:bus id="sonarBus" />
+	<jaxws:endpoint implementor="#sonarInstanceService" implementorClass="org.novaforge.forge.core.plugins.services.PluginInstanceService"
+		address="/sonarInstance" />
+		
+	<!--  Configuration for Camel JMS Route -->
+	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
+	<!--  Configuration for Camel JMS Route -->
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<argument ref="jmsConfig" />
+	</bean>
+	<bean id="sonarMembershipRouteBuilder" class="org.novaforge.forge.plugins.quality.sonar.internal.route.SonarMembershipRoute">
+		<property name="pluginMembershipService" ref="sonarMembershipService" />
+	</bean>
+	<bean id="sonarProjectRouteBuilder" class="org.novaforge.forge.plugins.quality.sonar.internal.route.SonarProjectRoute">
+		<property name="pluginProjectService" ref="sonarProjectService" />
+	</bean>
+	<bean id="sonarRolesMappingRouteBuilder" class="org.novaforge.forge.plugins.quality.sonar.internal.route.SonarRolesMappingRoute">
+		<property name="pluginRoleMappingService" ref="sonarRoleMappingService" />
+		<property name="pluginMembershipService" ref="sonarMembershipService" />
+	</bean>
+	<bean id="sonarUserRouteBuilder" class="org.novaforge.forge.plugins.quality.sonar.internal.route.SonarUserRoute">
+		<property name="pluginUserService" ref="sonarUserService" />
+	</bean>
+	<camelContext id="sonarCamelContext" xmlns="http://camel.apache.org/schema/blueprint">
+		<routeBuilder ref="sonarMembershipRouteBuilder" />
+		<routeBuilder ref="sonarProjectRouteBuilder" />
+		<routeBuilder ref="sonarRolesMappingRouteBuilder" />
+		<routeBuilder ref="sonarUserRouteBuilder" />
+	</camelContext>
+	<bean id="sonarService" class="org.novaforge.forge.plugins.quality.sonar.internal.SonarServiceImpl">
+	   <!-- Camel context -->
+		<property name="camelContext" ref="sonarCamelContext" />
+	   <!-- Service reference -->
+		<argument ref="uuidDAO" />
+		<property name="pluginConfigurationService" ref="sonarConfigurationService" />
+		<property name="pluginRoleMappingService" ref="sonarRoleMappingService" />
+		<property name="pluginUserService" ref="sonarUserService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="toolInstanceProvisioningService" ref="sonarToolInstanceProvider" />
+		<!-- Configuration -->
+		<property name="type" value="Sonar" />
+		<property name="version" value="${sonar.version}" />
+	</bean>
+	<bean id="sonarCategoryService" class="org.novaforge.forge.plugins.quality.sonar.internal.SonarCategoryServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="sonarRestClient" ref="sonarRestClient" />
+		<property name="sonarWSContextFactory" ref="sonarWSContextFactory" />
+		<property name="pluginConfigurationService" ref="sonarConfigurationService" />
+	</bean>
+	<service id="sonarServiceRegistration" ref="sonarService" interface="org.novaforge.forge.core.plugins.services.PluginService">
+		<service-properties>
+			<entry key="type" value="Sonar" />
+			<entry key="version" value="${sonar.version}" />
+		</service-properties>
+	</service>
+	<service id="sonarCategoryRegistration" ref="sonarCategoryService" auto-export="interfaces">
+		<service-properties>
+			<entry key="type" value="Sonar" />
+			<entry key="version" value="${sonar.version}" />
+		</service-properties>
+	</service>
+	<bean id="pluginServiceRegistration" class="org.novaforge.forge.plugins.commons.services.PluginServiceRegistration">
+		<argument ref="blueprintBundleContext" />
+		<argument ref="sonarServiceRegistration" />
+		<argument ref="sonarCategoryRegistration" />
+	</bean>
+</blueprint>

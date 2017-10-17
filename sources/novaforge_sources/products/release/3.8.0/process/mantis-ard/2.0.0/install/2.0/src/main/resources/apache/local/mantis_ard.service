@@ -1,0 +1,6 @@
+Alias /@DEFAULT_ALIAS@/@TOOL_ALIAS@ "@HOME@/"
+
+<Directory @HOME@>        
+        Options Indexes
+        Require all granted
+</Directory>

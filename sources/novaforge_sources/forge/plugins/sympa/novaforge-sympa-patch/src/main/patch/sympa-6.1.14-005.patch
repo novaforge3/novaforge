@@ -1,0 +1,20 @@
+diff -rNU5 sympa-6.1.14-004/wwsympa/Auth.pm sympa-6.1.14/wwsympa/Auth.pm
+--- sympa-6.1.14-004/wwsympa/Auth.pm	2013-08-07 17:25:59.000000000 +0200
++++ sympa-6.1.14/wwsympa/Auth.pm	2013-08-23 09:46:03.855838314 +0200
+@@ -67,14 +67,15 @@
+ 
+ 	my $ret;
+ 	my $namespace = &nf_get_config_value('novaforge_service_namespace');
+ 	my $proxy = &nf_get_config_value('novaforge_service_endpoint');
+ 	my $soap = SOAP::Lite
++  	    -> on_action(sub { sprintf '""' })
+ 	    -> proxy($proxy)
+ 	    -> ns($namespace,'ser');
+ 
+-	my $result = $soap->getUserEmail(SOAP::Data->name("ser:arg0" => $login )->type("string" ));
++	my $result = $soap->getUserEmail(SOAP::Data->name("arg0" => $login )->type("string" ));
+ 
+ 	unless ($result->fault) {
+ 	       &do_log('debug', 'Auth::nf_get_user_email() returns successfully email=%s',$result->result);
+ 		$ret = $result->result;
+ 	} else {

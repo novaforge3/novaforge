@@ -1,0 +1,305 @@
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<xs:schema xmlns:xs='http://www.w3.org/2001/XMLSchema' elementFormDefault="qualified">
+  	<xs:element name="mantis">
+		<xs:complexType>
+			<xs:sequence>
+			<xs:element name="project" type="project" />
+			<xs:element name="customField" type="customField" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+			<xs:attribute name="exportDate" type="xs:dateTime" />
+		</xs:complexType>	
+	</xs:element>
+  
+   <xs:simpleType name="importStatus">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="toDo" />
+		<xs:enumeration value="done" />
+		<xs:enumeration value="onError" />
+	</xs:restriction>
+  </xs:simpleType>
+	
+  <xs:complexType name="project">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" />
+      <xs:element name="status" type="reference"/>
+      <xs:element name="enabled" type="xs:boolean"/>
+      <xs:element name="view_state" type="reference"/>
+      <xs:element name="access_min" type="reference"/>
+      <xs:element name="file_path" type="xs:string"/>
+      <xs:element name="description" type="xs:string" />
+      <xs:element name="categorySection" type="categorySection" minOccurs="0" maxOccurs="1" />
+      <xs:element name="projectCustomFieldSection" type="projectCustomFieldSection" minOccurs="0" maxOccurs="1" />
+      <xs:element name="versionSection" type="versionSection" minOccurs="0" maxOccurs="1" />
+      <xs:element name="configSection" type="configSection" minOccurs="0" maxOccurs="1" />
+      <xs:element name="bugSection" type="bugSection" minOccurs="0" maxOccurs="1" />
+      <xs:element name="bugRelationshipSection" type="bugRelationshipSection" minOccurs="0" maxOccurs="1" />
+      <xs:element name="userSection" type="userSection" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="importStatus" type="importStatus" default="toDo" />
+  </xs:complexType>
+  
+  
+  <xs:complexType name="customField">
+    <xs:sequence>
+      <xs:element name="id" type="xs:integer"/>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element name="type" type="xs:integer"/>
+      <xs:element name="possible_values" type="xs:string"/>
+      <xs:element name="default_value" type="xs:string"/>
+      <xs:element name="valid_regexp" type="xs:string"/>
+      <xs:element name="access_level_r" type="xs:integer"/>
+      <xs:element name="access_level_rw" type="xs:integer"/>
+      <xs:element name="length_min" type="xs:integer"/>
+      <xs:element name="length_max" type="xs:integer"/>
+      <xs:element name="require_report" type="xs:boolean"/>
+      <xs:element name="require_update" type="xs:boolean"/>
+      <xs:element name="display_report" type="xs:boolean"/>
+      <xs:element name="display_update" type="xs:boolean"/> 
+      <xs:element name="require_resolved" type="xs:boolean"/>  
+      <xs:element name="display_resolved" type="xs:boolean"/>    
+      <xs:element name="require_closed" type="xs:boolean"/>  
+      <xs:element name="display_closed" type="xs:boolean"/> 
+    </xs:sequence>
+    <xs:attribute name="importStatus" type="importStatus" default="toDo" />    
+  </xs:complexType>
+
+  <xs:complexType name="categorySection">
+    <xs:sequence>
+      <xs:element name="category" type="category" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+ 
+  <xs:complexType name="projectCustomFieldSection">
+    <xs:sequence>
+      <xs:element name="customField" type="projectCustomField" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="versionSection">
+    <xs:sequence>
+      <xs:element name="version" type="version" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="configSection">
+    <xs:sequence>
+      <xs:element name="config" type="config" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>  
+  
+  <xs:complexType name="bugSection">
+    <xs:sequence>
+      <xs:element name="bug" type="bug" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>  
+  
+  <xs:complexType name="bugRelationshipSection">
+    <xs:sequence>
+      <xs:element name="bugRelationship" type="bugRelationship" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>  
+  
+  <xs:complexType name="userSection">
+    <xs:sequence>
+      <xs:element name="user" type="user" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>  
+  
+  <xs:complexType name="bugCustomFieldSection">
+    <xs:sequence>
+      <xs:element name="bugCustomField" type="bugCustomField" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>  
+  
+
+  <xs:complexType name="attachmentSection">
+    <xs:sequence>
+      <xs:element name="attachment" type="attachment" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>  
+  
+  <xs:complexType name="noteSection">
+    <xs:sequence>
+      <xs:element name="note" type="note" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>  
+  
+  <xs:complexType name="historySection">
+    <xs:sequence>
+      <xs:element name="history" type="history" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="category">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" />
+    </xs:sequence>
+    <xs:attribute name="importStatus" type="importStatus" default="toDo" />
+  </xs:complexType>       
+  
+  <xs:complexType name="version">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" />
+      <xs:element name="date_order" type="xs:dateTime" />
+      <xs:element name="description" type="xs:string" />
+      <xs:element name="released" type="xs:boolean" default="1"/>
+      <xs:element name="obsolete" type="xs:boolean" default="0"/>
+    </xs:sequence>
+    <xs:attribute name="importStatus" type="importStatus" default="toDo" />
+  </xs:complexType>
+  
+  <xs:complexType name="config">
+    <xs:sequence>
+      <xs:element name="config_id" type="xs:string" />
+      <xs:element name="config_option" type="xs:string" />
+    </xs:sequence>
+    <xs:attribute name="importStatus" type="importStatus" default="toDo" />
+  </xs:complexType>
+  
+  <xs:complexType name="bugCustomField">
+    <xs:sequence>
+      <xs:element name="field_name" type="xs:string"/>
+      <xs:element name="value" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="importStatus" type="importStatus" default="toDo" />    
+  </xs:complexType>
+  
+  <xs:complexType name="projectCustomField">
+    <xs:sequence>
+      <xs:element name="field_name" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="importStatus" type="importStatus" default="toDo" />    
+  </xs:complexType>
+  
+  <xs:complexType name="attachment">
+    <xs:sequence>
+      <xs:element name="filename" type="xs:string"/>
+      <xs:element name="size" type="xs:integer"/>
+      <xs:element name="content_type" type="xs:string"/>
+      <xs:element name="date_submitted" type="xs:dateTime"/>
+      <xs:element name="download_url" type="xs:anyURI"/>
+      <xs:element name="username" type="xs:string"/>
+      <xs:element name="export_copy_path" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="importStatus" type="importStatus" default="toDo" />    
+  </xs:complexType>   
+  
+  <xs:complexType name="history">
+    <xs:sequence>
+      <xs:element name="username" type="xs:string"/>
+      <xs:element name="field" type="xs:string"/>
+      <xs:element name="old_value" type="xs:string"/>
+      <xs:element name="new_value" type="xs:string"/>
+      <xs:element name="type" type="xs:integer"/>
+      <xs:element name="date" type="xs:integer"/>
+    </xs:sequence>
+    <xs:attribute name="importStatus" type="importStatus" default="toDo" />    
+  </xs:complexType>  
+  
+  <xs:complexType name="bugRelationship">
+    <xs:sequence>
+      <xs:element name="source_id" type="xs:integer"/>
+      <xs:element name="target_id" type="xs:integer"/>
+      <xs:element name="type" type="reference"/>
+    </xs:sequence>
+    <xs:attribute name="importStatus" type="importStatus" default="toDo" />    
+  </xs:complexType>
+ 
+   <xs:complexType name="reference">
+    <xs:sequence>
+     <xs:element name="id" type="xs:integer"/>
+     <xs:element name="name" type="xs:string"/>  
+    </xs:sequence>
+   </xs:complexType>
+  
+  <xs:complexType name="note">
+    <xs:sequence>
+      <xs:element name="source_id" type="xs:integer"/>
+      <xs:element name="target_id" type="xs:integer"/>
+      <xs:element name="text" type="xs:string"/>
+      <xs:element name="reporter_username" type="xs:string"/>
+      <xs:element name="view_state" type="reference"/>
+      <xs:element name="note_type" type="xs:integer"/>
+      <xs:element name="note_attr" type="xs:string"/>
+      <xs:element name="time_tracking" type="xs:integer"/>
+      <xs:element name="last_modified" type="xs:dateTime"/>
+      <xs:element name="date_submitted" type="xs:dateTime"/>
+    </xs:sequence>
+    <xs:attribute name="importStatus" type="importStatus" default="toDo" />
+    <xs:attribute name="importReporterStatus" type="importStatus" default="toDo" />
+    <xs:attribute name="importDatesStatus" type="importStatus" default="toDo" />
+  </xs:complexType>
+  
+  <xs:complexType name="user">
+    <xs:sequence>
+      <xs:element name="id" type="xs:integer"/>
+      <xs:element name="username" type="xs:string"/>
+      <xs:element name="real_name" type="xs:string"/>
+      <xs:element name="email" type="xs:string"/>
+      <xs:element name="access" type="xs:integer"/>
+      <xs:element name="language" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="importStatus" type="importStatus" default="toDo" />    
+  </xs:complexType>   
+
+  <xs:complexType name="bug">
+    <xs:sequence>
+      <xs:element name="source_id" type="xs:integer"/>
+      <xs:element name="target_id" type="xs:integer"/>
+      <xs:element name="last_updated" type="xs:dateTime"/>
+      <xs:element name="view_state" type="reference"/>
+      <xs:element name="category" type="xs:string"/>
+      <xs:element name="priority" type="reference"/>
+      <xs:element name="severity" type="reference"/>
+      <xs:element name="status" type="reference"/>
+      <xs:element name="reporter_username" type="xs:string"/>
+      <xs:element name="summary" type="xs:string"/>
+      <xs:element name="version" type="xs:string"/>
+      <xs:element name="build" type="xs:string"/>
+      <xs:element name="platform" type="xs:string"/>
+      <xs:element name="os" type="xs:string"/>
+      <xs:element name="os_build" type="xs:string"/>
+      <xs:element name="reproducibility" type="reference"/>
+      <xs:element name="date_submitted" type="xs:dateTime"/>
+      <xs:element name="sponsorship_total" type="xs:integer"/>
+      <xs:element name="handler_username" type="xs:string"/>
+      <xs:element name="projection" type="reference"/>
+      <xs:element name="eta" type="reference"/>
+      <xs:element name="resolution" type="reference"/>
+      <xs:element name="fixed_in_version" type="xs:string"/>
+      <xs:element name="target_version" type="xs:string"/>
+      <xs:element name="description" type="xs:string"/>
+      <xs:element name="steps_to_reproduce" type="xs:string"/>
+      <xs:element name="additional_information" type="xs:string"/>
+      <xs:element name="sticky" type="xs:boolean"/>
+      <xs:element name="due_date" type="xs:dateTime"/>     
+      <xs:element name="noteSection" type="noteSection" minOccurs="0" maxOccurs="1" />
+      <xs:element name="attachmentSection" type="attachmentSection" minOccurs="0" maxOccurs="1" />
+      <xs:element name="historySection" type="historySection" minOccurs="0" maxOccurs="1" />
+      <xs:element name="bugCustomFieldSection" type="bugCustomFieldSection" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="importStatus" type="importStatus" default="toDo" /> 
+    <xs:attribute name="importDatesStatus" type="importStatus" default="toDo" />    
+  </xs:complexType>
+</xs:schema>

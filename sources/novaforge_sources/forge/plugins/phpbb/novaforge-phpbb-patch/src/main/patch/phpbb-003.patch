@@ -1,0 +1,12 @@
+diff -rNU5 phpBB3-002/forge.conf.admin.php phpBB3/forge.conf.admin.php
+--- phpBB3-002/forge.conf.admin.php	2013-08-06 16:34:56.530185361 +0200
++++ phpBB3/forge.conf.admin.php	2013-08-06 16:35:39.046186298 +0200
+@@ -1,7 +1,7 @@
+ <?php
+-$forgeconf['forge']['instance']['endpoint']  = 'http://localhost:9000/services/phpbbInstance?wsdl';
++$forgeconf['forge']['instance']['endpoint']  = 'http://localhost:8181/cxf/phpbbInstance?wsdl';
+ $forgeconf['forge']['instance']['method']   	= 'getToolProjectId';
+ $forgeconf['forge']['instance']['id']   	= 'instance_id';
+ $forgeconf['forge']['instance']['forge_id']   	= 'forge_id';
+ 
+ //Need because of php version used by Novaforge

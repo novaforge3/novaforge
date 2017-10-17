@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<chapter version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+	<title>Configuration</title>
+	<sect2>
+	<title>Configuration du connecteur CDO</title>
+		<para>
+		Le fichier <emphasis>requirements.cdo.connector.cfg</emphasis> permet de configurer les informations propres au serveur CDO (adresse du serveur, port, repository) utilisé pour alimenter le référentiel OBEO d'exigences.
+		La propriété <emphasis>repository</emphasis> correspond au nom du repository présent dans la configuration du serveur CDO dans le fichier <emphasis>cdo-server.xml</emphasis> :
+		</para>
+		<para>
+		<programlisting language="xml"><![CDATA[
+<cdoServer>
+  <acceptor type="tcp" listenAddr="0.0.0.0" port="2036">
+  </acceptor>
+  <repository name="repo_requirements">
+    <property name="overrideUUID" value="repo_requirements"/>
+    <property name="supportingAudits" value="false"/>
+    <property name="supportingBranches" value="false"/>
+    <property name="supportingEcore" value="true"/>
+    <store type="db">
+      <mappingStrategy type="horizontal">
+        <property name="toManyReferences" value="ONE_TABLE_PER_REFERENCE" />
+        <property name="toOneReferences" value="LIKE_ATTRIBUTES" />
+        <property name="qualifiedNames" value="true" />
+      </mappingStrategy>
+      <dbAdapter name="mysql"/>
+      <dataSource class="com.mysql.jdbc.jdbc2.optional.MysqlDataSource" uRL="jdbc:mysql://vm-infra-8:3306/requirements" user="novaforge" password="novaforge"/>
+    </store>
+  </repository>
+</cdoServer>]]>
+		</programlisting>
+		</para>
+	</sect2>
+	<sect2>
+	<title>Configuration de la classe d'énumération</title>
+	<para>Le fichier <emphasis>requirements.svn.connector.cfg</emphasis> permet de configurer la propriété <emphasis>requirement.enum.class</emphasis>.
+	Cette propriété définit la classe d'énumération utilisée pour définir les exigences présentes dans le code. Elle permet de faire le lien avec les identifiants d'exigences dans le code.
+	Nous reviendrons en détail sur l'utilité de cette classe dans le chapitre <emphasis>Procédé d'analyse des sources</emphasis>.
+	</para>
+	</sect2>
+</chapter>

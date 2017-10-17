@@ -1,0 +1,76 @@
+diff -rNU5 omniauth-cas-1.1.0/lib/omniauth/strategies/cas/logout_request.rb omniauth-cas-1.1.0-patched/lib/omniauth/strategies/cas/logout_request.rb
+--- omniauth-cas-1.1.0/lib/omniauth/strategies/cas/logout_request.rb	2014-12-16 17:12:20.057838582 +0100
++++ omniauth-cas-1.1.0-patched/lib/omniauth/strategies/cas/logout_request.rb	2014-12-17 09:25:36.747707283 +0100
+@@ -8,11 +8,12 @@
+ 
+         def call(options = {})
+           @options = options
+ 
+           begin
+-            result = single_sign_out_callback.call(*logout_request)
++            single_sign_out_callback.call(*logout_request)
++            result = true
+           rescue StandardError => err
+             return @strategy.fail! :logout_request, err
+           else
+             result = [200,{},'OK'] if result == true || result.nil?
+           ensure
+@@ -28,13 +29,14 @@
+ 
+       private
+ 
+         def logout_request
+           @logout_request ||= begin
+-            saml = Nokogiri.parse(@request.params['logoutRequest'])
+-            name_id = saml.xpath('//saml:NameID').text
+-            sess_idx = saml.xpath('//samlp:SessionIndex').text
++            saml = Nokogiri::XML(@request.params['logoutRequest'])
++	     saml.remove_namespaces!
++            name_id = saml.xpath('LogoutRequest/NameID').text
++            sess_idx = saml.xpath('LogoutRequest/SessionIndex').text
+             inject_params(name_id:name_id, session_index:sess_idx)
+             @request
+           end
+         end
+ 
+diff -rNU5 omniauth-cas-1.1.0/lib/omniauth/strategies/cas.rb omniauth-cas-1.1.0-patched/lib/omniauth/strategies/cas.rb
+--- omniauth-cas-1.1.0/lib/omniauth/strategies/cas.rb	2014-12-16 17:12:20.017838581 +0100
++++ omniauth-cas-1.1.0-patched/lib/omniauth/strategies/cas.rb	2014-12-16 17:12:05.829838127 +0100
+@@ -23,11 +23,24 @@
+       option :path, nil
+       option :ssl,  true
+       option :service_validate_url, '/serviceValidate'
+       option :login_url,            '/login'
+       option :logout_url,           '/logout'
+-      option :on_single_sign_out,   Proc.new {}
++      option :on_single_sign_out,   Proc.new { |request|
++	
++        # Retrieve ticket from request
++        rack_input = request.env['rack.input'].read
++        params = Rack::Utils.parse_query(rack_input, '&')
++        ticket = params['session_index']
++
++        # Retrieve session from ticket
++        session = ActionDispatch::Session::ActiveRecordStore.session_class.find_by_service_ticket(ticket)
++
++        # Delete session if not nill
++        session.destroy if session	
++ 
++      }
+       # A Proc or lambda that returns a Hash of additional user info to be
+       # merged with the info returned by the CAS server.
+       #
+       # @param [Object] An instance of OmniAuth::Strategies::CAS for the current request
+       # @param [String] The user's Service Ticket value
+@@ -81,10 +94,11 @@
+         else
+           @ticket = request.params['ticket']
+           return fail!(:no_ticket, MissingCASTicket.new('No CAS Ticket')) unless @ticket
+           fetch_raw_info(@ticket)
+           return fail!(:invalid_ticket, InvalidCASTicket.new('Invalid CAS Ticket')) if raw_info.empty?
++	   session['service_ticket'] = @ticket
+           super
+         end
+       end
+ 
+       def request_phase

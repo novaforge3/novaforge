@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
+					 xmlns:cxf="http://cxf.apache.org/blueprint/core"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd 
+    http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+
+    http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
+
+	<reference id="cxfConfigService" interface="org.novaforge.forge.commons.technical.cxf.CxfConfigService" />
+	<reference id="webServerConfigurator" interface="org.novaforge.forge.commons.webserver.configuration.services.WebServerConfigurator" />
+	<reference id="normalizeService" interface="org.novaforge.forge.commons.technical.normalize.NormalizeService" />
+	<reference id="alfrescoRestClient" interface="org.novaforge.forge.plugins.ecm.alfresco.rest.AlfrescoRestClient" />
+	<reference id="alfrescoResourceBuilder" interface="org.novaforge.forge.plugins.ecm.alfresco.datamapper.AlfrescoResourceBuilder" />
+	<reference id="alfrescoCMISClient" interface="org.novaforge.forge.plugins.ecm.alfresco.cmis.AlfrescoCMISClient" />
+	<reference id="alfrescoConfigurationService" interface="org.novaforge.forge.plugins.ecm.alfresco.services.AlfrescoConfigurationService" />
+	<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/pluginAlfresco)" />
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+
+	<bean id="instanceConfigurationDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.InstanceConfigurationDAOImpl">
+		<jpa:context unitname="plugins.alfresco" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="rolesMappingDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.RolesMappingDAOImpl">
+		<jpa:context unitname="plugins.alfresco" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="toolInstanceDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.ToolInstanceDAOImpl">
+		<jpa:context unitname="plugins.alfresco" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="uuidDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.UuidDAOImpl">
+		<jpa:context unitname="plugins.alfresco" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+
+	<bean id="alfrescoRoleMappingService" class="org.novaforge.forge.plugins.ecm.alfresco.internal.services.AlfrescoRoleMappingServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="rolesMappingDAO" ref="rolesMappingDAO" />
+	</bean>
+	<bean id="alfrescoMembershipService" class="org.novaforge.forge.plugins.ecm.alfresco.internal.services.AlfrescoMembershipServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="pluginRoleMappingService" ref="alfrescoRoleMappingService" />
+		<property name="alfrescoRestClient" ref="alfrescoRestClient" />
+		<property name="alfrescoResourceBuilder" ref="alfrescoResourceBuilder" />
+		<property name="pluginConfigurationService" ref="alfrescoConfigurationService" />
+	</bean>
+	<bean id="alfrescoProjectService" class="org.novaforge.forge.plugins.ecm.alfresco.internal.services.AlfrescoProjectServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="normalizeService" ref="normalizeService" />
+		<property name="pluginRoleMappingService" ref="alfrescoRoleMappingService" />
+		<property name="alfrescoRestClient" ref="alfrescoRestClient" />
+		<property name="alfrescoResourceBuilder" ref="alfrescoResourceBuilder" />
+		<property name="pluginConfigurationService" ref="alfrescoConfigurationService" />
+	</bean>
+	<bean id="alfrescoUserService" class="org.novaforge.forge.plugins.ecm.alfresco.internal.services.AlfrescoUserServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="alfrescoRestClient" ref="alfrescoRestClient" />
+		<property name="alfrescoResourceBuilder" ref="alfrescoResourceBuilder" />
+		<property name="pluginConfigurationService" ref="alfrescoConfigurationService" />
+	</bean>
+	<bean id="alfrescoFunctionalService" class="org.novaforge.forge.plugins.ecm.alfresco.internal.services.AlfrescoFunctionalServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="alfrescoRestClient" ref="alfrescoRestClient" />
+		<property name="alfrescoCMISClient" ref="alfrescoCMISClient" />
+		<property name="alfrescoConfigurationService" ref="alfrescoConfigurationService" />
+	</bean>
+	<bean id="alfrescoDocumentDataService" class="org.novaforge.forge.plugins.ecm.alfresco.internal.services.AlfrescoDocumentDataServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="alfrescoCMISClient" ref="alfrescoCMISClient" />
+		<property name="alfrescoResourceBuilder" ref="alfrescoResourceBuilder" />
+		<property name="alfrescoConfigurationService" ref="alfrescoConfigurationService" />
+	</bean>
+	<bean id="alfrescoFolderDataService" class="org.novaforge.forge.plugins.ecm.alfresco.internal.services.AlfrescoFolderDataServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="alfrescoCMISClient" ref="alfrescoCMISClient" />
+		<property name="alfrescoResourceBuilder" ref="alfrescoResourceBuilder" />
+		<property name="alfrescoConfigurationService" ref="alfrescoConfigurationService" />
+	</bean>
+	<bean id="alfrescoDataServiceFactory" class="org.novaforge.forge.plugins.ecm.alfresco.internal.services.AlfrescoDataServiceFactory">
+		<property name="alfrescoDocumentDataService" ref="alfrescoDocumentDataService" />
+		<property name="alfrescoFolderDataService" ref="alfrescoFolderDataService" />
+	</bean>
+	<bean id="alfrescoPluginDataService" class="org.novaforge.forge.plugins.ecm.alfresco.internal.services.AlfrescoPluginDataServiceImpl">
+		<property name="alfrescoDataServiceFactory" ref="alfrescoDataServiceFactory" />
+		<property name="alfrescoFunctionalService" ref="alfrescoFunctionalService" />
+	</bean>
+	<bean id="alfrescoToolInstanceProvider" class="org.novaforge.forge.plugins.commons.services.DefaultToolInstanceProvider">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="pluginConfigurationService" ref="alfrescoConfigurationService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+	<bean id="alfrescoInstanceService" class="org.novaforge.forge.plugins.commons.services.DefaultPluginInstanceService">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+	</bean>
+	<cxf:bus id="alfrescoBus" />
+	<jaxws:endpoint implementor="#alfrescoInstanceService" implementorClass="org.novaforge.forge.core.plugins.services.PluginInstanceService" address="/alfrescoInstance" />
+	<jaxws:endpoint implementor="#alfrescoPluginDataService" implementorClass="org.novaforge.forge.core.plugins.services.PluginDataService" address="/AlfrescoPropagationService" />
+		
+	<!--  Configuration for Camel JMS Route -->
+	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
+	<!--  Configuration for Camel JMS Route -->
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<argument ref="jmsConfig" />
+	</bean>
+	<bean id="alfrescoMembershipRouteBuilder" class="org.novaforge.forge.plugins.ecm.alfresco.internal.route.AlfrescoMembershipRoute">
+		<property name="pluginMembershipService" ref="alfrescoMembershipService" />
+	</bean>
+	<bean id="alfrescoProjectRouteBuilder" class="org.novaforge.forge.plugins.ecm.alfresco.internal.route.AlfrescoProjectRoute">
+		<property name="pluginProjectService" ref="alfrescoProjectService" />
+	</bean>
+	<bean id="alfrescoRolesMappingRouteBuilder" class="org.novaforge.forge.plugins.ecm.alfresco.internal.route.AlfrescoRolesMappingRoute">
+		<property name="pluginRoleMappingService" ref="alfrescoRoleMappingService" />
+		<property name="pluginMembershipService" ref="alfrescoMembershipService" />
+	</bean>
+	<bean id="alfrescoUserRouteBuilder" class="org.novaforge.forge.plugins.ecm.alfresco.internal.route.AlfrescoUserRoute">
+		<property name="pluginUserService" ref="alfrescoUserService" />
+	</bean>
+	<camelContext id="alfrescoCamelContext" xmlns="http://camel.apache.org/schema/blueprint">
+		<routeBuilder ref="alfrescoMembershipRouteBuilder" />
+		<routeBuilder ref="alfrescoProjectRouteBuilder" />
+		<routeBuilder ref="alfrescoRolesMappingRouteBuilder" />
+		<routeBuilder ref="alfrescoUserRouteBuilder" />
+	</camelContext>
+	<bean id="alfrescoService" class="org.novaforge.forge.plugins.ecm.alfresco.internal.AlfrescoServiceImpl">
+	   <!-- Camel context -->
+		<property name="camelContext" ref="alfrescoCamelContext" />
+	   <!-- Service reference -->
+		<argument ref="uuidDAO" />
+		<property name="pluginConfigurationService" ref="alfrescoConfigurationService" />
+		<property name="pluginRoleMappingService" ref="alfrescoRoleMappingService" />
+		<property name="pluginUserService" ref="alfrescoUserService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="toolInstanceProvisioningService" ref="alfrescoToolInstanceProvider" />
+		<property name="cxfConfigService" ref="cxfConfigService" />
+		<!-- Configuration -->
+		<property name="type" value="Alfresco" />
+		<property name="version" value="${alfresco.version}" />
+	</bean>
+	<bean id="alfrescoCategoryService" class="org.novaforge.forge.plugins.ecm.alfresco.internal.AlfrescoCategoryServiceImpl">
+		<property name="alfrescoFunctionalService" ref="alfrescoFunctionalService" />
+	</bean>
+	<service id="alfrescoServiceRegistration" ref="alfrescoService"
+		interface="org.novaforge.forge.core.plugins.services.PluginService">
+		<service-properties>
+			<entry key="type" value="Alfresco" />
+			<entry key="version" value="${alfresco.version}" />
+		</service-properties>
+	</service>
+	<service id="alfrescoCategoryRegistration" ref="alfrescoCategoryService" auto-export="interfaces">
+		<service-properties>
+			<entry key="type" value="Alfresco" />
+			<entry key="version" value="${alfresco.version}" />
+		</service-properties>
+	</service>
+	<bean id="pluginServiceRegistration" class="org.novaforge.forge.plugins.commons.services.PluginServiceRegistration">
+		<argument ref="blueprintBundleContext" />
+		<argument ref="alfrescoServiceRegistration" />
+		<argument ref="alfrescoCategoryRegistration" />
+	</bean>
+</blueprint>

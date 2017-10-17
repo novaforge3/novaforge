@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
+					 xmlns:cxf="http://cxf.apache.org/blueprint/core"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd 
+    http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+
+    http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
+
+	<reference id="webServerConfigurator" interface="org.novaforge.forge.commons.webserver.configuration.services.WebServerConfigurator" />
+	<reference id="normalizeService" interface="org.novaforge.forge.commons.technical.normalize.NormalizeService" />
+	<reference id="gitlabRestClient" interface="org.novaforge.forge.plugins.scm.gitlab.client.GitlabRestClient" />
+	<reference id="gitlabConfigurationService" interface="org.novaforge.forge.plugins.scm.gitlab.services.GitlabConfigurationService" />
+	<reference id="gitlabResourceBuilder" interface="org.novaforge.forge.plugins.scm.gitlab.datamapper.GitlabResourceBuilder" />
+	<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/pluginGitlab)" />
+	<reference id="httpService" interface="org.osgi.service.http.HttpService" />
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+
+	<bean id="instanceConfigurationDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.InstanceConfigurationDAOImpl">
+		<jpa:context unitname="plugins.gitlab" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<service ref="instanceConfigurationDAO" interface="org.novaforge.forge.core.plugins.dao.InstanceConfigurationDAO">
+		<service-properties>
+			<entry key="type" value="Gitlab"></entry>
+			<entry key="version" value="7.3.1"></entry>
+		</service-properties>
+	</service>
+	<bean id="rolesMappingDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.RolesMappingDAOImpl">
+		<jpa:context unitname="plugins.gitlab" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="toolInstanceDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.ToolInstanceDAOImpl">
+		<jpa:context unitname="plugins.gitlab" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="uuidDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.UuidDAOImpl">
+		<jpa:context unitname="plugins.gitlab" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+
+	<bean id="gitlabRoleMappingService" class="org.novaforge.forge.plugins.scm.gitlab.internal.services.GitlabRoleMappingServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="rolesMappingDAO" ref="rolesMappingDAO" />
+	</bean>
+	<bean id="gitlabMembershipService" class="org.novaforge.forge.plugins.scm.gitlab.internal.services.GitlabMembershipServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="pluginRoleMappingService" ref="gitlabRoleMappingService" />
+		<property name="gitlabResourceBuilder" ref="gitlabResourceBuilder" />
+		<property name="gitlabRestClient" ref="gitlabRestClient" />
+		<property name="pluginConfigurationService" ref="gitlabConfigurationService" />
+	</bean>
+	<bean id="gitlabProjectService" class="org.novaforge.forge.plugins.scm.gitlab.internal.services.GitlabProjectServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="normalizeService" ref="normalizeService" />
+		<property name="pluginRoleMappingService" ref="gitlabRoleMappingService" />
+		<property name="gitlabRestClient" ref="gitlabRestClient" />
+		<property name="gitlabResourceBuilder" ref="gitlabResourceBuilder" />
+		<property name="pluginConfigurationService" ref="gitlabConfigurationService" />
+	</bean>
+	<bean id="gitlabUserService" class="org.novaforge.forge.plugins.scm.gitlab.internal.services.GitlabUserServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="gitlabRestClient" ref="gitlabRestClient" />
+		<property name="gitlabResourceBuilder" ref="gitlabResourceBuilder" />
+		<property name="pluginConfigurationService" ref="gitlabConfigurationService" />
+	</bean>
+	<bean id="gitlabToolInstanceProvider" class="org.novaforge.forge.plugins.scm.gitlab.internal.services.GitlabToolInstanceProvider">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="pluginConfigurationService" ref="gitlabConfigurationService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+	<bean id="gitlabInstanceService" class="org.novaforge.forge.plugins.commons.services.DefaultPluginInstanceService">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+	</bean>
+	<cxf:bus id="gitlabBus">
+		<cxf:features>
+			<cxf:logging  />
+		</cxf:features>
+	</cxf:bus>
+	<jaxws:endpoint implementor="#gitlabInstanceService" implementorClass="org.novaforge.forge.core.plugins.services.PluginInstanceService" address="/gitlabInstance" />
+		
+	<!--  Configuration for Camel JMS Route -->
+	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
+	<!--  Configuration for Camel JMS Route -->
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<argument ref="jmsConfig" />
+	</bean>
+	<bean id="gitlabMembershipRouteBuilder" class="org.novaforge.forge.plugins.scm.gitlab.internal.route.GitlabMembershipRoute">
+		<property name="pluginMembershipService" ref="gitlabMembershipService" />
+	</bean>
+	<bean id="gitlabProjectRouteBuilder" class="org.novaforge.forge.plugins.scm.gitlab.internal.route.GitlabProjectRoute">
+		<property name="pluginProjectService" ref="gitlabProjectService" />
+	</bean>
+	<bean id="gitlabRolesMappingRouteBuilder" class="org.novaforge.forge.plugins.scm.gitlab.internal.route.GitlabRolesMappingRoute">
+		<property name="pluginRoleMappingService" ref="gitlabRoleMappingService" />
+		<property name="pluginMembershipService" ref="gitlabMembershipService" />
+	</bean>
+	<bean id="gitlabUserRouteBuilder" class="org.novaforge.forge.plugins.scm.gitlab.internal.route.GitlabUserRoute">
+		<property name="pluginUserService" ref="gitlabUserService" />
+	</bean>
+	<camelContext id="gitlabCamelContext" xmlns="http://camel.apache.org/schema/blueprint">
+		<routeBuilder ref="gitlabMembershipRouteBuilder" />
+		<routeBuilder ref="gitlabProjectRouteBuilder" />
+		<routeBuilder ref="gitlabRolesMappingRouteBuilder" />
+		<routeBuilder ref="gitlabUserRouteBuilder" />
+	</camelContext>
+
+	<bean id="gitlabService" class="org.novaforge.forge.plugins.scm.gitlab.internal.GitlabServiceImpl">
+	   <!-- Camel context -->
+		<property name="camelContext" ref="gitlabCamelContext" />
+	   <!-- Service reference -->
+		<argument ref="uuidDAO" />
+		<property name="pluginConfigurationService" ref="gitlabConfigurationService" />
+		<property name="pluginRoleMappingService" ref="gitlabRoleMappingService" />
+		<property name="pluginUserService" ref="gitlabUserService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="toolInstanceProvisioningService" ref="gitlabToolInstanceProvider" />
+		<!-- Configuration -->
+		<property name="type" value="Gitlab" />
+		<property name="version" value="7.3.1" />
+	</bean>
+	
+	<bean id="gitlabBrowse" class="org.novaforge.forge.plugins.scm.gitlab.internal.servlets.GitlabBrowse"
+		init-method="init" destroy-method="destroy">
+		<property name="gitlabConfigurationService" ref="gitlabConfigurationService" />
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="httpService" ref="httpService" />
+	</bean>
+	
+	<bean id="gitlabCategoryService" class="org.novaforge.forge.plugins.scm.gitlab.internal.GitlabCategoryServiceImpl">
+		<property name="gitlabRestClient" ref="gitlabRestClient" />
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="pluginConfigurationService" ref="gitlabConfigurationService" />
+	</bean>
+	<service id="gitlabServiceRegistration" ref="gitlabService" interface="org.novaforge.forge.core.plugins.services.PluginService">
+		<service-properties>
+			<entry key="type" value="Gitlab"/>
+			<entry key="version" value="7.3.1"/>
+		</service-properties>
+	</service>
+	<service id="gitlabCategoryRegistration" ref="gitlabCategoryService" auto-export="interfaces">
+		<service-properties>
+			<entry key="type" value="Gitlab"/>
+			<entry key="version" value="7.3.1"/>
+		</service-properties>
+	</service>
+	<bean id="pluginServiceRegistration" class="org.novaforge.forge.plugins.commons.services.PluginServiceRegistration">
+		<argument ref="blueprintBundleContext" />
+		<argument ref="gitlabServiceRegistration" />
+		<argument ref="gitlabCategoryRegistration" />
+	</bean>
+</blueprint>

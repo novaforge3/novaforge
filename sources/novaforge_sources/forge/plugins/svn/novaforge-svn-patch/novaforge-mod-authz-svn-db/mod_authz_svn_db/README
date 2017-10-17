@@ -1,0 +1,491 @@
+TOC:
+
+I. Files
+II. A new module
+	A. Anatomy of a Module
+	B. Defines
+	C. Include
+	D. Compilation & Linking
+III. Install the module into Apache
+IV. Configure the Subversion Repositories
+	A. Apache Directives
+	B. Samples
+V. Database Schema
+VI. Acknowledgements
+
+
+I. FILES
+
+The following explain the contents of the files and purpose:
+
+mod_authz_svn_db.c:
+An Apache mod_dav_svn sub-module to provide path-based authorization for
+a Subversion repository vis-a-vis a database (such as MySQL or
+PostgreSQL).  Ideally, you use this file as a jump off point to write the
+database wrappers. The idea is to make the only modifications to the
+database-specific code.
+
+mod_authz_svn_db.h:
+Includes the functions and structures a potential module developer will
+need to create in order to develop a working module.  Reference this file
+for documentation.
+
+
+II. A NEW MODULE
+
+This section explains how to develop a new module from scratch.
+
+
+II.A. Anatomy of a Module
+
+I suggest you reference my PostgreSQL module as an example.
+
+Every Module must define the following functions:
+
+	- authz_svn_db_conn_open
+	- authz_svn_db_conn_close
+	- authz_svn_db_check_access
+	- authz_svn_db_config_dir_spec
+
+To be very clear, you, as the module developer (you're making a new module
+by writing the code for it) are to fill in these functions with the code
+to perform the following duties:
+
+ * The open function establishes the connection with the database and
+performs error checking on that connection.
+ * The close function is where the connection to the database is closed
+and all memory is cleaned up.  Be very careful not to create a memory leak
+in Apache.
+ * Check Access is the function that queries the database and determines if
+the user has access to the resource or not.
+ * Config Dir Spec (Configure Directory Specific) allows the module writer
+to override the default values contained within the authz_svn_db_config_rec
+structure. A common use is port number defaults.  Keep in mind, when
+assigning strings to the structure, the function's stack will not persist,
+so use the Apache string and memory functions to allocate memory from the
+pool.  Do not use malloc/new.
+
+More on Check Access:  A very detailed explaination is located in the .h
+file.  Please look at that function documentation.
+
+
+II.B. DEFINES
+
+First, you need a define. This is a special define that names your module:
+AUTHZ_SVN_DB_MODULE_NAME.  This is used to name the module structure Apache
+will use to store the module's data.  Yes, it's confusing, I'm sorry.
+Here is an example:
+
+I made the PostgreSQL module. So I named it: mod_authz_svn_db_pgsql. So if
+you were to write the MySQL version and you wanted to name it
+mod_authz_svn_db_mysql, you would define the following:
+#define AUTHZ_SVN_DB_MODULE_NAME authz_svn_db_mysql_module
+
+Note: if you do not define it, the compilation will fail and tell you that
+you need to define it.  Don't delete the line, define it, or you'll have
+very very serious problems.
+
+Additionally, you should also define: AUTHZ_SVN_DB_MODULE_NAME_STRING, which
+is the same as whatever you put in AUTHZ_SVN_DB_MODULE_NAME, except it has
+quotes around it.  It will be used as a string in the module.  It is used to
+identify memory blocks belonging to your module.  Though it is not required,
+it is recommended you use it, as you might get a collision if you try to use
+2 different databases to authorize users.  Back to the mysql example:
+
+#define AUTHZ_SVN_DB_MODULE_NAME_STRING "authz_svn_db_mysql_module"
+
+Again, the only difference is that it is now surrounded by quotes.  Nothing
+special.  You don't have to make it the same name either (I recommended you
+do, though).
+
+
+II.C. INCLUDE
+
+In your new module, use the #include "mod_authz_svn_db.c" to include the
+guts of the module.  You aren't linking against it, you're including the
+code directly. This is because those defines we created above are modifying
+the code in the .c file.  You cannot compile the .c file and link against
+it, sorry. On that note, make sure your #define's appear BEFORE the
+#include!  Otherwise, the defines will not be in effect when the file was
+included.
+
+You should now write the 4 functions mentioned above to complete
+your module.
+
+
+II.D. COMPILATION AND LINKING
+
+So, you've created the defines, and the include, and the code.  Now it's
+time to build it.  I'll try to make this as non-compiler-denominational as
+possible.  You need to create a shared object out of your code.  Your code
+should be compiled into a "library" that can be "dynamically linked."  GCC
+calls these "Shared objects" (sorry, I used a compiler-specific term).
+These are analogous to DLLs on Windows(TM). I'm assuming you wrote all of
+your code/defines/include in a .c file and named it:
+mod_authz_svn_db_<database name>.c where "database name" is the name of
+the database for which you're writing the module.
+
+Word of caution: when compiling the file, do not also compile the
+mod_authz_svn_db.c file separately or along with your module. The code is
+being included. You will get some very very strange errors and nearly go
+bonkers for 2-3 days trying to find the problem (it happened to me).
+If you get compilation errors concerning multiply defined symbols or a
+conflicting definition, you are including the file twice.
+
+Next, you need to include some library stuff.  Make sure your compiler
+knows where to find the include files (.h usually) for Apache, apr, and
+subverion.  Additionally, you'll need to tell your compiler where to find
+the library files for these as well.  Here is my example make file for
+compiling mod_authz_svn_db_pgsql:  (keep in mind this is compiled on
+FreeBSD with gcc).
+
+	gcc -I/usr/local/include/apache22 -I/usr/local/include/subversion-1 -I/usr/local/include/apr-1 -I../../mod_authz_svn_db/trunk -I/usr/local/include mod_authz_svn_db_pgsql.c -o mod_authz_svn_db_pgsql.so -L/usr/local/lib -lpq -shared
+
+Yes, it's a monster. It's structure is:
+COMPILER LIBRARYINCLUDES MODULE.C COMPILEDMODULE LIBRARYOBJECTS SHAREDFLAG
+
+Apache's modules usually end in .so (shared object).
+
+You should now have a .so file you can tell Apache about.  Put it into a
+location that the Apache user can read and move onto the next section.
+
+
+III. INSTALL THE MODULE INTO APACHE
+
+For the purposes of this tutorial, I'm assuming you're using Apache2.  I'm
+not sure if it will work with Apache1.3.  Note: I am also assuming you
+have subversion installed along with the Apache modules for subversion
+(which include DavSVN and mod_authz_svn).
+
+Now that you have your module compiled and placed in a location Apache can
+read (preferably with the other modules Apache uses), crack open your
+favorite editor and edit the httpd.conf file.  The location of this file
+varies from Operating System to Operating System (and even installations),
+so look at your OS's docs to find out where it is located.
+
+Scroll down until you see a list of modules Apache should load, it looks
+like:
+LoadModule <MODULE NAME> <PATH TO MODULE>
+
+Go all the way to the end of the list of these modules (or, at the very
+least, AFTER the modules:
+LoadModule dav_module         <PATH>/mod_dav.so
+LoadModule dav_svn_module     <PATH>/mod_dav_svn.so
+
+Assuming you wrote the MySQL module (as in the example above), add your
+module to the list:
+LoadModule authz_svn_db_mysql_module   <PATH>/mod_authz_svn_db_mysql.so
+
+Note, the first string after LoadModule is the name you gave to the
+#define AUTHZ_SVN_DB_MODULE_NAME when creating your module.  They MUST
+match.  The <PATH> is the path to your compiled module.
+
+Now, save httpd.conf and restart apache.  If all is well, you will not see
+any errors in the error logs, nor when you start Apache.  If you get errors,
+debug your module code or make sure you typed the LoadModule directive
+information correctly.  Congratulations, your database module should now be
+installed and running.
+
+
+IV. CONFIGURE THE SUBVERSION REPOSITORIES
+
+This is similar to what is described in the redbook for
+Subversion (Handling multiple access methods) but there are many additions.
+
+
+IV.A. APACHE DIRECTIVES
+
+In order to configure mod_authz_svn_db, Apache2 needs to be told how the database is configured. This configuration is read only on boot if you place it in the vhosts configuration files (it it strongly recommended that you do for performance reasons). Although you can put it in the .htaccess files, this practice is strongly discouraged. The general format of this section is as follows:
+
+* DIRECTIVE <values>
+	Required/Optional
+	Default: default
+	Description:	
+	Notes:				
+	Warnings:				
+	
+
+* AuthzSVNDBAuthoritative	<On|Off>
+	Optional
+	Default: 			On
+	Description:	If enabled, mod_authz_svn_db will be the final judge of access authorization. Although other authorization modules may run before it, if mod_authz_svn_db is run, no other modules will be consulted. If set to Off, if the user is not found by mod_authz_svn_db, another authorization module can take over for mod_authz_svn_db.
+	Notes:				This is really only useful if you want to use mod_auth_svn_db and some other module to authorize users.
+	Warnings:			None
+
+* AuthzSVNDBHost	<string>
+	Required
+	Default:			localhost
+	Description:	This is the host where your database can be contacted. IP addresses are recommended for speed, but you may also use hostnames such as www.wojno.com or localhost
+	Notes:				None
+	Warnings:			None
+
+* AuthzSVNDBPort	<unsigned integer(1-65535)>
+	Required
+	Default:			The default for the database software to which one is connecting.
+	Description:	This is the port on the AuthzSVNDBHost on which your database is listening for new connections.
+	Notes:				None
+	Warnings:			None
+
+* AuthzSVNDBName	<string>
+	Required
+	Default:			N/A
+	Description:	This is the name of the database that contains the authorization tables as described in section V.
+	Notes:				None
+	Warnings:			None
+
+* AuthzSVNDBUsername	<string>
+	Required
+	Default:			N/A
+	Description:	This is the username used to connect to the database AuthzSVNDBName at AuthzSVNDBHost
+	Notes:				None
+	Warnings:			None
+
+* AuthzSVNDBPassword	<string>
+	Optional if AuthzSVNDBPasswordFile used
+	Default:			N/A
+	Description:	The password to use when accessing the database (database authentication), overrides the specified password file. It is recommended that a password file be used instead of this directive if the configuration file is publicly visible.
+	Notes:				See AuthzSVNDBPasswordFile
+	Warnings:			If the configuration file in which this directive is used is visible to the public, people will be able to see your database password! Use AuthzSVNDBPasswordFile instead!
+
+* AuthzSVNDBUserTable	<string>
+	Optional
+	Default:			authz_svn_user
+	Description:	The name of the table in AuthzSVNDBName that contains the list of users (see section V)
+	Notes:				None
+	Warnings:			None
+
+* AuthzSVNDBUserColumn	<string>
+	Optional
+	Default:			name
+	Description:	The name of the column in AuthzSVNDBUserColumn that contains the name of the users
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBUserIDColumn	<string>
+	Optional
+	Default:			id
+	Description:	The name of the column in AuthzSVNDBUserColumn that contains the numeric ID of the users
+	Notes:				If your database does not have ID's for every user, then your database designer needs to be fired. This is a required part of the database.
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBRepositoryTable	<string>
+	Optional
+	Default:			authz_svn_repository
+	Description:	The name of the table in AuthzSVNDBName that contains the list of repository names (not paths)
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBRepositoryColumn	<string>
+	Optional
+	Default:			name
+	Description:	The name of the column in AuthzSVNDBUserColumn that contains the name of the repositories
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBRepositoryIDColumn	<string>
+	Optional
+	Default:			id
+	Description:	The name of the column in AuthzSVNDBUserColumn that contains the numeric ID of the repositories
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBGroupMembershipTable	<string>
+	Optional
+	Default:			authz_svn_groupmembership
+	Description:	The name of the table in AuthzSVNDBName that contains the matching of user ID's and group ID's indicating membership in a group
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBGroupMembershipUserColumn	<string>
+	Optional
+	Default:			user_id
+	Description:	The name of the user column in the group membership database. This is where the user id is specified to link users to groups.
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBGroupMembershipGroupColumn	<string>
+	Optional
+	Default:			group_id
+	Description:	The name of the group column in the group membership database. This is where the group id is specified to link users to groups.
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBUPermissionTable	<string>
+	Optional
+	Default:			authz_svn_userpermission
+	Description:	The name of the table where user-level permissions (R/W/Recursive) are stored. This table contains the data to allow Apache to grant and reject individual users from accessing a particular repository.
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBUPermissionUserColumn	<string>
+	Optional
+	Default:			user_id
+	Description:	This is where the user's id is store in the userpermission table and links users to repositories.
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBUPermissionPathColumn	<string>
+	Optional
+	Default:			repository_id
+	Description:	This is where the repository's id is store in the userpermission table and links users to repositories.
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBUPermissionReadColumn	<string>
+	Optional
+	Default:			read
+	Description:	This is the name of the column in the database that grants or revokes the ability of a user to read a repository.
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBUPermissionWriteColumn	<string>
+	Optional
+	Default:			write
+	Description:	This is the name of the column in the database that grants or revokes the ability of a user to write to a repository.
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBUPermissionRecursiveColumn	<string>
+	Optional
+	Default:			recursive
+	Description:	This is the name of the column in the database that controls whether a user's permissions are to be propagated to child directories in a repository.
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBGPermissionTable	<string>
+	Optional
+	Default:			authz_svn_grouppermission
+	Description:	The name of the table where group-level permissions (R/W/Recursive) are stored. This table contains the data to allow Apache to grant and reject groups from accessing a particular repository.
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBGPermissionGroupColumn	<string>
+	Optional
+	Default:			group_id
+	Description:	This is where the group's id is store in the grouppermission table and links groups to repositories.
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBGPermissionPathColumn	<string>
+	Optional
+	Default:			repository_id
+	Description:	This is where the repository's id is store in the grouppermission table and links groups to repositories.
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBGPermissionReadColumn	<string>
+	Optional
+	Default:			read
+	Description:	This is the name of the column in the database that grants or revokes the ability of a group to read a repository.
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBGPermissionWriteColumn	<string>
+	Optional
+	Default:			write
+	Description:	This is the name of the column in the database that grants or revokes the ability of a group to write to a repository.
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBGPermissionRecursiveColumn	<string>
+	Optional
+	Default:			recursive
+	Description:	This is the name of the column in the database that controls whether a group's permissions are to be propagated to child directories in a repository.
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBRepoPathTable	<string>
+	Optional
+	Default:			authz_svn_repopath
+	Description:	The table name for that table that contains a listing of all repository paths for apache to serve. Such paths are available as URI's appended to the Apache server URL. I.E. if the authz SVN DAV parent path is located at: "http://svn.server.com/svndav" and one of the repository paths is "myproject", then one may specify: "http://svn.server.com/svndav/myproject" to access the repository.
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBRepoPathPathColumn	<string>
+	Optional
+	Default:			path
+	Description:	The column in the table that stores the string path to the repository, or a sub-directory within the repository. Therefore, any sub-directories within a repository can be explicitly named here. Once named, user and group permissions can be applied to those paths.
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBRepoPathRepositoryColumn	<string>
+	Optional
+	Default:			repository_id
+	Description:	The column that stores the target repository id to which the path is linked and within which the path is contained. I.E. if the repository "myproject" has branch, trunk, and tag, the AuthzSVNDBRepoPathPathColumn can be "/trunk" or "/branch".
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBRepoPathIDColumn	<string>
+	Optional
+	Default:			id
+	Description:	The name of the primary key index column for the Path table. If your database does not have one, fire your database designer. All tables need primary keys.
+	Notes:				See Section V
+	Warnings:			None
+
+* AuthzSVNDBPasswordFile	<string>
+	Optional
+	Default:			NULL (Not used)
+	Description:	This is a fall-back in the event a flat file is to be used for authentication. Please note, using this file may help debug the installation of the module, but is a security risk as all passwords must be stored in plain-text. It is recommended that this file be used only for development and only be readable to an administrator and Apache.
+	Notes:				See Section V
+	Warnings:			Using a password file is a security risk! Use only for development and in ensure target file is readable, writeable, and executable only by root and Apache's user.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+IV.B. SAMPLES
+
+
+
+
+V. DATABASE SCHEMA
+
+To use this system well, you will need 6 tables in your database:
+
+ * TABLE authz_svn_groupmemberships
+	* FIELD integer: id
+	* FIELD integer: user_id
+	* FIELD integer: group_id
+ * TABLE authz_svn_grouppermissions
+	* FIELD integer: id
+	* FIELD integer: group_id
+	* FIELD integer: repository_path_id
+	* FIELD boolean: read
+	* FIELD boolean: write
+	* FIELD boolean: recursive
+ * TABLE authz_svn_repositories
+	* FIELD integer: id
+	* FIELD string: name
+ * TABLE authz_svn_repository_paths
+	* FIELD integer: id
+	* FIELD integer: repository_id
+	* FIELD string: path
+ * TABLE authz_svn_userpermissions
+	* FIELD integer: user_id
+	* FIELD integer: repository_path_id
+	* FIELD boolean: read
+	* FIELD boolean: write
+	* FIELD boolean: recursive
+ * TABLE authz_svn_users
+	* FIELD integer: id
+	* FIELD string: name
+
+TODO: Explain what each field in the tables is for.
+
+
+VI. ACKNOWLEDGEMENTS
+
+This product includes software developed by Collab.Net (http://www.Collab.Net/).
+
+

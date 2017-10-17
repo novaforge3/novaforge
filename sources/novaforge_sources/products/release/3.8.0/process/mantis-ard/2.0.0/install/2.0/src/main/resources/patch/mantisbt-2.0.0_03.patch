@@ -1,0 +1,509 @@
+diff -rNU5 mantisbt/manage_proj_edit_page.php mantisbt-2.0.0/manage_proj_edit_page.php
+--- mantisbt/manage_proj_edit_page.php	2016-12-30 21:39:51.000000000 +0100
++++ mantisbt-2.0.0/manage_proj_edit_page.php	2017-05-19 17:04:49.000000000 +0200
+@@ -18,10 +18,11 @@
+  * Edit Project Page
+  *
+  * @package MantisBT
+  * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+  * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
++ * @copyright Copyright 2017  Atos, NovaForge Version 3 and above.
+  * @link http://www.mantisbt.org
+  *
+  * @uses core.php
+  * @uses access_api.php
+  * @uses authentication_api.php
+@@ -69,10 +70,16 @@
+ require_api( 'string_api.php' );
+ require_api( 'user_api.php' );
+ require_api( 'utility_api.php' );
+ require_api( 'version_api.php' );
+ 
++//Begin Novaforge : disable user and project management
++$enable_mantis_mgt = false;
++if( ON == config_get( 'enable_mantis_management' )) {
++	$enable_mantis_mgt = true;
++}
++//End Novaforge : disable user and project management
+ auth_reauthenticate();
+ 
+ $f_project_id = gpc_get_int( 'project_id' );
+ $f_show_global_users = gpc_get_bool( 'show_global_users' );
+ 
+@@ -114,11 +121,20 @@
+ 			<tr>
+ 				<td class="category">
+ 					<span class="required">*</span> <?php echo lang_get( 'project_name' ) ?>
+ 				</td>
+ 				<td>
+-					<input type="text" id="project-name" name="name" class="input-sm" size="60" maxlength="128" value="<?php echo string_attribute( $t_row['name'] ) ?>" />
++				<!-- Begin Novaforge : disable user and project management -->
++				<?php
++				if ($enable_mantis_mgt) {
++				  echo '<input type="text" id="project-name" name="name" class="input-sm" size="60" maxlength="128" value="'.string_attribute( $t_row['name'] ).'" />' . "\n";
++				} else {
++				  echo '<input type="text" id="project-name" name="name" class="input-sm" size="60" maxlength="128" value="'.string_attribute( $t_row['name'] ).'" disabled=\"true\" />' . "\n";
++				  echo '<input type="hidden" id="project-name" name="name" value="'.string_attribute( $t_row['name'] ).'" />' . "\n";
++				}
++				?>
++				<!-- End Novaforge : disable user and project management -->
+ 				</td>
+ 			</tr>
+ 			<tr>
+ 				<td class="category">
+ 					<?php echo lang_get( 'status' ) ?>
+@@ -203,10 +219,13 @@
+ 	</form>
+ </div>
+ </div>
+ 
+ <!-- PROJECT DELETE -->
++<!-- Begin Novaforge : disable user and project management -->
++<?php if ($enable_mantis_mgt) { ?>
++<!-- End Novaforge : disable user and project management -->
+ <div class="col-md-12 col-xs-12">
+ <?php
+ # You must have global permissions to delete projects
+ if( access_has_global_level ( config_get( 'delete_project_threshold' ) ) ) { ?>
+ <div id="project-delete-div" class="form-container">
+@@ -218,11 +237,13 @@
+ 		</fieldset>
+ 	</form>
+ </div>
+ <?php } ?>
+ </div>
+-
++<!-- Begin Novaforge : disable user and project management -->
++<?php } ?>
++<!-- End Novaforge : disable user and project management -->
+ <?php
+ if ( config_get( 'subprojects_enabled') == ON ) {
+ ?>
+ <!-- SUBPROJECTS -->
+ <div class="col-md-12 col-xs-12">
+@@ -233,18 +254,24 @@
+ 				<h4 class="widget-title lighter">
+ 					<i class="ace-icon fa fa-share-alt"></i>
+ 					<?php echo lang_get( 'subprojects' ); ?>
+ 				</h4>
+ 			</div>
++<!-- Begin Novaforge : disable user and project management -->
++<?php if ($enable_mantis_mgt) { ?>
++<!-- End Novaforge : disable user and project management -->
+ 			<div class="widget-toolbox padding-8 clearfix">
+ 		<?php
+ 		# Check the user's global access level before allowing project creation
+ 		if( access_has_global_level ( config_get( 'create_project_threshold' ) ) ) {
+ 			print_form_button( 'manage_proj_create_page.php?parent_id=' . $f_project_id, lang_get( 'create_new_subproject_link' ),
+ 				null, null, 'btn btn-sm btn-primary btn-white btn-round' );
+ 		} ?>
+ 	</div>
++<!--Begin Novaforge : disable user and project management -->
++<?php } ?>
++<!--End Novaforge : disable user and project management -->
+ 		<form id="manage-project-subproject-add-form" method="post" action="manage_proj_subproj_add.php" class="form-inline">
+ 			<div class="widget-body">
+ 			<div class="widget-main">
+ 			<fieldset>
+ 				<?php echo form_security_field( 'manage_proj_subproj_add' ) ?>
+@@ -694,10 +721,14 @@
+ 	<h4 class="widget-title lighter">
+ 		<i class="ace-icon fa fa-users"></i>
+ 		<?php echo lang_get( 'manage_accounts_title' ); ?>
+ 	</h4>
+ </div>
++
++<!-- Begin Novaforge : disable user and project management -->
++<?php if ($enable_mantis_mgt) { ?>
++<!--  End Novaforge -->
+ <div class="widget-toolbox padding-8 clearfix">
+ 	<form id="manage-project-users-copy-form" method="post" action="manage_proj_user_copy.php" class="form-inline">
+ 		<fieldset>
+ 			<?php echo form_security_field( 'manage_proj_user_copy' ) ?>
+ 			<input type="hidden" name="project_id" value="<?php echo $f_project_id ?>" />
+@@ -709,20 +740,31 @@
+ 				<input type="submit" name="copy_to" class="btn btn-sm btn-primary btn-white btn-round" value="<?php echo lang_get( 'copy_users_to' ) ?>" />
+ 			</span>
+ 		</fieldset>
+ 	</form>
+ </div>
++
++<!-- Begin Novaforge : disable user and project management -->
++<?php } ?>
++<!-- End Novaforge -->
++
+ <div class="widget-body">
+ 	<div class="widget-main no-padding">
+ 	<div class="table-responsive">
+ 	<table class="table table-striped table-bordered table-condensed">
+ 		<thead>
+ 			<tr>
+ 				<th><?php echo lang_get( 'username' ) ?></th>
+ 				<th><?php echo lang_get( 'email' ) ?></th>
+ 				<th><?php echo lang_get( 'access_level' ) ?></th>
++				<!-- Begin Novaforge : disable user and project management -->
++				<?php if ($enable_mantis_mgt) { ?>
++				<!--  End Novaforge -->
+ 				<th><?php echo lang_get( 'actions' ) ?></th>
++				<!-- Begin Novaforge : disable user and project management -->
++				<?php } ?>
++				<!-- End Novaforge -->
+ 			</tr>
+ 		</thead>
+ 		<tbody>
+ <?php
+ 	$t_users = project_get_all_user_rows( $f_project_id, ANYBODY, $f_show_global_users );
+@@ -771,10 +813,13 @@
+ 					$t_email = user_get_email( $t_user['id'] );
+ 					print_email_link( $t_email, $t_email );
+ 				?>
+ 				</td>
+ 				<td><?php echo get_enum_element( 'access_levels', $t_user['access_level'] ) ?></td>
++				<!-- Begin Novaforge : disable user and project management -->
++				<?php if ($enable_mantis_mgt) { ?>
++				<!--  End Novaforge -->
+ 				<td class="center"><?php
+ 					# You need global or project-specific permissions to remove users
+ 					#  from this project
+ 					if( $t_can_manage_users && access_has_project_level( $t_user['access_level'], $f_project_id ) ) {
+ 						if( !$f_show_global_users || $f_show_global_users && isset( $t_local_users[$t_user['id']]) ) {
+@@ -784,19 +829,25 @@
+ 									$t_token_remove_user );
+ 							$t_removable_users_exist = true;
+ 						}
+ 					} ?>
+ 				</td>
++				<!-- Begin Novaforge : disable user and project management -->
++				<?php } ?>
++				<!-- End Novaforge -->
+ 			</tr>
+ <?php
+ 	}  # end for
+ ?>
+ 		</tbody>
+ 	</table>
+ 	</div>
+ 	</div>
+ </div>
++<!-- Begin Novaforge : disable user and project management -->
++<?php if ($enable_mantis_mgt) { ?>
++<!--  End Novaforge -->
+ <div class="widget-toolbox padding-8 clearfix">
+ <?php
+ 	# You need global or project-specific permissions to remove users
+ 	#  from this project
+ 	if( !$f_show_global_users ) {
+@@ -814,10 +865,13 @@
+ 				array( 'project_id' => $f_project_id ),
+ 				$t_token_remove_user );
+ 	}
+ 	?>
+ </div>
++<!-- Begin Novaforge : disable user and project management -->
++<?php } ?>
++<!-- End Novaforge -->
+ </div>
+ </div>
+ </div>
+ 
+ <?php
+diff -rNU5 mantisbt/manage_proj_page.php mantisbt-2.0.0/manage_proj_page.php
+--- mantisbt/manage_proj_page.php	2016-12-30 21:39:51.000000000 +0100
++++ mantisbt-2.0.0/manage_proj_page.php	2017-05-19 17:12:40.000000000 +0200
+@@ -18,10 +18,11 @@
+  * Project Page
+  *
+  * @package MantisBT
+  * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+  * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
++ * @copyright Copyright 2017  Atos, NovaForge Version 3 and above.
+  * @link http://www.mantisbt.org
+  *
+  * @uses core.php
+  * @uses access_api.php
+  * @uses authentication_api.php
+@@ -59,10 +60,17 @@
+ require_api( 'project_hierarchy_api.php' );
+ require_api( 'string_api.php' );
+ require_api( 'user_api.php' );
+ require_api( 'utility_api.php' );
+ 
++//Begin Novaforge : disable user and project management
++$enable_mantis_mgt = false;
++if( ON == config_get( 'enable_mantis_management' )) {
++	$enable_mantis_mgt = true;
++}
++//End Novaforge : disable user and project management
++
+ auth_reauthenticate();
+ 
+ $f_sort	= gpc_get_string( 'sort', 'name' );
+ $f_dir	= gpc_get_string( 'dir', 'ASC' );
+ 
+@@ -171,17 +179,22 @@
+ 		} ?>
+ 		</tbody>
+ 	</table>
+ </div>
+ 	</div>
+-	<div class="widget-toolbox padding-8 clearfix">
+-		<?php
+-		# Check the user's global access level before allowing project creation
+-		if( access_has_global_level ( config_get( 'create_project_threshold' ) ) ) {
+-			print_form_button( 'manage_proj_create_page.php', lang_get( 'create_new_project_link' ), null, null, 'btn btn-primary btn-white btn-round' );
+-		} ?>
+-	</div>
++	<!-- Begin Novaforge : disable user and project management -->
++	<?php if ($enable_mantis_mgt) {?>
++		<div class="widget-toolbox padding-8 clearfix">
++			<?php
++			# Check the user's global access level before allowing project creation
++			if( access_has_global_level ( config_get( 'create_project_threshold' ) ) ) {
++				print_form_button( 'manage_proj_create_page.php', lang_get( 'create_new_project_link' ), null, null, 'btn btn-primary btn-white btn-round' );
++			} ?>
++		</div>
++	<!-- End Novaforge : disable user and project management -->
++	<?php } ?>
++	
+ 	</div>
+ 	</div>
+ 
+ 	<div class="space-10"></div>
+ 
+diff -rNU5 mantisbt/manage_user_edit_page.php mantisbt-2.0.0/manage_user_edit_page.php
+--- mantisbt/manage_user_edit_page.php	2016-12-30 21:39:51.000000000 +0100
++++ mantisbt-2.0.0/manage_user_edit_page.php	2017-05-19 17:23:56.000000000 +0200
+@@ -18,10 +18,11 @@
+  * User Edit Page
+  *
+  * @package MantisBT
+  * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+  * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
++ * @copyright Copyright 2017  Atos, NovaForge Version 3 and above.
+  * @link http://www.mantisbt.org
+  *
+  * @uses core.php
+  * @uses access_api.php
+  * @uses authentication_api.php
+@@ -53,10 +54,17 @@
+ require_api( 'print_api.php' );
+ require_api( 'string_api.php' );
+ require_api( 'user_api.php' );
+ require_api( 'utility_api.php' );
+ 
++//Begin Novaforge : disable user and project management
++$enable_mantis_mgt = false;
++if( ON == config_get( 'enable_mantis_management' )) {
++	$enable_mantis_mgt = true;
++}
++//End Novaforge : disable user and project management
++
+ auth_reauthenticate();
+ 
+ access_ensure_global_level( config_get( 'manage_user_threshold' ) );
+ 
+ $f_username = gpc_get_string( 'username', '' );
+@@ -121,11 +129,21 @@
+ 			<tr>
+ 				<td class="category">
+ 					<?php echo lang_get( 'username_label' ) ?>
+ 				</td>
+ 				<td>
+-					<input id="edit-username" type="text" class="input-sm" size="32" maxlength="<?php echo DB_FIELD_SIZE_USERNAME;?>" name="username" value="<?php echo string_attribute( $t_user['username'] ) ?>" />
++				<!-- Begin Novaforge : disable user and project management -->
++				<?php
++				if ($enable_mantis_mgt) {
++					echo'<input id="edit-username" type="text" class="input-sm" size="32" maxlength="'.DB_FIELD_SIZE_USERNAME.'" name="username" value="'.string_attribute( $t_user['username'] ).'" />' . "\n";
++
++				} else {
++					echo'<input id="edit-username" type="text" class="input-sm" size="32" maxlength="'.DB_FIELD_SIZE_USERNAME.'" name="username" value="'.string_attribute( $t_user['username'] ).'" disabled=\"true\" />' . "\n";
++					echo'<input id="edit-username" type="hidden" name="username" value="'.string_attribute( $t_user['username'] ).'" />' . "\n";
++				}
++				?>		
++				<!-- End Novaforge : disable user and project management -->
+ 				</td>
+ 			</tr>
+ 
+ 			<!-- Realname -->
+ 			<tr><?php
+@@ -136,11 +154,21 @@
+ 				echo string_display_line( user_get_realname( $t_user_id ) );
+ 				echo '</td>';
+ 			} else {
+ 				# Without LDAP ?>
+ 				<td class="category"><?php echo lang_get( 'realname_label' ) ?></td>
+-				<td><input id="edit-realname" type="text" class="input-sm" size="32" maxlength="<?php echo DB_FIELD_SIZE_REALNAME;?>" name="realname" value="<?php echo string_attribute( $t_user['realname'] ) ?>" /></td><?php
++				<td>
++				<!-- Begin Novaforge : disable user and project management -->
++				<?php
++				if ($enable_mantis_mgt) {
++					echo '<input id="edit-realname" type="text" class="input-sm" size="32" maxlength="'.DB_FIELD_SIZE_REALNAME.'" name="realname" value="'.string_attribute( $t_user['realname'] ).'" />' . "\n";
++				} else {
++				    echo '<input id="edit-realname" type="text" class="input-sm" size="32" maxlength="'.DB_FIELD_SIZE_REALNAME.'" name="realname" value="'.string_attribute( $t_user['realname'] ).'" disabled=\"true\" />' . "\n";
++				    echo '<input id="edit-realname" type="hidden" name="realname" value="'.string_attribute( $t_user['realname'] ).'"/>' . "\n";
++				}
++				# End Novaforge : disable user and project management 
++				echo'</td>';
+ 			}
+ 		?>
+ 			</tr>
+ 			<!-- Email -->
+ 			<tr><?php
+@@ -150,26 +178,42 @@
+ 				echo '<td>' . string_display_line( user_get_email( $t_user_id ) ) . '</td>';
+ 			} else {
+ 				# Without LDAP
+ 				echo '<td class="category">' . lang_get( 'email_label' ) . '</td>';
+ 				echo '<td>';
+-				print_email_input( 'email', $t_user['email'] );
++				// Begin Novaforge : disable user and project management
++				if ($enable_mantis_mgt) {
++					echo '<input class="input-sm" id="email-field" type="text" name="' . string_attribute( 'email' ) . '" size="32" maxlength="64" value="' . string_attribute( $t_user['email'] ) . '" />' . "\n";
++				} else {
++					echo '<input class="input-sm" id="email-field" type="text" name="' . string_attribute( 'email' ) . '" size="32" maxlength="64" value="' . string_attribute( $t_user['email'] ) . '" disabled=\"true\" />' . "\n";
++					echo '<input id="email-field" type="hidden" name="' . string_attribute('email') . '" value="' . string_attribute( $t_user['email'] ) . '" />' . "\n";
++				}
++				// End Novaforge : disable user and project management
++					
+ 				echo '</td>';
+ 			} ?>
+ 			</tr>
+ 			<!-- Access Level -->
+ 			<tr>
+ 				<td class="category">
+ 					<?php echo lang_get( 'access_level_label' ) ?>
+ 				</td>
+ 				<td>
+-					<select id="edit-access-level" name="access_level" class="input-sm"><?php
++				<?php 
++					// Begin Novaforge : disable user and project management
++					if ($enable_mantis_mgt) {
++					   echo '<select id="edit-access-level" name="access_level" class="input-sm" >'. "\n";
++					} else {	    
+ 						$t_access_level = $t_user['access_level'];
+ 						if( !MantisEnum::hasValue( config_get( 'access_levels_enum_string' ), $t_access_level ) ) {
+ 							$t_access_level = config_get( 'default_new_account_access_level' );
+ 						}
+-						print_project_access_levels_option_list( (int)$t_access_level ); ?>
++						echo '<input id="edit-access-level" type="hidden" name="access_level" value="' .(int)$t_access_level . '" />' . "\n";
++						echo '<select id="edit-access-level" name="access_level" class="input-sm" disabled=\"true\">'. "\n";
++					}	
++					// End Novaforge : disable user and project management					
++					print_project_access_levels_option_list( (int)$t_access_level ); ?>
+ 					</select>
+ 				</td>
+ 			</tr>
+ 			<!-- Enabled Checkbox -->
+ 			<tr>
+@@ -240,10 +284,13 @@
+ ?>
+ <div id="manage-user-actions-div" class="col-md-6 col-xs-12 no-padding">
+ <div class="space-8"></div>
+ <div class="btn-group">
+ 
++<!-- Begin Novaforge : disable user and project management -->
++<?php if ($enable_mantis_mgt) {?>
++<!-- End Novaforge : disable user and project management -->
+ <!-- Reset/Unlock Button -->
+ <?php if( $t_reset || $t_unlock ) { ?>
+ 	<form id="manage-user-reset-form" method="post" action="manage_user_reset.php" class="pull-left">
+ 		<fieldset>
+ 			<?php echo form_security_field( 'manage_user_reset' ) ?>
+@@ -265,10 +312,13 @@
+ 			<input type="hidden" name="user_id" value="<?php echo $t_user['id'] ?>" />
+ 			<span><input type="submit" class="btn btn-primary btn-white btn-round" value="<?php echo lang_get( 'delete_user_button' ) ?>" /></span>
+ 		</fieldset>
+ 	</form>
+ <?php } ?>
++<!-- Begin Novaforge : disable user and project management -->
++<?php } ?> 
++<!-- End Novaforge : disable user and project management -->
+ 
+ <!-- Impersonate Button -->
+ <?php if( $t_impersonate ) { ?>
+ 	<form id="manage-user-impersonate-form" method="post" action="manage_user_impersonate.php" class="pull-left">
+ 		<fieldset>
+@@ -300,11 +350,13 @@
+ <?php } ?>
+ 
+ <?php event_signal( 'EVENT_MANAGE_USER_PAGE', array( $t_user_id ) ); ?>
+ 
+ <div class="clearfix"></div>
+-
++<!--Begin  Novaforge : disable user and project management -->
++<?php if ($enable_mantis_mgt) { ?>
++<!--End Novaforge : disable user and project management -->
+ <!-- PROJECT ACCESS (if permissions allow) and user is not ADMINISTRATOR -->
+ <?php if( access_has_global_level( config_get( 'manage_user_threshold' ) ) &&
+ 	!user_is_administrator( $t_user_id ) ) {
+ ?>
+ <div class="space-10"></div>
+@@ -365,10 +417,11 @@
+ </div>
+ </div>
+ 
+ <?php
+ } # End of PROJECT ACCESS conditional section
++} # End Novaforge : disable user and project management
+ echo '</div>';
+ 
+ define( 'ACCOUNT_PREFS_INC_ALLOW', true );
+ include( dirname( __FILE__ ) . '/account_prefs_inc.php' );
+ edit_account_prefs( $t_user['id'], false, false, 'manage_user_edit_page.php?user_id=' . $t_user_id );
+diff -rNU5 mantisbt/manage_user_page.php mantisbt-2.0.0/manage_user_page.php
+--- mantisbt/manage_user_page.php	2016-12-30 21:39:51.000000000 +0100
++++ mantisbt-2.0.0/manage_user_page.php	2017-05-19 17:24:33.000000000 +0200
+@@ -18,10 +18,11 @@
+  * User Page
+  *
+  * @package MantisBT
+  * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+  * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
++ * @copyright Copyright 2017  Atos, NovaForge Version 3 and above.
+  * @link http://www.mantisbt.org
+  *
+  * @uses core.php
+  * @uses access_api.php
+  * @uses authentication_api.php
+@@ -51,10 +52,17 @@
+ require_api( 'lang_api.php' );
+ require_api( 'print_api.php' );
+ require_api( 'string_api.php' );
+ require_api( 'utility_api.php' );
+ 
++//Begin Novaforge : disable user and project management
++$enable_mantis_mgt = false;
++if( ON == config_get( 'enable_mantis_management' )) {
++	$enable_mantis_mgt = true;
++}
++//End Novaforge : disable user and project management
++
+ auth_reauthenticate();
+ 
+ access_ensure_global_level( config_get( 'manage_user_threshold' ) );
+ 
+ $t_cookie_name = config_get( 'manage_users_cookie' );
+@@ -256,13 +264,20 @@
+ </div>
+ 
+ <div class="widget-body">
+ <div class="widget-toolbox padding-8 clearfix">
+ 	<div id="manage-user-div" class="form-container">
+-		<div class="pull-left">
+-			<?php print_form_button( 'manage_user_create_page.php', lang_get( 'create_new_account_link' ), null, null, 'btn btn-primary btn-white btn-round' ) ?>
+-		</div>
++	
++		<!-- Begin Novaforge : disable user and project management -->
++		<?php
++		if ($enable_mantis_mgt) {
++			echo '<div class="pull-left">'. "\n";
++			print_form_button( 'manage_user_create_page.php', lang_get( 'create_new_account_link' ), null, null, 'btn btn-primary btn-white btn-round' );
++			echo '<div>'. "\n";
++		}
++		?>
++		<!-- End Novaforge : disable user and project management -->
+ 		<?php if( $f_filter === 'UNUSED' ) { ?>
+ 		<div class="pull-left">
+ 			<?php print_form_button('manage_user_prune.php', lang_get('prune_accounts'), null, null, 'btn btn-primary btn-white btn-round') ?>
+ 		</div>
+ 		<?php } ?>

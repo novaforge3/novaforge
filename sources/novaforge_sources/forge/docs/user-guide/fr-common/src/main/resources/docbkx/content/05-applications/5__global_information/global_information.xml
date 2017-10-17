@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<section version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+	<title>Information générales</title>
+	<para>Ce chapitre regroupe certaines informations globales à l'utilisation des outils de la forge. 
+     Il permet de centraliser certains problèmes rencontrés et de proposer des contournements à ces derniers.
+	</para>
+
+	<sect2>
+		<title>Bouton inopérant depuis l'application intégrée</title>
+
+		<para>Pour certaines applications, le fait de cliquer sur l'un des boutons proposés depuis le portail NovaForge
+    n'aboutit pas à l'action attendue.
+		</para>
+    
+    <para>Par exemple, pour l'application Nexus, cliquer sur le bouton "Add" disponible dans le menu d'administration des tâches 
+    ordonnancées ("Scheduled Tasks") ne provoque pas l'affichage du menu contextuel associé. 
+		</para>
+    
+    <para>Le contournement à ce problème consiste à réaliser cette action depuis une page ouverte dans un nouvel onglet.
+    Dans le cas de l'exemple ci-dessus, il suffit de cliquer, avec le bouton droit de la souris, sur le menu "Scheduled Tasks" 
+    et de sélectionner ensuite l'option "Ouvrir le lien dans un nouvel onglet" dans le menu contextuel.
+		</para>
+
+		<para>Ce dysfonctionnement a été observé sur plusieurs applications.
+		</para>
+    
+	</sect2>
+</section>

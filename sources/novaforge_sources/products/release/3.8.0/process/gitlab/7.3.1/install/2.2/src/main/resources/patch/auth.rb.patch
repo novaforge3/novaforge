@@ -1,0 +1,15 @@
+--- auth.rb	2014-12-18 15:46:01.331792287 +0100
++++ auth-patched.rb	2014-12-18 15:45:47.779791853 +0100
+@@ -7,11 +7,11 @@
+         # Second chance - try LDAP authentication
+         return nil unless ldap_conf.enabled
+ 
+         Gitlab::LDAP::User.authenticate(login, password)
+       else
+-        user if user.valid_password?(password)
++        user if user.valid_password?(Digest::SHA1.hexdigest(password))
+       end
+     end
+ 
+     def log
+       Gitlab::AppLogger

@@ -1,0 +1,122 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui"
+						 xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+		>
+  <ui:with field='res' type='org.novaforge.forge.tools.managementmodule.ui.client.ressources.ManagementModuleRessources' />
+ 
+ <g:ScrollPanel alwaysShowScrollBars="false">
+    <g:VerticalPanel spacing="5" width='100%' height='100%' verticalAlignment='ALIGN_TOP'>
+    <g:HorizontalPanel addStyleNames="{res.css.actionPanel}" horizontalAlignment='ALIGN_LEFT'>
+      <g:HorizontalPanel spacing="5" horizontalAlignment='ALIGN_LEFT'>
+        <g:Button addStyleNames="{res.css.important}" ui:field="buttonSaveReferentielProjet" />
+        <g:Button addStyleNames="{res.css.important}" ui:field="buttonCancelReferentielProjet" />
+        <g:Button addStyleNames="{res.css.important}" ui:field="buttonImportRefScopeUnit" />
+        <g:Button addStyleNames="{res.css.important}" ui:field="buttonHomeReturn" />
+      </g:HorizontalPanel>
+    </g:HorizontalPanel>
+    
+    
+    
+    <g:HorizontalPanel spacing="5" horizontalAlignment='ALIGN_RIGHT'>
+    	<g:Label ui:field='projectRepositorySettingsTitle' addStyleNames="{res.css.zoneTitle}" />
+    </g:HorizontalPanel>
+    
+	<g:Label ui:field='parametrageCDOLabel' addStyleNames="{res.css.subTitle}" width="250px"/>
+    
+	<g:HorizontalPanel spacing="5" horizontalAlignment='ALIGN_LEFT'>
+			<g:Label addStyleNames="{res.css.important}" ui:field="cdoParameterBLabel" />
+	</g:HorizontalPanel>
+	<g:VerticalPanel ui:field='ajouterCDOPanel'>
+    	<c:CellTable ui:field='cdoCellTable' addStyleNames='{res.css.cellTable}'/>
+		<g:Image ui:field='ajouterCDOImage' />
+	</g:VerticalPanel>
+    <g:HorizontalPanel spacing="5" horizontalAlignment='ALIGN_LEFT'>
+	    	<g:Label ui:field='uniteTempsIterationLabel' addStyleNames="{res.css.subTitle}" width="250px"/>
+	    	<g:RadioButton ui:field='uniteTempsSemaineRadioButton' name='selectUniteTempsRadioButton' />
+	    	<g:Label ui:field='uniteTempsSemaineLabel' />
+	    	<g:RadioButton ui:field='uniteTempsMoisRadioButton' name='selectUniteTempsRadioButton' />
+	    	<g:Label ui:field='uniteTempsMoisLabel' />
+    </g:HorizontalPanel>
+    <g:Grid ui:field='mainGrid'>
+	    <g:row>
+	    	<g:customCell>
+	    		<g:HorizontalPanel spacing="5" horizontalAlignment='ALIGN_LEFT'>
+			    	<g:VerticalPanel>
+			    		<g:Label ui:field='transformationLabel' addStyleNames="{res.css.subTitle}"/>
+			    		<g:HorizontalPanel>
+				    		<g:Label ui:field='inputNbrDeJourParAnLabel' width='200px' />
+				    		<g:TextBox ui:field='inputNbrDeJourParAnBox' />
+			    		</g:HorizontalPanel>
+			    		<g:HorizontalPanel>
+				    		<g:Label ui:field='inputNbrDeJourParMoisLabel' width='200px' />
+				    		<g:TextBox ui:field='inputNbrDeJourParMoisBox' />
+			    		</g:HorizontalPanel>
+			    		<g:HorizontalPanel>
+				    		<g:Label ui:field='inputNbrDeJourParSemaineLabel' width='200px' />
+				    		<g:TextBox ui:field='inputNbrDeJourParSemaineBox' />
+			    		</g:HorizontalPanel>
+			    		<g:HorizontalPanel>
+				    		<g:Label ui:field='inputNbrHeuresParJourLabel' width='200px' />
+				    		<g:TextBox ui:field='inputNbrHeuresParJourBox' />
+			    		</g:HorizontalPanel>
+			    		<g:HorizontalPanel>
+				    		<g:Label ui:field='inputNbJoursNonTravailLabel' width='200px' />
+				    		<g:TextBox ui:field='inputNbJoursNonTravailBox' />
+			    		</g:HorizontalPanel>
+			    	</g:VerticalPanel>
+    			</g:HorizontalPanel>
+	    	</g:customCell>
+	    	<g:customCell>
+	    		<g:HorizontalPanel spacing="5" horizontalAlignment='ALIGN_LEFT'>
+			    	<g:VerticalPanel>
+			    		<g:Label ui:field='pointFonctionSimpleLabel' addStyleNames="{res.css.subTitle}" />
+			    		<c:CellTable ui:field='componentCellTable' addStyleNames='{res.css.cellTable}'/>
+			    	</g:VerticalPanel>
+		    	</g:HorizontalPanel>
+	    	</g:customCell>
+	    </g:row>
+	    <g:row>
+	    	<g:customCell>
+	    		<g:VerticalPanel spacing="5">
+		    		<g:Label ui:field='categorieLabel' addStyleNames="{res.css.subTitle}"/>
+		    		<c:CellTable ui:field='categoriesList' addStyleNames='{res.css.cellTable}'/>
+		    		<g:HorizontalPanel ui:field='ajouterCategoriePanel'>
+		    			<g:Label ui:field='ajouterCategorieLabel' />
+		    			<g:TextBox ui:field='inputAjouterCategorieBox' />
+		    			<g:Image ui:field='ajouterCategorieImage' />
+		    		</g:HorizontalPanel>
+	    		</g:VerticalPanel>
+	    	</g:customCell>
+	    	<g:customCell>
+	    		<g:VerticalPanel spacing="5">
+		    		<g:Label ui:field='tauxRepartitionLabel' addStyleNames="{res.css.subTitle}"/>
+		    		<c:CellTable ui:field='disciplinesList' addStyleNames='{res.css.cellTable}'/>
+	    		</g:VerticalPanel>
+	    	</g:customCell>
+	    </g:row>
+    </g:Grid>
+    </g:VerticalPanel>
+ </g:ScrollPanel>
+</ui:UiBinder> 

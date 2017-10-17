@@ -1,0 +1,123 @@
+#!/bin/sh
+
+javaHome=@JAVA_HOME@
+jiraEngine=@JIRA_ENGINE@
+jiraHome=@JIRA_HOME@
+portTomcatJira=@PORT_TOMCAT_JIRA@
+hostnameLong=@HOST_NAME_LONG@
+aliasJira=@ALIAS_JIRA@
+jiraLogs=@JIRA_LOGS@
+
+# Set timeout in second
+timeOut=60
+
+# Export environment variable
+export JAVA_HOME=${javaHome}
+export CATALINA_OUT=${jiraLogs}/catalina.out
+
+jira_start()
+{
+	# Start tomcat containing Jira
+    ${jiraEngine}/bin/startup.sh
+    
+	# Test if Jira need to be reindexed (first jira start only)
+	if [ ! -f ${jiraHome}/index_flag ]; then
+		# Wait JIRA is started and curlable
+		curlJiraCustom=`curl --silent --connect-timeout 1 -I http://${hostnameLong}:${portTomcatJira}${aliasJira}/ | grep 'Coyote'`
+		echo "Waiting Jira is reachable."
+		until [ "$curlJiraCustom" != "" ];
+		do
+		  sleep	10
+		  curlJiraCustom=`curl --silent --connect-timeout 1 -I http://${hostnameLong}:${portTomcatJira}${aliasJira}/ | grep 'Coyote'`	
+		done
+		
+		perl ${jiraEngine}/scripts/reIndex.pl >> ${jiraLogs}/reIndex.log 2>&1
+
+		# Init timeout count
+		count=0
+		# Wait launching of indexing
+		while true
+		do
+		  	grep -q 'Re-index has started.' ${jiraLogs}/reIndex.log
+			if [ $? -eq 0 ] ; then
+				echo "Indexing Jira completed"
+				# Create the flag file
+				echo "Re-index OK" > ${jiraHome}/index_flag
+				break
+			else
+			  	((count++))
+			  	sleep 1
+			fi
+	
+			if [ $count -eq $timeOut ] ; then
+				echo "Indexing Jira failled"
+				break
+			fi
+		done
+	fi
+
+	return $?
+}
+
+jira_stop()
+{
+    ${jiraEngine}/bin/shutdown.sh
+
+	# Get JIRA PID
+	pidJira=`ps -ef | grep tomcat | grep -v grep | grep jira | awk '{print $2}'`
+
+	# Wait JIRA is stopped
+	count=$timeOut
+	while [ $count -gt 0 ]
+	do
+		kill -0 $pidJira >> /dev/null 2>&1
+		if [ $? -ne 0 ]; then
+			break
+		else
+			sleep 1
+			count=`echo "$count - 1" | bc`
+			if [ $count -eq 0 ]; then
+				kill -9 $pidJira >> /dev/null 2>&1
+			fi
+		fi
+	done
+	echo "Jira is now stopped"
+
+    return $?
+}
+
+jira_status() {
+    PIDS=$(ps -ef | grep tomcat | grep jira | grep -v grep | awk '{ print $2 }')
+    if [ -n "$PIDS" ]; then
+		echo "Jira tomcat: OK"
+    else
+		echo "Jira tomcat: KO"
+    fi
+}
+
+case "$1" in
+    start)
+        jira_start
+        RETVAL=$?
+        ;;
+    stop)
+        jira_stop
+        RETVAL=$?
+        ;;
+    status)
+         jira_status
+         RETVAL=$?
+         ;;
+    restart)
+         jira_stop
+         sync
+         jira_start
+         ;;
+    *)
+         echo "Usage: jira_forge {start|stop|status|restart}"
+         RETVAL=1
+         ;;
+esac
+
+exit $RETVAL
+

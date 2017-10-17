@@ -1,0 +1,18 @@
+--- users_group.rb	2015-01-07 12:59:14.553877503 +0100
++++ users_group-patched.rb	2015-01-07 12:59:01.833877673 +0100
+@@ -29,12 +29,13 @@
+   scope :owners,  -> { where(group_access: OWNER) }
+ 
+   scope :with_group, ->(group) { where(group_id: group.id) }
+   scope :with_user, ->(user) { where(user_id: user.id) }
+ 
+-  after_create :notify_create
+-  after_update :notify_update
++  ## NovaForge :: Disable group changes notification
++  #after_create :notify_create
++  #after_update :notify_update
+ 
+   validates :group_access, inclusion: { in: UsersGroup.group_access_roles.values }, presence: true
+   validates :user_id, presence: true
+   validates :group_id, presence: true
+   validates :user_id, uniqueness: { scope: [:group_id], message: "already exists in group" }

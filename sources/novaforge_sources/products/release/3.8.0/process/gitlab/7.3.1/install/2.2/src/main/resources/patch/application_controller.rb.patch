@@ -1,0 +1,30 @@
+--- application_controller.rb	2014-12-15 11:36:30.514428983 +0100
++++ application_controller-patched.rb	2014-12-15 11:38:25.954432677 +0100
+@@ -66,11 +66,12 @@
+     if resource.is_a?(User) && resource.respond_to?(:blocked?) && resource.blocked?
+       sign_out resource
+       flash[:alert] = "Your account is blocked. Retry when an admin has unblocked it."
+       new_user_session_path
+     else
+-      stored_location_for(:redirect) || stored_location_for(resource) || root_path
++      ## NovaForge :: redirect user to url given in parameter if exists
++      params[:url] || stored_location_for(:redirect) || stored_location_for(resource) || root_path      
+     end
+   end
+ 
+   def abilities
+     @abilities ||= Six.new
+@@ -172,11 +173,12 @@
+ 
+   def dev_tools
+   end
+ 
+   def default_headers
+-    headers['X-Frame-Options'] = 'DENY'
++    ## Novaforge :: The following has to be commented to get gitlab working in iFrame
++    #headers['X-Frame-Options'] = 'DENY'
+     headers['X-XSS-Protection'] = '1; mode=block'
+     headers['X-UA-Compatible'] = 'IE=edge'
+     headers['X-Content-Type-Options'] = 'nosniff'
+     headers['Strict-Transport-Security'] = 'max-age=31536000' if Gitlab.config.gitlab.https
+   end

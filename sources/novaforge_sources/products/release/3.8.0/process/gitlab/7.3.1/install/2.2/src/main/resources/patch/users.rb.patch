@@ -1,0 +1,61 @@
+--- users.rb	2015-01-07 13:35:10.841848614 +0100
++++ users-patched.rb	2015-01-07 13:35:02.973848719 +0100
+@@ -51,19 +51,27 @@
+       #   extern_uid                        - External authentication provider UID
+       #   provider                          - External provider
+       #   bio                               - Bio
+       #   admin                             - User is admin - true or false (default)
+       #   can_create_group                  - User can create groups - true or false
++      #   skip_confirmation                 - Skips requiring the user to confirm their account 
++      #
+       # Example Request:
+       #   POST /users
+       post do
+         authenticated_as_admin!
+         required_attributes! [:email, :password, :name, :username]
+         attrs = attributes_for_keys [:email, :name, :password, :skype, :linkedin, :twitter, :projects_limit, :username, :extern_uid, :provider, :bio, :can_create_group, :admin]
+         user = User.build_user(attrs)
+         admin = attrs.delete(:admin)
+         user.admin = admin unless admin.nil?
++        
++        if params[:skip_confirmation]
++          user.skip_confirmation!
++	   user.skip_confirmation_notification!
++        end
++        
+         if user.save
+           present user, with: Entities::UserFull
+         else
+           not_found!
+         end
+@@ -83,10 +91,12 @@
+       #   extern_uid                        - External authentication provider UID
+       #   provider                          - External provider
+       #   bio                               - Bio
+       #   admin                             - User is admin - true or false (default)
+       #   can_create_group                  - User can create groups - true or false
++      #   skip_confirmation                 - Skips the confirmation process for the user
++      #
+       # Example Request:
+       #   PUT /users/:id
+       put ":id" do
+         authenticated_as_admin!
+ 
+@@ -94,10 +104,17 @@
+         user = User.find(params[:id])
+         not_found!("User not found") unless user
+ 
+         admin = attrs.delete(:admin)
+         user.admin = admin unless admin.nil?
++	
++        if params[:skip_confirmation]
++          user.skip_confirmation!
++	   user.skip_confirmation_notification!
++	   user.skip_reconfirmation!
++        end
++
+         if user.update_attributes(attrs)
+           present user, with: Entities::UserFull
+         else
+           not_found!
+         end

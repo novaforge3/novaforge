@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+
+
+<chapter version="5.0" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+  <title>Managing the Forge project</title>
+
+	<para>In Novaforge, there are two special spaces: the Forge project and
+		the Forge repository. This chapter describes the purpose of the Forge
+		project and how to manage it.</para>
+
+	<sect1>
+		<title>Purpose of the Forge project</title>
+
+		<para>The purpose of the Forge project is to share information and
+			applications for all forge users. By default, all forge users are
+			members of this project.</para>
+
+		<para>The simplest case of use is sharing of information (good
+			practices, technical wiki) within a company. For example, we could
+			easily consider giving a wiki or a document management application to
+			all forge users.</para>
+	</sect1>
+
+	<sect1>
+		<title>Administrating the Forge project</title>
+
+		<para>From the technical point of view, the forge project is a project
+			just like the others. It can only be administrated by administrators
+			of this project of the forge administrator via the menu <emphasis role="bold"> Project administration/The forge project".</emphasis></para>
+
+		<figure>
+			<title>Administrate the Forge project</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="061-01-ForgeProjectMenu.png"
+						width="300px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+		<para>
+			Apart from its special roles, the forge project is administrated just
+			like any other project. The following roles are available via the menu
+			<emphasis role="bold">"Your memberships"</emphasis> section :
+			<itemizedlist>
+				<listitem>
+					<para>Administrator: forge project administrator</para>
+				</listitem>
+
+				<listitem>
+					<para>Super Administrator: forge administrator (= administrator of
+						all forge projects)</para>
+				</listitem>
+
+				<listitem>
+					<para>Member: forge member</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+
+		<figure>
+			<title>Forge project roles</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="061-02-ForgeProjectRoles.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+		<para />
+
+		<para>Like other projects we can create a application space and add application via the menu <emphasis role="bold">"Your applications"</emphasis></para>
+
+		
+	</sect1>
+</chapter>

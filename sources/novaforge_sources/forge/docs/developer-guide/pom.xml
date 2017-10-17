@@ -1,0 +1,233 @@
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.novaforge.forge.docs</groupId>
+		<artifactId>novaforge-docs</artifactId>
+		<version>3.8.0</version>
+	</parent>
+
+	<artifactId>novaforge-developer-guide</artifactId>
+	<packaging>pom</packaging>
+	<name>NovaForge(tm) :: Docs :: Developer Guide</name>
+	<description>NovaForge(tm) Developer Guide</description>
+
+	<properties>
+		<documentation.name>developer-guide</documentation.name>
+		<documentation.dir>${basedir}/src/main/doc</documentation.dir>
+		<docbook.dir>${project.build.directory}/docbook</docbook.dir>
+		<docbook.src.dir>${docbook.dir}/sources</docbook.src.dir>
+		<docbook.images.dir>${docbook.dir}/resources/images</docbook.images.dir>
+		<docbook.css.dir>${docbook.dir}/resources/css</docbook.css.dir>
+		<docbook.translate.dir>${docbook.dir}/work/translate</docbook.translate.dir>
+		<wikitext.lib>${basedir}/src/main/resources/lib</wikitext.lib>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>textile2docbook</id>
+						<phase>process-sources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<copy todir="${docbook.images.dir}">
+									<fileset dir="${basedir}/src/main/resources/images" />
+								</copy>
+								<copy todir="${docbook.css.dir}">
+									<fileset dir="${basedir}/src/main/resources/css" />
+								</copy>
+                  <!-- Generate documentation for the master translation i.e. en-US -->
+								<taskdef classpathref="maven.plugin.classpath" resource="org/eclipse/mylyn/wikitext/core/util/anttask/tasks.properties" />
+								<loadfile srcfile="${documentation.dir}/en-US/index.txt" property="inputfiles">
+									<filterchain>
+										<tokenfilter>
+											<replacestring from="\n" to="," />
+										</tokenfilter>
+									</filterchain>
+								</loadfile>
+								<concat destfile="${docbook.src.dir}/en-US/${documentation.name}.textile" append="false"
+									fixlastline="yes">
+									<filelist dir="${documentation.dir}/en-US/" files="${inputfiles}" />
+								</concat>
+								<replace file="${docbook.src.dir}/en-US/${documentation.name}.textile">
+									<replacetoken>../../images/</replacetoken>
+									<replacevalue>./images/</replacevalue>
+								</replace>
+                  <!-- Convert the textile document into a docbook document -->
+								<wikitext-to-docbook markupLanguage="Textile">
+									<fileset dir="${docbook.dir}">
+										<include name="**/${documentation.name}.textile" />
+									</fileset>
+								</wikitext-to-docbook>
+                  
+                  <!-- Deals with the translation: fr-FR.
+                       If you wish to add translations, you will have to copy the section below. :( -->
+								<loadfile srcfile="${documentation.dir}/fr-FR/index.txt" property="inputfiles">
+									<filterchain>
+										<tokenfilter>
+											<replacestring from="\n" to="," />
+										</tokenfilter>
+									</filterchain>
+								</loadfile>
+								<concat destfile="${docbook.translate.dir}/fr-FR/${documentation.name}.textile" append="false"
+									fixlastline="yes">
+									<filelist dir="${documentation.dir}/fr-FR/" files="${inputfiles}" />
+								</concat>
+								<replace file="${docbook.translate.dir}/fr-FR/${documentation.name}.textile">
+									<replacetoken>../../images/</replacetoken>
+									<replacevalue>./images/</replacevalue>
+								</replace>
+                  <!-- Convert the textile document into a docbook document -->
+								<wikitext-to-docbook markupLanguage="Textile">
+									<fileset dir="${docbook.dir}">
+										<include name="**/${documentation.name}.textile" />
+									</fileset>
+								</wikitext-to-docbook>
+							</tasks>
+						</configuration>
+					</execution>
+					<execution>
+						<id>clean.docbook</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+                <!--<delete>
+                  <fileset dir="${basedir}/src/main/doc" includes="**/documentation.xml,**/documentation.textile" />
+                </delete>
+              -->
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.eclipse.mylyn.wikitext</groupId>
+						<artifactId>confluence.core</artifactId>
+						<version>1.9.0.20130621-1305</version>
+						<scope>system</scope>
+						<systemPath>${wikitext.lib}/org.eclipse.mylyn.wikitext.confluence.core_1.9.0.20130621-1305.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.mylyn.wikitext</groupId>
+						<artifactId>wikitext.core</artifactId>
+						<version>1.9.0.20130621-1305</version>
+						<scope>system</scope>
+						<systemPath>${wikitext.lib}/org.eclipse.mylyn.wikitext.core_1.9.0.20130621-1305.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.mylyn.wikitext</groupId>
+						<artifactId>mediawiki.core</artifactId>
+						<version>1.9.0.20130621-1305</version>
+						<scope>system</scope>
+						<systemPath>${wikitext.lib}/org.eclipse.mylyn.wikitext.mediawiki.core_1.9.0.20130621-1305.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.mylyn.wikitext</groupId>
+						<artifactId>textile.core</artifactId>
+						<version>1.9.0.20130802-1536</version>
+						<scope>system</scope>
+						<systemPath>${wikitext.lib}/org.eclipse.mylyn.wikitext.textile.core_1.9.0.20130802-1536.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.mylyn.wikitext</groupId>
+						<artifactId>tracwiki.core</artifactId>
+						<version>1.9.0.20130821-1526</version>
+						<scope>system</scope>
+						<systemPath>${wikitext.lib}/org.eclipse.mylyn.wikitext.tracwiki.core_1.9.0.20130821-1526.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.mylyn.wikitext</groupId>
+						<artifactId>twiki.core</artifactId>
+						<version>1.9.0.20130621-1305</version>
+						<scope>system</scope>
+						<systemPath>${wikitext.lib}/org.eclipse.mylyn.wikitext.twiki.core_1.9.0.20130621-1305.jar</systemPath>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.jboss.maven.plugins</groupId>
+				<artifactId>maven-jdocbook-plugin</artifactId>
+				<extensions>true</extensions>
+				<executions>
+					<execution>
+						<id>docbook2x</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>resources</goal>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<masterTranslation>en-US</masterTranslation>
+					<translations>
+						<translation>fr-FR</translation>
+					</translations>
+					<sourceDocumentName>${documentation.name}.xml</sourceDocumentName>
+					<sourceDirectory>${docbook.src.dir}</sourceDirectory>
+					<cssResource>
+						<directory>${docbook.css.dir}</directory>
+					</cssResource>
+					<imageResource>
+						<directory>${docbook.images.dir}</directory>
+					</imageResource>
+					<formats>
+						<format>
+							<formatName>pdf</formatName>
+							<finalName>${documentation.name}.pdf</finalName>
+							<stylesheetResource>file:${basedir}/src/main/resources/xslt/main-pdf.xsl</stylesheetResource>
+						</format>
+						<format>
+							<formatName>html_single</formatName>
+							<finalName>index.html</finalName>
+							<stylesheetResource>file:${basedir}/src/main/resources/xslt/nochunk-html.xsl</stylesheetResource>
+						</format>
+					</formats>
+					<options>
+						<xincludeSupported>true</xincludeSupported>
+						<xmlTransformerType>saxon</xmlTransformerType>
+						<applyStandardInjectionValues>false</applyStandardInjectionValues>
+            <!-- needed for uri-resolvers; can be ommitted if using 'current' uri scheme -->
+            <!--     could also locate the docbook dependency and inspect its version... -->
+						<docbookVersion>1.72.0</docbookVersion>
+					</options>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

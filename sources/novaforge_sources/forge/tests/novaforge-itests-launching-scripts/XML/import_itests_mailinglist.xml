@@ -1,0 +1,98 @@
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<!-- forge datas for mailing list itests -->
+<!-- Author: Marc Blachon -->
+
+<forge>	
+	<users>
+		<userElement login="usertest1-u">
+			<passwd>c1dc19afe59631de1e5f5408d083cc55e9dcdf65</passwd>
+			<lastname>Usertest1</lastname>
+			<firstname>user</firstname>
+			<email>usertest1@bull.net</email>
+		</userElement>
+		<userElement login="usertest2-u">
+			<passwd>c1dc19afe59631de1e5f5408d083cc55e9dcdf65</passwd>
+			<lastname>Usertest2</lastname>
+			<firstname>user</firstname>
+			<email>usertest2@bull.net</email>
+		</userElement>
+
+		<userElement login="usertest14-u">
+			<passwd>c1dc19afe59631de1e5f5408d083cc55e9dcdf65</passwd>
+			<lastname>Usertest14</lastname>
+			<firstname>user</firstname>
+			<email>usertest14@bull.net</email>
+		</userElement>
+		
+		<userElement login="usertest15-u">
+			<passwd>c1dc19afe59631de1e5f5408d083cc55e9dcdf65</passwd>
+			<lastname>Usertest15</lastname>
+			<firstname>user</firstname>
+			<email>usertest15@bull.net</email>
+		</userElement>
+	</users>
+	<groups>
+		<groupElement public="true" id="mlforgegroup1">
+			<description>forge group 1 for mailing list itests</description>
+		</groupElement>
+	</groups>
+	<projects>
+		<projectElement id="projettestmailinglist13">
+			<projectInfo private="false">
+				<name>projettestmailinglist13</name>
+				<description>project for mailing list itests</description>
+				<licenceType>Sans licence</licenceType>
+			</projectInfo>
+			<roles>
+				<roleElement>
+					<name>Administrator</name>
+					<description>descr Administrateur</description>
+				</roleElement>
+				<roleElement>
+					<name>developpeur</name>
+					<description>descr développeur</description>
+				</roleElement>				
+			</roles>
+			<domains>
+				<domainElement>
+					<name>Tools</name>
+					<applications>
+					</applications>
+				</domainElement>
+			</domains>
+			<groups>								
+			</groups>
+			<memberships>
+				<membershipsUsers>
+					<membershipUser login="usertest1-u">
+						<role>developpeur</role>
+					</membershipUser>
+					<membershipUser login="usertest2-u">
+						<role>developpeur</role>
+					</membershipUser>					
+				</membershipsUsers>				
+			</memberships>
+		</projectElement>
+	</projects>
+</forge>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd
+	http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+	<!-- Handlers for Sources and Tests tools  -->
+	<bean id="requirementManagerTestHandler"
+		class="org.novaforge.forge.plugins.requirements.requirementmanager.internal.handlers.RequirementManagerTestHandler">
+		<property name="requirementManagerFunctionalService" ref="requirementManagerFunctionalService" />
+		<property name="requirementFunctionalTestService" ref="requirementFunctionalTestService" />
+		<property name="requirementFactory" ref="requirementFactory" />
+		<property name="requirementManagerService" ref="requirementManagerService" />
+	</bean>
+	<bean id="requirementManagerAnyFileCodeHandler"
+		class="org.novaforge.forge.plugins.requirements.requirementmanager.internal.handlers.RequirementManagerAnyFileCodeHandler">
+		<property name="requirementManagerFunctionalService" ref="requirementManagerFunctionalService" />
+		<property name="requirementCodeService" ref="requirementCodeService" />
+		<property name="requirementConfigurationService" ref="requirementConfigurationService" />
+		<property name="type" value="*" />
+	</bean>
+	<bean id="requirementManagerJavaCodeHandler"
+		class="org.novaforge.forge.plugins.requirements.requirementmanager.internal.handlers.RequirementManagerJavaCodeHandler">
+		<property name="requirementManagerFunctionalService" ref="requirementManagerFunctionalService" />
+		<property name="requirementCodeService" ref="requirementCodeService" />
+		<property name="requirementConfigurationService" ref="requirementConfigurationService" />
+		<property name="type" value="java" />
+	</bean>
+
+	<!-- references from tool requirement -->
+	<reference id="requirementCodeService" interface="org.novaforge.forge.tools.requirements.common.facades.RequirementCodeService" />
+	<reference id="requirementFunctionalTestService"
+		interface="org.novaforge.forge.tools.requirements.common.facades.RequirementFunctionalTestService" />
+	<reference id="requirementFactory" interface="org.novaforge.forge.tools.requirements.common.factories.RequirementFactory" />
+	<reference id="requirementManagerService" interface="org.novaforge.forge.tools.requirements.common.services.RequirementManagerService" />
+	<reference id="requirementOrganizationService"
+		interface="org.novaforge.forge.tools.requirements.common.services.RequirementOrganizationService" />
+
+	<!--  references from core plugins management -->
+	<reference id="webServerConfigurator" interface="org.novaforge.forge.commons.webserver.configuration.services.WebServerConfigurator" />
+	<reference id="normalizeService" interface="org.novaforge.forge.commons.technical.normalize.NormalizeService" />
+	<reference id="requirementConfigurationService"
+		interface="org.novaforge.forge.plugins.requirements.requirementmanager.services.RequirementConfigurationService" />
+	<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/pluginRequirements)" />
+	<reference id="applicationRequestService" interface="org.novaforge.forge.core.plugins.services.ApplicationRequestService" />
+	<reference id="pluginMessageDelegate" interface="org.novaforge.forge.core.plugins.delegates.PluginMessageDelegate" />
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+
+	<bean id="instanceConfigurationDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.InstanceConfigurationDAOImpl">
+		<jpa:context unitname="plugins.requirements" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="rolesMappingDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.RolesMappingDAOImpl">
+		<jpa:context unitname="plugins.requirements" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="toolInstanceDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.ToolInstanceDAOImpl">
+		<jpa:context unitname="plugins.requirements" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="uuidDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.UuidDAOImpl">
+		<jpa:context unitname="plugins.requirements" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+
+	<bean id="requirementManagerFunctionalService"
+		class="org.novaforge.forge.plugins.requirements.requirementmanager.internal.services.RequirementManagerFunctionalServiceImpl">
+
+		<property name="pluginMessageDelegate" ref="pluginMessageDelegate" />
+		<property name="applicationRequestService" ref="applicationRequestService" />
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+	</bean>
+
+	<bean id="requirementRoleMappingService"
+		class="org.novaforge.forge.plugins.requirements.requirementmanager.internal.services.RequirementManagerRoleMappingServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="rolesMappingDAO" ref="rolesMappingDAO" />
+	</bean>
+	<bean id="requirementMembershipService"
+		class="org.novaforge.forge.plugins.requirements.requirementmanager.internal.services.RequirementManagerMembershipServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="pluginRoleMappingService" ref="requirementRoleMappingService" />
+		<property name="requirementOrganizationService" ref="requirementOrganizationService" />
+	</bean>
+	<bean id="requirementProjectService"
+		class="org.novaforge.forge.plugins.requirements.requirementmanager.internal.services.RequirementManagerProjectServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="normalizeService" ref="normalizeService" />
+		<property name="pluginRoleMappingService" ref="requirementRoleMappingService" />
+		<property name="requirementManagerService" ref="requirementManagerService" />
+		<property name="requirementFactory" ref="requirementFactory" />
+		<property name="requirementOrganizationService" ref="requirementOrganizationService" />
+	</bean>
+	<bean id="requirementUserService"
+		class="org.novaforge.forge.plugins.requirements.requirementmanager.internal.services.RequirementManagerUserServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="requirementOrganizationService" ref="requirementOrganizationService" />
+	</bean>
+	<bean id="requirementToolInstanceProvider" class="org.novaforge.forge.plugins.commons.services.DefaultToolInstanceProvider">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="pluginConfigurationService" ref="requirementConfigurationService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+
+	<!--  Configuration for Camel JMS Route -->
+	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
+	<!--  Configuration for Camel JMS Route -->
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<argument ref="jmsConfig" />
+	</bean>
+	<bean id="requirementMembershipRouteBuilder"
+		class="org.novaforge.forge.plugins.requirements.requirementmanager.internal.route.RequirementManagerMembershipRoute">
+		<property name="pluginMembershipService" ref="requirementMembershipService" />
+	</bean>
+	<bean id="requirementProjectRouteBuilder"
+		class="org.novaforge.forge.plugins.requirements.requirementmanager.internal.route.RequirementManagerProjectRoute">
+		<property name="pluginProjectService" ref="requirementProjectService" />
+	</bean>
+	<bean id="requirementRolesMappingRouteBuilder"
+		class="org.novaforge.forge.plugins.requirements.requirementmanager.internal.route.RequirementManagerRolesMappingRoute">
+		<property name="pluginRoleMappingService" ref="requirementRoleMappingService" />
+		<property name="pluginMembershipService" ref="requirementMembershipService" />
+	</bean>
+	<bean id="requirementUserRouteBuilder"
+		class="org.novaforge.forge.plugins.requirements.requirementmanager.internal.route.RequirementManagerUserRoute">
+		<property name="pluginUserService" ref="requirementUserService" />
+	</bean>
+
+	<!-- Route used for tool communication -->
+	<bean id="requirementManagerToolRoute"
+		class="org.novaforge.forge.plugins.requirements.requirementmanager.internal.route.RequirementManagerToolRoute">
+		<property name="requirementConfigurationService" ref="requirementConfigurationService" />
+		<property name="requirementManagerTestHandler" ref="requirementManagerTestHandler" />
+		<property name="requirementManagerCodeHandler">
+			<list>
+				<ref component-id="requirementManagerAnyFileCodeHandler" />
+				<ref component-id="requirementManagerJavaCodeHandler" />
+			</list>
+		</property>
+	</bean>
+
+	<camelContext id="requirementCamelContext" xmlns="http://camel.apache.org/schema/blueprint">
+		<routeBuilder ref="requirementMembershipRouteBuilder" />
+		<routeBuilder ref="requirementProjectRouteBuilder" />
+		<routeBuilder ref="requirementRolesMappingRouteBuilder" />
+		<routeBuilder ref="requirementUserRouteBuilder" />
+		<routeBuilder ref="requirementManagerToolRoute" />
+	</camelContext>
+	<bean id="requirementService"
+		class="org.novaforge.forge.plugins.requirements.requirementmanager.internal.RequirementManagerServiceImpl">
+	   <!-- Camel context -->
+		<property name="camelContext" ref="requirementCamelContext" />
+	   <!-- Service reference -->
+		<argument ref="uuidDAO" />
+		<property name="pluginConfigurationService" ref="requirementConfigurationService" />
+		<property name="pluginRoleMappingService" ref="requirementRoleMappingService" />
+		<property name="pluginUserService" ref="requirementUserService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="toolInstanceProvisioningService" ref="requirementToolInstanceProvider" />
+		<property name="requirementOrganizationService" ref="requirementOrganizationService" />
+		<!-- Configuration -->
+		<property name="type" value="Requirements" />
+		<property name="version" value="${novaforge.version}" />
+	</bean>
+	<bean id="requirementCategoryService"
+		class="org.novaforge.forge.plugins.requirements.requirementmanager.internal.RequirementManagerCategoryServiceImpl" />
+
+	<!-- exposed services -->
+	<service id="requirementServiceRegistration" ref="requirementService"
+		interface="org.novaforge.forge.core.plugins.services.PluginService">
+		<service-properties>
+			<entry key="type" value="Requirements"></entry>
+			<entry key="version" value="${novaforge.version}"></entry>
+		</service-properties>
+	</service>
+	<service ref="instanceConfigurationDAO" interface="org.novaforge.forge.core.plugins.dao.InstanceConfigurationDAO">
+		<service-properties>
+			<entry key="type" value="Requirements"></entry>
+			<entry key="version" value="${novaforge.version}"></entry>
+		</service-properties>
+	</service>
+	<service id="requirementCategoryRegistration" ref="requirementCategoryService" auto-export="interfaces">
+		<service-properties>
+			<entry key="type" value="Requirements"></entry>
+			<entry key="version" value="${novaforge.version}"></entry>
+		</service-properties>
+	</service>
+	<bean id="pluginServiceRegistration" class="org.novaforge.forge.plugins.commons.services.PluginServiceRegistration">
+		<argument ref="blueprintBundleContext" />
+		<argument ref="requirementServiceRegistration" />
+		<argument ref="requirementCategoryRegistration" />
+	</bean>
+	<service ref="requirementManagerFunctionalService"
+		interface="org.novaforge.forge.plugins.requirements.requirementmanager.services.RequirementManagerFunctionalService" />
+
+</blueprint>

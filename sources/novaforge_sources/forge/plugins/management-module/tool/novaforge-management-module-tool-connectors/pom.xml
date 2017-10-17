@@ -1,0 +1,341 @@
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.novaforge.forge.plugins</groupId>
+    <artifactId>novaforge-management-module-tool</artifactId>
+ 	<version>3.8.0</version>
+  </parent>
+  	
+  <artifactId>novaforge-management-module-tool-connectors</artifactId>
+  <name>NovaForge(tm) :: Plugins :: Management Module :: Connectors</name>
+  <description>NovaForge(tm) :: Plugins :: Management Module :: Connectors</description>
+  <packaging>bundle</packaging>
+  
+  <properties>
+  	<perimeterunit.cdo.location>${basedir}/src/main/lib</perimeterunit.cdo.location>
+  </properties>
+
+  <dependencies>     
+  
+	<dependency>
+		<groupId>org.novaforge.forge.plugins</groupId>
+		<artifactId>novaforge-management-module-tool-api</artifactId>
+		<version>${novaforge.version}</version>
+	</dependency>		
+
+
+
+
+		<dependency>
+ 			<groupId>fr.gouv.mindef.safran.graal</groupId>
+			<artifactId>fr.gouv.mindef.safran.graal.extensions</artifactId>
+			<version>1.0.0.201610281245</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/fr.gouv.mindef.safran.graal.extensions_1.0.0.201610281245.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.core</groupId>
+			<artifactId>org.eclipse.core.contenttype</artifactId>
+			<version>3.5.0.v20150421-2214</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.core.contenttype_3.5.0.v20150421-2214.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.core</groupId>
+			<artifactId>org.eclipse.core.expressions</artifactId>
+			<version>3.5.0.v20150421-2214</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.core.expressions_3.5.0.v20150421-2214.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.core</groupId>
+			<artifactId>org.eclipse.core.filesystem</artifactId>
+			<version>1.5.0.v20150725-1910</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.core.filesystem_1.5.0.v20150725-1910.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.core</groupId>
+			<artifactId>org.eclipse.core.jobs</artifactId>
+			<version>3.5.101.v20120113-1953</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.core.jobs_3.5.101.v20120113-1953.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.core</groupId>
+			<artifactId>org.eclipse.core.resources</artifactId>
+			<version>3.10.1.v20150725-1910</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.core.resources_3.10.1.v20150725-1910.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.emf.cdo</groupId>
+			<artifactId>org.eclipse.emf.cdo.common</artifactId>
+			<version>4.4.0.v20151116-1400</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.emf.cdo.common_4.4.0.v20151116-1400.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.emf.cdo.ecore</groupId>
+			<artifactId>org.eclipse.emf.cdo.ecore.retrofit</artifactId>
+			<version>4.2.200.v20150610-1925</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.emf.cdo.ecore.retrofit_4.2.200.v20150610-1925.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.emf.cdo</groupId>
+			<artifactId>org.eclipse.emf.cdo.net4j</artifactId>
+			<version>4.1.300.v20151029-1200</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.emf.cdo.net4j_4.1.300.v20151029-1200.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.emf</groupId>
+			<artifactId>org.eclipse.emf.cdo</artifactId>
+			<version>4.4.0.v20151124-1200</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.emf.cdo_4.4.0.v20151124-1200.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.emf</groupId>
+			<artifactId>org.eclipse.emf.common</artifactId>
+			<version>2.11.1.v20160208-0816</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.emf.common_2.11.1.v20160208-0816.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.emf.ecore</groupId>
+			<artifactId>org.eclipse.emf.ecore.change</artifactId>
+			<version>2.11.0.v20160208-0816</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.emf.ecore.change_2.11.0.v20160208-0816.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.emf.ecore</groupId>
+			<artifactId>org.eclipse.emf.ecore.xmi</artifactId>
+			<version>2.11.1.v20160208-0816</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.emf.ecore.xmi_2.11.1.v20160208-0816.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.emf</groupId>
+			<artifactId>org.eclipse.emf.ecore</artifactId>
+			<version>2.11.2.v20160208-0816</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.emf.ecore_2.11.2.v20160208-0816.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>org.eclipse.equinox.app</artifactId>
+			<version>1.3.300.v20150423-1356</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.equinox.app_1.3.300.v20150423-1356.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>org.eclipse.equinox.common</artifactId>
+			<version>3.7.0.v20150402-1709</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.equinox.common_3.7.0.v20150402-1709.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>org.eclipse.equinox.preferences</artifactId>
+			<version>3.5.300.v20150408-1437</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.equinox.preferences_3.5.300.v20150408-1437.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>org.eclipse.equinox.registry</artifactId>
+			<version>3.6.0.v20150318-1503</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.equinox.registry_3.6.0.v20150318-1503.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.net4j</groupId>
+			<artifactId>org.eclipse.net4j.jvm</artifactId>
+			<version>4.1.300.v20150610-1925</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.net4j.jvm_4.1.300.v20150610-1925.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.net4j</groupId>
+			<artifactId>org.eclipse.net4j.tcp</artifactId>
+			<version>4.1.300.v20150610-1925</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.net4j.tcp_4.1.300.v20150610-1925.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse.net4j</groupId>
+			<artifactId>org.eclipse.net4j.util</artifactId>
+			<version>3.5.0.v20150610-1925</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.net4j.util_3.5.0.v20150610-1925.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse</groupId>
+			<artifactId>org.eclipse.net4j</artifactId>
+			<version>4.4.0.v20150610-1925</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.net4j_4.4.0.v20150610-1925.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.eclipse</groupId>
+			<artifactId>org.eclipse.osgi</artifactId>
+			<version>3.10.102.v20160118-1700</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.eclipse.osgi_3.10.102.v20160118-1700.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.obeonetwork.dsl</groupId>
+			<artifactId>org.obeonetwork.dsl.entity</artifactId>
+			<version>5.0.0.201610281232</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.obeonetwork.dsl.entity_5.0.0.201610281232.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.obeonetwork.dsl.environment</groupId>
+			<artifactId>org.obeonetwork.dsl.environment.common</artifactId>
+			<version>5.0.0.201610281232</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.obeonetwork.dsl.environment.common_5.0.0.201610281232.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.obeonetwork.dsl</groupId>
+			<artifactId>org.obeonetwork.dsl.environment</artifactId>
+			<version>5.0.0.201610281232</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.obeonetwork.dsl.environment_5.0.0.201610281232.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.obeonetwork.dsl</groupId>
+			<artifactId>org.obeonetwork.dsl.soa</artifactId>
+			<version>5.0.0.201610281232</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.obeonetwork.dsl.soa_5.0.0.201610281232.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.obeonetwork.dsl</groupId>
+			<artifactId>org.obeonetwork.dsl.technicalid</artifactId>
+			<version>5.0.0.201610281232</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.obeonetwork.dsl.technicalid_5.0.0.201610281232.jar</systemPath>
+		</dependency>
+		<dependency>
+ 			<groupId>org.obeonetwork</groupId>
+			<artifactId>org.obeonetwork.graal</artifactId>
+			<version>5.0.0.201610281232</version>
+			<scope>system</scope>
+			<systemPath>${perimeterunit.cdo.location}/org.obeonetwork.graal_5.0.0.201610281232.jar</systemPath>
+		</dependency>
+
+
+
+
+       <!--  test -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+		<!-- Quartz API -->
+		<dependency>
+			<groupId>org.opensymphony.quartz</groupId>
+			<artifactId>quartz</artifactId>
+			<!-- TODO verifier la version 1.6.3 qui n'est plus disponible a l heure actuelle -->
+			<version>1.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
+ </dependencies>
+    
+    
+   <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skipTests>true</skipTests>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Embed-Dependency>
+            		 org.obeonetwork.graal,
+            		 org.obeonetwork.dsl.environment,
+            		 org.obeonetwork.dsl.environment.common,
+            		 org.obeonetwork.dsl.entity,
+            		 org.obeonetwork.dsl.soa,
+            		 fr.gouv.mindef.safran.graal.extensions,
+                     org.eclipse.emf.ecore,
+                     org.eclipse.emf.common,
+                     org.eclipse.emf.cdo,
+                     org.eclipse.emf.cdo.common,
+                     org.eclipse.emf.ecore.xmi,
+                     org.eclipse.net4j.util,
+                     equinox.common,
+                     eclipse.osgi,
+                     emf.ecore.change,
+                     core.resources,
+                     equinox.preferences,
+                     core.filesystem,
+                     core.contenttype,
+                     core.expressions,
+                     core.jobs,
+                     equinox.app,
+                     equinox.registry,
+                     org.eclipse.emf.cdo.net4j,
+                     org.eclipse.net4j,
+                     org.eclipse.net4j.tcp,
+                     org.eclipse.net4j.jvm,
+                     org.eclipse.equinox.app,
+                     org.eclipse.equinox.common,
+                     org.eclipse.equinox.preferences,
+                     org.eclipse.equinox.registry,
+                     org.obeonetwork.dsl.technicalid
+                  </Embed-Dependency>
+                  <Import-Package>*;resolution:=optional</Import-Package>
+         <!--          <DynamicImport-Package>*</DynamicImport-Package> -->
+          </instructions>
+        </configuration>
+      </plugin>      
+    </plugins>
+  </build>
+
+</project>

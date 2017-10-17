@@ -1,0 +1,433 @@
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<!-- forge datas for it tests -->
+<!-- Author: Marc Blachon -->
+<!-- Date 14th April 2014 -->
+
+<!-- Constraints . only 1 project . only 1 group affiliated to the project 
+	. only 1 membership per user and group -->
+<forge>	
+	<users>
+		<userElement login="usertest1-u">
+			<passwd>c1dc19afe59631de1e5f5408d083cc55e9dcdf65</passwd>
+			<lastname>Usertest1</lastname>
+			<firstname>user</firstname>
+			<email>usertest1@bull.net</email>
+		</userElement>
+		<userElement login="usertest2-u">
+			<passwd>c1dc19afe59631de1e5f5408d083cc55e9dcdf65</passwd>
+			<lastname>Usertest2</lastname>
+			<firstname>user</firstname>
+			<email>usertest2@bull.net</email>
+		</userElement>
+		<userElement login="usertest3-u">
+			<passwd>c1dc19afe59631de1e5f5408d083cc55e9dcdf65</passwd>
+			<lastname>Usertest3</lastname>
+			<firstname>user</firstname>
+			<email>usertest3@bull.net</email>
+		</userElement>
+		<userElement login="usertest4-u">
+			<passwd>c1dc19afe59631de1e5f5408d083cc55e9dcdf65</passwd>
+			<lastname>Usertest4</lastname>
+			<firstname>user</firstname>
+			<email>usertest4@bull.net</email>
+		</userElement>
+		<userElement login="usertest5-u">
+			<passwd>c1dc19afe59631de1e5f5408d083cc55e9dcdf65</passwd>
+			<lastname>Usertest5</lastname>
+			<firstname>user</firstname>
+			<email>usertest5@bull.net</email>
+		</userElement>
+		<userElement login="usertest6-u">
+			<passwd>c1dc19afe59631de1e5f5408d083cc55e9dcdf65</passwd>
+			<lastname>Usertest6</lastname>
+			<firstname>user</firstname>
+			<email>usertest6@bull.net</email>
+		</userElement>
+		<userElement login="usertest7-u">
+			<passwd>c1dc19afe59631de1e5f5408d083cc55e9dcdf65</passwd>
+			<lastname>Usertest7</lastname>
+			<firstname>user</firstname>
+			<email>usertest7@bull.net</email>
+		</userElement>
+		<userElement login="usertest8-u">
+			<passwd>c1dc19afe59631de1e5f5408d083cc55e9dcdf65</passwd>
+			<lastname>Usertest8</lastname>
+			<firstname>user</firstname>
+			<email>usertest8@bull.net</email>
+		</userElement>
+		<userElement login="usertest9-u">
+			<passwd>c1dc19afe59631de1e5f5408d083cc55e9dcdf65</passwd>
+			<lastname>Usertest9</lastname>
+			<firstname>user</firstname>
+			<email>usertest9@bull.net</email>
+		</userElement>
+		<userElement login="usertest10-u">
+			<passwd>c1dc19afe59631de1e5f5408d083cc55e9dcdf65</passwd>
+			<lastname>Usertest10</lastname>
+			<firstname>user</firstname>
+			<email>usertest10@bull.net</email>
+		</userElement>
+		<userElement login="usertest11-u">
+			<passwd>c1dc19afe59631de1e5f5408d083cc55e9dcdf65</passwd>
+			<lastname>Usertest11</lastname>
+			<firstname>user</firstname>
+			<email>usertest11@bull.net</email>
+		</userElement>
+		<userElement login="usertest12-u">
+			<passwd>c1dc19afe59631de1e5f5408d083cc55e9dcdf65</passwd>
+			<lastname>Usertest12</lastname>
+			<firstname>user</firstname>
+			<email>usertest12@bull.net</email>
+		</userElement>
+		<userElement login="usertest13-u">
+			<passwd>c1dc19afe59631de1e5f5408d083cc55e9dcdf65</passwd>
+			<lastname>Usertest13</lastname>
+			<firstname>user</firstname>
+			<email>usertest13@bull.net</email>
+		</userElement>
+	</users>
+	<groups>
+		<groupElement public="true" id="forgegroup1">
+			<description>forge group 1</description>
+		</groupElement>
+	</groups>
+	<projects>
+		<projectElement id="projettest24">
+			<projectInfo private="false">
+				<name>Projet Test 24</name>
+				<description>la description du Projet Test 24</description>
+				<licenceType>Sans licence</licenceType>
+			</projectInfo>
+			<roles>
+				<roleElement>
+					<name>Administrator</name>
+					<description>descr Administrateur</description>
+				</roleElement>
+				<roleElement>
+					<name>developpeur</name>
+					<description>descr développeur</description>
+				</roleElement>
+				<roleElement>
+					<name>testeur</name>
+					<description>descr testeur</description>
+				</roleElement>
+			</roles>
+			<domains>
+				<domainElement>
+					<name>Tools</name>
+					<applications>
+
+						<applicationElement>
+							<name>mantis appli</name>
+							<category>bugtracker</category>
+							<type>Mantis</type>
+							<rolesMapping>
+								<roleMapped>
+									<forgeId>Administrator</forgeId>
+									<applicationId>Manager</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>developpeur</forgeId>
+									<applicationId>Developer</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>testeur</forgeId>
+									<applicationId>Tester</applicationId>
+								</roleMapped>
+							</rolesMapping>
+						</applicationElement>
+
+						<applicationElement>
+							<name>Integration cont. appli</name>
+							<category>ci</category>
+							<type>Jenkins</type>
+							<rolesMapping>
+								<roleMapped>
+									<forgeId>Administrator</forgeId>
+									<applicationId>administrator</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>developpeur</forgeId>
+									<applicationId>operator</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>testeur</forgeId>
+									<applicationId>viewer</applicationId>
+								</roleMapped>
+							</rolesMapping>
+						</applicationElement>
+
+						<applicationElement>
+							<name>CMS appli</name>
+							<category>cms</category>
+							<type>Spip</type>
+							<rolesMapping>
+								<roleMapped>
+									<forgeId>Administrator</forgeId>
+									<applicationId>Administrator</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>developpeur</forgeId>
+									<applicationId>Author</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>testeur</forgeId>
+									<applicationId>Visitor</applicationId>
+								</roleMapped>
+							</rolesMapping>
+						</applicationElement>
+
+						<applicationElement>
+							<name>GED appli</name>
+							<category>ecm</category>
+							<type>Alfresco</type>
+							<rolesMapping>
+								<roleMapped>
+									<forgeId>Administrator</forgeId>
+									<applicationId>Manager</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>developpeur</forgeId>
+									<applicationId>Consumer</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>testeur</forgeId>
+									<applicationId>Contributor</applicationId>
+								</roleMapped>
+							</rolesMapping>
+						</applicationElement>
+
+						<applicationElement>
+							<name>Forum appli</name>
+							<category>forum</category>
+							<type>PhpBB</type>
+							<rolesMapping>
+								<roleMapped>
+									<forgeId>Administrator</forgeId>
+									<applicationId>Full Access</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>developpeur</forgeId>
+									<applicationId>Standard Access</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>testeur</forgeId>
+									<applicationId>Read Only Access</applicationId>
+								</roleMapped>
+							</rolesMapping>
+						</applicationElement>
+
+						<applicationElement>
+							<name>Sonar appli</name>
+							<category>quality</category>
+							<type>Sonar</type>
+							<rolesMapping>
+								<roleMapped>
+									<forgeId>Administrator</forgeId>
+									<applicationId>Administrators</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>developpeur</forgeId>
+									<applicationId>Code viewers</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>testeur</forgeId>
+									<applicationId>Users</applicationId>
+								</roleMapped>
+							</rolesMapping>
+						</applicationElement>
+
+						<applicationElement>
+							<name>repo Maven appli</name>
+							<category>repositorymanagement</category>
+							<type>Nexus</type>
+							<rolesMapping>
+								<roleMapped>
+									<forgeId>Administrator</forgeId>
+									<applicationId>Administrator</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>developpeur</forgeId>
+									<applicationId>Developper</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>testeur</forgeId>
+									<applicationId>Observer</applicationId>
+								</roleMapped>
+							</rolesMapping>
+						</applicationElement>
+
+						<applicationElement>
+							<name>svn appli</name>
+							<category>scm</category>
+							<type>SVN</type>
+							<rolesMapping>
+								<roleMapped>
+									<forgeId>Administrator</forgeId>
+									<applicationId>writer</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>developpeur</forgeId>
+									<applicationId>writer</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>testeur</forgeId>
+									<applicationId>reader</applicationId>
+								</roleMapped>
+							</rolesMapping>
+						</applicationElement>
+
+						<applicationElement>
+							<name>Survey appli</name>
+							<category>survey</category>
+							<type>Limesurvey</type>
+							<rolesMapping>
+								<roleMapped>
+									<forgeId>Administrator</forgeId>
+									<applicationId>Administrator</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>developpeur</forgeId>
+									<applicationId>Administrator</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>testeur</forgeId>
+									<applicationId>Observer</applicationId>
+								</roleMapped>
+							</rolesMapping>
+						</applicationElement>
+
+						<applicationElement>
+							<name>testlink appli</name>
+							<category>testmanagement</category>
+							<type>Testlink</type>
+							<rolesMapping>
+								<roleMapped>
+									<forgeId>Administrator</forgeId>
+									<applicationId>Administrator</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>developpeur</forgeId>
+									<applicationId>Senior tester</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>testeur</forgeId>
+									<applicationId>Tester</applicationId>
+								</roleMapped>
+							</rolesMapping>
+						</applicationElement>
+
+						<applicationElement>
+							<name>wiki appli</name>
+							<category>wiki</category>
+							<type>Dokuwiki</type>
+							<rolesMapping>
+								<roleMapped>
+									<forgeId>Administrator</forgeId>
+									<applicationId>Administrator</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>developpeur</forgeId>
+									<applicationId>Developper</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>testeur</forgeId>
+									<applicationId>Observer</applicationId>
+								</roleMapped>
+							</rolesMapping>
+						</applicationElement>
+
+						<applicationElement>
+							<name>delivery appli</name>
+							<category>delivery</category>
+							<type>Deliveries</type>
+							<rolesMapping>
+								<roleMapped>
+									<forgeId>Administrator</forgeId>
+									<applicationId>project manager</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>developpeur</forgeId>
+									<applicationId>viewer</applicationId>
+								</roleMapped>
+								<roleMapped>
+									<forgeId>testeur</forgeId>
+									<applicationId>viewer</applicationId>
+								</roleMapped>
+							</rolesMapping>
+						</applicationElement>
+
+					</applications>
+				</domainElement>
+			</domains>
+			<groups>
+				<groupElement public="false" id="grouptest1">
+					<description>group grouptest1</description>
+					<users>
+						<login>usertest11-u</login>
+					</users>
+				</groupElement>				
+			</groups>
+			<memberships>
+				<membershipsUsers>
+					<membershipUser login="usertest1-u">
+						<role>Administrator</role>
+					</membershipUser>
+					<membershipUser login="usertest2-u">
+						<role>developpeur</role>
+					</membershipUser>
+					<membershipUser login="usertest3-u">
+						<role>testeur</role>
+					</membershipUser>
+					<membershipUser login="usertest4-u">
+						<role>Administrator</role>
+					</membershipUser>
+					<membershipUser login="usertest5-u">
+						<role>developpeur</role>
+					</membershipUser>
+					<membershipUser login="usertest6-u">
+						<role>testeur</role>
+					</membershipUser>
+					<membershipUser login="usertest7-u">
+						<role>Administrator</role>
+					</membershipUser>
+					<membershipUser login="usertest8-u">
+						<role>developpeur</role>
+					</membershipUser>
+					<membershipUser login="usertest9-u">
+						<role>testeur</role>
+					</membershipUser>
+					<membershipUser login="usertest10-u">
+						<role>Administrator</role>
+					</membershipUser>
+				</membershipsUsers>
+				<membershipsGroups>
+					<membershipGroup id="grouptest1">
+						<role>developpeur</role>
+					</membershipGroup>					
+				</membershipsGroups>
+			</memberships>
+		</projectElement>
+	</projects>
+</forge>

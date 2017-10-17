@@ -1,0 +1,117 @@
+diff -rNU5 AuthCAS.ini/AuthCAS.php AuthCAS/AuthCAS.php
+--- AuthCAS.ini/AuthCAS.php	2016-02-23 12:01:52.000000000 +0100
++++ AuthCAS/AuthCAS.php	2017-03-17 15:13:22.197234100 +0100
+@@ -164,31 +164,74 @@
+         return $aPluginSettings;
+     }
+ 
+     public function beforeLogin() 
+     {
+-			if (!is_null($this->api->getRequest()->getParam('noAuthCAS')) || ($this->api->getRequest()->getIsPostRequest())) {
++      // GET Request with noAuthCAS or POST Request from Forge plugin
++			if ((!is_null($this->api->getRequest()->getParam('noAuthCAS'))) ||
++          (($this->api->getRequest()->getIsPostRequest()) && ($this->api->getRequest()->getParam('r') == "admin/remotecontrol")))
++      {
+ 				# Local authentication forced through 'noAuthCAS' url parameter
+         $this->getEvent()->set('default', "Authdb");
+-      } else {
++      }
++      // Logout Request from CAS
++      else if ($this->api->getRequest()->getIsPostRequest()) 
++      {
++        # Logout Request from CAS Server
++        $cas_host = $this->get('casAuthServer');
++        $cas_context = $this->get('casAuthUri');
++        $cas_version = $this->get('casVersion');
++        $cas_port = (int) $this->get('casAuthPort');
++        $casValidateUrl = 'https://'.$cas_host.':'.$cas_port.''.$cas_context.'serviceValidate';
++        // import phpCAS lib
++        require_once('CAS/CAS.php');
++        // Initialize phpCAS
++        phpCAS::client($cas_version, $cas_host, $cas_port, $cas_context, true);
++        phpCAS::setServerProxyValidateURL($casValidateUrl);
++        // disable SSL validation of the CAS server
++        phpCAS::setNoCasServerValidation();
++        phpCAS::setSingleSignoutCallback('handlelogoutRequest');
++        phpCAS::handleLogoutRequests(false);
++      } 
++      // Authentication Request to CAS Server 
++      else 
++      {
+         // configure phpCAS
+         $cas_host = $this->get('casAuthServer');
+         $cas_context = $this->get('casAuthUri');
+         $cas_port = (int) $this->get('casAuthPort');
+         $cas_version = $this->get('casVersion');
++        $casValidateUrl = 'https://'.$cas_host.':'.$cas_port.''.$cas_context.'serviceValidate';
+         // import phpCAS lib
+-        $basedir=dirname(__FILE__); 
+-        Yii::setPathOfAlias('myplugin', $basedir);
+-        Yii::import('myplugin.third_party.CAS.CAS',true);
++        require_once('CAS/CAS.php');
+         // Initialize phpCAS
+-        phpCAS::client($cas_version, $cas_host, $cas_port, $cas_context, false);
++        phpCAS::client($cas_version, $cas_host, $cas_port, $cas_context, true);
++        phpCAS::setServerProxyValidateURL($casValidateUrl);
+         // disable SSL validation of the CAS server
+         phpCAS::setNoCasServerValidation();
+         //force CAS authentication
+         phpCAS::forceAuthentication();
+ 
+         $this->setUsername(phpCAS::getUser());
++        // Store CAS ticket ID in current session            
++        Yii::app()->session['ticketID'] = session_id();
++        
++        // Novaforge : get Project from 1rst URL
++        require_once(APPPATH.'config/forge.conf.admin.php');
++        require_once(APPPATH.'extensions/admin/novaforge/novaforge_functions.php');
++        if (isset($conf['forge']['instance']['id'])) 
++        {
++          // Retrieve instance_id value from returnUrl
++          $qry=parse_url(Yii::app()->session['LSWebUser']['__returnUrl'], PHP_URL_QUERY);
++          parse_str($qry, $prm);
++          $instance_id = $prm[$conf['forge']['instance']['id']];
++          $groupId = getLimesurveyGroupId($conf,$instance_id);
++          // Store Group ID in current session
++          Yii::app()->session['groupID'] = $groupId;
++        }
++
++        // Get User's information from DB
+         $oUser = $this->api->getUserByName($this->getUserName());
+         if ($oUser || ((int) $this->get('autoCreate') > 0) ) 
+         {
+             // User authenticated and found. Cas become the authentication system
+             $this->getEvent()->set('default', get_class($this));
+@@ -404,18 +447,27 @@
+         // configure phpCAS
+         $cas_host = $this->get('casAuthServer');
+         $cas_context = $this->get('casAuthUri');
+         $cas_version = $this->get('casVersion');
+         $cas_port = (int) $this->get('casAuthPort');
++        $casValidateUrl = 'https://'.$cas_host.':'.$cas_port.''.$cas_context.'serviceValidate';
+         // import phpCAS lib
+-        $basedir=dirname(__FILE__); 
+-        Yii::setPathOfAlias('myplugin', $basedir);
+-				Yii::import('myplugin.third_party.CAS.CAS',true);
++        require_once('CAS/CAS.php');
+         // Initialize phpCAS
+-        phpCAS::client($cas_version, $cas_host, $cas_port, $cas_context, false);
++        phpCAS::client($cas_version, $cas_host, $cas_port, $cas_context, true);
++        phpCAS::setServerProxyValidateURL($casValidateUrl);
+         // disable SSL validation of the CAS server
+         phpCAS::setNoCasServerValidation();
+         // logout from CAS
+         phpCAS::logout();
+     }
+-
++}
++function handlelogoutRequest($ticket)
++{
++    // Delete DB session which contains ticketID attribute equals to $ticket
++    $db=Yii::app()->db->getSchema()->getDbConnection();
++    $tbl=$db->tablePrefix.'sessions';
++    $ticketID=preg_replace('/[^a-zA-Z0-9\-]/', '', $ticket);
++    $sqlcmd=Yii::app()->getDb()->createCommand("delete from {$tbl} where data like '%ticketID%' and data like '%{$ticketID}%'");
++    // SQL Cmd string = $sqlcmd->getText() 
++    $sqlcmd->execute();
+ }

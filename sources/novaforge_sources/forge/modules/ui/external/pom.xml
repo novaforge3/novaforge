@@ -1,0 +1,144 @@
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.novaforge.forge.modules</groupId>
+		<artifactId>novaforge-ui</artifactId>
+		<version>3.8.0</version>
+	</parent>
+	<artifactId>novaforge-ui-external</artifactId>
+	<packaging>pom</packaging>
+	<name>NovaForge(tm) :: Modules :: UI :: External</name>
+	<description>NovaForge(tm) :: Modules :: UI :: External</description>
+
+	<properties>
+		<alias>${project.build.finalName}</alias>
+		<target>/${project.build.finalName}</target>
+		<module>${project.groupId}.${project.artefactId}</module>
+		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+	</properties>
+
+	<build>
+        <!-- Generate compiled stuff in the folder used for developing mode -->
+		<outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<configuration>
+					<webAppConfig>
+						<contextPath>/${project.name}</contextPath>
+					</webAppConfig>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<configuration>
+					<logLevel>INFO</logLevel>
+					<!-- Production. Dvpt use PRETTY -->
+					<style>OBFUSCATED</style>
+					<runTarget>${target}</runTarget>
+					<hostedWebapp>${webappDirectory}</hostedWebapp>
+					<modules>
+						<module>${module}</module>
+					</modules>
+					<copyWebapp>true</copyWebapp>
+				</configuration>
+				<executions>
+					<execution>
+						<id>gwtcompile</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-dev</artifactId>
+						<version>${gwt.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-user</artifactId>
+						<version>${gwt.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<supportedProjectTypes>
+						<supportedProjectType>war</supportedProjectType>
+					</supportedProjectTypes>
+					<instructions>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-ClassPath>.,WEB-INF/classes</Bundle-ClassPath>
+					    
+						<!-- Add Embed lib -->
+						<Embed-Directory>WEB-INF/lib</Embed-Directory>
+						<Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+
+						<Export-Package>!.*</Export-Package>
+						<Import-Package>*;resolution:=optional,
+							org.apache.shiro.web.servlet;version=${shiro.version},
+							org.apache.shiro.cas;version=${shiro.version},
+							org.jasig.cas.client.session,
+							org.novaforge.forge.core.security.filter;version=${novaforge.version},
+							org.novaforge.forge.core.security.realms;version=${novaforge.version}
+						</Import-Package>
+						<!-- OSGi war spec config -->
+						<Web-ContextPath>${alias}</Web-ContextPath>
+					</instructions>
+				</configuration>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>manifest</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<modules>
+		<module>novaforge-ui-historization</module>
+		<module>novaforge-ui-technical-logs</module>
+	</modules>
+</project>

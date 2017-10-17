@@ -1,0 +1,11 @@
+--- bootstrap.rb.origin	2014-09-24 10:01:19.000000000 +0200
++++ bootstrap.rb	2014-12-16 08:34:41.010532410 +0100
+@@ -16,7 +16,7 @@
+ # limitations under the License.
+ #
+ 
+-bootstrap_status_file = "/var/opt/gitlab/bootstrapped"
++bootstrap_status_file = "@DATAS/bootstrapped"
+ 
+ file bootstrap_status_file do
+   owner "root"

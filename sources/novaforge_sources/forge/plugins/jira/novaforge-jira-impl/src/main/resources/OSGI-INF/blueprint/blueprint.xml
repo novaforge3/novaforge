@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
+					 xmlns:cxf="http://cxf.apache.org/blueprint/core"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd 
+    http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+
+    http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
+
+	<reference id="webServerConfigurator" interface="org.novaforge.forge.commons.webserver.configuration.services.WebServerConfigurator" />
+	<reference id="normalizeService" interface="org.novaforge.forge.commons.technical.normalize.NormalizeService" />
+	<reference id="jiraConfigurationService" interface="org.novaforge.forge.plugins.bugtracker.jira.services.JiraConfigurationService" />
+	<reference id="jiraSoapClient" interface="org.novaforge.forge.plugins.bugtracker.jira.client.JiraSoapClient" />
+	<reference id="jiraRestClient" interface="org.novaforge.forge.plugins.bugtracker.jira.client.JiraRestClient" />
+	<reference id="jiraResourceBuilder" interface="org.novaforge.forge.plugins.bugtracker.jira.datamapper.JiraResourceBuilder" />
+	<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/pluginJira)" />
+	<reference id="httpService" interface="org.osgi.service.http.HttpService" />
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+
+	<bean id="instanceConfigurationDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.InstanceConfigurationDAOImpl">
+		<jpa:context unitname="plugins.jira" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="rolesMappingDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.RolesMappingDAOImpl">
+		<jpa:context unitname="plugins.jira" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="toolInstanceDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.ToolInstanceDAOImpl">
+		<jpa:context unitname="plugins.jira" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="uuidDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.UuidDAOImpl">
+		<jpa:context unitname="plugins.jira" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+
+	<bean id="jiraRoleMappingService" class="org.novaforge.forge.plugins.bugtracker.jira.internal.services.JiraRoleMappingServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="rolesMappingDAO" ref="rolesMappingDAO" />
+	</bean>
+	<bean id="jiraMembershipService" class="org.novaforge.forge.plugins.bugtracker.jira.internal.services.JiraMembershipServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="pluginRoleMappingService" ref="jiraRoleMappingService" />
+		<property name="jiraSoapClient" ref="jiraSoapClient" />
+		<property name="jiraRestClient" ref="jiraRestClient" />
+		<property name="jiraResourceBuilder" ref="jiraResourceBuilder" />
+		<property name="pluginConfigurationService" ref="jiraConfigurationService" />
+	</bean>
+	<bean id="jiraProjectService" class="org.novaforge.forge.plugins.bugtracker.jira.internal.services.JiraProjectServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="normalizeService" ref="normalizeService" />
+		<property name="pluginRoleMappingService" ref="jiraRoleMappingService" />
+		<property name="jiraSoapClient" ref="jiraSoapClient" />
+		<property name="jiraResourceBuilder" ref="jiraResourceBuilder" />
+		<property name="pluginConfigurationService" ref="jiraConfigurationService" />
+	</bean>
+	<bean id="jiraUserService" class="org.novaforge.forge.plugins.bugtracker.jira.internal.services.JiraUserServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="jiraSoapClient" ref="jiraSoapClient" />
+		<property name="jiraResourceBuilder" ref="jiraResourceBuilder" />
+		<property name="pluginConfigurationService" ref="jiraConfigurationService" />
+		<property name="jiraMembershipService" ref="jiraMembershipService" />
+	</bean>
+	<bean id="jiraFunctionalService" class="org.novaforge.forge.plugins.bugtracker.jira.internal.services.JiraFunctionalServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="jiraSoapClient" ref="jiraSoapClient" />
+		<property name="jiraRestClient" ref="jiraRestClient" />
+		<property name="jiraResourceBuilder" ref="jiraResourceBuilder" />
+		<property name="pluginConfigurationService" ref="jiraConfigurationService" />
+	</bean>
+	<bean id="jiraToolInstanceProvider" class="org.novaforge.forge.plugins.bugtracker.jira.internal.services.JiraToolInstanceProvider">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="pluginConfigurationService" ref="jiraConfigurationService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+	<bean id="jiraInstanceService" class="org.novaforge.forge.plugins.commons.services.DefaultPluginInstanceService">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+	</bean>
+	<cxf:bus id="jiraBus" />
+	<jaxws:endpoint implementor="#jiraInstanceService" implementorClass="org.novaforge.forge.core.plugins.services.PluginInstanceService"
+		address="/jiraInstance" />
+		
+	<!--  Configuration for Camel JMS Route -->
+	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
+	<!--  Configuration for Camel JMS Route -->
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<argument ref="jmsConfig" />
+	</bean>
+	<bean id="jiraMembershipRouteBuilder" class="org.novaforge.forge.plugins.bugtracker.jira.internal.route.JiraMembershipRoute">
+		<property name="pluginMembershipService" ref="jiraMembershipService" />
+	</bean>
+	<bean id="jiraProjectRouteBuilder" class="org.novaforge.forge.plugins.bugtracker.jira.internal.route.JiraProjectRoute">
+		<property name="pluginProjectService" ref="jiraProjectService" />
+	</bean>
+	<bean id="jiraRolesMappingRouteBuilder" class="org.novaforge.forge.plugins.bugtracker.jira.internal.route.JiraRolesMappingRoute">
+		<property name="pluginRoleMappingService" ref="jiraRoleMappingService" />
+		<property name="pluginMembershipService" ref="jiraMembershipService" />
+	</bean>
+	<bean id="jiraUserRouteBuilder" class="org.novaforge.forge.plugins.bugtracker.jira.internal.route.JiraUserRoute">
+		<property name="pluginUserService" ref="jiraUserService" />
+	</bean>
+	<bean id="jiraFunctionalRouteBuilder" class="org.novaforge.forge.plugins.bugtracker.jira.internal.route.JiraFunctionalRoute">
+		<property name="jiraFunctionalService" ref="jiraFunctionalService" />
+	</bean>
+	<camelContext id="jiraCamelContext" xmlns="http://camel.apache.org/schema/blueprint">
+		<routeBuilder ref="jiraFunctionalRouteBuilder" />
+		<routeBuilder ref="jiraMembershipRouteBuilder" />
+		<routeBuilder ref="jiraProjectRouteBuilder" />
+		<routeBuilder ref="jiraRolesMappingRouteBuilder" />
+		<routeBuilder ref="jiraUserRouteBuilder" />
+	</camelContext>
+	<bean id="jiraService" class="org.novaforge.forge.plugins.bugtracker.jira.internal.JiraServiceImpl">
+	   <!-- Camel context -->
+		<property name="camelContext" ref="jiraCamelContext" />
+	   <!-- Service reference -->
+		<argument ref="uuidDAO" />
+		<property name="pluginConfigurationService" ref="jiraConfigurationService" />
+		<property name="pluginRoleMappingService" ref="jiraRoleMappingService" />
+		<property name="pluginUserService" ref="jiraUserService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="toolInstanceProvisioningService" ref="jiraToolInstanceProvider" />
+		<!-- Configuration -->
+		<property name="type" value="Jira" />
+		<property name="version" value="${jira.version}" />
+	</bean>
+	
+	<bean id="jiraBrowse" class="org.novaforge.forge.plugins.bugtracker.jira.internal.servlets.JiraBrowse"
+		init-method="init" destroy-method="destroy">
+		<property name="jiraConfigurationService" ref="jiraConfigurationService" />
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="httpService" ref="httpService" />
+	</bean>
+	
+	<bean id="jiraCategoryService" class="org.novaforge.forge.plugins.bugtracker.jira.internal.JiraCategoryServiceImpl">
+		<property name="jiraFunctionalService" ref="jiraFunctionalService" />
+	</bean>
+	<service id="jiraServiceRegistration" ref="jiraService" interface="org.novaforge.forge.core.plugins.services.PluginService">
+		<service-properties>
+			<entry key="type" value="Jira"/>
+			<entry key="version" value="${jira.version}"/>
+		</service-properties>
+	</service>
+	<service id="jiraCategoryRegistration" ref="jiraCategoryService" auto-export="interfaces">
+		<service-properties>
+			<entry key="type" value="Jira"/>
+			<entry key="version" value="${jira.version}"/>
+		</service-properties>
+	</service>
+	<bean id="pluginServiceRegistration" class="org.novaforge.forge.plugins.commons.services.PluginServiceRegistration">
+		<argument ref="blueprintBundleContext" />
+		<argument ref="jiraServiceRegistration" />
+		<argument ref="jiraCategoryRegistration" />
+	</bean>
+</blueprint>

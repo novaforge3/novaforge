@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
+					 xmlns:cxf="http://cxf.apache.org/blueprint/core"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd 
+    http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+
+    http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
+    
+	<reference id="pluginMessageDelegate" interface="org.novaforge.forge.core.plugins.delegates.PluginMessageDelegate" />
+	<reference id="webServerConfigurator" interface="org.novaforge.forge.commons.webserver.configuration.services.WebServerConfigurator" />
+	<reference id="normalizeService" interface="org.novaforge.forge.commons.technical.normalize.NormalizeService" />
+	<reference id="testlinkXmlRpcClient" interface="org.novaforge.forge.plugins.testmanager.testlink.client.TestlinkXmlRpcClient" />
+	<reference id="testlinkResourceBuilder" interface="org.novaforge.forge.plugins.testmanager.testlink.datamapper.TestlinkResourceBuilder" />
+	<reference id="testlinkConfigurationService"
+		interface="org.novaforge.forge.plugins.testmanager.testlink.services.TestlinkConfigurationService" />
+	<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/pluginTestlink)" />
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+
+	<bean id="instanceConfigurationDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.InstanceConfigurationDAOImpl">
+		<jpa:context unitname="plugins.testlink" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="rolesMappingDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.RolesMappingDAOImpl">
+		<jpa:context unitname="plugins.testlink" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="toolInstanceDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.ToolInstanceDAOImpl">
+		<jpa:context unitname="plugins.testlink" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="uuidDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.UuidDAOImpl">
+		<jpa:context unitname="plugins.testlink" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+
+	<bean id="testlinkRoleMappingService"
+		class="org.novaforge.forge.plugins.testmanager.testlink.internal.services.TestlinkRoleMappingServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="rolesMappingDAO" ref="rolesMappingDAO" />
+	</bean>
+	<bean id="testlinkMembershipService"
+		class="org.novaforge.forge.plugins.testmanager.testlink.internal.services.TestlinkMembershipServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="pluginRoleMappingService" ref="testlinkRoleMappingService" />
+		<property name="testlinkXmlRpcClient" ref="testlinkXmlRpcClient" />
+		<property name="testlinkResourceBuilder" ref="testlinkResourceBuilder" />
+		<property name="pluginConfigurationService" ref="testlinkConfigurationService" />
+	</bean>
+	<bean id="testlinkProjectService" class="org.novaforge.forge.plugins.testmanager.testlink.internal.services.TestlinkProjectServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="normalizeService" ref="normalizeService" />
+		<property name="pluginRoleMappingService" ref="testlinkRoleMappingService" />
+		<property name="testlinkXmlRpcClient" ref="testlinkXmlRpcClient" />
+		<property name="testlinkResourceBuilder" ref="testlinkResourceBuilder" />
+		<property name="pluginConfigurationService" ref="testlinkConfigurationService" />
+	</bean>
+	<bean id="testlinkUserService" class="org.novaforge.forge.plugins.testmanager.testlink.internal.services.TestlinkUserServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="testlinkXmlRpcClient" ref="testlinkXmlRpcClient" />
+		<property name="testlinkResourceBuilder" ref="testlinkResourceBuilder" />
+		<property name="pluginConfigurationService" ref="testlinkConfigurationService" />
+	</bean>
+	<bean id="testlinkFunctionalService"
+		class="org.novaforge.forge.plugins.testmanager.testlink.internal.services.TestlinkFunctionalServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="testlinkXmlRpcClient" ref="testlinkXmlRpcClient" />
+		<property name="pluginMessageDelegate" ref="pluginMessageDelegate" />
+		<property name="pluginConfigurationService" ref="testlinkConfigurationService" />
+	</bean>
+	<bean id="testlinkToolInstanceProvider" class="org.novaforge.forge.plugins.commons.services.DefaultToolInstanceProvider">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="pluginConfigurationService" ref="testlinkConfigurationService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+	<bean id="testlinkInstanceService" class="org.novaforge.forge.plugins.commons.services.DefaultPluginInstanceService">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+	</bean>
+	<cxf:bus id="testlinkBus" />
+	<jaxws:endpoint implementor="#testlinkInstanceService" implementorClass="org.novaforge.forge.core.plugins.services.PluginInstanceService" address="/testlinkInstance" />
+	<jaxws:endpoint implementor="#testlinkFunctionalService" implementorClass="org.novaforge.forge.plugins.testmanager.testlink.services.TestlinkFunctionalWebService" address="/testlinkFunctional" />
+		
+	<!--  Configuration for Camel JMS Route -->
+	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
+	<!--  Configuration for Camel JMS Route -->
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<argument ref="jmsConfig" />
+	</bean>
+	<bean id="testlinkFunctionalRouteBuilder" class="org.novaforge.forge.plugins.testmanager.testlink.internal.route.TestlinkFunctionalRoute">
+		<property name="testlinkFunctionalService" ref="testlinkFunctionalService" />
+	</bean>
+	<bean id="testlinkMembershipRouteBuilder" class="org.novaforge.forge.plugins.testmanager.testlink.internal.route.TestlinkMembershipRoute">
+		<property name="pluginMembershipService" ref="testlinkMembershipService" />
+	</bean>
+	<bean id="testlinkProjectRouteBuilder" class="org.novaforge.forge.plugins.testmanager.testlink.internal.route.TestlinkProjectRoute">
+		<property name="pluginProjectService" ref="testlinkProjectService" />
+	</bean>
+	<bean id="testlinkRolesMappingRouteBuilder" class="org.novaforge.forge.plugins.testmanager.testlink.internal.route.TestlinkRolesMappingRoute">
+		<property name="pluginRoleMappingService" ref="testlinkRoleMappingService" />
+		<property name="pluginMembershipService" ref="testlinkMembershipService" />
+	</bean>
+	<bean id="testlinkUserRouteBuilder" class="org.novaforge.forge.plugins.testmanager.testlink.internal.route.TestlinkUserRoute">
+		<property name="pluginUserService" ref="testlinkUserService" />
+	</bean>
+	<camelContext id="testlinkCamelContext" xmlns="http://camel.apache.org/schema/blueprint">
+		<routeBuilder ref="testlinkFunctionalRouteBuilder" />
+		<routeBuilder ref="testlinkMembershipRouteBuilder" />
+		<routeBuilder ref="testlinkProjectRouteBuilder" />
+		<routeBuilder ref="testlinkRolesMappingRouteBuilder" />
+		<routeBuilder ref="testlinkUserRouteBuilder" />
+	</camelContext>
+	<bean id="testlinkService" class="org.novaforge.forge.plugins.testmanager.testlink.internal.TestlinkServiceImpl">
+	   <!-- Camel context -->
+		<property name="camelContext" ref="testlinkCamelContext" />
+	   <!-- Service reference -->
+		<argument ref="uuidDAO" />
+		<property name="pluginConfigurationService" ref="testlinkConfigurationService" />
+		<property name="pluginRoleMappingService" ref="testlinkRoleMappingService" />
+		<property name="pluginUserService" ref="testlinkUserService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="toolInstanceProvisioningService" ref="testlinkToolInstanceProvider" />
+		<!-- Configuration -->
+		<property name="type" value="Testlink" />
+		<property name="version" value="${testlink.version}" />
+	</bean>
+	<bean id="testlinkCategoryService" class="org.novaforge.forge.plugins.testmanager.testlink.internal.TestLinkCategoryServiceImpl">
+		<property name="testlinkFunctionalService" ref="testlinkFunctionalService" />
+	</bean>
+	<service id="testlinkServiceRegistration" ref="testlinkService"
+		interface="org.novaforge.forge.core.plugins.services.PluginService">
+		<service-properties>
+			<entry key="type" value="Testlink"/>
+			<entry key="version" value="${testlink.version}"/>
+		</service-properties>
+	</service>
+	<service id="testlinkCategoryRegistration" ref="testlinkCategoryService" auto-export="interfaces">
+		<service-properties>
+			<entry key="type" value="Testlink"/>
+			<entry key="version" value="${testlink.version}"/>
+		</service-properties>
+	</service>
+	<bean id="pluginServiceRegistration" class="org.novaforge.forge.plugins.commons.services.PluginServiceRegistration">
+		<argument ref="blueprintBundleContext" />
+		<argument ref="testlinkServiceRegistration" />
+		<argument ref="testlinkCategoryRegistration" />
+	</bean>
+</blueprint>

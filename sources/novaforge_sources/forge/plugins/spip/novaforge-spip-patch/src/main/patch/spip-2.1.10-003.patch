@@ -1,0 +1,29 @@
+diff -rNU5 spip-002/ecrire/inc/utils.php spip/ecrire/inc/utils.php
+--- spip-002/ecrire/inc/utils.php	2013-05-16 16:12:31.174026973 +0200
++++ spip/ecrire/inc/utils.php	2013-05-16 16:51:46.964028557 +0200
+@@ -938,21 +938,18 @@
+ 				$GLOBALS['REQUEST_URI'] .= '?'.$_SERVER['QUERY_STRING'];
+ 		}
+ 	}
+ 
+ 	/**
+-	* Quick patch to define the correct scheme and hostname 
++	* Patch to define the correct scheme and hostname 
+ 	* when this function is called by an process on the same server 
+-	* (here located on 127.0.0.1) 
+-		* It's dirty because that use an ENV variable.later, 
+-	* we can use the forge service in order to define 
+-	* the hostname
++	* (here located on 127.0.0.1) 	
+ 	**/
+ 	$host=$_SERVER['HTTP_HOST']; 
+-	if ($host == "127.0.0.1" AND getenv("HOSTNAMEFORGE")) 
++	if ($host == "127.0.0.1" AND gethostname()) 
+ 	{ 
+-		$host = getenv("HOSTNAMEFORGE");
++		$host = gethostname();
+ 		$http = 'https';
+ 	}	
+ 
+ 	$url[$profondeur] = url_de_($http,$host,$GLOBALS['REQUEST_URI'],$profondeur);
+ 	return $url[$profondeur];

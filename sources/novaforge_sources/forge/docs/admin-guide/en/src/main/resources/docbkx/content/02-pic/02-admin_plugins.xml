@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<chapter version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+	<title>Continuous Integration Platform (CIP)</title>
+	<sect1>
+		<title>Manage provision of CIP applications</title>
+		<para>CIP applications (Sonar and Jenkins) are partitioned by project 
+		and limited to one Sonar application and one Jenkins application by project.</para>
+
+		<para>To provide CIP applications for each project, you have to provide the forge with the instances of the needed tools.</para>
+
+		<para>When a CIP application is created, if there is an available instance, the application is automatically created.
+			If there is no available instance, a CIP application request is sent to the forge administrator. (Not showed to the user who request a CIP application)
+		</para>
+	</sect1>
+	<sect1>
+		<title>Plugins instances administration</title>
+		<para>In the plugins instances administration, forge administrator can see the instances list, create, update or delete an instance.
+			He can also assign an instance to an application request.
+		</para>
+		<figure>
+			<title>Plugins instances administration menu</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="admin_plugins.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+		<sect2>
+			<title>See the plugin instances</title>
+			<para>
+				By clicking on icon
+				<emphasis> "Manage plugin instances"</emphasis>
+				in Jenkins row, we get the Jenkins plugin instances list</para>
+			<figure>
+				<title>Jenkins plugin instances administration</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="admin_jenkins.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</sect2>
+		<sect2>
+			<title>Create an instance</title>
+			<para>An alert tell administrator that he have to create the same instance for plugin Sonar (if not already done).
+			 Administrator have to define manually the Jenkins and Sonar instances, for the same virtual machine, because the two instances have to be installed on the same VM. "same instance"
+				mean that the two plugin instances must have the same host in their "base URL".</para>
+			<para>When creating an instance, the association to an application request can be automatical or manual by giving the project name who made the request.
+			If the assignation is automatical, it's the latest request that'll be processed.</para>
+			<figure>
+				<title>Create a plugin instance</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="create_instance.png"
+							width="150px" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+			<para>Instance properties are : </para>
+			<itemizedlist>
+				<listitem>
+					<para>
+						<emphasis>Name</emphasis>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis>Description</emphasis>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis>Alias</emphasis>
+						: alias of instance must start with /
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis>Base URL</emphasis>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis>Status</emphasis>
+						: Available or Busy (Calculated in function of occupation and of property
+						<db:emphasis>Shareable</db:emphasis>
+						)
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis>Shareable</emphasis>
+						: Define if the instance can host several application, or only one.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</sect2>
+
+
+		<sect2>
+			<title>Update an instance</title>
+			<figure>
+				<title>Update a plugin instance</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="edit_instance.png"
+							width="150px" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>
+				All properties can be updated except the 
+				<emphasis>Shareable</emphasis> property
+				if instance already host several applications.
+			</para>
+		</sect2>
+
+		<sect2>
+			<title>Delete an instance</title>
+			<figure>
+				<title>Delete a plugin instance</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="remove_instance.png"
+							width="500px" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+			<para>
+				Only
+				<db:emphasis>Available</db:emphasis>
+				instances can be deleted.
+			</para>
+		</sect2>
+
+		<sect2>
+			<title>Instance availability remark</title>
+			<para>
+				<emphasis>Be careful !!!</emphasis>
+				If a project create a Jenkins application, but no Sonar application, The Sonar instance is define as 
+				<db:emphasis>Available</db:emphasis>, but actually, this instance is available only for a Sonar application of this project.
+			</para>
+		</sect2>
+
+	</sect1>
+	<sect1>
+		<title>Application requests administration</title>
+		<sect2>
+			<title>Visualize plugin application requests</title>
+			<para>Administrator can see the requests list for a Jenkins or Sonar application. He can assign an instance to a request or delete a request.</para>
+			<para>For a request, the project name, the user who made the request and the date of the request are shown to the Administrator</para>
+			<figure>
+				<title>Visualize requests</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="admin_requests.png"
+							width="500px" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</sect2>
+
+		<sect2>
+			<title>Assign a request to an instance</title>
+			<para>Administrateur can assign a request to an instance, from the requests list. This correspond to a manual assign in the instance creation view.</para>
+		</sect2>
+		<figure>
+			<title>Assign a request to an instanc</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="link_request.png" width="400px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+	</sect1>  
+	
+	<sect1>
+		<title>Remarks</title>
+		<para>Applications and instances datas are stored in plugins database (plugin_jenkins and
+			plugin_sonar). </para>
+		<para>Applications are stored in database table "plugin_instance".
+			Instances are stored in database table "plugin_tool".
+		</para>
+		<para>
+			This is a simple database request to find which project use an application instance with alias property ALIAS_PARAM :
+			<programlisting language="sql">mysql> 
+				SELECT forge_project_id from plugin_instance inst, plugin_tool tool 
+				WHERE inst.tool_instance_id = tool.id 
+				AND tool.alias = ALIAS_PARAM;
+			</programlisting>
+		</para>
+	</sect1>
+</chapter>

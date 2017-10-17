@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<chapter version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+	<title>Activer ou désactiver la génération des identifiants lors de la création d'un utilisateur</title>
+
+	<sect1>
+		<title>Configuration à appliquer via SSH</title>
+		<para>Pour configurer la génération des identifiants utilisateurs se connecter en SSH sur la machine où est
+			hebergé le portail, et procéder comme suit :
+		</para>
+		<para>Arrêter le serveur karaf : </para>
+		<programlisting language="shell">
+			# $NOVA_HOME/bin/karaf stop
+		</programlisting>
+
+		<para>Valider que le serveur est bien arrêté avec la commande suivante, elle doit retourner 0 au bout d'un
+			certain temps :
+		</para>
+		<programlisting language="shell">
+			# ps aux | grep karaf | grep -v grep | wc -l
+		</programlisting>
+		<para>
+			Modifier la valeur de la propriété
+			<emphasis role="bold">forgeLoginGenerated</emphasis>
+			dans le fichier
+			<filename class="directory">$NOVA_HOME/engines/karaf/engines/karaf/nf-conf/forge/core.configuration.cfg
+			</filename>
+			. Mettre la valeur à
+			<emphasis role="bold">true</emphasis>
+			pour activer la génération ou à
+			<emphasis role="bold">false</emphasis>
+			pour la désactiver.
+		</para>
+		<para>Redémarer le serveur karaf : </para>
+		<programlisting language="shell">
+			# $NOVA_HOME/bin/karaf start
+		</programlisting>
+	</sect1>
+	<sect1>
+		<title>Mettre à jour la configuration via IHM</title>
+		<para>Pour mettre à jour la configuration pour la génération des identifiants utilisateurs se connecter au
+			portail en tant que
+			super-administrator, et procéder comme suit :
+		</para>
+		<itemizedlist>
+			<listitem>
+				<para>Accéder à l'écran d'administration des utilisateurs</para>
+			</listitem>
+			<listitem>
+				<para>Accéder au menu de configuration des règles de sécurités</para>
+			</listitem>
+			<listitem>
+				<para>Activer ou désactiver la génération à l'aide de la case à cocher "Activer la génération des
+					identifiants" (Voir copie d'écran ci-dessous)
+				</para>
+			</listitem>
+		</itemizedlist>
+
+		<figure>
+			<title>Activer ou désactiver la génération des identifiants</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="generate_logins.png" width="400px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+	</sect1>
+</chapter>

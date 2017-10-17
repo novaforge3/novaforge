@@ -1,0 +1,384 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+.tabcontent .v-portal-layout {
+	text-align: center;
+}
+
+.tabcontent .portal-layout-spacing {
+	height: 10px;
+}
+
+.tabcontent .v-portal-layout-no-spacing .portal-layout-spacing {
+	height: 0;
+}
+
+.tabcontent .v-portlet-slot {
+	width: 100%;
+	overflow: hidden;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px
+		rgba(0, 0, 0, 0.07);
+	-moz-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px
+		rgba(0, 0, 0, 0.07);
+	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.14), 0 0 0 1px rgba(0, 0, 0, 0.07);
+}
+
+.tabcontent .v-portlet-draggable {
+	border-radius: 4px;
+}
+
+.dragdrop-movable-panel .v-portlet>.v-portlet-content,.tabcontent .v-portlet .v-portlet-content
+	{
+	overflow: hidden;
+	visibility: visible;
+	width: 100%;
+	position: absolute;
+	top: 18px;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	border: none !important;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	background: #FFF;
+	padding: 10px;
+}
+
+.tabcontent .v-csslayout-v-portlet-content {
+	top: 41px !important;
+	padding: 0px !important;
+}
+
+.tabcontent .v-portlet.collapsed .v-portlet-content {
+	visibility: hidden;
+}
+
+.tabcontent .v-portlet {
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.dragdrop-movable-panel .v-portlet>.v-portlet-header,.tabcontent .v-portlet>.v-portlet-header
+	{
+	overflow: hidden !important;
+	height: 41px !important;
+	background: #FFF;
+	background-image: none !important;
+}
+
+.dragdrop-movable-panel .v-portlet>.v-portlet-header .v-captiontext,.tabcontent .v-portlet>.v-portlet-header .v-captiontext,.tabcontent .v-portletwrap-header-captiontext
+	{
+	text-align: left !important;
+	font-weight: 600 !important;
+	font-size: 16px !important;
+	line-height: 38px !important;
+	color: #83B257 !important;
+	white-space: nowrap !important;
+	text-overflow: ellipsis !important;
+	-ms-text-overflow: ellipsis !important;
+	text-transform: uppercase !important;
+	text-shadow: none !important;
+}
+
+.tabcontent .v-portletwrap-header-caption {
+	overflow: hidden;
+	padding-left: 4px;
+}
+
+.dragdrop-movable-panel .v-portlet>.v-portlet-header .v-caption-container,.tabcontent .v-portlet>.v-portlet-header .v-caption-container
+	{
+	float: left !important;
+	overflow: hidden !important;
+	padding-top: 1px !important;
+	padding-bottom: 2px !important;
+	padding-left: 4px !important;
+	height: 41px !important;
+	text-align: left !important;
+	-webkit-box-sizing: border-box !important;
+	-moz-box-sizing: border-box !important;
+	box-sizing: border-box !important;
+}
+
+.tabcontent .v-portlet-draggable:hover {
+	cursor: move;
+}
+
+.tabcontent .v-portlet>.v-portlet-header-button:hover {
+	cursor: pointer;
+}
+
+.tabcontent .v-portlet-draggable .v-caption:hover {
+	cursor: move;
+}
+
+.tabcontent .dragdrop-movable-panel {
+	overflow: hidden !important;
+	background: transparent;
+}
+
+.tabcontent .v-portlet-footer {
+	height: 15px;
+	display: block;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background-color: white;
+	background-repeat: repeat-x;
+	height: 15px;
+}
+
+.tabcontent .v-portlet-undefined-height .v-portlet-footer {
+	position: relative;
+}
+
+.tabcontent .v-portlet-resizable .v-portlet-content {
+	bottom: 15px;
+}
+
+.tabcontent .v-portlet .v-portlet-header-widget {
+	
+}
+
+.tabcontent .v-portlet-slot {
+	width: 100%;
+}
+
+.tabcontent .dragdrop-dropTarget-v-portal-layout {
+	min-height: 40px;
+}
+
+.tabcontent .v-portlet-draggable:hover {
+	cursor: move;
+}
+
+.tabcontent .v-portlet .v-portlet-header .v-portlet-header-widget-slot .v-icon
+	{
+	height: 14px;
+	width: 14px;
+	padding-top: 1px;
+	cursor: default;
+}
+
+.tabcontent .v-portlet .v-portlet-header .v-caption-container .v-icon,.tabcontent .v-portlet .v-portlet-header .v-portletwrap-header-caption .v-portletwrap-header-captionicon
+	{
+	float: left;
+	height: 25px;
+	width: 25px;
+}
+
+.tabcontent .v-portlet .v-portlet-header .v-portletwrap-header-caption .v-portletwrap-header-captionicon
+	{
+	margin-top: 6px;
+}
+
+.tabcontent .dragdrop-movable-panel {
+	opacity: 0.5;
+	filter: alpha(opacity =     50);
+	z-index: 20000;
+}
+
+.tabcontent .v-portallayout-spacing {
+	width: 8px;
+}
+
+.tabcontent .v-portallayout-positioner {
+	border: 2px dashed #83B257;
+}
+
+.tabcontent .v-portlet .v-portlet-header-button {
+	width: 16px;
+	height: 16px;
+	border: none;
+}
+
+.tabcontent .v-portlet .v-portlet-header-toolbar {
+	display: inline-block;
+}
+
+.tabcontent .v-portlet .v-portlet-header-buttonbar {
+	float: right;
+	margin-top: 12px;
+	margin-bottom: 2px;
+	margin-right: 4px;
+}
+
+.tabcontent .v-portlet .v-portletwrap-header-buttonback {
+	width: 30px;
+	height: 30px;
+	background: transparent;
+	border: none;
+	margin: 0;
+	position: relative;
+	margin-right: 4px;
+	background-size: 30px 30px;
+	background-image:
+		url(/portal/VAADIN/themes/novaforge/img/icons/eldorado/go-previous-grey.png);
+}
+
+.tabcontent .v-portlet .v-portletwrap-header-buttonback:hover {
+	background-image:
+		url(/portal/VAADIN/themes/novaforge/img/icons/eldorado/go-previous-green.png);
+	cursor: pointer;
+}
+
+.tabcontent .v-portlet .v-portletwrap-header-buttonback:focus {
+		outline: none;
+}
+
+
+.tabcontent .v-portlet .v-portlet-header-widget-slot {
+	height: 100%;
+	margin-top: 10px;
+	position: absolute;
+	text-align: right;
+}
+
+.tabcontent .v-portlet .v-portlet-header-widget-slot>.v-widget {
+	position: absolute;
+	right: 0;
+}
+
+.tabcontent .v-portlet .v-portlet-header .v-caption {
+	padding-left: 7px;
+	height: 100%;
+	float: left;
+}
+
+.tabcontent .v-portlet.collapsed .v-portlet-footer {
+	display: none;
+}
+
+/*MARGINS*/
+.tabcontent .v-portallayout-margin-top {
+	padding-top: 12px;
+}
+
+.tabcontent .v-portallayout-margin-bottom {
+	padding-bottom: 12px;
+}
+
+.tabcontent .v-portallayout-margin-left {
+	padding-left: 12px;
+}
+
+.tabcontent .v-portallayout-margin-right {
+	padding-right: 12px;
+}
+
+.tabcontent .v-portlet-resizable .v-portlet-resize-drag {
+	z-index: 0 !important;
+}
+
+.tabcontent .v-portlet .v-portlet-header {
+	background: #FFF;
+	border-bottom: 1px solid #EEE;
+}
+
+.dragdrop-movable-panel .v-portlet .v-portlet-header-button-close,.tabcontent .v-portlet .v-portlet-header-button-close {
+	background-size: 16px 16px;
+	background: transparent url(close.png);
+	cursor: pointer;
+}
+
+.tabcontent .v-portlet .v-portlet-header-button-close:hover {
+	background: transparent url(close-hover.png);
+	cursor: pointer;
+}
+
+.tabcontent .v-portlet .v-portlet-header-button-close:active {
+	background: transparent url(close-pressed.png);
+	cursor: pointer;
+}
+
+.tabcontent .v-portlet .v-portlet-header-button-close:focus {
+	outline: 0 !important;
+}
+
+.dragdrop-movable-panel .v-portlet .v-portlet-header-button-collapse,.tabcontent .v-portlet .v-portlet-header-button-collapse {
+	background-size: 16px 16px;
+	background: transparent url(collapse.png);
+	cursor: pointer;
+}
+
+.tabcontent .v-portlet .v-portlet-header-button-collapse:hover {
+	background: transparent url(collapse-hover.png);
+	cursor: pointer;
+}
+
+.tabcontent .v-portlet .v-portlet-header-button-collapse:active {
+	background: transparent url(collapse-pressed.png);
+	cursor: pointer;
+}
+
+.tabcontent .v-portlet .v-portlet-header-button-collapse:focus {
+	outline: 0 !important;
+}
+
+.dragdrop-movable-panel .v-portlet .v-portlet-header-button-expand,.tabcontent .v-portlet .v-portlet-header-button-expand {
+	background-size: 16px 16px;
+	background: transparent url(expand.png);
+	cursor: pointer;
+}
+
+.tabcontent .v-portlet .v-portlet-header-button-expand:hover {
+	background: transparent url(expand-hover.png);
+	cursor: pointer;
+}
+
+.tabcontent .v-portlet .v-portlet-header-button-expand:active {
+	background: transparent url(expand-pressed.png);
+	cursor: pointer;
+}
+
+.tabcontent .v-portlet .v-portlet-header-button-expand:focus {
+	outline: 0 !important;
+}
+
+.tabcontent .v-portlet-resizable .v-portlet-resize-drag {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 15px;
+	height: 15px;
+	cursor: se-resize;
+	background: transparent;
+	background-image: url(resize.png);
+}
+
+.tabcontent .v-portlet-resizable .v-portlet-footer {
+	background: transparent url(footer-bg.png);
+}
+

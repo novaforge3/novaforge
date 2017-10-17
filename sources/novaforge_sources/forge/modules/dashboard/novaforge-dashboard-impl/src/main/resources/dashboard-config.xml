@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<dashboard-config>
+	<layouts>
+		<layout key="one_horizontal" row="1" column="1">
+			<area id="1">
+				<top-left row="1" column="1" />
+				<bottom-right row="1" column="1" />
+			</area>
+		</layout>
+		<layout key="two_horizontal" row="1" column="2">
+			<area id="1">
+				<top-left row="1" column="1" />
+				<bottom-right row="1" column="1" />
+			</area>
+			<area id="2">
+				<top-left row="1" column="2" />
+				<bottom-right row="1" column="2" />
+			</area>
+		</layout>
+		<layout key="two_vertical" row="2" column="1">
+			<area id="1">
+				<top-left row="1" column="1" />
+				<bottom-right row="1" column="1" />
+			</area>
+			<area id="2">
+				<top-left row="2" column="1" />
+				<bottom-right row="2" column="1" />
+			</area>
+		</layout>
+		<layout key="three_horizontal" row="1" column="3">
+			<area id="1">
+				<top-left row="1" column="1" />
+				<bottom-right row="1" column="1" />
+			</area>
+			<area id="2">
+				<top-left row="1" column="2" />
+				<bottom-right row="1" column="2" />
+			</area>
+			<area id="3">
+				<top-left row="1" column="3" />
+				<bottom-right row="1" column="3" />
+			</area>
+		</layout>
+		<layout key="three_vertical" row="3" column="1">
+			<area id="1">
+				<top-left row="1" column="1" />
+				<bottom-right row="1" column="1" />
+			</area>
+			<area id="2">
+				<top-left row="2" column="1" />
+				<bottom-right row="2" column="1" />
+			</area>
+			<area id="3">
+				<top-left row="3" column="1" />
+				<bottom-right row="3" column="1" />
+			</area>
+		</layout>
+		<layout key="one_vertical_two_vertical" row="2" column="2">
+			<area id="1">
+				<top-left row="1" column="1" />
+				<bottom-right row="2" column="1" />
+			</area>
+			<area id="2">
+				<top-left row="1" column="2" />
+				<bottom-right row="1" column="2" />
+			</area>
+			<area id="3">
+				<top-left row="2" column="2" />
+				<bottom-right row="2" column="2" />
+			</area>
+		</layout>
+		<layout key="two_vertical_one_vertical" row="2" column="2">
+			<area id="1">
+				<top-left row="1" column="1" />
+				<bottom-right row="1" column="1" />
+			</area>
+			<area id="2">
+				<top-left row="2" column="1" />
+				<bottom-right row="2" column="1" />
+			</area>
+			<area id="3">
+				<top-left row="1" column="2" />
+				<bottom-right row="2" column="2" />
+			</area>
+		</layout>
+		<layout key="two_horizontal_one_horizontal" row="2" column="2">
+			<area id="1">
+				<top-left row="1" column="1" />
+				<bottom-right row="1" column="1" />
+			</area>
+			<area id="2">
+				<top-left row="1" column="2" />
+				<bottom-right row="1" column="2" />
+			</area>
+			<area id="3">
+				<top-left row="2" column="1" />
+				<bottom-right row="2" column="2" />
+			</area>
+		</layout>
+		<layout key="one_horizontal_two_horizontal" row="2" column="2">
+			<area id="1">
+				<top-left row="1" column="1" />
+				<bottom-right row="1" column="2" />
+			</area>
+			<area id="2">
+				<top-left row="2" column="1" />
+				<bottom-right row="2" column="1" />
+			</area>
+			<area id="3">
+				<top-left row="2" column="2" />
+				<bottom-right row="2" column="2" />
+			</area>
+		</layout>
+	</layouts>
+</dashboard-config>

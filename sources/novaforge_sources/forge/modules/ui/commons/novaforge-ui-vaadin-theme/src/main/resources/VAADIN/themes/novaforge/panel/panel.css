@@ -1,0 +1,83 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+.v-panel-caption,.v-webkit .v-panel-caption,.v-gecko .v-panel-caption,.v-ie9 .v-panel-caption
+	{
+	padding-bottom: 2px;
+	border: none;
+	line-height: 16px; /* accommodate minimum icon size */
+	color: #000;
+}
+
+.v-panel-content,.v-webkit .v-panel-content,.v-gecko .v-panel-content,.v-ie9 .v-panel-content,.v-ie10 .v-panel-content
+	{
+	background: none;
+	border: 1px solid black;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+}
+
+.v-panel-content>div {
+	background: none;
+	min-height: 100%;
+}
+
+.v-ie6 .v-panel-content {
+	background: none;
+}
+
+.v-panel-deco,.v-webkit .v-panel-deco,.v-gecko .v-panel-deco,.v-ie9 .v-panel-deco
+	{
+	border: none;
+	background: none;
+}
+
+.v-panel-caption .v-errorindicator {
+	height: 16px;
+	width: 13px;
+	background: url(../common/icons/error.png) no-repeat 50%;
+	display: inline;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+/* Light style */
+.v-panel-light .v-panel-caption-light,.v-panel-light .v-panel-nocaption-light
+	{
+	border: none;
+}
+
+.v-panel-light .v-panel-content-light {
+	border: none;
+	background: transparent;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
+}
+
+.v-panel-light .v-panel-deco-light {
+	height: 0;
+	border: none;
+}

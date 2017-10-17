@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
+					 xmlns:cxf="http://cxf.apache.org/blueprint/core"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd 
+
+    http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd
+    http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+	
+	
+	<!-- External references required -->
+	<reference id="cxfConfigService" interface="org.novaforge.forge.commons.technical.cxf.CxfConfigService" />
+	<reference id="webServerConfigurator" interface="org.novaforge.forge.commons.webserver.configuration.services.WebServerConfigurator" />
+	<reference id="normalizeService" interface="org.novaforge.forge.commons.technical.normalize.NormalizeService" />
+	<reference id="dokuwikiXmlRpcClient" interface="org.novaforge.forge.plugins.wiki.dokuwiki.client.DokuwikiXmlRpcClient" />
+	<reference id="dokuwikiResourceBuilder" interface="org.novaforge.forge.plugins.wiki.dokuwiki.datamapper.DokuwikiResourceBuilder" />
+	<reference id="dokuwikiConfigurationService" interface="org.novaforge.forge.plugins.wiki.dokuwiki.services.DokuwikiConfigurationService" />
+	<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/pluginDokuwiki)" />
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+		
+	<!-- DAO"s -->
+	<bean id="instanceConfigurationDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.InstanceConfigurationDAOImpl">
+		<jpa:context unitname="plugins.dokuwiki" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="rolesMappingDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.RolesMappingDAOImpl">
+		<jpa:context unitname="plugins.dokuwiki" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="toolInstanceDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.ToolInstanceDAOImpl">
+		<jpa:context unitname="plugins.dokuwiki" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="uuidDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.UuidDAOImpl">
+		<jpa:context unitname="plugins.dokuwiki" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	
+	<!-- Services -->
+	<bean id="dokuwikiRoleMappingService" class="org.novaforge.forge.plugins.wiki.dokuwiki.internal.services.DokuwikiRoleMappingServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="rolesMappingDAO" ref="rolesMappingDAO" />
+	</bean>
+	<bean id="dokuwikiMembershipService" class="org.novaforge.forge.plugins.wiki.dokuwiki.internal.services.DokuwikiMembershipServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="pluginRoleMappingService" ref="dokuwikiRoleMappingService" />
+		<property name="dokuwikiXmlRpcClient" ref="dokuwikiXmlRpcClient" />
+		<property name="dokuwikiResourceBuilder" ref="dokuwikiResourceBuilder" />
+		<property name="dokuwikiConfigurationService" ref="dokuwikiConfigurationService" />
+	</bean>
+	<bean id="dokuwikiProjectService" class="org.novaforge.forge.plugins.wiki.dokuwiki.internal.services.DokuwikiProjectServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="normalizeService" ref="normalizeService" />
+		<property name="pluginRoleMappingService" ref="dokuwikiRoleMappingService" />
+		<property name="dokuwikiXmlRpcClient" ref="dokuwikiXmlRpcClient" />
+		<property name="dokuwikiResourceBuilder" ref="dokuwikiResourceBuilder" />
+		<property name="dokuwikiConfigurationService" ref="dokuwikiConfigurationService" />
+	</bean>
+	<bean id="dokuwikiUserService" class="org.novaforge.forge.plugins.wiki.dokuwiki.internal.services.DokuwikiUserServiceImpl">
+		<property name="dokuwikiXmlRpcClient" ref="dokuwikiXmlRpcClient" />
+		<property name="dokuwikiResourceBuilder" ref="dokuwikiResourceBuilder" />
+		<property name="dokuwikiConfigurationService" ref="dokuwikiConfigurationService" />
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+	</bean>
+	<bean id="dokuwikiDataService" class="org.novaforge.forge.plugins.wiki.dokuwiki.internal.services.DokuwikiDataServiceImpl">
+		<property name="dokuwikiFunctionalServiceFactory" ref="dokuwikiFunctionalServiceFactory" />
+	</bean>
+	<bean id="dokuwikiFunctionalServiceFactory" class="org.novaforge.forge.plugins.wiki.dokuwiki.internal.services.DokuwikiFunctionalServiceFactory">
+		<property name="dokuwikiPageFunctionalService" ref="dokuwikiPageFunctionalService" />
+		<property name="dokuwikiAttachmentFunctionalService" ref="dokuwikiAttachmentFunctionalService" />
+	</bean>
+	<bean id="dokuwikiToolInstanceProvider" class="org.novaforge.forge.plugins.commons.services.DefaultToolInstanceProvider">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="pluginConfigurationService" ref="dokuwikiConfigurationService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+	<bean id="dokuwikiInstanceService" class="org.novaforge.forge.plugins.wiki.dokuwiki.internal.DokuwikiInstanceImpl">
+		<property name="dokuwikiResourceBuilder" ref="dokuwikiResourceBuilder" />
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+	</bean>
+	<cxf:bus id="dokuwikiBus" />
+	<jaxws:endpoint implementor="#dokuwikiInstanceService" implementorClass="org.novaforge.forge.core.plugins.services.PluginInstanceService"
+		address="/dokuwikiInstance" />
+	<jaxws:endpoint implementor="#dokuwikiDataService" implementorClass="org.novaforge.forge.core.plugins.services.PluginDataService"
+		address="/DokuwikiPropagationService" />
+
+
+	<bean id="dokuwikiAttachmentFunctionalService"
+		class="org.novaforge.forge.plugins.wiki.dokuwiki.internal.services.DokuwikiAttachmentFunctionalServiceImpl">
+		<property name="dokuwikiXmlRpcClient" ref="dokuwikiXmlRpcClient" />
+		<property name="dokuwikiResourceBuilder" ref="dokuwikiResourceBuilder" />
+		<property name="dokuwikiConfigurationService" ref="dokuwikiConfigurationService" />
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+	</bean>
+	<service ref="dokuwikiAttachmentFunctionalService" interface="org.novaforge.forge.plugins.wiki.dokuwiki.services.DokuwikiFunctionalService">
+		<service-properties>
+			<entry key="serviceType" value="attachment" />
+		</service-properties>
+	</service>
+	<bean id="dokuwikiPageFunctionalService" class="org.novaforge.forge.plugins.wiki.dokuwiki.internal.services.DokuwikiPageFunctionalServiceImpl">
+		<property name="dokuwikiXmlRpcClient" ref="dokuwikiXmlRpcClient" />
+		<property name="dokuwikiResourceBuilder" ref="dokuwikiResourceBuilder" />
+		<property name="dokuwikiConfigurationService" ref="dokuwikiConfigurationService" />
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+	</bean>
+	<service ref="dokuwikiPageFunctionalService" interface="org.novaforge.forge.plugins.wiki.dokuwiki.services.DokuwikiFunctionalService">
+		<service-properties>
+			<entry key="serviceType" value="page" />
+		</service-properties>
+	</service>
+	<!--  Configuration for Camel JMS Route -->
+	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />	
+	<!--  Configuration for Camel JMS Route -->
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<argument ref="jmsConfig" />
+	</bean>	
+	<!-- Dokuwiki Route Builders Beans  -->
+	<bean id="dokuwikiProjectRouteBuilder" class="org.novaforge.forge.plugins.wiki.dokuwiki.internal.route.DokuwikiProjectRoute">
+		<property name="pluginProjectService" ref="dokuwikiProjectService" />
+	</bean>
+	<bean id="dokuwikiUserRouteBuilder" class="org.novaforge.forge.plugins.wiki.dokuwiki.internal.route.DokuwikiUserRoute">
+		<property name="pluginUserService" ref="dokuwikiUserService" />
+	</bean>
+	<bean id="dokuwikiRolesMappingRouteBuilder" class="org.novaforge.forge.plugins.wiki.dokuwiki.internal.route.DokuwikiRolesMappingRoute">
+		<property name="pluginRoleMappingService" ref="dokuwikiRoleMappingService" />
+		<property name="pluginMembershipService" ref="dokuwikiMembershipService" />
+	</bean>
+	<bean id="dokuwikiMembershipRouteBuilder" class="org.novaforge.forge.plugins.wiki.dokuwiki.internal.route.DokuwikiMembershipRoute">
+		<property name="pluginMembershipService" ref="dokuwikiMembershipService" />
+	</bean>				
+	<!-- Routes definition -->
+	<camelContext id="dokuwikiCamelContext" xmlns="http://camel.apache.org/schema/blueprint">
+		<routeBuilder ref="dokuwikiProjectRouteBuilder" />
+		<routeBuilder ref="dokuwikiUserRouteBuilder" />
+		<routeBuilder ref="dokuwikiRolesMappingRouteBuilder" />
+		<routeBuilder ref="dokuwikiMembershipRouteBuilder" />
+	</camelContext>
+
+	<bean id="dokuwikiService" class="org.novaforge.forge.plugins.wiki.dokuwiki.internal.DokuwikiServiceImpl">	   
+		<!-- Camel context -->
+		<property name="camelContext" ref="dokuwikiCamelContext" />
+	<!-- Service reference -->
+		<argument ref="uuidDAO" />
+		<property name="pluginConfigurationService" ref="dokuwikiConfigurationService" />
+		<property name="pluginRoleMappingService" ref="dokuwikiRoleMappingService" />
+		<property name="pluginUserService" ref="dokuwikiUserService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="toolInstanceProvisioningService" ref="dokuwikiToolInstanceProvider" />
+		<property name="cxfConfigService" ref="cxfConfigService" />
+		
+		<!-- Configuration -->
+		<property name="type" value="Dokuwiki" />
+		<property name="version" value="${dokuwiki.version}" />
+	</bean>
+	<bean id="dokuwikiCategoryService" class="org.novaforge.forge.plugins.wiki.dokuwiki.internal.DokuwikiCategoryServiceImpl" />
+	<service id="dokuwikiServiceRegistration" ref="dokuwikiService"
+		interface="org.novaforge.forge.core.plugins.services.PluginService">
+		<service-properties>
+			<entry key="type" value="Dokuwiki" />
+			<entry key="version" value="${dokuwiki.version}" />
+		</service-properties>
+	</service>
+	<service id="dokuwikiCategoryRegistration" ref="dokuwikiCategoryService" auto-export="interfaces">
+		<service-properties>
+			<entry key="type" value="Dokuwiki" />
+			<entry key="version" value="${dokuwiki.version}" />
+		</service-properties>
+	</service>
+	<bean id="pluginServiceRegistration" class="org.novaforge.forge.plugins.commons.services.PluginServiceRegistration">
+		<argument ref="blueprintBundleContext" />
+		<argument ref="dokuwikiServiceRegistration" />
+		<argument ref="dokuwikiCategoryRegistration" />
+	</bean>
+</blueprint>
+

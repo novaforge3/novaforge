@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+	
+	<!-- References -->
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+	<reference id="userPresenter" interface="org.novaforge.forge.core.organization.presenters.UserPresenter" />
+	<reference id="projectPresenter" interface="org.novaforge.forge.core.organization.presenters.ProjectPresenter" />
+	<reference id="applicationPresenter" interface="org.novaforge.forge.core.organization.presenters.ApplicationPresenter" />
+	<reference id="spacePresenter" interface="org.novaforge.forge.core.organization.presenters.SpacePresenter" />
+	<reference id="groupPresenter" interface="org.novaforge.forge.core.organization.presenters.GroupPresenter" />
+	<reference id="projectRolePresenter" interface="org.novaforge.forge.core.organization.presenters.ProjectRolePresenter" />
+	<reference id="pluginsManager" interface="org.novaforge.forge.core.plugins.services.PluginsManager" />
+	<reference id="membershipPresenter" interface="org.novaforge.forge.core.organization.presenters.MembershipPresenter" />
+	<reference id="authentificationService" interface="org.novaforge.forge.core.security.authentification.AuthentificationService" />
+	<reference id="historizationService" interface="org.novaforge.forge.commons.technical.historization.services.HistorizationService" />
+	<reference id="languagePresenter" interface="org.novaforge.forge.core.organization.presenters.LanguagePresenter" />
+	
+	
+	
+	<!-- Beans -->
+	<bean id="exportService" class="org.novaforge.forge.importexport.internal.services.ExportServiceImpl">
+		<!-- Services references -->
+		<property name="userPresenter" ref="userPresenter" />
+		<property name="projectPresenter" ref="projectPresenter" />
+		<property name="applicationPresenter" ref="applicationPresenter" />
+		<property name="spacePresenter" ref="spacePresenter" />
+		<property name="groupPresenter" ref="groupPresenter" />
+		<property name="projectRolePresenter" ref="projectRolePresenter" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+		<property name="pluginsManager" ref="pluginsManager" />
+		<property name="membershipPresenter" ref="membershipPresenter" />
+		<property name="authentificationService" ref="authentificationService" />
+		<property name="historizationService" ref="historizationService" />
+		<!-- Beans references -->
+		<property name="exportDataMapper" ref="exportDataMapper" />
+	</bean>
+	
+	<bean id="importService" class="org.novaforge.forge.importexport.internal.services.ImportServiceImpl">
+		<!-- Services references -->
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+		<property name="authentificationService" ref="authentificationService" />
+		<property name="historizationService" ref="historizationService" />
+		<property name="userPresenter" ref="userPresenter" />
+		<!-- Beans references -->
+		<property name="importHandler" ref="importHandler" />
+	</bean>
+	
+	<bean id="importHandler" class="org.novaforge.forge.importexport.internal.handlers.ImportHandlerImpl">
+		<!-- Services references -->
+		<property name="userPresenter" ref="userPresenter" />
+		<property name="projectPresenter" ref="projectPresenter" />
+		<property name="applicationPresenter" ref="applicationPresenter" />
+		<property name="spacePresenter" ref="spacePresenter" />
+		<property name="groupPresenter" ref="groupPresenter" />
+		<property name="projectRolePresenter" ref="projectRolePresenter" />
+		<property name="pluginsManager" ref="pluginsManager" />
+		<property name="membershipPresenter" ref="membershipPresenter" />
+		<!-- Beans references -->
+		<property name="importDataMapper" ref="importDataMapper" />
+	</bean>		
+	
+	<bean id="exportDataMapper" class="org.novaforge.forge.importexport.internal.mappers.ExportDataMapperImpl">
+	</bean>	
+	
+	<bean id="importDataMapper" class="org.novaforge.forge.importexport.internal.mappers.ImportDataMapperImpl">
+		<property name="languagePresenter" ref="languagePresenter" />
+		<property name="authentificationService" ref="authentificationService" />
+		<property name="membershipPresenter" ref="membershipPresenter" />
+	</bean>		
+	
+	<!-- Services -->
+	<service ref="exportService" interface="org.novaforge.forge.importexport.services.ExportService" />
+	<service ref="importService" interface="org.novaforge.forge.importexport.services.ImportService" />
+
+</blueprint>

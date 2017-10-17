@@ -1,0 +1,103 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+.v-csslayout-nf-upload-file .v-button:hover,
+.v-button-primary:hover {
+	background: #4197EE; /*fallback for non-CSS3 browsers*/
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #4197EE), color-stop(1, #79BBFF)); /*old webkit*/
+	background: -webkit-linear-gradient(top, #4197EE, #79BBFF);	/*newer webkit*/
+	background: -moz-linear-gradient(center top, #4197EE 5%, #79BBFF 100%);	/*old gecko*/
+	background: -o-linear-gradient(top, #4197EE, #79BBFF); /*opera 11.10+*/
+	background: linear-gradient(to bottom, #4197EE, #79BBFF); /*firefox 16+, chrome 26+, IE10+, opera 12.10+, future browsers*/
+	filter:  progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#4197EE', endColorstr='#79BBFF'); /* IE6 et IE7 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#4197EE', endColorstr='#79BBFF')"; /* IE8 */
+	}
+	
+.v-csslayout-nf-upload-file .v-button:active,
+.v-csslayout-nf-upload-file .v-button-wrap:active,
+.v-csslayout-nf-upload-file .v-button.v-pressed,
+.v-csslayout-nf-upload-file .v-button-wrap.v-pressed,
+.v-button-primary:active,
+.v-button-wrap:active,
+.v-button-caption:active,
+.v-button-primary.v-pressed,
+.v-button-wrap.v-pressed,
+.v-button-caption.v-pressed {
+	position:relative;
+   top:1px;
+}
+
+.v-csslayout-nf-upload-file .v-button .v-button-wrap,
+.v-button-primary .v-button-wrap,
+.v-disabled.v-button-primary .v-button-wrap {
+	background: transparent !important;
+}
+
+.v-csslayout-nf-upload-file .v-button .v-button-wrap .v-button-caption,
+.v-button-primary .v-button-wrap .v-button-caption,
+.v-disabled.v-button-primary .v-button-wrap .v-button-caption {
+   color:#ffffff;
+   font-family:arial;
+   font-size:15px;
+   font-weight:bold;
+   text-decoration:none;
+   text-shadow:1px 1px 0px #287ace;
+   background: transparent !important;
+}
+
+.v-csslayout-nf-upload-file .v-button .v-button-wrap img,
+.v-csslayout-nf-upload-file .v-button .v-button-wrap .v-icon,
+.v-csslayout-nf-upload-file .v-button .v-icon ,
+.v-button-primary .v-button-wrap img,
+.v-button-primary .v-button-wrap .v-icon,
+.v-button-primary .v-icon {
+	width:16px;
+	height:16px;
+}
+
+.v-csslayout-nf-upload-file .v-button,
+.v-csslayout-nf-upload-file .v-button:focus,
+.v-disabled.v-csslayout-nf-upload-file .v-button,
+.v-button-primary,
+.v-button-primary:focus,
+.v-disabled.v-button-primary {
+   -moz-box-shadow: inset 0px 1px 0px 0px #CAE3FC;
+   -webkit-box-shadow: inset 0px 1px 0px 0px #CAE3FC;
+   box-shadow: inset 0px 1px 0px 0px #cae3fc;
+   filter: progid:DXImageTransform.Microsoft.Shadow(color='#CAE3FC', Direction=145, Strength=1);
+   -webkit-border-radius: 6px;
+   -moz-border-radius: 6px;
+   border-radius: 6px;
+   border: 1px solid #469df5;
+   display: inline-block;
+   padding: 2px 10px;
+   background: #79BBFF; /*fallback for non-CSS3 browsers*/
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #79BBFF), color-stop(1, #4197EE)); /*old webkit*/
+	background: -webkit-linear-gradient(top, #79BBFF, #4197EE);	/*newer webkit*/
+	background: -moz-linear-gradient(center top, #79BBFF 5%, #4197EE 100%);	/*old gecko*/
+	background: -o-linear-gradient(top, #79BBFF, #4197EE); /*opera 11.10+*/
+	background: linear-gradient(to bottom, #79BBFF, #4197EE); /*firefox 16+, chrome 26+, IE10+, opera 12.10+, future browsers*/
+	filter:  progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#79BBFF', endColorstr='#4197EE'); /* IE6 et IE7 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#79BBFF', endColorstr='#4197EE')"; /* IE8 */
+}

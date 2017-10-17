@@ -1,0 +1,14 @@
+--- _head_panel.html.haml	2014-12-17 14:02:55.772239734 +0100
++++ _head_panel-patched.html.haml	2014-12-03 10:43:09.441148000 +0100
+@@ -39,10 +39,10 @@
+                 %i.icon-plus
+           %li
+             = link_to profile_path, title: "Profile settings", class: 'has_bottom_tooltip', 'data-original-title' => 'Profile settings"'  do
+               %i.icon-user
+           %li
+-            = link_to destroy_user_session_path, class: "logout", method: :delete, title: "Logout", class: 'has_bottom_tooltip', 'data-original-title' => 'Logout'  do
++            = link_to "@CAS_LOGOUT_URL@", class: "logout", method: :get, title: "Logout", class: 'has_bottom_tooltip', 'data-original-title' => 'Logout'  do
+               %i.icon-signout
+           %li.hidden-xs
+             = link_to current_user, class: "profile-pic", id: 'profile-pic' do
+               = image_tag avatar_icon(current_user.email, 26), alt: 'User activity'

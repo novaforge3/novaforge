@@ -1,0 +1,17 @@
+Patch for Axis 1.4 :
+
+This artefact including the two followings patch and allows to use it in OSGi environment. 
+It is based on springsource bundle
+
+---- First patch
+https://issues.apache.org/jira/browse/AXIS-2705?page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel&focusedCommentId=12919598#action_12919598
+
+---- Second patch
+A issue exists using Axis 1.4 with Pax logging : https://ops4j1.jira.com/browse/PAXLOGGING-58
+
+The following jar has been patched using the followings :
+
+ 1 . svn checkout http://svn.apache.org/repos/asf/webservices/axis/branches/AXIS_1_4_FINAL AXIS_1_4_FINAL
+ 2 . Add JavaMail and JavaBeans Activation to /lib
+ 3 . Apply axis.patch 
+ 4 . Build axis with 1.4 jdk with: ant dist

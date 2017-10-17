@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<sect1 version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+    >
+  <title>Gérer les listes de diffusion</title>
+
+  <para>Novaforge permet à l'administrateur du projet de créer et d'administrer des listes de diffusion.
+  Dans cette section nous allons voir comment ajouter et administrer une liste de diffusion.
+   Pour cela il suffit de sélectionner le menu <emphasis role="bold">Mon espace personnel projet</emphasis>
+  et ensuite sélectionner l'application : <emphasis role="bold">Vos listes de diffusion</emphasis>. </para>
+
+  <figure>
+    <title>Administration des listes de diffusion</title>
+
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center"
+                   fileref="04-04-01-ManageMailingListMenu.png"
+                   width="200.px"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>L'application "Vos Listes De Diffusion" s'affiche.</para>
+
+  <figure>
+    <title>Menu des Listes de diffusion projet</title>
+
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center"
+                   fileref="04-04-02-DisplayMailingListMenu.png"
+                   width="500.px" heigh="200.px"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para>La liste privée <emphasis role="bold">nomduprojet-team@domaine</emphasis> est créée par défaut pour le projet. Elle contient tous les utilisateurs du projet. Elle ne peut être supprimée ou modifiée</para>
+
+  <sect2>
+    <title>Créer une liste de diffusion</title>
+
+    <para>L'administrateur du projet peut créer une liste de diffusion en cliquant sur le bouton
+    <emphasis role="bold">Créer une liste de diffusion</emphasis> et renseignant les champs suivants :</para>
+
+    <figure>
+      <title>Champs de la liste de diffusion</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="04-04-03-CreationMailingList.png" width="300.px"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Une liste de diffusion a deux types : privée (visible uniquement aux membres de cette liste) ou public (visible par tous les membres du projet. Ils peuvent ainsi s'abonner/désabonner de cette liste).
+    </para>
+    </sect2>
+   <sect2>
+    <title>Actions sur une liste de diffusion</title>
+   
+    <para>L'administrateur du projet peut sur la colonne "ACTIONS" ci-dessous <emphasis role="bold">: Voir les informations de la liste de diffusion, S'abonner/désabonner de la liste de diffusion, Gérer les abonnés et Supprimer la liste de diffusion</emphasis>.</para>
+    <para>L'utilisateur projet abonné à une liste publique peut uniquement <emphasis role="bold">: Voir les informations de la liste de diffusion, S'abonner/désabonner de la liste de diffusion</emphasis>.</para>
+    <para>L'utilisateur projet abonné à une liste privée peut uniquement <emphasis role="bold">: Voir les informations de la liste de diffusion, Se désabonner de la liste de diffusion</emphasis>.</para>
+   <figure>
+      <title>Actions</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="04-04-04-ActionMailingList.png" width="500.px" heigh="200.px"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </sect2>
+
+  <sect2>
+    <title>Gérer les abonnés</title>
+
+    <para>L'action <emphasis role="bold">Gérer les abonnés</emphasis> de la colonne "ACTIONS" permet à l'administrateur du projet de ajouter/supprimer les emails des utilisateurs projet, forge ou les emails externes.</para>
+
+    <figure>
+      <title>gestion des abonnés</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="04-04-05-manageUserMailingList.png" width="500.px" heigh="200.px"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Le bouton <emphasis role="bold">Ajouter un nouvel abonné</emphasis> ouvre un popup qui affiche quatre 
+    catégories d'email à abonner.</para>
+    <figure>
+      <title>Type d'email à abonner</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="04-04-06-popupeUserMailingList.png" width="300.px"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    
+    <para>Un tableau affichera les utilisateurs projet ou forge à abonner si le choix du type à abonner est <emphasis role="bold">Utilisateurs du projet</emphasis> ou <emphasis role="bold">Utilisateurs de la forge</emphasis></para>
+     <figure>
+      <title>Abonner les utilisateurs projet/forge</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="04-04-06-01-popupeUserMailingListUsers.png" width="300.px"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>Un champ de saisie s'affichera si le choix du type à abonner est <emphasis role="bold">Emails externes</emphasis></para>
+
+    <figure>
+      <title>Abonner les emails externes</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="04-04-06-02-popupeUserMailingListExterne.png" width="300.px"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    
+    <para>Un tableau affichera les groupes disponibles dans votre projet (y compris, les groupes hérités du projet de forge.) si le choix du type à abonner est <emphasis role="bold">Groupes</emphasis></para>
+
+    <figure>
+      <title>Abonner des groupes</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="04-04-06-03-popupeUserMailingListGroups.png" width="300.px"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    
+  </sect2>
+  
+ 
+</sect1>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<book xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="en"
+      xmlns="http://docbook.org/ns/docbook"
+    >
+  <info>
+    <title>Administrator Guide NovaForge Version 3</title>
+
+    <author>
+      <personname>Novaforge Team</personname>
+    </author>
+
+    <copyright>
+      <year>2017</year>
+
+      <holder>Bull, an Atos Company</holder>
+    </copyright>
+
+    <pubdate>Novaforge 3.8.0 documentation : 31/07/2017</pubdate>
+  </info>
+
+  <xi:include href="content/01-introduction/01-introduction.xml"/>
+  
+  <xi:include href="content/02-pic/02-admin_plugins.xml"/>
+
+  <xi:include href="content/03-personalizations/03-personalizations.xml"/>
+  <xi:include href="content/031-generate-logins/031-generate-logins.xml"/>
+
+  <xi:include href="content/04-alfresco-email-template/04-alfresco-email-template.xml"/>	
+  
+  <xi:include href="content/05-Jenkins-nexus-with-secure-authentication/05-Jenkins-nexus-with-secure-authentication.xml"/>
+  
+  <xi:include href="content/06-nexus-public-repository/06-nexus-public-repository.xml"/>
+  <xi:include href="content/07-nexus-public-proxy/07-nexus-public-proxy.xml"/>
+  <xi:include href="content/08-news/08-news-management.xml"/>
+	
+</book>

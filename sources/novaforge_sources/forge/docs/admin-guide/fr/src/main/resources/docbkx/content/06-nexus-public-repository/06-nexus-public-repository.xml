@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<chapter version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook"
+>
+ <title>La gestion des dépôts publics Nexus</title>
+ <para>Comme nous l'avons vu dans le chapitre précédent, il est possible de donner des permissions de lecture à l'utilisateur anonyme afin que quiquonque puisse accéder 
+ à un dépôt et télécharger des artéfacts.</para>
+  <sect2>
+ <para>Dans la version 3.3.0, les évolutions suivantes sont disponibles : </para>
+   <itemizedlist>
+   <listitem>
+      <para><emphasis>L'utilisateur anonyme est activé par défaut sans aucune permission</emphasis></para>
+   </listitem>
+   <listitem>
+      <para><emphasis>A la création d'un dépôt "release", le rôle "nom-du-depot-anonymous" est créé pour ce dépôt afin de lire, naviguer dans le dépôt "release" avec un navigateur web et télécharger des artéfacts.</emphasis></para>
+   </listitem>
+   </itemizedlist>
+   <para>Par conséquent, il suffit, en tant qu'administrateur de la forge, d'ajouter ce rôle "nom-du-depot-anonymous" à l'utilisateur anonyme pour pouvoir rendre ce dépôt publique, c'est à dire y accéder en lecture et télécharger des artéfacts</para>
+  <figure>
+    <title>Ajout du rôle "projet1_nexus_relase (Anonymous)" </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center" fileref="nexus_add_anonymous_role.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+</sect2>
+</chapter>

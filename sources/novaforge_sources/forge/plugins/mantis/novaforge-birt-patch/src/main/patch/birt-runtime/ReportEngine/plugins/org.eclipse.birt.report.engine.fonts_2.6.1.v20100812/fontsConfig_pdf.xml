@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+
+<font>
+	<font-aliases>
+		<mapping name="serif" font-family="Times-Roman" />
+		<mapping name="sans-serif" font-family="Helvetica" />
+		<mapping name="monospace" font-family="Courier" />
+	</font-aliases>
+	<font-encodings>
+		<encoding font-family="Times-Roman" encoding="Cp1252" />
+		<encoding font-family="Helvetica" encoding="Cp1252" />
+		<encoding font-family="Courier" encoding="Cp1252" />
+		<encoding font-family="Zapfdingbats" encoding="Cp1252" />
+		<encoding font-family="Symbol" encoding="Cp1252" />
+		<encoding font-family="STSong-Light" encoding="UniGB-UCS2-H" />
+		<encoding font-family="STSongStd-Light" encoding="UniGB-UCS2-H" />
+		<encoding font-family="MHei-Medium" encoding="UniCNS-UCS2-H" />
+		<encoding font-family="MSung-Light" encoding="UniCNS-UCS2-H" />
+		<encoding font-family="MSungStd-Light" encoding="UniCNS-UCS2-H" />
+		<encoding font-family="HeiseiMin-W3" encoding="UniJIS-UCS2-H" />
+		<encoding font-family="HeiseiKakuGo-W5" encoding="UniJIS-UCS2-H" />
+		<encoding font-family="KozMinPro-Regular" encoding="UniJIS-UCS2-H" />
+		<encoding font-family="HYGoThic-Medium" encoding="UniKS-UCS2-H" />
+		<encoding font-family="HYSMyeongJo-Medium" encoding="UniKS-UCS2-H" />
+		<encoding font-family="HYSMyeongJoStd" encoding="UniKS-UCS2-H" />
+	</font-encodings>
+	<composite-font name="all-fonts">
+		<font font-family="Times-Roman" catalog="Western" />
+		<font font-family="MSung-Light" catalog="Chinese" />
+		<font font-family="HeiseiKakuGo-W5" catalog="Japanese" />
+		<font font-family="HYGoThic-Medium" catalog="Korean" />
+	</composite-font>
+</font>

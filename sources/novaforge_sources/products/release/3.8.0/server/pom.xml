@@ -1,0 +1,96 @@
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.novaforge.products</groupId>
+		<artifactId>parent-3.8.0</artifactId>
+		<version>2.0</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<groupId>org.novaforge.products.server</groupId>
+	<artifactId>parent-3.8.0</artifactId>
+	<packaging>pom</packaging>
+	<name>NovaForge(tm) :: Products :: 3.8.0 :: Server</name>
+	<description>NovaForge(tm) :: Products :: 3.8.0 :: Server</description>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.novaforge.beaver</groupId>
+				<artifactId>beaver-deployment-plugin</artifactId>
+				<version>${_beaver.version}</version>
+				<extensions>true</extensions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.novaforge.beaver</groupId>
+			<artifactId>beaver-deployment-plugin</artifactId>
+			<version>${_beaver.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.novaforge.beaver</groupId>
+			<artifactId>beaver-context-apis</artifactId>
+			<version>${_beaver.version}</version>
+		</dependency>
+	</dependencies>
+	<!-- Declaration of modules -->
+	<modules>
+		<module>server-template/2.0</module>
+		<module>server-aio/2.0</module>
+		<module>server-dev/2.0</module>
+		<module>server-ged/2.0</module>
+		<module>server-jira/2.0</module>
+		<module>server-pic/2.0</module>
+		<module>server-portal/2.0</module>
+		<module>server-svn/2.0</module>
+		<module>server-front/2.0</module>
+	</modules>
+	<properties>
+	<!-- The following is used by all sub beaver-server as default value -->
+	<!-- SHOULDN'T BE CHANGED -->
+	<!-- Server process -->
+		<install>install.groovy</install>
+		<data>org.novaforge.products.data/server-template-datas/2.0/tar.gz</data>
+	<!-- Configuration system -->
+		<local:ip></local:ip>
+		<local:host></local:host>
+		<local:user>novaforge</local:user>
+		<local:group>novaforge</local:group>
+			
+	<!-- Configuration installation -->
+		<local:home>/datas/novaforge3</local:home>
+		<local:bin>@{local:home}/bin</local:bin>
+		<local:datas>@{local:home}/datas</local:datas>
+		<local:engines>@{local:home}/engines</local:engines>
+		<local:logs>@{local:home}/logs</local:logs>
+		<local:system>@{local:home}/system</local:system>
+		<local:tmp>@{local:home}/tmp</local:tmp>
+	</properties>
+</project>

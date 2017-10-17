@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+
+<chapter version="5.0" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+		>
+	<title>Introduction</title>
+
+	<section>
+		<title>This document</title>
+
+		<para>NovaForgeTM is a secured collaborative platform which offers
+			features to manage projects and simplify software development. This
+			document is divided into several chapters. In the first chapters you
+			will learn the basic actions such as creating an account, navigating
+			through the forge and creating and managing a project. The remaining
+			chapters describe each feature included in NovaForgeTM.</para>
+	</section>
+
+	<section>
+		<title>New features of Version 3</title>
+
+		<para>NovaForgeTM Version 3 is based on a completely new architecture
+			according to SOA (Service Oriented Architecture) patterns. The forge
+			is in fact subdivided into functional services (technical event
+			management, document management, configuration management,
+			requirement management, etc.). Each functional service is then
+			implemented by one or more technical solutions (for example, Mantis
+			is a technical solution to the &quot;technical event management&quot;
+			functional service). All these services can be accessed from a
+			secured collaborative portal which manages user rights to the various
+			products, user identification and the links between the tools.</para>
+
+		<para>NovaForge v3 includes some 15 tools:</para>
+
+		<itemizedlist>
+			<listitem>
+				<para>Open Source leader tools: Mantis, Jenkins, Alfresco, SVN,
+					Testlink, Sonar, Nexus, LimeSurvey, DokuWiki, PhpBB, Sympa, etc.
+				</para>
+			</listitem>
+
+			<listitem>
+				<para>NovaForge specific tools used to manage requirement tracking,
+					manage deliveries, etc.</para>
+			</listitem>
+		</itemizedlist>
+
+		<para>One of the basic principles of NovaForge v3 is the plugin
+			concept: each component is included as a plugin. This principle makes
+			NovaForge extremely flexible, both in terms of use and installation.
+			It is in fact relatively easy to add components. The architecture
+			therefore simplifies integration of a new functional service or a new
+			technical component. Concerning usability, the notion of plugin
+			allows several instances of the same component to be instantiated in
+			a project (e.g. several Mantis for the same project: one external and
+			one internal). In addition, communication can be defined between the
+			plugins, for example to create a bug directly from the test tool or
+			from the delivery tool, retrieve sources from the SVN, documents from
+			documentary management and bugs from the bug tracker.</para>
+
+		<para>Amongst the numerous other new features of NovaForge v3, the
+			remaining documentation describes the notion of project template,
+			reference project, delivery management module, requirement tracking
+			module, etc.</para>
+	</section>
+</chapter>

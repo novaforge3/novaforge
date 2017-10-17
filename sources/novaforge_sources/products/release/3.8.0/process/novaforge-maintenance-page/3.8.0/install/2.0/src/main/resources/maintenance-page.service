@@ -1,0 +1,7 @@
+Alias /@MAINTENANCE_PAGE_ALIAS@ "@MAINTENANCE_PAGE_HOME@"
+
+<Directory @MAINTENANCE_PAGE_HOME@>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Require all granted
+</Directory>

@@ -1,0 +1,339 @@
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.novaforge.products</groupId>
+	<artifactId>parent</artifactId>
+	<version>2.2</version>
+	<packaging>pom</packaging>
+	<name>NovaForge(tm) :: Products</name>
+	<description>NovaForge(tm) :: Products</description>
+
+	<properties>
+	
+	<!-- Versions -->
+		<_beaver.version>3.6</_beaver.version>
+		<_groovy.version>1.4</_groovy.version>
+		<_cas.client.version>3.2.1</_cas.client.version>
+		<_servlet.version>2.5</_servlet.version>
+	</properties>
+
+	<licenses>
+		<license>
+			<name>GNU Affero General Public License</name>
+			<url>http://www.gnu.org/licenses/agpl.txt</url>
+		</license>
+	</licenses>
+	<organization>
+		<name>Bull SAS</name>
+		<url>http://www.bull.net</url>
+	</organization>
+	<distributionManagement>
+	</distributionManagement>
+	<pluginRepositories>
+	</pluginRepositories>
+	<repositories>
+		<repository>
+			<id>apache-snapshot</id>
+			<name>Apache SnapShot</name>
+			<url>http://repository.apache.org/snapshots/</url>
+			<releases>
+                <updatePolicy>never</updatePolicy>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+                <updatePolicy>never</updatePolicy>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>com.springsource.repository.bundles.release</id>
+			<name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
+			<url>http://repository.springsource.com/maven/bundles/release</url>
+			<releases>
+                <updatePolicy>never</updatePolicy>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+                <updatePolicy>never</updatePolicy>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>com.springsource.repository.bundles.external</id>
+			<name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
+			<url>http://repository.springsource.com/maven/bundles/external</url>
+			<releases>
+                <updatePolicy>never</updatePolicy>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+                <updatePolicy>never</updatePolicy>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>ow2</id>
+			<name>ow2</name>
+			<url>http://repository.ow2.org/nexus/content/repositories/releases/</url>
+			<snapshots>
+                <updatePolicy>never</updatePolicy>
+				<enabled>false</enabled>
+			</snapshots>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+		</repository>
+		<repository>
+			<id>ow2-snapshot</id>
+			<name>ow2-snapshots</name>
+			<url>http://repository.ow2.org/nexus/content/repositories/snapshots/</url>
+			<snapshots>
+                <updatePolicy>never</updatePolicy>
+				<enabled>true</enabled>
+			</snapshots>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+		</repository>
+		<repository>
+			<id>maven-restlet</id>
+			<name>Public online Restlet repository</name>
+			<url>http://maven.restlet.org</url>
+			<releases>
+                <updatePolicy>never</updatePolicy>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+                <updatePolicy>never</updatePolicy>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>Maven repo1</id>
+			<name>Maven repo1</name>
+			<url>http://repo1.maven.org/maven2/</url>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+		</repository>
+		<!-- Vaadin Repository -->
+		<repository>
+			<id>vaadin-addons</id>
+			<url>http://maven.vaadin.com/vaadin-addons</url>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+		</repository>
+		<repository>
+			<id>servicemix</id>
+			<url>http://svn.apache.org/repos/asf/servicemix/m2-repo/</url>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+		</repository>
+		<repository>
+			<id>xtend</id>
+			<url>http://build.eclipse.org/common/xtend/maven/</url>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+		</repository>
+	</repositories>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.4</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<version>2.6</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-deploy-plugin</artifactId>
+					<version>2.7</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-install-plugin</artifactId>
+					<version>2.4</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.7</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.4</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>1.6</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.6</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-shade-plugin</artifactId>
+					<version>2.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.1.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.7.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.4</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>2.3</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.felix</groupId>
+					<artifactId>maven-bundle-plugin</artifactId>
+					<version>2.3.7</version>
+					<configuration>
+						<instructions>
+							<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+							<Bundle-Build>${buildNumber}</Bundle-Build>
+						</instructions>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>1.7</version>
+				</plugin>
+				<plugin>
+					<groupId>org.novaforge.beaver</groupId>
+					<artifactId>beaver-deployment-plugin</artifactId>
+					<version>${_beaver.version}</version>
+				</plugin>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.novaforge.beaver</groupId>
+										<artifactId>beaver-deployment-plugin</artifactId>
+										<versionRange>[${_beaver.version},)</versionRange>
+										<goals>
+											<goal>validate</goal>
+											<goal>package</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.novaforge.beaver</groupId>
+				<artifactId>beaver-deployment-plugin</artifactId>
+				<version>${_beaver.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.novaforge.beaver</groupId>
+				<artifactId>beaver-context-apis</artifactId>
+				<version>${_beaver.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jasig.cas.client</groupId>
+				<artifactId>cas-client-core</artifactId>
+				<version>${_cas.client.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>${_servlet.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.code.findbugs</groupId>
+				<artifactId>jsr305</artifactId>
+				<version>1.3.9</version>
+			</dependency>
+			<!-- Test -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.11</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<modules>
+		<module>3.8.0</module>
+	</modules>
+</project>

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<chapter version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook"
+>
+ <title>Using of Jenkins and Nexus</title>
+ <para>The goal of this section is to configure the Maven and Jenkins applications to allow them to deploy an artifact on a Nexus repository with a Jenkins build.
+ We are about to create a project in NovaForge, commit a Java Maven project in a SVN application, configure a Jenkins job to build the project sources and deploy the artifact in a Nexus repository.</para>
+ <sect2>
+    <title>Project TestC</title>
+    <para>We need to create a project named "TestC" and the following applications:</para>
+    <itemizedlist>
+   <listitem>
+      <para>sources<emphasis>(SVN application)</emphasis></para>
+   </listitem>
+   <listitem>
+      <para>jenkins<emphasis>(JENKINS application)</emphasis></para>
+   </listitem>
+   <listitem>
+      <para>nexus<emphasis>(NEXUS application)</emphasis></para>
+   </listitem>
+   </itemizedlist>
+</sect2>
+<sect2>
+   <title>Sources : Maven project novaforge-dummy</title>
+     <para> 
+	 The main Nexus repository, where the artifacts is to be deployed, should be specified in the Maven setting file <emphasis> settings.xml </emphasis> :
+	   <programlisting language="xml">
+			<mirrors> 
+			<!-- mirror 
+			 | Specifies a repository mirror site to use instead of a given repository. The repository that 
+			 | this mirror serves has an ID that matches the mirrorOf element of this mirror. IDs are used 
+			 | for inheritance and direct lookup purposes, and must be unique across the set of mirrors. 
+			 |--> 
+				<mirror> 
+				  <id>central</id> 
+				  <mirrorOf>central</mirrorOf> 
+				  <name>Nexus Novaforge3 Central</name> 
+				  <url>https://novaforge.bull.com/nexus-default/nexus/content/repositories/central</url> 
+				</mirror>   
+			</mirrors>
+	   </programlisting>
+   </para>   
+   <para>
+      The release and snapshot repositories are automatically created by Nexus application. In order to control the deployment of the artifacts to the release and/or snapshot repository,
+	  the pom.xml file of the project should be modified:
+   </para>
+   <programlisting language="xml">
+  <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	  <modelVersion>4.0.0</modelVersion>
+	  <parent>
+		<groupId>org.novaforge</groupId>
+		<artifactId>parent</artifactId>
+		<version>1.2</version>
+	  </parent>
+	  <groupId>org.novaforge.forge.dummy</groupId>
+	  <artifactId>novaforge-dummy</artifactId>
+	  <version>3.8.0</version>
+	  <packaging>pom</packaging>
+	  <name>NovaForge(tm) :: DUMMMY PROJECT</name>
+	  <description>NovaForge(tm) Parent POM</description>
+	  <properties>
+		<novaforge.version>${project.version}</novaforge.version>
+	  </properties>
+	  <repositories>
+		<repository>
+		  <id>testc-release</id>
+		  <name>TestC Repository Release</name>
+		  <url>https://maforge/nexus-default/nexus/content/repositories/testc_nexus_release/</url>
+		  <releases>
+			<enabled>true</enabled>
+		  </releases>
+		  <snapshots>
+			<enabled>false</enabled>
+		  </snapshots>
+		</repository>
+		<repository>
+		 <id>testc-snapshot</id>
+		 <name>TestC Repository Snapshot</name>
+		 <url>https://maforge/nexus-default/nexus/content/repositories/testc_nexus_snapshot/</url>
+		 <releases>
+			<enabled>false</enabled>
+		  </releases>
+		  <snapshots>
+			<enabled>true</enabled>
+		  </snapshots>
+		</repository>
+	  </repositories>
+  </project>
+  </programlisting> 
+    <para>This project is commited on SVN repository : <emphasis>https://myforge/svn-default/svn/testc_sources</emphasis></para>.
+  </sect2>  
+  <sect2>
+  	<title>Configuration of a Jenkins job named testc_jenkins_default (Type Maven build)</title>
+  	<para>Configuration of JDK and Maven in Jenkins have to be done. Configuration of proxy, if needed, in Maven have to be done too. 
+  	</para>
+  <itemizedlist>
+   <listitem>
+      <para>In section Source Code Management, define SVN repository URL : <emphasis>https://myforge/svn-default/svn/testc_sources</emphasis>. You have to give to Jenkins a user with read rights on the SVN repository. The user password is encrypted.</para>
+   </listitem>
+   <listitem>
+      <para>In section Build, define relative path of parent pom : testc_sources/novaforge-dummy/pom.xml and this maven goals : <emphasis>clean install deploy</emphasis></para>
+   </listitem>
+   </itemizedlist>
+  </sect2>
+  <sect2>
+  <title>Using of Password Encryption Maven : Configuration of Maven on Jenkins server</title>
+  <para>To be allowed to deploy Maven artifacts on Nexus repository, we have to allow the Jenkins' own Maven to access to Nexus release and snapshot reposiies.
+	To do that, we use password encryption of Maven <emphasis>(http://maven.apache.org/guides/mini/guide-encryption.html)</emphasis></para>
+  <sect3>
+  <title>Generate master password</title>
+  <para>We are connected on the Jenkins and Maven server, with the user account which own Jenkins process, for instance : <emphasis>novaforge</emphasis>.</para>
+  <para>
+Command to get encrypted key which Maven will use to encrypt/decrypt the other passwords.
+<programlisting language="shell">
+$ /datas/novaforge3/engines/apache-maven-3.0.4/bin/
+mvn --encrypt-master-password my-password
+$ {6ScSJ9ODaQ4Hz/CoMyD+RUp6IYJz+UCKW9c2SmJRH8s=}
+</programlisting>
+</para>
+<para>This encrypted key is copied to the file <emphasis>/datas/novaforge3/datas/m2/settings-security.xml</emphasis>.
+Maven only seek this file in the .m2 folder of the home directory of the user. We have to create a file in the ".m2" folder : ~/.m2/settings-security.xml which will include the real settings-security.xml file :
+
+<programlisting language="xml">
+<settingsSecurity>
+  <relocation>/datas/novaforge3/datas/m2/settings-security.xml</relocation>
+</settingsSecurity>
+</programlisting>
+</para>
+<para>
+Or you can create a symbolic link to the real file : 
+<programlisting language="shell">
+$ ln -s /datas/novaforge3/datas/m2/settings-security.xml 
+	~novaforge/.m2/settings-security.xml
+</programlisting>
+</para>
+  </sect3>
+  <sect3>
+  <title>Generate encrypted password for the one in charge of Continous Integration (CI) of the project : john.doe</title>
+  <para>
+  The person in charge of CI doesn't want to let his password unencrypted in the Maven configuration on the server hosting the CI, we are going to encrypt his password with the following command:
+  <programlisting language="shell">
+$ /datas/novaforge3/engines/apache-maven-3.0.4/bin/
+mvn --encrypt-password john-doe-password
+$ {OF0TrBqvPWwHoXmozZM3DIAgQhKv9Uplho2CJY2P/SE=}
+</programlisting>
+</para>
+<para>
+Put this encrypted password in the file /datas/novaforge3/engines/apache-maven-3.0.4/conf/settings.xml, in the servers section :
+<programlisting language="xml">
+<servers>
+    <server>
+      <id>testc-release</id>
+      <username>john.doe</username>
+      <password>{OF0TrBqvPWwHoXmozZM3DIAgQhKv9Uplho2CJY2P/SE=}</password>
+    </server>
+
+    <server>
+      <id>testc-snapshot</id>
+      <username>john.doe</username>
+      <password>{OF0TrBqvPWwHoXmozZM3DIAgQhKv9Uplho2CJY2P/SE=}</password>
+    </server>
+</servers>
+</programlisting>
+  </para>
+  <para>Maven will replace the encrypted password by the unencrypted one when deploying on Nexus.</para>
+  </sect3>
+  </sect2>
+  <sect2>
+  <title>Deployment on Nexus repository with Anonymous user</title>
+  <para>Be careful, this solution allows anyone to deploy any artifact on the repository without authentication !</para>
+  <para>Connect to Nexus administration, as forge administrator user</para>
+  <sect3>Create role "testc_nexus_snapshot (Anonymous)"
+  <para>This role allow to read, write, update artifacts in testc_nexus_snapshot repository</para>
+  <para>In menu Security > Roles :</para>
+  <para>Create a "New Nexus Role"</para>
+  <itemizedlist>
+   <listitem>
+      <para>Role Id : testc_nexus_snapshot_anonymous</para>
+   </listitem>
+   <listitem>
+      <para>Name : testc_nexus_snapshot_anonymous</para>
+   </listitem>
+   <listitem>
+      <para>Description : Gives access to create/read/update All content of test_nexus_snaphsot repository</para>
+   </listitem>   
+   </itemizedlist>
+   <para>Add following rights (this rights are created by default when a Nexus application is created by NovaForge) :</para>
+     <itemizedlist>
+   <listitem>
+      <para>testc_nexus (snapshot)-(create)</para>
+   </listitem>
+   <listitem>
+      <para>testc_nexus (snapshot)-(update)</para>
+   </listitem>
+   </itemizedlist>
+    <figure>
+    <title>Create role "testc_nexus_snapshot (Anonymous)" </title>
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center" fileref="nexus_create_role.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  </sect3>
+  <sect3>
+  <title>Update role of Anonymous user</title>
+  <para>Delete existing role and add the role just created "testc_nexus_snapshot (Anonymous)"</para>
+  <para>In the menu Security > Users :</para>
+  <para>Select the user ID "anonymous" in the list.</para>
+  <para>Update his status to "Active"</para>
+  <para>Update his role to keep only "testc_nexus_snapshot (Anonymous)"</para>
+  <figure>
+    <title>Update Anonymous user role</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center" fileref="nexus_update_anonymous_user.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  </sect3>
+  <sect3>
+  <title>Activate anonymous authentication</title>
+  <para>By default, anonymous authentication is disabled.</para>
+  <para>In the menu Administration > Server</para>
+  <para>Check "Anonymous Access" and Save</para>
+  <figure>
+    <title>Activate anonymous authentication</title>
+    <mediaobject>
+      <imageobject>
+        <imagedata align="center" fileref="nexus_activate_anonymous_user.png"/>
+      </imageobject>
+    </mediaobject>
+  </figure>
+  <para>Test by running the Jenkins build, don't forget to remove the Encrypted Authentication in Maven (in file settings.xml)</para>
+  <para>Check the deployment logs : The upload is made by "anonymous" user</para>
+  <para>The Anonymous User Configuration allow to access and download an artifact, with a browser, without any change in the SSO CAS configuration.</para>
+  <para>You can also create, per project, a repository where an anonymous user can read, i.e. : a public repository per project.</para>
+  </sect3>
+  </sect2>
+</chapter>

@@ -1,0 +1,64 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+/* TabSheet styles */
+.v-tabsheetimproved-tabsheetpanel {
+	background: #dfe0e1;
+   background: -moz-linear-gradient(top, #d8d9da 0%, #e6e7e8 10%, #e0e1e2 100%);
+   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d8d9da), color-stop(10%, #e6e7e8), color-stop(100%, #e0e1e2));
+   background: -webkit-linear-gradient(top, #d8d9da 0%, #e6e7e8 10%, #e0e1e2 100%);
+   background: -o-linear-gradient(top, #d8d9da 0%, #e6e7e8 10%, #e0e1e2 100%);
+   background: -ms-linear-gradient(top, #d8d9da 0%, #e6e7e8 10%, #e0e1e2 100%);
+} 
+
+.v-tabsheetimproved-tabs-dd .v-caption {
+	cursor: pointer;
+}
+
+.v-tabsheetimproved-tabs .v-tabsheetimproved-spacertd .new-tab{
+	background:none;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	border-radius: 2px;	
+	background-color: #83B257; 
+	width: 48px;
+	height: 23px;	
+	padding: 9px 8px 0 6px;
+}
+.v-tabsheetimproved-tabs .new-tab-left{
+	border-left: 2px solid #83B257;
+	margin-right: -1px;
+}
+.v-tabsheetimproved-tabs .new-tab-right{
+	border-right: 2px solid #83B257;
+	margin-left: -1px;
+}
+.v-tabsheetimproved-tabs .new-tab-center{
+	border-top: 2px solid #83B257;
+	margin-bottom: -2px;
+}
+
+.v-tabsheetimproved-dd .v-dd-active-drag-source{
+	opacity:1;
+}

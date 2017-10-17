@@ -1,0 +1,120 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+.v-tabsheetimproved-hidetabs .v-tabsheetimproved-tabcontainer {
+	display: none;
+}
+.v-tabsheetimproved-scroller {
+	white-space: nowrap;
+	text-align: right;
+	margin-top: -1em;
+}
+.v-ff2 .v-tabsheetimproved-scroller {
+	position: relative;
+}
+.v-disabled .v-tabsheetimproved-scroller {
+	display: none;
+}
+.v-tabsheetimproved-scrollerPrev,
+.v-tabsheetimproved-scrollerNext,
+.v-tabsheetimproved-scrollerPrev-disabled,
+.v-tabsheetimproved-scrollerNext-disabled {
+	border: 1px solid #aaa;
+	background: #fff;
+	width: 12px;
+	height: 1em;
+	cursor: pointer;
+}
+.v-tabsheetimproved-scrollerPrev-disabled,
+.v-tabsheetimproved-scrollerNext-disabled {
+	opacity: 0.5;
+	cursor: default;
+}
+.v-tabsheetimproved-tabs .v-caption,
+.v-tabsheetimproved-tabs .v-caption span {
+	white-space: nowrap;
+}
+.v-tabsheetimproved-caption-close {
+	display: inline;
+	display: inline-block;
+	zoom: 1;
+	width: 16px;
+	height: 16px;
+	text-align: center;
+	font-weight: bold;
+	cursor: pointer;
+	vertical-align: middle;
+	user-select: none;
+	-khtml-user-select: none;
+	-ms-user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+}
+.v-tabsheetimproved .v-disabled .v-tabsheetimproved-caption-close {
+	cursor: default;
+	visibility: hidden;
+}
+.v-tabsheetimproved-tabitem:hover .v-tabsheetimproved-caption-close,
+.v-ie6 .v-tabsheetimproved-caption-close {
+	visibility: visible;
+}
+.v-ie6 .v-tabsheetimproved-caption-close {
+	float: right;
+}
+.v-tabsheetimproved-tabitem .v-caption {
+	cursor: inherit;
+}
+.v-tabsheetimproved.v-disabled .v-tabsheetimproved-tabitem,
+.v-tabsheetimproved-tabitemcell-disabled .v-tabsheetimproved-tabitem {
+	cursor: default;
+}
+.v-tabsheetimproved-tabitem-selected {
+	cursor: default;
+	border-bottom-color: #fff;
+}
+.v-tabsheetimproved-tabitem-selected .v-caption {
+	cursor: default;
+}
+.v-tabsheetimproved-content {
+	border: 1px solid #aaa;
+	/* Vertical borders are not supported, use v-tabsheetimproved-tabcontainer and v-tabsheetimproved-deco to present these borders */
+	border-top: none;
+	border-bottom: none;
+	position: relative;
+}
+.v-ie6 .v-tabsheetimproved-content,
+.v-ie7 .v-tabsheetimproved-content {
+	zoom: 1;
+}
+.v-tabsheetimproved-deco {
+	height: 1px;
+	background: #aaa;
+	overflow: hidden;
+}
+.v-tabsheetimproved-hidetabs .v-tabsheetimproved-content {
+	border: none;
+}
+.v-tabsheetimproved-hidetabs .v-tabsheetimproved-deco {
+	height: 0;
+}

@@ -1,0 +1,424 @@
+/**
+ * Copyright ( c ) 2011-2014, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Alffero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Alffero General Public License for more details.
+ * You should have received a copy of the GNU Alffero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+package org.novaforge.forge.plugins.ged.alfresco.it.test;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.List;
+
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+
+import org.apache.felix.ipojo.junit4osgi.OSGiTestCase;
+import org.novaforge.forge.configuration.initialization.internal.datas.ReferentielProjectConstants;
+import org.novaforge.forge.core.configuration.services.ForgeConfigurationService;
+import org.novaforge.forge.core.configuration.services.ForgeIdentificationService;
+import org.novaforge.forge.core.organization.model.ProjectApplication;
+import org.novaforge.forge.core.organization.model.User;
+import org.novaforge.forge.core.organization.presenters.UserPresenter;
+import org.novaforge.forge.core.organization.services.ApplicationService;
+import org.novaforge.forge.core.plugins.data.ActionType;
+import org.novaforge.forge.core.plugins.data.AlfrescoDocumentDTO;
+import org.novaforge.forge.core.plugins.data.AlfrescoFolderDTO;
+import org.novaforge.forge.core.plugins.data.DataDTO;
+import org.novaforge.forge.core.plugins.data.ItemDTO;
+import org.novaforge.forge.core.plugins.data.ItemReferenceDTO;
+import org.novaforge.forge.core.plugins.domain.core.PluginMetadata;
+import org.novaforge.forge.core.plugins.services.PluginDataService;
+import org.novaforge.forge.core.plugins.services.PluginsManager;
+import org.novaforge.forge.core.security.authentification.AuthentificationService;
+import org.novaforge.forge.distribution.reference.client.PluginDataClient;
+import org.osgi.framework.ServiceReference;
+
+public class PluginDataServiceTest extends OSGiTestCase
+{
+
+  private String                     forgeId;
+  private String                     pluginId;
+  private String                     referenceProjectId;
+  private String                     pluginInstanceId;
+  // private String referenceToolProjectId;
+
+  private static final String        ALFRESCO_TEST_FOLDER = "alfresco_test_folder";
+
+  private ForgeIdentificationService forgeIdentificationService;
+
+  private AuthentificationService    authentificationService;
+
+  private ForgeConfigurationService  forgeConfigurationService;
+
+  private ApplicationService         applicationService;
+
+  private PluginDataService          pluginDataService;
+
+  @Override
+  public void setUp() throws Exception
+  {
+
+    login();
+    initForgeId();
+    initPluginId();
+    initReferenceProjectId();
+    initPluginInstanceId(referenceProjectId);
+    // initToolProjectId();
+    initPluginDataService(pluginId);
+    logout();
+  }
+
+  public void testManipulatePluginData() throws Exception
+  {
+    System.out
+        .println("=============================== testManipulatePluginData ====================================");
+
+    // Get data references
+    System.out.println("Getting alfresco item references...");
+    List<ItemReferenceDTO> references = pluginDataService.getDataReferences(forgeId, pluginInstanceId);
+    assertNotNull("The references list should not be null!", references);
+    assertTrue("The references list should contain at least one page", references.size() >= 1);
+    final int initialReferencesSize = references.size();
+    for (final ItemReferenceDTO reference : references)
+    {
+      assertFalse("The reference ID should not be empty!", reference.getReferenceId().isEmpty());
+      assertFalse("The reference modification comparator should not be empty!", reference
+          .getModificationComparator().isEmpty());
+      assertFalse("The reference item type comparator should not be empty!", reference.getItemType()
+          .isEmpty());
+    }
+    final String parentReferenceId = references.get(0).getReferenceId();
+    System.out.println("choosen parentReferenceId = " + parentReferenceId);
+
+    // Create a new folder
+    System.out.println("Creating a new alfresco folder...");
+    final AlfrescoFolderDTO newFolder = new AlfrescoFolderDTO();
+    // newFolder.setParentPath(referenceToolProjectId);
+    newFolder.setParentPath(parentReferenceId);
+    newFolder.setName("brand-new-folder");
+    final ItemReferenceDTO newFolderReference = new ItemReferenceDTO("brand-new-folder", "", "cmis:folder");
+    final ItemDTO newFolderItem = new ItemDTO(newFolderReference, ActionType.CREATE);
+    final DataDTO newFolderData = new DataDTO(newFolderItem, newFolder);
+    pluginDataService.putData(forgeId, pluginInstanceId, newFolderData);
+    System.out.println("Alfresco Folder created.");
+
+    // Create a new document
+    System.out.println("Creating a new alfresco document...");
+    final AlfrescoDocumentDTO newDocument = new AlfrescoDocumentDTO();
+    // newDocument.setParentPath(referenceToolProjectId);
+    newDocument.setParentPath(parentReferenceId);
+    newDocument.setName("task_repository_projects.gif");
+    newDocument.setContentSreamFileName("task_repository_projects.gif");
+    newDocument.setContentStreamMimeType("image/gif;charset=UTF-8");
+    newDocument.setContentStreamLength(28521L);
+
+    InputStream inputStream = this.getClass().getResourceAsStream("/task_repository_projects.gif");
+    final File initialFileDocument = new File("/datas/safran/tmp/task_repository_projects.gif");
+    OutputStream out = new FileOutputStream(initialFileDocument);
+    final byte buf[] = new byte[1024];
+    int len;
+    while ((len = inputStream.read(buf)) > 0)
+    {
+      out.write(buf, 0, len);
+    }
+    out.close();
+    inputStream.close();
+    DataSource dataSource = new FileDataSource(initialFileDocument);
+
+    newDocument.setContent(new DataHandler(dataSource));
+    final ItemReferenceDTO newPageReference = new ItemReferenceDTO("task_repository_projects.gif", "",
+        "cmis:document");
+    final ItemDTO newDocumentItem = new ItemDTO(newPageReference, ActionType.CREATE);
+    final DataDTO newDocumentData = new DataDTO(newDocumentItem, newDocument);
+    pluginDataService.putData(forgeId, pluginInstanceId, newDocumentData);
+    System.out.println("Alfresco Document created.");
+
+    // Get data references
+    ItemReferenceDTO createdDocumentReference = null;
+    ItemReferenceDTO createdFolderReference = null;
+    createdDocumentReference = getItemReference(references, newDocument.getName(), initialReferencesSize);
+    createdFolderReference = getItemReference(references, newFolder.getName(), initialReferencesSize);
+
+    // Get the data to validate the created items above
+    System.out.println("Fetching the Alfresco document...");
+    newDocumentItem.setReference(createdDocumentReference);
+    DataDTO fetchedDocument = pluginDataService.getData(forgeId, pluginInstanceId, newDocumentItem);
+    System.out.println("Alfresco document: " + fetchedDocument.getAlfrescoDocumentDTO().toString());
+    System.out.println("Alfresco document fetched.");
+    assertEquals("The fetched document should match the created one", newDocumentData.getItemDTO()
+        .getReference(), fetchedDocument.getItemDTO().getReference());
+
+    System.out.println("Fetching the Alfresco folder...");
+    newFolderItem.setReference(createdFolderReference);
+    DataDTO fetchedFolder = pluginDataService.getData(forgeId, pluginInstanceId, newFolderItem);
+    System.out.println("Alfresco folder: " + fetchedFolder.getAlfrescoFolderDTO().toString());
+    System.out.println("Alfresco folder fetched.");
+    assertEquals("The fetched folder should match the created one",
+        newFolderData.getItemDTO().getReference(), fetchedFolder.getItemDTO().getReference());
+
+    // Update the document
+    System.out.println("Updating the alfresco document...");
+    inputStream = this.getClass().getResourceAsStream("/complexity-class_vs_time.gif");
+    final File updatedFileDocument = new File("/datas/safran/tmp/complexity-class_vs_time.gif");
+    out = new FileOutputStream(updatedFileDocument);
+    while ((len = inputStream.read(buf)) > 0)
+    {
+      out.write(buf, 0, len);
+    }
+    out.close();
+    inputStream.close();
+    dataSource = new FileDataSource(updatedFileDocument);
+    fetchedDocument.getAlfrescoDocumentDTO().setContent(new DataHandler(dataSource));
+    fetchedDocument.getAlfrescoDocumentDTO().setName("complexity-class_vs_time.gif");
+    fetchedDocument.getAlfrescoDocumentDTO().setContentSreamFileName("complexity-class_vs_time.gif");
+    fetchedDocument.getItemDTO().setAction(ActionType.UPDATE);
+
+    pluginDataService.putData(forgeId, pluginInstanceId, fetchedDocument);
+    System.out.println("Alfresco document updated.");
+
+    // Update the folder
+    System.out.println("Updating the alfresco folder...");
+    fetchedFolder.getAlfrescoFolderDTO().setName("updated-folder");
+    fetchedFolder.getItemDTO().setAction(ActionType.UPDATE);
+    System.out.println("***** parent new folder =" + fetchedFolder.getAlfrescoFolderDTO().getParentPath());
+    // pluginDataService.putData(forgeId, pluginInstanceId, newFolderData);
+    pluginDataService.putData(forgeId, pluginInstanceId, fetchedFolder);
+    System.out.println("Alfresco folder updated.");
+
+    // Get the data to validate the created items above
+    System.out.println("Fetching the Alfresco document...");
+    createdDocumentReference = getItemReference(references, "complexity-class_vs_time.gif",
+        initialReferencesSize);
+    newDocumentItem.setReference(createdDocumentReference);
+    fetchedDocument = pluginDataService.getData(forgeId, pluginInstanceId, newDocumentItem);
+    System.out.println("Alfresco document fetched.");
+    assertEquals("The fetched document should match the updated one", "complexity-class_vs_time.gif",
+        fetchedDocument.getAlfrescoDocumentDTO().getContentSreamFileName());
+
+    System.out.println("Fetching the Alfresco folder...");
+    // fetching the new document folder.
+    createdFolderReference = getItemReference(references, "updated-folder", initialReferencesSize);
+    newFolderItem.setReference(createdFolderReference);
+    fetchedFolder = pluginDataService.getData(forgeId, pluginInstanceId, newFolderItem);
+    System.out.println("Alfresco folder fetched.");
+    assertEquals("The fetched folder should match the updated one", "updated-folder", fetchedFolder
+        .getAlfrescoFolderDTO().getName());
+
+    // Remove the document
+    System.out.println("Deleting the alfresco document...");
+    fetchedDocument.getItemDTO().setAction(ActionType.DELETE);
+    pluginDataService.putData(forgeId, pluginInstanceId, fetchedDocument);
+    System.out.println("Alfresco document deleted.");
+
+    // Remove the folder
+    System.out.println("Deleting the alfresco folder...");
+    fetchedFolder.getItemDTO().setAction(ActionType.DELETE);
+    pluginDataService.putData(forgeId, pluginInstanceId, fetchedFolder);
+    System.out.println("Alfresco folder deleted.");
+
+    // remove tmp files
+    initialFileDocument.delete();
+    updatedFileDocument.delete();
+
+    // Get data references and validate that the created items have been deleted
+    references = pluginDataService.getDataReferences(forgeId, pluginInstanceId);
+    assertNotNull("The references list should not be null!", references);
+    assertTrue("The created references should have been removed", references.size() == initialReferencesSize);
+    for (final ItemReferenceDTO reference : references)
+    {
+      System.out.println("Reference: " + reference);
+    }
+  }
+
+  private ItemReferenceDTO getItemReference(List<ItemReferenceDTO> references, final String referenceName,
+      final int initialReferencesSize) throws Exception
+  {
+    // Get data references
+    System.out.println("Getting alfresco item references for validation...");
+    references = pluginDataService.getDataReferences(forgeId, pluginInstanceId);
+    assertNotNull("The references list should not be null!", references);
+    assertTrue("The document and folder should have been created",
+        references.size() == (initialReferencesSize + 2));
+    ItemReferenceDTO createdReference = null;
+
+    for (final ItemReferenceDTO reference : references)
+    {
+      System.out.println("Reference: " + reference);
+      if (reference.getModificationComparator().startsWith(referenceName))
+      {
+        createdReference = reference;
+      }
+
+    }
+    return createdReference;
+  }
+
+  private void login() throws Exception
+  {
+    ServiceReference serviceReference = getServiceReference(ForgeIdentificationService.class.getName());
+    assertNotNull("ServiceReference for ForgeConfigurationManager instance should not be null",
+        serviceReference);
+
+    final ForgeIdentificationService forgeIdentificationService = (ForgeIdentificationService) getServiceObject(serviceReference);
+    assertNotNull("ForgeConfigurationManager instance should not be null", forgeIdentificationService);
+
+    serviceReference = getServiceReference(AuthentificationService.class.getName());
+    assertNotNull("ServiceReference for AuthentificationService instance should not be null",
+        serviceReference);
+
+    final AuthentificationService authentificationService = (AuthentificationService) getServiceObject(serviceReference);
+    assertNotNull("AuthentificationService instance should not be null", authentificationService);
+
+    this.authentificationService = authentificationService;
+
+    // forgeConfigurationService
+    serviceReference = getServiceReference(ForgeConfigurationService.class.getName());
+    assertNotNull("ServiceReference for AuthentificationService instance should not be null",
+        serviceReference);
+    final ForgeConfigurationService forgeConfigurationService = (ForgeConfigurationService) getServiceObject(serviceReference);
+    assertNotNull("AuthentificationService instance should not be null", forgeConfigurationService);
+
+    this.forgeConfigurationService = forgeConfigurationService;
+    
+    ServiceReference userPresenterReference = getServiceReference(UserPresenter.class.getName());
+    assertNotNull(userPresenterReference);
+    UserPresenter userPresenter = (UserPresenter) getServiceObject(userPresenterReference);
+    assertNotNull(userPresenter);
+
+    // authentication
+    final String adminLogin = forgeConfigurationService.getSuperAdministratorLogin();
+    final User user = userPresenter.getUser(adminLogin);
+    authentificationService.login(adminLogin, user.getPassword());    
+  }
+
+  private void logout() throws Exception
+  {
+    assertNotNull("The authentication service should not be null", authentificationService);
+    if (authentificationService.checkLogin())
+    {
+      authentificationService.logout();
+    }
+  }
+
+  private void initForgeId() throws Exception
+  {
+    final ServiceReference serviceReference = getServiceReference(ForgeIdentificationService.class.getName());
+    assertNotNull("ServiceReference for ForgeIdentificationManager instance should not be null",
+        serviceReference);
+
+    final ForgeIdentificationService forgeIdentificationService = (ForgeIdentificationService) getServiceObject(serviceReference);
+    assertNotNull("ForgeIdentificationManager instance should not be null", forgeIdentificationService);
+
+    forgeId = forgeIdentificationService.getForgeId().toString();
+    assertNotNull("The forge ID should not be null", forgeId);
+  }
+
+  private void initPluginId() throws Exception
+  {
+    final ServiceReference serviceReference = getServiceReference(PluginsManager.class.getName());
+    assertNotNull("ServiceReference for PluginsManager instance should not be null", serviceReference);
+
+    final PluginsManager pluginsManager = (PluginsManager) getServiceObject(serviceReference);
+    assertNotNull("PluginsManager instance should not be null", pluginsManager);
+
+    final List<PluginMetadata> plugins = pluginsManager
+        .getPluginsMetadataByCategory(ReferentielProjectConstants.GED_CATEGORY);
+    assertNotNull("Plugins list should at least contains Dokuwiki", plugins);
+
+    for (final PluginMetadata plugin : plugins)
+    {
+      if (ReferentielProjectConstants.GED_TYPE.equals(plugin.getType()))
+      {
+        pluginId = plugin.getUUID();
+      }
+    }
+    assertNotNull("The Dokuwiki plugin should be found", pluginId);
+  }
+
+  private void initReferenceProjectId() throws Exception
+  {
+    // get referentiel project
+    referenceProjectId = forgeConfigurationService.getReferentielProjectId();
+  }
+
+  private void initPluginInstanceId(final String referenceProjectId) throws Exception
+  {
+    final ServiceReference serviceReference = getServiceReference(ApplicationService.class.getName());
+    assertNotNull("ServiceReference for PluginsManager instance should not be null", serviceReference);
+    final ApplicationService applicationService = (ApplicationService) getServiceObject(serviceReference);
+    assertNotNull("ApplicationService instance should not be null", applicationService);
+
+    this.applicationService = applicationService;
+
+    // get the pluginInstanceId for Alfresco
+    final List<ProjectApplication> applications = applicationService
+        .getAllProjectApplications(referenceProjectId);
+    for (final ProjectApplication application : applications)
+    {
+      final String currentPluginId = application.getPluginUUID().toString();
+      if (currentPluginId.equalsIgnoreCase(pluginId))
+      {
+        pluginInstanceId = application.getPluginInstanceUUID().toString();
+      }
+    }
+    assertNotNull("The reference project should at least have one instance of alfresco", pluginInstanceId);
+  }
+
+  // private void initToolProjectId() throws Exception
+  // {
+  // FIXME: use DAO and ldap filter to get the referenceToolProjectId (or lesser an sql request)
+  // Note:
+  // - this test is only valid if a referentiel project is created
+  // - the AlfrescoFunctionalService is an internal service of tthe composite and should not be exported
+  // (for it tests for ex.)
+
+  // final ServiceReference serviceReference =
+  // getServiceReference(AlfrescoFunctionalService.class.getName());
+  // assertNotNull("ServiceReference for AlfrescoFunctionalService instance should not be null",
+  // serviceReference);
+  //
+  // final AlfrescoFunctionalService alfrescoFunctionalService = (AlfrescoFunctionalService)
+  // getServiceObject(serviceReference);
+  // assertNotNull("AlfrescoFunctionalService instance should not be null", alfrescoFunctionalService);
+  //
+  // referenceToolProjectId = alfrescoFunctionalService.getSiteUUID(forgeId, pluginInstanceId);
+
+  // referenceToolProjectId = "reference_alfrescoreferentiel";
+  // referenceToolProjectId = "69b7b94e-087e-4299-976b-61828a9a60c3";
+  // }
+
+  private void initPluginDataService(final String pluginId) throws Exception
+  {
+    final ServiceReference serviceReference = getServiceReference(PluginDataClient.class.getName());
+    assertNotNull("ServiceReference for PluginDataClient instance should not be null", serviceReference);
+
+    final PluginDataClient pluginDataClient = (PluginDataClient) getServiceObject(serviceReference);
+    assertNotNull("PluginDataClient instance should not be null", pluginDataClient);
+
+    pluginDataService = pluginDataClient.getPluginDataService(pluginId);
+    assertNotNull("PluginDataService instance should not be null", pluginDataService);
+  }
+
+}

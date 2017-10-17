@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
+					 xmlns:cxf="http://cxf.apache.org/blueprint/core"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd 
+    http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+
+    http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
+
+	<reference id="webServerConfigurator" interface="org.novaforge.forge.commons.webserver.configuration.services.WebServerConfigurator" />
+	<reference id="normalizeService" interface="org.novaforge.forge.commons.technical.normalize.NormalizeService" />
+	<reference id="phpbbSoapClient" interface="org.novaforge.forge.plugins.forum.phpbb.client.PhpBBSoapClient" />
+	<reference id="phpbbResourceBuilder" interface="org.novaforge.forge.plugins.forum.phpbb.datamapper.PhpBBResourceBuilder" />
+	<reference id="phpbbConfigurationService" interface="org.novaforge.forge.plugins.forum.phpbb.services.PhpBBConfigurationService" />
+	<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/pluginPhpBB)" />
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+
+	<bean id="instanceConfigurationDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.InstanceConfigurationDAOImpl">
+		<jpa:context unitname="plugins.phpbb" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="rolesMappingDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.RolesMappingDAOImpl">
+		<jpa:context unitname="plugins.phpbb" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="toolInstanceDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.ToolInstanceDAOImpl">
+		<jpa:context unitname="plugins.phpbb" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="uuidDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.UuidDAOImpl">
+		<jpa:context unitname="plugins.phpbb" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+
+	<bean id="phpbbRoleMappingService" class="org.novaforge.forge.plugins.forum.phpbb.internal.services.PhpBBRoleMappingServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="rolesMappingDAO" ref="rolesMappingDAO" />
+	</bean>
+	<bean id="phpbbMembershipService" class="org.novaforge.forge.plugins.forum.phpbb.internal.services.PhpBBMembershipServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="pluginRoleMappingService" ref="phpbbRoleMappingService" />
+		<property name="phpbbSoapClient" ref="phpbbSoapClient" />
+		<property name="phpbbResourceBuilder" ref="phpbbResourceBuilder" />
+		<property name="pluginConfigurationService" ref="phpbbConfigurationService" />
+	</bean>
+	<bean id="phpbbProjectService" class="org.novaforge.forge.plugins.forum.phpbb.internal.services.PhpBBProjectServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="normalizeService" ref="normalizeService" />
+		<property name="pluginRoleMappingService" ref="phpbbRoleMappingService" />
+		<property name="phpbbSoapClient" ref="phpbbSoapClient" />
+		<property name="phpbbResourceBuilder" ref="phpbbResourceBuilder" />
+		<property name="pluginConfigurationService" ref="phpbbConfigurationService" />
+	</bean>
+	<bean id="phpbbUserService" class="org.novaforge.forge.plugins.forum.phpbb.internal.services.PhpBBUserServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="phpbbSoapClient" ref="phpbbSoapClient" />
+		<property name="phpbbResourceBuilder" ref="phpbbResourceBuilder" />
+		<property name="pluginConfigurationService" ref="phpbbConfigurationService" />
+	</bean>
+	<bean id="phpbbToolInstanceProvider" class="org.novaforge.forge.plugins.commons.services.DefaultToolInstanceProvider">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="pluginConfigurationService" ref="phpbbConfigurationService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+	<bean id="phpbbInstanceService" class="org.novaforge.forge.plugins.commons.services.DefaultPluginInstanceService">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+	</bean>
+	<cxf:bus id="phpbbBus" />
+	<jaxws:endpoint implementor="#phpbbInstanceService" implementorClass="org.novaforge.forge.core.plugins.services.PluginInstanceService" address="/phpbbInstance" />
+		
+	<!--  Configuration for Camel JMS Route -->
+	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
+	
+	<!--  Configuration for Camel JMS Route -->
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<argument ref="jmsConfig" />
+	</bean>
+	<bean id="phpbbMembershipRouteBuilder" class="org.novaforge.forge.plugins.forum.phpbb.internal.route.PhpBBMembershipRoute">
+		<property name="pluginMembershipService" ref="phpbbMembershipService" />
+	</bean>
+	<bean id="phpbbProjectRouteBuilder" class="org.novaforge.forge.plugins.forum.phpbb.internal.route.PhpBBProjectRoute">
+		<property name="pluginProjectService" ref="phpbbProjectService" />
+	</bean>
+	<bean id="phpbbRolesMappingRouteBuilder" class="org.novaforge.forge.plugins.forum.phpbb.internal.route.PhpBBRolesMappingRoute">
+		<property name="pluginRoleMappingService" ref="phpbbRoleMappingService" />
+		<property name="pluginMembershipService" ref="phpbbMembershipService" />
+	</bean>
+	<bean id="phpbbUserRouteBuilder" class="org.novaforge.forge.plugins.forum.phpbb.internal.route.PhpBBUserRoute">
+		<property name="pluginUserService" ref="phpbbUserService" />
+	</bean>
+	<camelContext id="phpbbCamelContext" xmlns="http://camel.apache.org/schema/blueprint">
+		<routeBuilder ref="phpbbMembershipRouteBuilder" />
+		<routeBuilder ref="phpbbProjectRouteBuilder" />
+		<routeBuilder ref="phpbbRolesMappingRouteBuilder" />
+		<routeBuilder ref="phpbbUserRouteBuilder" />
+	</camelContext>
+	<bean id="phpbbService" class="org.novaforge.forge.plugins.forum.phpbb.internal.PhpBBServiceImpl">
+	   <!-- Camel context -->
+		<property name="camelContext" ref="phpbbCamelContext" />
+	   <!-- Service reference -->
+		<argument ref="uuidDAO" />
+		<property name="pluginConfigurationService" ref="phpbbConfigurationService" />
+		<property name="pluginRoleMappingService" ref="phpbbRoleMappingService" />
+		<property name="pluginUserService" ref="phpbbUserService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="toolInstanceProvisioningService" ref="phpbbToolInstanceProvider" />
+		<!-- Configuration -->
+		<property name="type" value="PhpBB" />
+		<property name="version" value="${phpbb.version}" />
+	</bean>
+	<bean id="phpbbCategoryService" class="org.novaforge.forge.plugins.forum.phpbb.internal.PhpBBCategoryServiceImpl"/>
+	<service id="phpbbServiceRegistration" ref="phpbbService" interface="org.novaforge.forge.core.plugins.services.PluginService">
+		<service-properties>
+			<entry key="type" value="PhpBB"/>
+			<entry key="version" value="${phpbb.version}"/>
+		</service-properties>
+	</service>
+	<service id="phpbbCategoryRegistration" ref="phpbbCategoryService" auto-export="interfaces">
+		<service-properties>
+			<entry key="type" value="PhpBB"/>
+			<entry key="version" value="${phpbb.version}"/>
+		</service-properties>
+	</service>
+	<bean id="pluginServiceRegistration" class="org.novaforge.forge.plugins.commons.services.PluginServiceRegistration">
+		<argument ref="blueprintBundleContext" />
+		<argument ref="phpbbServiceRegistration" />
+		<argument ref="phpbbCategoryRegistration" />
+	</bean>
+</blueprint>

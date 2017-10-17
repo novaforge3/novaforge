@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<chapter version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+	<title>Customizing NovaForge logos and labels "NovaForge"</title>
+
+	<sect1>
+		<title>Customize logos</title>
+		<para>Customizable Logos after the forge start are the following : </para>
+
+		<table frame="all">
+			<title>Customizable Logos</title>
+			<tgroup cols="4" align="left" colsep="1" rowsep="1">
+				<thead>
+					<row>
+						<entry>Name</entry>
+						<entry>Size</entry>
+						<entry>Description</entry>
+						<entry>Logo</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><emphasis>favicon</emphasis></entry>
+						<entry>16*16px</entry>
+						<entry>Forge Favicon</entry>
+						<entry>
+							<mediaobject>
+								<imageobject>
+									<imagedata align="center" fileref="favicon.png"
+										width="15px" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+					</row>
+					<row>
+						<entry><emphasis>logo-header</emphasis></entry>
+						<entry>258*55px</entry>
+						<entry>Top left header Logo</entry>
+						<entry>
+							<mediaobject>
+								<imageobject>
+									<imagedata align="center" fileref="logo_header.png"
+										width="80px" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+					</row>
+					<row>
+						<entry><emphasis>logo-homepage</emphasis></entry>
+						<entry>150*150px</entry>
+						<entry>Homepage center Logo "Welcom on NovaForge"
+						</entry>
+						<entry>
+							<mediaobject>
+								<imageobject>
+									<imagedata align="center" fileref="logo_homepage.png"
+										width="60px" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+					</row>
+					<row>
+						<entry><emphasis>logo-footer</emphasis></entry>
+						<entry>32*14px</entry>
+						<entry>Logo in the footer</entry>
+						<entry>
+							<mediaobject>
+								<imageobject>
+									<imagedata align="center" fileref="logo_footer.png"
+										width="20px" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+					</row>
+					<row>
+						<entry><emphasis>logo-default</emphasis></entry>
+						<entry>130*126px</entry>
+						<entry>Default Logo used in the forge (for project, CAS, etc.)
+						</entry>
+						<entry>
+							<mediaobject>
+								<imageobject>
+									<imagedata align="center" fileref="logo_default.png"
+										width="40px" />
+								</imageobject>
+							</mediaobject>
+						</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+
+	</sect1>
+
+	<para>To customize these logos, connect using ssh on NovaForge portal server then stop NovaForge and customize in :
+	</para>
+	<itemizedlist>
+		<listitem>
+			<para>
+				<emphasis>CAS webapp;</emphasis>
+			</para>
+		</listitem>
+		<listitem>
+			<para>
+				<emphasis>Portal template JAR;</emphasis>
+			</para>
+		</listitem>
+		<listitem>
+			<para>
+				<emphasis>Karaf configuration folder : <filename class="directory">nf-conf</filename>;</emphasis>
+			</para>
+		</listitem>
+		<listitem>
+			<para>
+				<emphasis>StyleSheet of the NovaForge Homepage;</emphasis>
+			</para>
+		</listitem>
+	</itemizedlist>
+
+	<sect2>
+		<title>CAS webapp</title>
+		<para>Four logos can be customized. Favicon (16*16px), logo-header (258*55px), 
+		logo-footer (32*14px) and logo-default (130*126px).</para>
+		
+		<para>CAS webapp is in Tomcat server in folder <filename class="directory">$NOVA_HOME/engines/cas_forge/webapps</filename>. You have to update pictures in the WAR file <filename class="devicefile">cas.war</filename> and in the folder <filename class="directory">cas</filename> if the webapp have been already deployed.</para>
+		
+		<para>Update picture in WAR :</para>
+		
+		<programlisting language="shell">
+			export NOVA_HOME=/datas/novaforge3
+            cp $NOVA_HOME/engines/cas_forge/webapps/cas.war /tmp/
+            cd /tmp/
+            unzip cas.war -d cas
+            rm -rf cas.war
+            cd cas
+            rm -rf favicon.ico
+            # Put the new favicon "favicon.ico" in /tmp/cas/.
+            rm -rf images/logos/novaforge.png
+            rm -rf images/logos/footer_bull.png
+            rm -rf images/logos/header_novaforge.png
+            # Put the new logo-header "header_novaforge.png" into /tmp/cas/images/logos/.
+            # Put the new logo-footer "footer_bull.png" into /tmp/cas/images/logos/.
+            # Put the new logo-default "novaforge.png" into /tmp/cas/images/logos/.
+            zip -r cas.war .
+            mv /tmp/cas/cas.war $NOVA_HOME/engines/cas_forge/webapps
+		</programlisting>
+		
+		<para>Update in the deployed WAR folder. Update favicon.png in :</para>
+		
+		<para><filename class="directory">$NOVA_HOME/engines/cas_forge/webapps/cas</filename></para>
+		
+		<para>Update logos "header_novaforge.png", "footer_bull.png", "novaforge.png" in</para>
+		
+		<para><filename class="directory">$NOVA_HOME/engines/cas_forge/webapps/cas/images/logos</filename></para>
+		
+		<para>When logos are updated, restart Tomcat :</para>
+		
+		<programlisting language="shell">
+			systemctl restart cas
+		</programlisting>
+		
+	</sect2>
+	<sect2>
+		<title>Update Portal template JAR</title>
+		<para>Three logos can be customized. Favicon (16*16px), logo-header(258*55px) and logo-footer (32*14px).</para>
+		
+		<para>
+       			<inlinemediaobject>
+            		<imageobject>
+              			<imagedata fileref="02-dialog-warning.png" width="27px"/>
+           			</imageobject>
+       			</inlinemediaobject>
+      			Be careful, replace $TAG by NovaForge version ! </para> 
+		
+		<programlisting language="shell">
+			 export NOVA_HOME=/datas/novaforge3
+			 mkdir /tmp/novaforge-ui-vaadin-theme
+			 cp $NOVA_HOME/engines/karaf/system/
+				org/novaforge/forge/modules/novaforge-ui-vaadin-theme/
+				$TAG/novaforge-ui-vaadin-theme-$TAG.jar /tmp/novaforge-ui-vaadin-theme
+				
+			 cd /tmp/novaforge-ui-vaadin-theme
+			
+			 $NOVA_HOME/engines/java/jdk6/bin/jar xf 
+				novaforge-ui-vaadin-theme-$TAG.jar 
+				VAADIN/themes/novaforge/favicon.ico
+				
+			 $NOVA_HOME/engines/java/jdk6/bin/jar xf 
+				novaforge-ui-vaadin-theme-$TAG.jar 
+				VAADIN/themes/novaforge/modules/header/logo_novaforge.png
+				
+			 $NOVA_HOME/engines/java/jdk6/bin/jar xf 
+				novaforge-ui-vaadin-theme-$TAG.jar 
+				VAADIN/themes/novaforge/modules/footer/logo_bull.png
+				
+			 # Put the new favicon "favicon.ico" in VAADIN/themes/novaforge/.
+			 # Put the new logo-header "logo_novaforge.png" in 
+				VAADIN/themes/novaforge/modules/header/.
+			 # Put the new logo-footer "logo_bull.png" in 
+				VAADIN/themes/novaforge/modules/header/.
+			
+			 $NOVA_HOME/engines/java/jdk6/bin/jar uf 
+				novaforge-ui-vaadin-theme-$TAG.jar 
+				VAADIN/themes/novaforge/favicon.ico
+				
+			 $NOVA_HOME/engines/java/jdk6/bin/jar uf 
+				novaforge-ui-vaadin-theme-$TAG.jar 
+				VAADIN/themes/novaforge/modules/header/logo_novaforge.png
+				
+			 $NOVA_HOME/engines/java/jdk6/bin/jar uf 
+				novaforge-ui-vaadin-theme-$TAG.jar 
+				VAADIN/themes/novaforge/modules/footer/logo_bull.png
+				
+			 mv /tmp/novaforge-ui-vaadin-theme/novaforge-ui-vaadin-theme-$TAG.jar 
+				$NOVA_HOME/engines/karaf/system/
+				org/novaforge/forge/modules/novaforge-ui-vaadin-theme/$TAG/
+		</programlisting>
+		
+		<para>When Portal Template JAR pictures are updated, update then a refresh in the bundle of template NovaForge(tm) :: Modules :: UI :: Commons :: Vaadin  :: Theme, then update in the bundle of portal NovaForge(tm) :: Modules :: Portal :: UI :: Main :</para>
+		
+		<figure>
+			<title>Update and refresh of bundles</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="update_vaadin_theme.png"
+						width="400px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+		
+	</sect2>
+	<sect2>
+		<title>Updating Karaf configuration folder : nf-conf</title>
+		<para>Put the logo-default (130*126px) "default.png" in <filename class="directory">$NOVA_HOME/engines/karaf/nf-conf/portal/icons/</filename> then update the file $NOVA_HOME/engines/karaf/nf-conf/forge/novaforge.properties (touch command on this file is enough)</para>
+	</sect2>
+	<sect2>
+		<title>Update of forge homepage StyleSheet</title>
+		<para>Put the new logo (myimage.png) of the portal homepage in <filename class="directory">$NOVA_HOME/engines/forge-first/img</filename> then edit StyleSheet file styles.css.</para>
+		<programlisting language="shell">
+			export NOVA_HOME=/datas/novaforge3
+			sed -i "s|novaforge.gif|myimage.png|g" 
+				$NOVA_HOME/engines/forge-first/styles.css
+	    </programlisting>
+	</sect2>
+
+	<sect1>
+		<title>Customize labels "NovaForge"</title>
+		<para>Labels "NovaForge" are customizable in several place in Portal UI :</para>
+		
+		<itemizedlist>
+		<listitem>
+			<para>
+				<emphasis>On the login and logout CAS page;</emphasis>
+			</para>
+		</listitem>
+		<listitem>
+			<para>
+				<emphasis>On the forge homepage (after CAS authentication);</emphasis>
+			</para>
+		</listitem>
+		<listitem>
+			<para>
+				<emphasis>In the portal footer;</emphasis>
+			</para>
+		</listitem>
+		<listitem>
+			<para>
+				<emphasis>In the portal (descriptions, error messages etc...);</emphasis>
+			</para>
+		</listitem>
+	</itemizedlist>
+		
+	</sect1>
+	<sect2>
+		<title>Forge Homepage</title>
+		<para>Update in HTML code:</para>
+		<programlisting language="shell">
+			export NOVA_HOME=/datas/novaforge3
+			vi $NOVA_HOME/engines/forge-first/first_en.html
+			vi $NOVA_HOME/engines/forge-first/first_fr.html</programlisting>
+	</sect2>
+	
+	<sect2>
+		<title>Portal Footer</title>
+		<para>Update labels "homeTitle" and "portalFooter" in file <filename>core.configuration.cfg</filename> of Karaf folder :</para>
+		<programlisting language="shell">
+			# export NOVA_HOME=/datas/novaforge3
+			# vi $NOVA_HOME/engines/karaf/nf-conf/forge/
+			core.configuration.cfg</programlisting>
+		<para>Following this modification, update the bundle NovaForge(tm) :: Modules :: Core :: Impl :: Configuration</para>
+	</sect2>
+
+	<sect2>
+		<title>Portal</title>
+		<para>Update in Karaf the labels NovaForge in this following .properties files:</para>
+		<programlisting language="shell">
+		# export NOVA_HOME=/datas/novaforge3
+		# vi $NOVA_HOME/engines/karaf/nf-conf/portal/i18n/
+			messages.properties
+		# vi $NOVA_HOME/engines/karaf/nf-conf/portal/i18n/
+			messages_fr.properties
+		# vi $NOVA_HOME/engines/karaf/nf-conf/portal/i18n/
+			messages_en.properties
+		</programlisting>
+		<para>When files are updated, run the "messages-refresh" command in Karaf Gogo console (web console or shell console).</para>
+		<figure>
+			<title>Update labels in portal</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="messages_refresh.png"
+						width="400px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+	</sect2>
+
+	<sect2>
+		<title>CAS</title>
+		<para>update labels NovaForge in .properties files of webapp .war of CAS and in the deployed webapp folder (if already deployed) :</para>
+		<programlisting language="shell">
+		export NOVA_HOME=/datas/novaforge3
+		cp $NOVA_HOME/engines/cas_forge/webapps/cas.war /tmp/
+		cd /tmp/
+		unzip cas.war -d cas
+		cd cas
+		# Replace NovaForge occurences into these files
+		vi /tmp/cas/WEB-INF/classes/messages_en.properties
+		vi /tmp/cas/WEB-INF/classes/messages_fr.properties
+		zip -r cas.war .
+		mv /tmp/cas/cas.war $NOVA_HOME/engines/cas_forge/webapps/
+		</programlisting>
+	</sect2>
+	
+	<para>Update in deployed webapp folder. Report modifications in :</para>
+		
+	<para><filename class="directory">$NOVA_HOME/engines/cas_forge/webapps/cas/WEB-INF/classes/messages_en.properties</filename></para>
+	<para><filename class="directory">$NOVA_HOME/engines/cas_forge/webapps/cas/WEB-INF/classes/messages_fr.properties</filename></para>
+
+	<para>When files are updated, restart Tomcat :</para>
+		
+	<programlisting language="shell">
+		systemctl restart cas
+	</programlisting>
+
+</chapter>

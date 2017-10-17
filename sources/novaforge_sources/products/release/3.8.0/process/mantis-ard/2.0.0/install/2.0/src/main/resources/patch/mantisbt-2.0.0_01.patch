@@ -1,0 +1,37 @@
+diff -rNU5 mantisbt/core/user_api.php mantisbt-2.0.0/core/user_api.php
+--- mantisbt/core/user_api.php	2016-12-30 21:39:51.000000000 +0100
++++ mantisbt-2.0.0/core/user_api.php	2017-03-09 11:10:46.000000000 +0100
+@@ -19,10 +19,11 @@
+  *
+  * @package CoreAPI
+  * @subpackage UserAPI
+  * @copyright Copyright 2000 - 2002  Kenzaburo Ito - kenito@300baud.org
+  * @copyright Copyright 2002  MantisBT Team - mantisbt-dev@lists.sourceforge.net
++ * @copyright Copyright 2017  Atos, NovaForge Version 3 and above.
+  * @link http://www.mantisbt.org
+  *
+  * @uses access_api.php
+  * @uses authentication_api.php
+  * @uses config_api.php
+@@ -604,17 +605,19 @@
+ 	# Users are added with protected set to FALSE in order to be able to update
+ 	# preferences.  Now set the real value of protected.
+ 	if( $p_protected ) {
+ 		user_set_field( $t_user_id, 'protected', (bool)$p_protected );
+ 	}
+-
++    
+ 	# Send notification email
+-	if( !is_blank( $p_email ) ) {
++	# DEBUT_NOVAFHELP_318 - Disable email notification for email confirmation on user creation
++	if( (!is_blank( $p_email )) && ( config_get( 'create_user_notification' ) == ON ) ) {
+ 		$t_confirm_hash = auth_generate_confirm_hash( $t_user_id );
+ 		token_set( TOKEN_ACCOUNT_ACTIVATION, $t_confirm_hash, TOKEN_EXPIRY_ACCOUNT_ACTIVATION, $t_user_id );
+ 		email_signup( $t_user_id, $t_confirm_hash, $p_admin_name );
+ 	}
++	# FIN_NOVAFHELP_318
+ 
+ 	event_signal( 'EVENT_MANAGE_USER_CREATE', array( $t_user_id ) );
+ 
+ 	return $t_cookie_string;
+ }

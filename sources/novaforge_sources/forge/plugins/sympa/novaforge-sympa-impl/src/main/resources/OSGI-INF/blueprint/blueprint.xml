@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
+					 xmlns:cxf="http://cxf.apache.org/blueprint/core"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd 
+    http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+
+    http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
+
+	<reference id="webServerConfigurator" interface="org.novaforge.forge.commons.webserver.configuration.services.WebServerConfigurator" />
+	<reference id="normalizeService" interface="org.novaforge.forge.commons.technical.normalize.NormalizeService" />
+	<reference id="sympaSoapClient" interface="org.novaforge.forge.plugins.mailinglist.sympa.client.SympaSoapClient" />
+	<reference id="sympaConfigurationService" interface="org.novaforge.forge.plugins.mailinglist.sympa.services.SympaConfigurationService" />
+	<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/pluginSympa)"/>
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+	
+
+	<bean id="instanceConfigurationDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.InstanceConfigurationDAOImpl">
+		<jpa:context unitname="plugins.sympa" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="rolesMappingDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.RolesMappingDAOImpl">
+		<jpa:context unitname="plugins.sympa" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="toolInstanceDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.ToolInstanceDAOImpl">
+		<jpa:context unitname="plugins.sympa" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="uuidDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.UuidDAOImpl">
+		<jpa:context unitname="plugins.sympa" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="userDAO" class="org.novaforge.forge.plugins.mailinglist.sympa.internal.dao.UserDAOImpl">
+		<jpa:context unitname="plugins.sympa" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>	
+	<bean id="subscriptionDAO" class="org.novaforge.forge.plugins.mailinglist.sympa.internal.dao.SubscriptionDAOImpl">
+		<jpa:context unitname="plugins.sympa" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>		
+
+	<bean id="sympaRoleMappingService" class="org.novaforge.forge.plugins.mailinglist.sympa.internal.services.SympaRoleMappingServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="rolesMappingDAO" ref="rolesMappingDAO" />
+	</bean>
+	<bean id="sympaMembershipService" class="org.novaforge.forge.plugins.mailinglist.sympa.internal.services.SympaMembershipServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="pluginRoleMappingService" ref="sympaRoleMappingService" />
+		<property name="sympaSoapClient" ref="sympaSoapClient" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="sympaConfigurationService" ref="sympaConfigurationService" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+	<bean id="sympaProjectService" class="org.novaforge.forge.plugins.mailinglist.sympa.internal.services.SympaProjectServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="normalizeService" ref="normalizeService" />
+		<property name="pluginRoleMappingService" ref="sympaRoleMappingService" />
+		<property name="sympaSoapClient" ref="sympaSoapClient" />
+		<property name="sympaConfigurationService" ref="sympaConfigurationService" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+	<bean id="sympaUserService" class="org.novaforge.forge.plugins.mailinglist.sympa.internal.services.SympaUserServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="sympaSoapClient" ref="sympaSoapClient" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="sympaConfigurationService" ref="sympaConfigurationService" />
+	</bean>
+	<bean id="sympaToolService" class="org.novaforge.forge.plugins.mailinglist.sympa.internal.services.SympaToolServiceImpl">
+		<property name="userDAO" ref="userDAO" />
+	</bean>
+	<bean id="sympaToolInstanceProvider" class="org.novaforge.forge.plugins.commons.services.DefaultToolInstanceProvider">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="pluginConfigurationService" ref="sympaConfigurationService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+	<bean id="sympaInstanceService" class="org.novaforge.forge.plugins.commons.services.DefaultPluginInstanceService">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+	</bean>
+	<cxf:bus id="remoteBus" />
+	<jaxws:endpoint implementor="#sympaInstanceService" implementorClass="org.novaforge.forge.core.plugins.services.PluginInstanceService"  address="/sympaInstance" />
+	<jaxws:endpoint implementor="#sympaToolService" implementorClass="org.novaforge.forge.plugins.mailinglist.sympa.services.SympaToolService"  address="/sympaToolService" />
+		
+	<!--  Configuration for Camel JMS Route -->
+	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
+	<!--  Configuration for Camel JMS Route -->
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<argument ref="jmsConfig" />
+	</bean>
+	<bean id="sympaMembershipRouteBuilder" class="org.novaforge.forge.plugins.mailinglist.sympa.internal.route.SympaMembershipRoute">
+		<property name="pluginMembershipService" ref="sympaMembershipService" />
+	</bean>
+	<bean id="sympaProjectRouteBuilder" class="org.novaforge.forge.plugins.mailinglist.sympa.internal.route.SympaProjectRoute">
+		<property name="pluginProjectService" ref="sympaProjectService" />
+	</bean>
+	<bean id="sympaRolesMappingRouteBuilder" class="org.novaforge.forge.plugins.mailinglist.sympa.internal.route.SympaRolesMappingRoute">
+		<property name="pluginRoleMappingService" ref="sympaRoleMappingService" />
+		<property name="pluginMembershipService" ref="sympaMembershipService" />
+	</bean>
+	<bean id="sympaUserRouteBuilder" class="org.novaforge.forge.plugins.mailinglist.sympa.internal.route.SympaUserRoute">
+		<property name="pluginUserService" ref="sympaUserService" />
+	</bean>
+		<bean id="sympaGroupRouteBuilder" class="org.novaforge.forge.plugins.mailinglist.sympa.internal.route.SympaGroupRoute">
+		<property name="subscriptionDAO" ref="subscriptionDAO" />
+		<property name="categoryService" ref="sympaCategoryService" />
+	</bean>
+	<camelContext id="sympaCamelContext" xmlns="http://camel.apache.org/schema/blueprint">
+		<routeBuilder ref="sympaMembershipRouteBuilder" />
+		<routeBuilder ref="sympaProjectRouteBuilder" />
+		<routeBuilder ref="sympaRolesMappingRouteBuilder" />
+		<routeBuilder ref="sympaUserRouteBuilder" />
+		<routeBuilder ref="sympaGroupRouteBuilder" />
+	</camelContext>
+	<bean id="sympaService" class="org.novaforge.forge.plugins.mailinglist.sympa.internal.SympaServiceImpl">
+	   <!-- Camel context -->
+		<property name="camelContext" ref="sympaCamelContext" />
+	   <!-- Service reference -->
+		<argument ref="uuidDAO" />
+		<property name="pluginConfigurationService" ref="sympaConfigurationService" />
+		<property name="pluginRoleMappingService" ref="sympaRoleMappingService" />
+		<property name="pluginUserService" ref="sympaUserService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="toolInstanceProvisioningService" ref="sympaToolInstanceProvider" />
+		<!-- Configuration -->
+		<property name="type" value="Sympa" />
+		<property name="version" value="${sympa.version}" />
+	</bean>
+	<bean id="subscriptionDelegate" class="org.novaforge.forge.plugins.mailinglist.sympa.internal.delegates.SympaSubscriptionDelegateImpl">
+	<!-- 	<tx:transaction method="*" value="Required" /> -->
+		<property name="subscriptionDAO" ref="subscriptionDAO" />
+		<property name="sympaSoapClient" ref="sympaSoapClient" />
+		<property name="userDAO" ref="userDAO" />
+	</bean>
+	<bean id="sympaCategoryService" class="org.novaforge.forge.plugins.mailinglist.sympa.internal.SympaCategoryServiceImpl" >
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="sympaSoapClient" ref="sympaSoapClient" />
+		<property name="sympaConfigurationService" ref="sympaConfigurationService" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="subscriptionDelegate" ref="subscriptionDelegate" />
+	</bean>
+	<service id="sympaServiceRegistration" ref="sympaService" interface="org.novaforge.forge.core.plugins.services.PluginService">
+		<service-properties>
+			<entry key="type" value="Sympa"/>
+			<entry key="version" value="${sympa.version}"/>
+		</service-properties>
+	</service>
+	<service id="sympaCategoryRegistration" ref="sympaCategoryService" auto-export="interfaces">
+		<service-properties>
+			<entry key="type" value="Sympa"/>
+			<entry key="version" value="${sympa.version}"/>
+		</service-properties>
+	</service>
+	<service ref="instanceConfigurationDAO"
+		interface="org.novaforge.forge.core.plugins.dao.InstanceConfigurationDAO">
+		<service-properties>
+			<entry key="type" value="Sympa"></entry>
+			<entry key="version" value="6.1.14"/>
+		</service-properties>
+	</service>
+	<bean id="pluginServiceRegistration" class="org.novaforge.forge.plugins.commons.services.PluginServiceRegistration">
+		<argument ref="blueprintBundleContext" />
+		<argument ref="sympaServiceRegistration" />
+		<argument ref="sympaCategoryRegistration" />
+	</bean>
+</blueprint>

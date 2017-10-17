@@ -1,0 +1,247 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+
+.tabulationPanel {
+	height: 100%;
+	width: 100%;
+}
+
+.tabulationPanel .gwt-TabLayoutPanelTabs {
+	
+}
+
+.tabulationPanel .gwt-TabLayoutPanelContentContainer {
+	border-color: #bcbcbc;
+	border-style: solid;
+	border-width: 2px 1px 1px;
+}
+
+.tabulationPanel .gwt-TabLayoutPanelContent {
+	border-color: #bcbcbc;
+	border-style: solid;
+	border-width: 1px;
+	overflow: hidden;
+	padding: 6px;
+}
+
+.tabulationPanel .gwt-TabLayoutPanelTab {
+	cursor: pointer;
+	cursor: hand;
+	font-weight: bold;
+	background: #D3D3D3;
+	padding: 5px 20px 5px 20px;
+	margin-left: 3px;
+	border-radius: 10px 10px 0px 0px;
+	-moz-border-radius: 10px 10px 0px 0px;
+	-webkit-border-radius: 10px 10px 0px 0px;
+}
+
+.tabulationPanel .gwt-TabLayoutPanelTab-selected {
+	background: #708090;
+	cursor: default;
+}
+
+.tabulationPanel .gwt-TabLayoutPanelTabInner {
+	
+}
+
+.progressbar-text {
+	font-weight: bold;
+}
+
+.progressbar-remaining {
+	font-size: 12px;
+	font-style: italic;
+}
+
+.progressbar-outer {
+	border: 1px solid black;
+}
+
+.progressbar-inner {
+	margin: 1px;
+}
+
+.progressbar-bar {
+	width: 3px;
+	height: 12px;
+	margin: 1px;
+}
+
+.progressbar-fullbar {
+	background: yellowGreen;
+}
+
+.progressbar-blankbar {
+	
+}
+
+.GWTUpld {
+	
+}
+
+
+.GWTUpld form,.GWTUpld .upld-form-elements {
+	padding: 0px;
+	vertical-align: top;
+}
+
+.GWTUpld .changed {
+	color: yellowGreen;
+	font-weight: bold;
+	text-decoration: blink;
+}
+
+.GWTUpld .gwt-Button,.GWTUpld .gwt-FileUpload {
+	min-height: 15px;
+}
+
+.GWTUpld .gwt-Button:HOVER {
+	color: #af6b29;
+}
+
+.gwt-SuggestBox-common {
+	margin-left: 5px;
+}
+
+.gwt-SuggestBoxPopup-common {
+	
+}
+
+.gwt-SuggestBoxPopup-common .item {
+	padding: 2px 6px;
+	color: #000;
+	cursor: pointer;
+	font-size: 110%;
+}
+
+.gwt-SuggestBoxPopup-common .item-selected {
+	background: #e4ffd6;
+	font-weight: bold;
+}
+
+.gwt-SuggestBoxPopup-common .suggestPopupContent {
+	background: white;
+	height: 150px;
+	width: 200px;
+	overflow-y: auto;
+	overflow-x:hidden;
+}
+
+.gwt-SuggestBoxPopup-common .suggestPopupTopCenter {
+	border-top: 1px solid #bbb;
+}
+
+.gwt-SuggestBoxPopup-common .suggestPopupBottomCenter {
+	border-bottom: 1px solid #bbb;
+}
+
+.gwt-SuggestBoxPopup-common .suggestPopupTopCenterInner,.gwt-SuggestBoxPopup-common .suggestPopupBottomCenterInner
+	{
+	height: 1px;
+	line-height: 1px;
+}
+
+.gwt-SuggestBoxPopup-common .suggestPopupMiddleLeft {
+	border-right: 1px solid #bbb;
+}
+
+.gwt-SuggestBoxPopup-common .suggestPopupMiddleRight {
+	border-left: 1px solid #bbb;
+}
+
+.gwt-SuggestBoxPopup-common .suggestPopupMiddleLeftInner,.gwt-SuggestBoxPopup-common .suggestPopupMiddleRightInner
+	{
+	width: 1px;
+	line-height: 1px;
+}
+
+.gwt-SuggestBoxPopup-common .suggestPopupTopLeftInner {
+	width: 0px;
+	height: 0px;
+	zoom: 1;
+}
+
+.gwt-SuggestBoxPopup-common .suggestPopupTopRightInner {
+	width: 0px;
+	height: 0px;
+	zoom: 1;
+}
+
+.gwt-SuggestBoxPopup-common .suggestPopupBottomLeftInner {
+	width: 0px;
+	height: 0px;
+	zoom: 1;
+}
+
+.gwt-SuggestBoxPopup-common .suggestPopupBottomRightInner {
+	width: 0px;
+	height: 0px;
+	zoom: 1;
+}
+
+.gwt-SuggestBoxPopup-common .suggestPopupTopLeft {
+	
+}
+
+.gwt-SuggestBoxPopup-common .suggestPopupTopRight {
+	
+}
+
+.gwt-SuggestBoxPopup-common .suggestPopupBottomLeft {
+	
+}
+
+.gwt-SuggestBoxPopup-common .suggestPopupBottomRight {
+	
+}
+
+html>body .gwt-SuggestBoxPopup-common {
+	
+}
+
+* html .gwt-SuggestBoxPopup-common .suggestPopupTopLeftInner {
+	width: 0px;
+	height: 0px;
+	overflow: hidden;
+}
+
+* html .gwt-SuggestBoxPopup-common .suggestPopupTopRightInner {
+	width: 0px;
+	height: 0px;
+	overflow: hidden;
+}
+
+* html .gwt-SuggestBoxPopup-common .suggestPopupBottomLeftInner {
+	width: 0px;
+	height: 0px;
+	overflow: hidden;
+}
+
+* html .gwt-SuggestBoxPopup-common .suggestPopupBottomRightInner {
+	width: 0px;
+	height: 0px;
+	overflow: hidden;
+}

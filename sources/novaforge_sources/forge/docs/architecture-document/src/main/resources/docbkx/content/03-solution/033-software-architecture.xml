@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the
+ * Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+ *
+ * If you modify this Program, or any covered work, by linking or combining
+ * it with libraries listed in COPYRIGHT file at the top-level directory of
+ * this distribution (or a modified version of that libraries), containing parts
+ * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+ * of this Program grant you additional permission to convey the resulting work.
+ -->
+<section version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook">
+  <para>
+    Cette section détaille pour chaque paquet son rôle et ses interactions et les composants qui
+    le compososent en précisant.
+  </para>
+
+  <sect3>
+    <title>Services de présentation</title>
+    <para>
+      Les services de présentation se décomposent en deux sous-systèmes : le
+      <emphasis role="bold">portail</emphasis>
+      et les
+      <emphasis role="bold">composants
+        graphiques
+      </emphasis>
+      . La figure ci-dessous décrit la composition de ces deux systèmes et
+      leur interactions:
+      <itemizedlist>
+        <listitem>
+          <para>
+            En gris, les deux sous systèmes.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            En rouge, le composant offrant un accès externe.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            En violet, les composants exposant les modèles partagés.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            En bleu foncé, le composant offrant les services centraux.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            En bleu clair, les composants principaux du portail.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            En vert, les composants décorant le portail.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            En orange, les composants graphiques permettant l'administration de l'application.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            En jaune, les composants graphiques offrant des modèles et classes partagés.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </para>
+    <figure>
+      <title>Vue détaillée des services de présentation</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="033-presentation.png" width="500px"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <sect4>
+      <title>Portail</title>
+      <sect5>
+        <title>portal-apis et portal-xml</title>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Rôle</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ces composants contiennent les interfaces et les objets partagés par tous les composants
+          graphique.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Intéractions</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Tous les composants du portail vont dépendre directement de ces composants.
+        </para>
+      </sect5>
+      <sect5>
+        <title>portal-impl</title>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Rôle</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant est le coeur du portail. Il est responsable de la construction des menus en
+          fonction du contexte utilisateur, référence tous les modules graphiques disponibles
+          et gère leurs disponibilités.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Intéractions</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Il offre plusieurs services aux autres composants de présentations, et se repose sur les services métiers pour
+          récupérer le contexte utilisateur.
+        </para>
+      </sect5>
+      <sect5>
+        <title>portal-ui</title>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Rôle</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant sert de point d'accès unique pour les utilisateurs externes, en redirigeant en fonction de leurs
+          authorisations leurs appels sur les composants graphiques demandés.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Intéractions</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>Il agrège les composants graphiques sous forme de portail.
+        </para>
+      </sect5>
+      <sect5>
+        <title>portail-ui-private</title>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Rôle</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant est utilisé lorsque l'utilisateur est identifié sur le système. Il permet
+          la navigation entre les différents projets et applications d'un utilisateur.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Intéractions</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Il dépend des services métiers pour répondre aux demandes utilisateurs.
+        </para>
+      </sect5>
+      <sect5>
+        <title>portail-ui-public</title>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Rôle</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant est utilisé lorsque l'utilisateur est identifié sur le système, ou crée un compte.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Intéractions</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Il dépend des services métiers pour répondre aux demandes utilisateurs.
+        </para>
+      </sect5>
+      <sect5>
+        <title>portal-ui-header et portal-ui-footer</title>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Rôle</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ces composants décorent le contenu affiché par le portail en affichant une en-tête et un
+          pied de page.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Intéractions</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Les utilisateurs externes accèdent à ces composants à travers le composant portal-ui.
+        </para>
+      </sect5>
+      <sect5>
+        <title>portail-ui-changepwd et portail-ui-recoverypwd</title>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Rôle</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ces composants sont utilisés lorsqu'un utilisateur doit changer ou réinitialiser son mot
+          de passe.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Intéractions</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Les utilisateurs externes accèdent à ces composants à travers le composant portal-ui-public. Ils utilisent les
+          services métiers pour répondre à leur demande.
+        </para>
+      </sect5>
+    </sect4>
+    <sect4>
+      <title>Composants graphiques</title>
+      <sect5>
+        <title>ui-vaadin-themes</title>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Rôle</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant contient tous les éléments définissant l'aspect graphique du portail : les
+          feuilles de style et les images.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Intéractions</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Tous les composants du portail vont dépendre directement de ce composant.
+        </para>
+      </sect5>
+      <sect5>
+        <title>ui-vaadin-libraries</title>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Rôle</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant contient des modules partagés, utilisés par les autres composants
+          graphiques, par exemple des boutons personnalisés, des validateurs de champs, des classes
+          abstraites définissant le comportement d'un module, etc.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Intéractions</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Tous les composants du portail vont dépendre directement de ce composant.
+        </para>
+      </sect5>
+      <sect5>
+        <title>ui-public-projects</title>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Rôle</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant graphique permet à un utilisateur d'obtenir la liste des projets publics et
+          d'effectuer une demande pour les rejoindre.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Intéractions</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Lorsque l'utilisateur en fait la demande, il est appelé par portal-ui-private et se repose sur les services
+          métiers.
+        </para>
+      </sect5>
+      <sect5>
+        <title>ui-projects-management</title>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Rôle</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant graphique permet à un utilisateur d'administrer les données de son projet
+          ou bien à un administrateur de gérer l'ensemble des problèmes de la forge
+          (validation, refus ou suppression).
+        </para>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Intéractions</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant est appelé par portal-ui-private, lorsque l'utilisateur en fait la demande. Il se repose sur les
+          services métiers.
+        </para>
+      </sect5>
+      <sect5>
+        <title>ui-application-management</title>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Rôle</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant graphique permet à un utilisateur d'administrer les applications de son
+          projet.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Intéractions</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant est appelé par portal-ui-private, lorsque l'utilisateur en fait la demande. Il se repose sur les
+          services métiers.
+        </para>
+      </sect5>
+      <sect5>
+        <title>ui-membership-management</title>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Rôle</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant graphique permet à un utilisateur d'administrer les affiliations de son
+          projet.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Intéractions</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant est appelé par portal-ui-private, lorsque l'utilisateur en fait la demande. Il se repose sur les
+          services
+          métiers décrits plus loin.
+        </para>
+      </sect5>
+      <sect5>
+        <title>ui-mailinglist-management</title>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Rôle</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant graphique permet à un utilisateur d'administrer les listes de diffusions de
+          son projet.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Intéractions</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant est appelé par portal-ui-private, lorsque l'utilisateur en fait la demande. Il se repose sur les
+          services métiers.
+        </para>
+      </sect5>
+      <sect5>
+        <title>ui-users-management</title>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Rôle</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant graphique permet à un administrateur de gérer les utilisateurs. (création,
+          édition ou suppression de compte)
+        </para>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Intéractions</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant est appelé par portal-ui-private, lorsque l'administrateur en fait la
+          demande. Il se repose sur les services métiers.
+        </para>
+      </sect5>
+      <sect5>
+        <title>ui-plugins-management</title>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Rôle</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant graphique permet à un administrateur de gérer les plugins : vérifier leur
+          disponibilité, éditer des instances, etc
+        </para>
+        <itemizedlist>
+          <listitem>
+            <emphasis role="bold">Intéractions</emphasis>
+          </listitem>
+        </itemizedlist>
+        <para>
+          Ce composant est appelé par portal-ui-private, lorsque l'administrateur en fait la
+          demande. Il se repose sur les services métiers.
+        </para>
+      </sect5>
+    </sect4>
+  </sect3>
+
+  <sect3>
+    <title>Services métiers</title>
+    <para>
+      Les services métiers contiennent l'ensemble des régles fonctionnelles définissant le
+      métier de l'application. La figure ci-dessous décrit sa composition et les interactions :
+      <itemizedlist>
+        <listitem>
+          <para>
+            En bleu foncé, les composants offrants les services métiers.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            En violet, les composant exposant les modèles partagés.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            En bleu clair, le composant offrant des services transverses.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            En orange, les composants gérant les aspects liés à la sécurité.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </para>
+    <figure>
+      <title>Vue détaillée des services métiers</title>
+      <mediaobject>
+        <imageobject>
+          <imagedata align="center" fileref="033-business.png" width="500px"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <sect4>
+      <title>core-organisation et core-security</title>
+      <itemizedlist>
+        <listitem>
+          <emphasis role="bold">Rôle</emphasis>
+        </listitem>
+      </itemizedlist>
+      <para>
+        Ces composants contiennent les interfaces et les objets partagés.
+      </para>
+      <itemizedlist>
+        <listitem>
+          <emphasis role="bold">Intéractions</emphasis>
+        </listitem>
+      </itemizedlist>
+      <para>
+        Tous les composants du coeur vont dépendre directement de ces composants.
+      </para>
+    </sect4>
+    <sect4>
+      <title>core-user-jpa-impl et core-user-ldap-impl</title>
+      <itemizedlist>
+        <listitem>
+          <emphasis role="bold">Rôle</emphasis>
+        </listitem>
+      </itemizedlist>
+      <para>
+        Ces composants contiennent le code métier permettant de gérer un utilisateur au sein de la forge.
+      </para>
+      <itemizedlist>
+        <listitem>
+          <emphasis role="bold">Intéractions</emphasis>
+        </listitem>
+      </itemizedlist>
+      <para>
+        Les services de la couche de présentation vont utilisés ces services lors d'actions utilisateurs spécifiques :
+        création de compte, modification ou encore gestion des utilisateurs. Ces composants dépendent de la couche de
+        persistence pour fournir leurs services.
+      </para>
+    </sect4>
+    <sect4>
+      <title>core-organization-impl</title>
+      <itemizedlist>
+        <listitem>
+          <emphasis role="bold">Rôle</emphasis>
+        </listitem>
+      </itemizedlist>
+      <para>
+        Ce composant contient le code métier permettant de gérer les éléments organisationnelles de la forge, i.e les
+        projets, les affiliations, les rôles et les applications.
+      </para>
+      <itemizedlist>
+        <listitem>
+          <emphasis role="bold">Intéractions</emphasis>
+        </listitem>
+      </itemizedlist>
+      <para>
+        Un ensemble de services dit "Presenter" sont exposés. Les services de la couche présentation vont dépendre de
+        ces services afin de fournir les fonctionnalités associées.
+      </para>
+    </sect4>
+    <sect4>
+      <title>core-organization-delegation-impl</title>
+      <itemizedlist>
+        <listitem>
+          <emphasis role="bold">Rôle</emphasis>
+        </listitem>
+      </itemizedlist>
+      <para>
+        Ce composant contient du code métier permettant de gérer des éléments transverses tels que l'envoie de
+        notification, la gestion des permissions par rapport aux modèles de forges, ou la propagation des données aux
+        outils.
+      </para>
+      <itemizedlist>
+        <listitem>
+          <emphasis role="bold">Intéractions</emphasis>
+        </listitem>
+      </itemizedlist>
+      <para>
+        Les services exposés par ce composant se reposent sur les services techniques ou de sécurités. Ils sont utilisés
+        par
+        les services du composants core-organization-impl.
+      </para>
+    </sect4>
+    <sect4>
+      <title>core-security-impl, core-security-shiro et core-security-cxf</title>
+      <itemizedlist>
+        <listitem>
+          <emphasis role="bold">Rôle</emphasis>
+        </listitem>
+      </itemizedlist>
+      <para>
+        Ces composants contiennent le code métier permettant de gérer les éléments de sécurités de la forge tels que
+        l'authentification et les authorisations d'accès.
+      </para>
+      <itemizedlist>
+        <listitem>
+          <emphasis role="bold">Intéractions</emphasis>
+        </listitem>
+      </itemizedlist>
+      <para>
+        Les services exposés par ces composant se reposent sur des librairies externes (shiro) ou les services de
+        persistances pour fonctionner. Ils sont utilisés directement par les composants graphiques ou les services
+        métiers pour gérer les accès.
+      </para>
+    </sect4>
+  </sect3>
+
+  <sect3>
+    <title>Services de persistances</title>
+    <para>
+      Les services de persistances contiennent les éléments permettant de stocker les informations de la forges.
+    </para>
+  </sect3>
+
+  <sect3>
+    <title>Services d'intégrations</title>
+    <para></para>
+  </sect3>
+
+  <sect3>
+    <title>Systèmes externes</title>
+    <para></para>
+  </sect3>
+
+  <sect3>
+    <title>Services transverse</title>
+    <para></para>
+  </sect3>
+</section>

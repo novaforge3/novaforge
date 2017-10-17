@@ -1,0 +1,78 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+ 
+ .portal-header {
+	background-color: #2b2b2b;
+	background-image: -moz-linear-gradient(top,#515151,#2b2b2b);
+	background-image: -webkit-gradient(linear,0 0,0 100%,from(#515151),to(#2b2b2b));
+	background-image: -webkit-linear-gradient(top,#515151,#2b2b2b);
+	background-image: -o-linear-gradient(top,#515151,#2b2b2b);
+	background-image: linear-gradient(to bottom,#515151,#2b2b2b);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff515151', endColorstr='#ff2b2b2b', GradientType=0);
+}
+
+.portal-header .v-button-link .v-button-wrap .v-button-caption {
+	color: #66A3C7;
+}
+ 
+.v-verticallayout-project {	
+	border-bottom: 2px ridge #66A3C7;
+	border-left: 2px ridge #66A3C7;
+	border-right: 2px ridge #66A3C7;
+	border-radius: 0px 0px 6px 6px;
+	-moz-border-radius:0px 0px 6px 6px;
+	-webkit-border-radius:0px 0px 6px 6px;
+	padding-top: 5px;
+	padding-bottom: 4px;
+	padding-left: 15px;
+	padding-right: 15px;
+	box-shadow: 1px 1px 12px #66A3C7;
+	-moz-box-shadow: 1px 1px 12px #66A3C7;
+	-webkit-box-shadow: 1px 1px 12px #66A3C7;
+}
+
+.v-verticallayout-project .v-button-link {	
+	margin-top: 2px;
+}
+
+.nf-portal-header-user-icon {
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+	-moz-border-top-right-radius: 99em !important;
+	-webkit-border-top-right-radius: 99em !important;
+	border-top-right-radius: 99em !important;
+	-moz-border-bottom-right-radius: 99em !important;
+	-webkit-border-bottom-right-radius: 99em !important;
+	border-bottom-right-radius: 99em !important;
+	-moz-border-top-left-radius: 99em !important;
+	-webkit-border-top-left-radius: 99em !important;
+	border-top-left-radius: 99em !important;
+	-moz-border-bottom-left-radius: 99em !important;
+	-webkit-border-bottom-left-radius: 99em !important;
+	border-bottom-left-radius: 99em !important;
+	border: 3px solid #66A3C7;
+}

@@ -1,0 +1,4 @@
+<IfModule mod_proxy.c>
+	ProxyPass /%ALIAS% http://%HOST%:%PORT_KARAF%/%ALIAS%
+	ProxyPassReverse /%ALIAS% http://%HOST%:%PORT_KARAF%/%ALIAS%
+</IfModule>

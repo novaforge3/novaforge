@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<sect1 version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+	<title id="create-project">Créer un projet</title>
+
+	<para>
+		Chaque utilisateur de la forge peut créer un projet. Pour cela il
+		suffit d'ouvrir le lien
+		<emphasis role="bold">Mon espace</emphasis>
+		dans le menu de navigation et choisir
+		<emphasis role="bold">Créer un projet.</emphasis>
+	</para>
+
+	<figure>
+		<title>Menu Créer un projet</title>
+
+		<mediaobject>
+			<imageobject>
+				<imagedata align="center" fileref="04-00-CreateProjectMenu.png"
+					width="250px" />
+			</imageobject>
+		</mediaobject>
+	</figure>
+
+	<para>Une fois l'application de création de projet lancée, suivre
+		les étapes suivantes :
+	</para>
+
+	<itemizedlist>
+		<listitem>
+			<para>Remplir le nom du projet.</para>
+		</listitem>
+
+		<listitem>
+			<para>Remplir l'identifiant du projet.</para>
+		</listitem>
+
+		<listitem>
+			<para>Ajouter le projet à un organisme existant à un nouvel organisme
+				à
+				créer par l'utilisateur (liste déroulante éditable afin de pouvoir
+				enrichir avec de nouveaux organismes).
+			</para>
+		</listitem>
+
+		<listitem>
+			<para>Remplir une description du projet.</para>
+		</listitem>
+
+		<listitem>
+			<para>Choisir une licence du projet.</para>
+		</listitem>
+
+		<listitem>
+			<para>Remplir une description du projet.</para>
+		</listitem>
+
+		<listitem>
+			<para>Choisir si le projet est public ou privé.</para>
+		</listitem>
+
+		<listitem>
+			<para>Il est possible de choisir une image qui représentera l'icone
+				du
+				projet. Si aucune image n'est fournie, une image Novaforge est utilisée
+				par défaut.
+			</para>
+		</listitem>
+
+		<listitem>
+			<para>Choisir un template du projet.</para>
+		</listitem>
+
+		<listitem>
+			<para>Cliquer sur Ajouter puis valider votre choix.</para>
+		</listitem>
+	</itemizedlist>
+
+	<para>La figure suivante présente l'écran de création d'un projet :
+	</para>
+		<figure>
+		<title>Créer un projet</title>
+
+		<mediaobject>
+			<imageobject>
+				<imagedata align="center" fileref="04-01-CreateProject.png"
+					width="350px" />
+			</imageobject>
+		</mediaobject>
+	</figure>
+</sect1>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+
+
+<ipojo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="org.apache.felix.ipojo http://felix.apache.org/ipojo/schemas/CURRENT/core.xsd"
+			 xmlns="org.apache.felix.ipojo">
+      <!--
+   =========================================================================================
+      Connector to synchronize requirements from CDO repository
+   =========================================================================================
+    -->
+	<component classname="org.novaforge.forge.tools.requirements.common.internal.connectors.CDORequirementConnectorImpl"
+		name="CDORequirementConnector">
+		<requires field="requirementFactory" optional="false" />
+		<requires field="requirementManagerService" optional="false" />
+		<requires field="requirementRepositoryService" optional="false" />
+		<requires field="historizationService" optional="false" />
+		<provides />
+<!-- 		<handlers:historization /> -->
+
+		<properties pid="requirements.cdo.connector">
+			<property name="host" method="setHost" type="String" />
+			<property name="port" method="setPort" type="String" value="2036" />
+			<property name="repository" method="setRepository" type="String" />
+		</properties>
+	</component>
+
+      <!--
+   =========================================================================================
+      Connector to synchronize requirements from Excel repository
+   =========================================================================================
+    -->
+	<component classname="org.novaforge.forge.tools.requirements.common.internal.connectors.ExcelRequirementConnectorImpl"
+		name="ExcelRequirementConnector">
+		<requires field="requirementFactory" optional="false" />
+		<requires field="requirementManagerService" optional="false" />
+		<requires field="requirementRepositoryService" optional="false" />
+		<requires field="historizationService" optional="false" />
+		<provides />
+<!-- 		<handlers:historization /> -->
+
+    <properties pid="requirements.excel.connector">
+      <property name="columnType" method="setColumnType" type="int" value="6"/>
+      <property name="columnSubtype" method="setColumnSubtype" type="int" value="9"/>
+      <property name="columnReference" method="setColumnReference" type="int" value="0"/>
+      <property name="columnName" method="setColumnName" type="int" value="0"/>
+      <property name="columnDescription" method="setColumnDescription" type="int" value="5"/>
+      <property name="columnStatus" method="setColumnStatus" type="int" value="15"/>
+      <property name="columnVersion" method="setColumnVersion" type="int" value="18"/>
+      <property name="columnComments" method="setColumnComments" type="int" value="19"/>
+      <property name="columnKinship" method="setColumnKinship" type="int" value="20"/>
+      <property name="rowFirstRequirement" method="setRowFirstRequirement" type="int" value="5"/>
+    </properties>
+  </component>
+
+      <!--
+   =========================================================================================
+      Connector to synchronize requirements from SVN repository
+   =========================================================================================
+    -->
+
+	<component classname="org.novaforge.forge.tools.requirements.common.internal.connectors.SVNRequirementConnectorImpl"
+		name="SVNRequirementConnector">
+		<provides />
+		<requires field="historizationService" optional="false" />
+		<requires field="messageService" optional="false" />
+<!-- 		<handlers:historization /> -->
+
+		<properties pid="requirements.svn.connector">
+			<property name="requirement.enum.class" method="setRequirementEnumClassName" type="String"
+				value="Requirement_Enum" />
+		</properties>
+	</component>
+
+
+        <!--
+   =========================================================================================
+      Connector to synchronize requirements from TestLink repository
+   =========================================================================================
+    -->
+
+	<component
+		classname="org.novaforge.forge.tools.requirements.common.internal.connectors.TestlinkRequirementConnectorImpl"
+		name="testlinkRequirementConnector">
+		<provides />
+<!-- 		<handlers:historization /> -->
+		<requires field="historizationService" optional="false" />
+		<requires field="messageService" optional="false" />
+	</component>
+
+	<instance component="CDORequirementConnector" />
+	<instance component="ExcelRequirementConnector" />
+	<instance component="SVNRequirementConnector" />
+	<instance component="testlinkRequirementConnector" />
+</ipojo>

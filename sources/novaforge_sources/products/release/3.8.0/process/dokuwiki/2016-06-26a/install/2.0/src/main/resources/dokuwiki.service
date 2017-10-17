@@ -1,0 +1,11 @@
+Alias /@DEFAULT_ALIAS@/@TOOL_ALIAS@ "@HOME@/"
+
+<Directory @HOME@>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride none
+        Require all granted
+</Directory>
+
+<LocationMatch "/@DEFAULT_ALIAS@/@TOOL_ALIAS@/(data|conf|bin|inc)/">
+        Require all denied
+</LocationMatch>

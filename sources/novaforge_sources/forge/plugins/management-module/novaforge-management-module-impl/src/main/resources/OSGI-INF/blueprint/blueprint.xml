@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd 
+    http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+	<reference id="webServerConfigurator" interface="org.novaforge.forge.commons.webserver.configuration.services.WebServerConfigurator" />
+	<reference id="normalizeService" interface="org.novaforge.forge.commons.technical.normalize.NormalizeService" />
+	<reference id="managementModuleConfigurationService"
+		interface="org.novaforge.forge.plugins.management.managementmodule.services.ManagementModuleConfigurationService" />
+	<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/pluginManagementModule)" />
+	
+	<reference id="managementModuleManager" interface="org.novaforge.forge.tools.managementmodule.business.ManagementModuleManager" />
+	<reference id="referentielManager" interface="org.novaforge.forge.tools.managementmodule.business.ReferentielManager" />
+	<reference id="projectPlanManager" interface="org.novaforge.forge.tools.managementmodule.business.ProjectPlanManager" />
+	<reference id="taskManager" interface="org.novaforge.forge.tools.managementmodule.business.TaskManager" />
+	<reference id="iterationManager" interface="org.novaforge.forge.tools.managementmodule.business.IterationManager" />
+	<reference id="managementModuleResourceMapper" interface="org.novaforge.forge.tools.managementmodule.services.ManagementModuleResourceMapper" />
+	<reference id="businessObjectFactory" interface="org.novaforge.forge.tools.managementmodule.business.BusinessObjectFactory" />
+	<reference id="requestService" interface="org.novaforge.forge.core.plugins.services.ApplicationRequestService" />
+	<reference id="managementConfigurationService" interface="org.novaforge.forge.plugins.management.managementmodule.services.ManagementModuleConfigurationService" />
+		<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+	
+	<bean id="instanceConfigurationDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.InstanceConfigurationDAOImpl">
+		<jpa:context unitname="plugins.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="rolesMappingDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.RolesMappingDAOImpl">
+		<jpa:context unitname="plugins.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="toolInstanceDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.ToolInstanceDAOImpl">
+		<jpa:context unitname="plugins.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="uuidDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.UuidDAOImpl">
+		<jpa:context unitname="plugins.management-module" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	
+	<bean id="managementFunctionalService"
+		class="org.novaforge.forge.plugins.management.managementmodule.internal.services.ManagementModuleFunctionalServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="taskManager" ref="taskManager" />
+		<property name="managementModuleManager" ref="managementModuleManager" />
+		<property name="projectPlanManager" ref="projectPlanManager" />
+		<property name="iterationManager" ref="iterationManager" />
+		<property name="managementModuleResourceMapper" ref="managementModuleResourceMapper" />
+	</bean>
+	<bean id="managementRoleMappingService"
+		class="org.novaforge.forge.plugins.management.managementmodule.internal.services.ManagementModuleRoleMappingServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="rolesMappingDAO" ref="rolesMappingDAO" />
+		<property name="managementModuleManager" ref="managementModuleManager" />
+	</bean>
+	<bean id="managementMembershipService"
+		class="org.novaforge.forge.plugins.management.managementmodule.internal.services.ManagementModuleMembershipServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="pluginRoleMappingService" ref="managementRoleMappingService" />
+		<property name="managementModuleManager" ref="managementModuleManager" />
+	</bean>
+	<bean id="managementProjectService"
+		class="org.novaforge.forge.plugins.management.managementmodule.internal.services.ManagementModuleProjectServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="normalizeService" ref="normalizeService" />
+		<property name="pluginRoleMappingService" ref="managementRoleMappingService" />
+		<property name="managementModuleManager" ref="managementModuleManager" />
+		<property name="referentielManager" ref="referentielManager" />
+		<property name="projectPlanManager" ref="projectPlanManager" />
+	</bean>
+	<bean id="managementUserService"
+		class="org.novaforge.forge.plugins.management.managementmodule.internal.services.ManagementModuleUserServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="managementModuleManager" ref="managementModuleManager" />
+	</bean>
+	<bean id="managementToolInstanceProvider" class="org.novaforge.forge.plugins.management.managementmodule.internal.services.ManagementModuleToolInstanceProvider">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="pluginConfigurationService" ref="managementConfigurationService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+	<bean id="managementPluginService" class="org.novaforge.forge.plugins.management.managementmodule.internal.services.ManagementModulePluginServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="requestService" ref="requestService" />
+		<property name="businessObjectFactory" ref="businessObjectFactory" />	
+	</bean>	
+		
+	<!--  Configuration for Camel JMS Route -->
+	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
+	<!--  Configuration for Camel JMS Route -->
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<argument ref="jmsConfig" />
+	</bean>
+	<bean id="managementMembershipRouteBuilder"
+		class="org.novaforge.forge.plugins.management.managementmodule.internal.route.ManagementModuleMembershipRoute">
+		<property name="pluginMembershipService" ref="managementMembershipService" />
+	</bean>
+	<bean id="managementProjectRouteBuilder"
+		class="org.novaforge.forge.plugins.management.managementmodule.internal.route.ManagementModuleProjectRoute">
+		<property name="pluginProjectService" ref="managementProjectService" />
+	</bean>
+	<bean id="managementRolesMappingRouteBuilder"
+		class="org.novaforge.forge.plugins.management.managementmodule.internal.route.ManagementModuleRolesMappingRoute">
+		<property name="pluginRoleMappingService" ref="managementRoleMappingService" />
+		<property name="pluginMembershipService" ref="managementMembershipService" />
+	</bean>
+	<bean id="managementUserRouteBuilder" class="org.novaforge.forge.plugins.management.managementmodule.internal.route.ManagementModuleUserRoute">
+		<property name="pluginUserService" ref="managementUserService" />
+	</bean>
+	<camelContext id="managementCamelContext" xmlns="http://camel.apache.org/schema/blueprint">
+		<routeBuilder ref="managementMembershipRouteBuilder" />
+		<routeBuilder ref="managementProjectRouteBuilder" />
+		<routeBuilder ref="managementRolesMappingRouteBuilder" />
+		<routeBuilder ref="managementUserRouteBuilder" />
+	</camelContext>
+	<bean id="managementService" class="org.novaforge.forge.plugins.management.managementmodule.internal.ManagementModuleServiceImpl">
+	   <!-- Camel context -->
+		<property name="camelContext" ref="managementCamelContext" />
+	   <!-- Service reference -->
+		<argument ref="uuidDAO" />
+		<property name="pluginConfigurationService" ref="managementConfigurationService" />
+		<property name="pluginRoleMappingService" ref="managementRoleMappingService" />
+		<property name="pluginUserService" ref="managementUserService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="toolInstanceProvisioningService" ref="managementToolInstanceProvider" />
+		<property name="managementModuleManager" ref="managementModuleManager" />
+		<!-- Configuration -->
+		<property name="type" value="managementModule" />
+		<property name="version" value="${novaforge.version}" />
+	</bean>
+	<bean id="managementCategoryService" class="org.novaforge.forge.plugins.management.managementmodule.internal.ManagementModuleCategoryServiceImpl" >
+		<property name="managementModuleFunctionalService" ref="managementFunctionalService"></property>
+	</bean>
+	<service id="managementServiceRegistration" ref="managementService"
+		interface="org.novaforge.forge.core.plugins.services.PluginService">
+		<service-properties>
+			<entry key="type" value="managementModule"></entry>
+			<entry key="version" value="${novaforge.version}"></entry>
+		</service-properties>
+	</service>
+	<service ref="instanceConfigurationDAO"
+		interface="org.novaforge.forge.core.plugins.dao.InstanceConfigurationDAO">
+		<service-properties>
+			<entry key="type" value="managementModule"></entry>
+			<entry key="version" value="${novaforge.version}"></entry>
+		</service-properties>
+	</service>
+	<service id="managementCategoryRegistration" ref="managementCategoryService" auto-export="interfaces">
+		<service-properties>
+			<entry key="type" value="managementModule"></entry>
+			<entry key="version" value="${novaforge.version}"></entry>
+		</service-properties>
+	</service>
+	<bean id="pluginServiceRegistration" class="org.novaforge.forge.plugins.commons.services.PluginServiceRegistration">
+		<argument ref="blueprintBundleContext" />
+		<argument ref="managementServiceRegistration" />
+		<argument ref="managementCategoryRegistration" />
+	</bean>
+	<service ref="managementPluginService" interface="org.novaforge.forge.plugins.management.managementmodule.services.ManagementModulePluginService" />
+</blueprint>

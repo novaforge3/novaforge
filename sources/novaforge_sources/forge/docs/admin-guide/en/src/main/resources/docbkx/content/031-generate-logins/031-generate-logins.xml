@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<chapter version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+		>
+	<title>Activate or deactivate user login generation</title>
+
+	<sect1>
+		<title>Configuration</title>
+		<para>Connect using ssh on the NovaForge portal server, and then :
+		</para>
+		<para>Stop server karaf : </para>
+		<programlisting language="shell">
+			# $NOVA_HOME/bin/karaf stop
+		</programlisting>
+
+		<para>Be sure karaf is stopped by using this command. It must return 0 meaning that karaf is stopped :
+		</para>
+		<programlisting language="shell">
+			# ps aux | grep karaf | grep -v grep | wc -l
+		</programlisting>
+		<para>
+			Update property <emphasis role="bold">forgeLoginGenerated</emphasis> in file
+			<filename class="directory">$NOVA_HOME/engines/karaf/engines/karaf/nf-conf/forge/core.configuration.cfg
+			</filename>. Set property value to <emphasis role="bold">true</emphasis> to activate the user login generation or to <emphasis role="bold">false</emphasis>
+			to deactivate.
+		</para>
+		<para>Start server karaf : </para>
+		<programlisting language="shell">
+			# $NOVA_HOME/bin/karaf start
+		</programlisting>
+	</sect1>
+</chapter>

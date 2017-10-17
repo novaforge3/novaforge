@@ -1,0 +1,1 @@
+$wnd.org_novaforge_forge_ui_portal_client_widgetset_PortalWidgetset.runAsyncCallback2('$xb(1884,1,fYe);_.Ve=function aLc(){xrc((!prc&&(prc=new Crc),prc),this.a.d)};mOe(bq)(2);\n//# sourceURL=org.novaforge.forge.ui.portal.client.widgetset.PortalWidgetset-2.js\n')

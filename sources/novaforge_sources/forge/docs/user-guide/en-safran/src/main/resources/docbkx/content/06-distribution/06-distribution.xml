@@ -1,0 +1,173 @@
+<?xml version="1.0"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<chapter version="5.0" xmlns="http://docbook.org/ns/docbook"
+				 xml:lang="en">
+	<title>Distributing forges</title>
+	<sect1 id="distribution_intro">
+		<title>Principle of distributed forges</title>
+		<para>
+			It enables the administrator to
+		</para>
+		<itemizedlist>
+			<listitem>
+				define and manage organization of
+			forges in tree structure and configure the link to the mother forge
+			and/or the daughter forges from the current forge.
+			</listitem>
+			<listitem>
+				requesting subscription to or unsubscription from the mother forge,
+				validating
+			 or
+			 invalidating the requests from the daughter forges, and
+			displaying the forge directory.
+			</listitem>
+			<listitem>
+				Tools : define a new tool to be published for daughter forges.
+			</listitem>
+		</itemizedlist>
+        <para>
+			Forges can be organized in a maximum
+			of 3 levels :
+			<emphasis role="bold">central, zonal et local.</emphasis>
+		</para>
+		<para>
+			There may only be one central
+			forge for a given organization. The central forge is defined during
+			installation. It is frozen and cannot subscribe to another forge. It
+			can, however, have one or more daughter forges.			
+		</para>	
+		<para> 
+			 The level of a non
+			central forge is deduced from the level of the mother forge and is
+			not frozen in the organization.
+		</para>
+		<para>
+			One the forge has been installed, as
+			long as it is not subscribed to a mother forge and no forges are
+			subscribed, this forge is considered as an &quot;orphan&quot; in the
+			organization.
+		</para>
+		<para> The following figures describe the possible level
+			changes for a forge.
+		</para>
+		<figure>
+			<title>Subscription principle for distributed forges</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="06-00-use.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+	</sect1>
+	<sect1>
+		<title>The flows of distributed forges</title>
+		<para>
+			The up flows from daughter forge to mother forge concern indicators1
+			(forge indicators, project indicators, recipe indicator, etc.).
+			</para>
+			<para> 
+			Distributed forge share a repository of information from mother forge to one or more daughter forges(The down flows) 
+			The down flows from mother forge to daughter forge concern the creation
+			or update of forge repositories:
+			<itemizedlist>
+				<listitem>
+					repository project: documents, methodology.
+				</listitem>
+				<listitem>
+					Project template: standard project such as &quot;TMA&quot;, etc.
+				</listitem>
+				<listitem>
+					tools: a new tool (except standard forge applications) shared  by the administrator or users.
+				</listitem>
+			</itemizedlist>
+		</para>
+	</sect1>
+	<sect1>
+		<title>Administrating the distribution</title>
+		<para>
+			The following paragraphs describe the forge portal interfaces used to
+			administrate the distribution.
+		</para>
+		<para>
+			Distribution administration is accessed via the menu of the forge
+			project <emphasis role="bold">Administration/Distribution</emphasis> by forge administrator.
+		</para>
+
+		<para>
+			A mother forge can accept or refuse subscription requests from
+			daughter forges.
+		</para>
+		<figure>
+			<title>Mother forge management tab</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="06-03-mother.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+		<para>
+			A mother forge can make a request to subscribe to and unsubscribe from
+			a mother forge.
+		</para>
+		<figure>
+			<title>Daughter forge management tab</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="06-04-daughter.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+		<para>
+			The administrator can trigger manual synchronization of the forge
+			cluster by selecting the functional domains impacted.
+		</para>
+		<figure>
+			<title>Synchronization tab</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="06-05-synchroNow.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+		<para>
+			The administrator can trigger programmed synchronization of the forge
+			cluster.
+		</para>
+		<figure>
+			<title>Deferred synchronization tab</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="06-06-synchroTime.png" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+	</sect1>
+</chapter>

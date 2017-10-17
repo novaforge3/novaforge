@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.0.0"
+					name="novaforge-plugins-mantis-arc-${novaforge.version}">
+
+	<!--###############################################################
+	####		Mantis Standard Plugins
+	################################################################-->
+	<feature name='novaforge-plugins-mantis-arc' version='${novaforge.version}'>
+		<configfile finalname="/deploy/datasource.mantis-arc.xml">mvn:org.novaforge.forge.plugins/novaforge-mantis-arc-impl/${novaforge.version}/xml/datasource
+		</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.mantis.arc.cfg">mvn:org.novaforge.forge.plugins/novaforge-mantis-arc-impl/${novaforge.version}/cfg/datasource
+		</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.mantis.arc.cfg">mvn:org.novaforge.forge.plugins/novaforge-mantis-arc-cfg/${novaforge.version}/cfg/plugins
+		</configfile>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-mantis-arc-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-mantis-arc-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-mantis-arc-impl/${novaforge.version}</bundle>
+	</feature>	
+</features>

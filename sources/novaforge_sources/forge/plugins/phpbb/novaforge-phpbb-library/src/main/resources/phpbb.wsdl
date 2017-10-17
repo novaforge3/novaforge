@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:tns="http://localhost/phpbbconnect" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/"
+             targetNamespace="http://localhost/phpbbconnect">
+<types>
+<xsd:schema targetNamespace="http://localhost/phpbbconnect">
+ <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+ <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/"/>
+ <xsd:complexType name="StringArray">
+  <xsd:complexContent>
+   <xsd:restriction base="SOAP-ENC:Array">
+    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="xsd:string[]"/>
+   </xsd:restriction>
+  </xsd:complexContent>
+ </xsd:complexType>
+ <xsd:complexType name="ObjectRef">
+  <xsd:all>
+   <xsd:element name="id" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="ObjectRefArray">
+  <xsd:complexContent>
+   <xsd:restriction base="SOAP-ENC:Array">
+    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:ObjectRef[]"/>
+   </xsd:restriction>
+  </xsd:complexContent>
+ </xsd:complexType>
+ <xsd:complexType name="AccountData">
+  <xsd:all>
+   <xsd:element name="id" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="real_name" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="email" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="lang" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="access" type="xsd:integer" minOccurs="0"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="AccountDataArray">
+  <xsd:complexContent>
+   <xsd:restriction base="SOAP-ENC:Array">
+    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:AccountData[]"/>
+   </xsd:restriction>
+  </xsd:complexContent>
+ </xsd:complexType>
+ <xsd:complexType name="AttachmentData">
+  <xsd:all>
+   <xsd:element name="id" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="filename" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="size" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="content_type" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="date_submitted" type="xsd:dateTime" minOccurs="0"/>
+   <xsd:element name="download_url" type="xsd:anyURI" minOccurs="0"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="AttachmentDataArray">
+  <xsd:complexContent>
+   <xsd:restriction base="SOAP-ENC:Array">
+    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:AttachmentData[]"/>
+   </xsd:restriction>
+  </xsd:complexContent>
+ </xsd:complexType>
+ <xsd:complexType name="ProjectAttachmentData">
+  <xsd:all>
+   <xsd:element name="id" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="filename" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="title" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="size" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="content_type" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="date_submitted" type="xsd:dateTime" minOccurs="0"/>
+   <xsd:element name="download_url" type="xsd:anyURI" minOccurs="0"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="ProjectAttachmentDataArray">
+  <xsd:complexContent>
+   <xsd:restriction base="SOAP-ENC:Array">
+    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:ProjectAttachmentData[]"/>
+   </xsd:restriction>
+  </xsd:complexContent>
+ </xsd:complexType>
+ <xsd:complexType name="RelationshipData">
+  <xsd:all>
+   <xsd:element name="id" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="type" type="tns:ObjectRef" minOccurs="0"/>
+   <xsd:element name="target_id" type="xsd:integer" minOccurs="0"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="RelationshipDataArray">
+  <xsd:complexContent>
+   <xsd:restriction base="SOAP-ENC:Array">
+    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:RelationshipData[]"/>
+   </xsd:restriction>
+  </xsd:complexContent>
+ </xsd:complexType>
+ <xsd:complexType name="IssueNoteData">
+  <xsd:all>
+   <xsd:element name="id" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="reporter" type="tns:AccountData" minOccurs="0"/>
+   <xsd:element name="text" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="view_state" type="tns:ObjectRef" minOccurs="0"/>
+   <xsd:element name="date_submitted" type="xsd:dateTime" minOccurs="0"/>
+   <xsd:element name="last_modified" type="xsd:dateTime" minOccurs="0"/>
+   <xsd:element name="time_tracking" type="xsd:integer" minOccurs="0"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="IssueNoteDataArray">
+  <xsd:complexContent>
+   <xsd:restriction base="SOAP-ENC:Array">
+    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:IssueNoteData[]"/>
+   </xsd:restriction>
+  </xsd:complexContent>
+ </xsd:complexType>
+ <xsd:complexType name="IssueData">
+  <xsd:all>
+   <xsd:element name="id" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="view_state" type="tns:ObjectRef" minOccurs="0"/>
+   <xsd:element name="last_updated" type="xsd:dateTime" minOccurs="0"/>
+   <xsd:element name="project" type="tns:ObjectRef" minOccurs="0"/>
+   <xsd:element name="category" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="priority" type="tns:ObjectRef" minOccurs="0"/>
+   <xsd:element name="severity" type="tns:ObjectRef" minOccurs="0"/>
+   <xsd:element name="status" type="tns:ObjectRef" minOccurs="0"/>
+   <xsd:element name="reporter" type="tns:AccountData" minOccurs="0"/>
+   <xsd:element name="summary" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="version" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="build" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="platform" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="os" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="os_build" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="reproducibility" type="tns:ObjectRef" minOccurs="0"/>
+   <xsd:element name="date_submitted" type="xsd:dateTime" minOccurs="0"/>
+   <xsd:element name="sponsorship_total" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="handler" type="tns:AccountData" minOccurs="0"/>
+   <xsd:element name="projection" type="tns:ObjectRef" minOccurs="0"/>
+   <xsd:element name="eta" type="tns:ObjectRef" minOccurs="0"/>
+   <xsd:element name="resolution" type="tns:ObjectRef" minOccurs="0"/>
+   <xsd:element name="fixed_in_version" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="target_version" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="steps_to_reproduce" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="additional_information" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="attachments" type="tns:AttachmentDataArray" minOccurs="0"/>
+   <xsd:element name="relationships" type="tns:RelationshipDataArray" minOccurs="0"/>
+   <xsd:element name="notes" type="tns:IssueNoteDataArray" minOccurs="0"/>
+   <xsd:element name="custom_fields" type="tns:CustomFieldValueForIssueDataArray" minOccurs="0"/>
+   <xsd:element name="due_date" type="xsd:dateTime" minOccurs="0"/>
+   <xsd:element name="monitors" type="tns:AccountDataArray" minOccurs="0"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="IssueDataArray">
+  <xsd:complexContent>
+   <xsd:restriction base="SOAP-ENC:Array">
+    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:IssueData[]"/>
+   </xsd:restriction>
+  </xsd:complexContent>
+ </xsd:complexType>
+ <xsd:complexType name="IssueHeaderData">
+  <xsd:all>
+   <xsd:element name="id" type="xsd:integer"/>
+   <xsd:element name="view_state" type="xsd:integer"/>
+   <xsd:element name="last_updated" type="xsd:dateTime"/>
+   <xsd:element name="project" type="xsd:integer"/>
+   <xsd:element name="category" type="xsd:string"/>
+   <xsd:element name="priority" type="xsd:integer"/>
+   <xsd:element name="severity" type="xsd:integer"/>
+   <xsd:element name="status" type="xsd:integer"/>
+   <xsd:element name="reporter" type="xsd:integer"/>
+   <xsd:element name="summary" type="xsd:string"/>
+   <xsd:element name="handler" type="xsd:integer"/>
+   <xsd:element name="resolution" type="xsd:integer"/>
+   <xsd:element name="attachments_count" type="xsd:integer"/>
+   <xsd:element name="notes_count" type="xsd:integer"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="IssueHeaderDataArray">
+  <xsd:complexContent>
+   <xsd:restriction base="SOAP-ENC:Array">
+    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:IssueHeaderData[]"/>
+   </xsd:restriction>
+  </xsd:complexContent>
+ </xsd:complexType>
+ <xsd:complexType name="ProjectData">
+  <xsd:all>
+   <xsd:element name="id" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="parent_id" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="status" type="tns:ObjectRef" minOccurs="0"/>
+   <xsd:element name="enabled" type="xsd:boolean" minOccurs="0"/>
+   <xsd:element name="view_state" type="tns:ObjectRef" minOccurs="0"/>
+   <xsd:element name="access_min" type="tns:ObjectRef" minOccurs="0"/>
+   <xsd:element name="file_path" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="subprojects" type="tns:ProjectDataArray" minOccurs="0"/>
+   <xsd:element name="inherit_global" type="xsd:boolean" minOccurs="0"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="ProjectDataArray">
+  <xsd:complexContent>
+   <xsd:restriction base="SOAP-ENC:Array">
+    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:ProjectData[]"/>
+   </xsd:restriction>
+  </xsd:complexContent>
+ </xsd:complexType>
+ <xsd:complexType name="ProjectVersionData">
+  <xsd:all>
+   <xsd:element name="id" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="project_id" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="date_order" type="xsd:dateTime" minOccurs="0"/>
+   <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="released" type="xsd:boolean" minOccurs="0"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="ProjectVersionDataArray">
+  <xsd:complexContent>
+   <xsd:restriction base="SOAP-ENC:Array">
+    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:ProjectVersionData[]"/>
+   </xsd:restriction>
+  </xsd:complexContent>
+ </xsd:complexType>
+ <xsd:complexType name="FilterData">
+  <xsd:all>
+   <xsd:element name="id" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="owner" type="tns:AccountData" minOccurs="0"/>
+   <xsd:element name="project_id" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="is_public" type="xsd:boolean" minOccurs="0"/>
+   <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="filter_string" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="url" type="xsd:string" minOccurs="0"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="FilterDataArray">
+  <xsd:complexContent>
+   <xsd:restriction base="SOAP-ENC:Array">
+    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:FilterData[]"/>
+   </xsd:restriction>
+  </xsd:complexContent>
+ </xsd:complexType>
+ <xsd:complexType name="CustomFieldDefinitionData">
+  <xsd:all>
+   <xsd:element name="field" type="tns:ObjectRef" minOccurs="0"/>
+   <xsd:element name="type" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="possible_values" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="default_value" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="valid_regexp" type="xsd:string" minOccurs="0"/>
+   <xsd:element name="access_level_r" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="access_level_rw" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="length_min" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="length_max" type="xsd:integer" minOccurs="0"/>
+   <xsd:element name="advanced" type="xsd:boolean" minOccurs="0"/>
+   <xsd:element name="display_report" type="xsd:boolean" minOccurs="0"/>
+   <xsd:element name="display_update" type="xsd:boolean" minOccurs="0"/>
+   <xsd:element name="display_resolved" type="xsd:boolean" minOccurs="0"/>
+   <xsd:element name="display_closed" type="xsd:boolean" minOccurs="0"/>
+   <xsd:element name="require_report" type="xsd:boolean" minOccurs="0"/>
+   <xsd:element name="require_update" type="xsd:boolean" minOccurs="0"/>
+   <xsd:element name="require_resolved" type="xsd:boolean" minOccurs="0"/>
+   <xsd:element name="require_closed" type="xsd:boolean" minOccurs="0"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="CustomFieldDefinitionDataArray">
+  <xsd:complexContent>
+   <xsd:restriction base="SOAP-ENC:Array">
+    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:CustomFieldDefinitionData[]"/>
+   </xsd:restriction>
+  </xsd:complexContent>
+ </xsd:complexType>
+ <xsd:complexType name="CustomFieldLinkForProjectData">
+  <xsd:all>
+   <xsd:element name="field" type="tns:ObjectRef" minOccurs="0"/>
+   <xsd:element name="sequence" type="xsd:byte" minOccurs="0"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="CustomFieldLinkForProjectDataArray">
+  <xsd:complexContent>
+   <xsd:restriction base="SOAP-ENC:Array">
+    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:CustomFieldLinkForProjectData[]"/>
+   </xsd:restriction>
+  </xsd:complexContent>
+ </xsd:complexType>
+ <xsd:complexType name="CustomFieldValueForIssueData">
+  <xsd:all>
+   <xsd:element name="field" type="tns:ObjectRef" minOccurs="0"/>
+   <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+  </xsd:all>
+ </xsd:complexType>
+ <xsd:complexType name="CustomFieldValueForIssueDataArray">
+  <xsd:complexContent>
+   <xsd:restriction base="SOAP-ENC:Array">
+    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:CustomFieldValueForIssueData[]"/>
+   </xsd:restriction>
+  </xsd:complexContent>
+ </xsd:complexType>
+</xsd:schema>
+</types>
+<message name="mc_versionRequest"/>
+<message name="mc_versionResponse">
+  <part name="return" type="xsd:string"/></message>
+<message name="pc_enum_access_levelsRequest">
+  <part name="username" type="xsd:string"/>
+  <part name="password" type="xsd:string"/></message>
+<message name="pc_enum_access_levelsResponse">
+  <part name="return" type="tns:ObjectRefArray"/></message>
+<message name="pc_purge_cacheRequest">
+  <part name="username" type="xsd:string"/>
+  <part name="password" type="xsd:string"/></message>
+<message name="pc_purge_cacheResponse">
+  <part name="return" type="xsd:boolean"/></message>
+<message name="pc_project_addRequest">
+  <part name="pAdminUserName" type="xsd:string"/>
+  <part name="pAdminPassword" type="xsd:string"/>
+  <part name="pProjectName" type="xsd:string"/>
+  <part name="pForumName" type="xsd:string"/>
+  <part name="pForumDescription" type="xsd:string"/></message>
+<message name="pc_project_addResponse">
+  <part name="return" type="xsd:integer"/></message>
+<message name="pc_project_updateRequest">
+  <part name="pAdminUserName" type="xsd:string"/>
+  <part name="pAdminPassword" type="xsd:string"/>
+  <part name="pForumId" type="xsd:integer"/>
+  <part name="pForumName" type="xsd:string"/>
+  <part name="pForumDescription" type="xsd:string"/></message>
+<message name="pc_project_updateResponse">
+  <part name="return" type="xsd:boolean"/></message>
+<message name="pc_project_deleteRequest">
+  <part name="pAdminUserName" type="xsd:string"/>
+  <part name="pAdminPassword" type="xsd:string"/>
+  <part name="pForumId" type="xsd:integer"/></message>
+<message name="pc_project_deleteResponse">
+  <part name="return" type="xsd:boolean"/></message>
+<message name="pc_project_add_user_to_forumRequest">
+  <part name="pAdminUserName" type="xsd:string"/>
+  <part name="pAdminPassword" type="xsd:string"/>
+  <part name="pForumId" type="xsd:integer"/>
+  <part name="pUserName" type="xsd:string"/>
+  <part name="pRoleName" type="xsd:string"/></message>
+<message name="pc_project_add_user_to_forumResponse">
+  <part name="return" type="xsd:boolean"/></message>
+<message name="pc_project_remove_user_from_forumRequest">
+  <part name="pAdminUserName" type="xsd:string"/>
+  <part name="pAdminPassword" type="xsd:string"/>
+  <part name="pForumId" type="xsd:integer"/>
+  <part name="pUserName" type="xsd:string"/></message>
+<message name="pc_project_remove_user_from_forumResponse">
+  <part name="return" type="xsd:boolean"/></message>
+<message name="pc_account_addRequest">
+  <part name="pAdminUserName" type="xsd:string"/>
+  <part name="pAdminPassword" type="xsd:string"/>
+  <part name="pUserName" type="xsd:string"/>
+  <part name="pPassword" type="xsd:string"/>
+  <part name="pEmail" type="xsd:string"/>
+  <part name="pLang" type="xsd:string"/></message>
+<message name="pc_account_addResponse">
+  <part name="return" type="xsd:integer"/></message>
+<message name="pc_create_superadminRequest">
+  <part name="pAdminUserName" type="xsd:string"/>
+  <part name="pAdminPassword" type="xsd:string"/>
+  <part name="pUserName" type="xsd:string"/>
+  <part name="pPassword" type="xsd:string"/>
+  <part name="pEmail" type="xsd:string"/>
+  <part name="pLang" type="xsd:string"/></message>
+<message name="pc_create_superadminResponse">
+  <part name="return" type="xsd:integer"/></message>
+<message name="pc_account_getRequest">
+  <part name="pAdminUserName" type="xsd:string"/>
+  <part name="pAdminPassword" type="xsd:string"/>
+  <part name="pUserName" type="xsd:string"/></message>
+<message name="pc_account_getResponse">
+  <part name="return" type="xsd:integer"/></message>
+<message name="pc_account_deleteRequest">
+  <part name="pAdminUserName" type="xsd:string"/>
+  <part name="pAdminPassword" type="xsd:string"/>
+  <part name="pUserName" type="xsd:string"/></message>
+<message name="pc_account_deleteResponse">
+  <part name="return" type="xsd:boolean"/></message>
+<message name="pc_account_updateRequest">
+  <part name="pAdminUserName" type="xsd:string"/>
+  <part name="pAdminPassword" type="xsd:string"/>
+  <part name="pUserName" type="xsd:string"/>
+  <part name="pPassword" type="xsd:string"/>
+  <part name="pEmail" type="xsd:string"/>
+  <part name="pLang" type="xsd:string"/></message>
+<message name="pc_account_updateResponse">
+  <part name="return" type="xsd:boolean"/></message>
+<message name="pc_forum_get_id_from_nameRequest">
+  <part name="pAdminUserName" type="xsd:string"/>
+  <part name="pAdminPassword" type="xsd:string"/>
+  <part name="pForumName" type="xsd:string"/></message>
+<message name="pc_forum_get_id_from_nameResponse">
+  <part name="return" type="xsd:integer"/></message>
+<portType name="PhpBBConnectPortType">
+  <operation name="mc_version">
+    <input message="tns:mc_versionRequest"/>
+    <output message="tns:mc_versionResponse"/>
+  </operation>
+  <operation name="pc_enum_access_levels">
+    <documentation>Get the enumeration for access levels.</documentation>
+    <input message="tns:pc_enum_access_levelsRequest"/>
+    <output message="tns:pc_enum_access_levelsResponse"/>
+  </operation>
+  <operation name="pc_purge_cache">
+    <documentation>Purge the server cache : this operation is needed to synchronise permissions on forum.</documentation>
+    <input message="tns:pc_purge_cacheRequest"/>
+    <output message="tns:pc_purge_cacheResponse"/>
+  </operation>
+  <operation name="pc_project_add">
+    <documentation>Add a new project to the tracker (must have admin privileges)</documentation>
+    <input message="tns:pc_project_addRequest"/>
+    <output message="tns:pc_project_addResponse"/>
+  </operation>
+  <operation name="pc_project_update">
+    <documentation>Update a project to the tracker (must have admin privileges)</documentation>
+    <input message="tns:pc_project_updateRequest"/>
+    <output message="tns:pc_project_updateResponse"/>
+  </operation>
+  <operation name="pc_project_delete">
+    <documentation>Delete project to the tracker (must have admin privileges)</documentation>
+    <input message="tns:pc_project_deleteRequest"/>
+    <output message="tns:pc_project_deleteResponse"/>
+  </operation>
+  <operation name="pc_project_add_user_to_forum">
+    <documentation>Add an user to a project (must have admin privileges)</documentation>
+    <input message="tns:pc_project_add_user_to_forumRequest"/>
+    <output message="tns:pc_project_add_user_to_forumResponse"/>
+  </operation>
+  <operation name="pc_project_remove_user_from_forum">
+    <documentation>Remove user from a project (must have admin privileges)</documentation>
+    <input message="tns:pc_project_remove_user_from_forumRequest"/>
+    <output message="tns:pc_project_remove_user_from_forumResponse"/>
+  </operation>
+  <operation name="pc_account_add">
+    <documentation>Add user to PhpBB3, return userId in PhpBB3.</documentation>
+    <input message="tns:pc_account_addRequest"/>
+    <output message="tns:pc_account_addResponse"/>
+  </operation>
+  <operation name="pc_create_superadmin">
+    <documentation>Add user to PhpBB3, return userId in PhpBB3.</documentation>
+    <input message="tns:pc_create_superadminRequest"/>
+    <output message="tns:pc_create_superadminResponse"/>
+  </operation>
+  <operation name="pc_account_get">
+    <documentation>Get user with pUserName PhpBB3.</documentation>
+    <input message="tns:pc_account_getRequest"/>
+    <output message="tns:pc_account_getResponse"/>
+  </operation>
+  <operation name="pc_account_delete">
+    <documentation>Delete user from PhpBB3.</documentation>
+    <input message="tns:pc_account_deleteRequest"/>
+    <output message="tns:pc_account_deleteResponse"/>
+  </operation>
+  <operation name="pc_account_update">
+    <documentation>Update PhpBB3 user.</documentation>
+    <input message="tns:pc_account_updateRequest"/>
+    <output message="tns:pc_account_updateResponse"/>
+  </operation>
+  <operation name="pc_forum_get_id_from_name">
+    <documentation>Get PhpBB forum id for given forum name.</documentation>
+    <input message="tns:pc_forum_get_id_from_nameRequest"/>
+    <output message="tns:pc_forum_get_id_from_nameResponse"/>
+  </operation>
+</portType>
+<binding name="PhpBBConnectBinding" type="tns:PhpBBConnectPortType">
+  <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+  <operation name="mc_version">
+    <soap:operation soapAction="http://127.0.0.1/phpBB3/api/soap/phpbbconnect.php/mc_version" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="pc_enum_access_levels">
+    <soap:operation soapAction="http://127.0.0.1/phpBB3/api/soap/phpbbconnect.php/pc_enum_access_levels" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="pc_purge_cache">
+    <soap:operation soapAction="http://127.0.0.1/phpBB3/api/soap/phpbbconnect.php/pc_purge_cache" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="pc_project_add">
+    <soap:operation soapAction="http://127.0.0.1/phpBB3/api/soap/phpbbconnect.php/pc_project_add" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="pc_project_update">
+    <soap:operation soapAction="http://127.0.0.1/phpBB3/api/soap/phpbbconnect.php/pc_project_update" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="pc_project_delete">
+    <soap:operation soapAction="http://127.0.0.1/phpBB3/api/soap/phpbbconnect.php/pc_project_delete" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="pc_project_add_user_to_forum">
+    <soap:operation soapAction="http://127.0.0.1/phpBB3/api/soap/phpbbconnect.php/pc_project_add_user_to_forum" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="pc_project_remove_user_from_forum">
+    <soap:operation soapAction="http://127.0.0.1/phpBB3/api/soap/phpbbconnect.php/pc_project_remove_user_from_forum" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="pc_account_add">
+    <soap:operation soapAction="http://127.0.0.1/phpBB3/api/soap/phpbbconnect.php/pc_account_add" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="pc_create_superadmin">
+    <soap:operation soapAction="http://127.0.0.1/phpBB3/api/soap/phpbbconnect.php/pc_create_superadmin" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="pc_account_get">
+    <soap:operation soapAction="http://127.0.0.1/phpBB3/api/soap/phpbbconnect.php/pc_account_get" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="pc_account_delete">
+    <soap:operation soapAction="http://127.0.0.1/phpBB3/api/soap/phpbbconnect.php/pc_account_delete" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="pc_account_update">
+    <soap:operation soapAction="http://127.0.0.1/phpBB3/api/soap/phpbbconnect.php/pc_account_update" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+  <operation name="pc_forum_get_id_from_name">
+    <soap:operation soapAction="http://127.0.0.1/phpBB3/api/soap/phpbbconnect.php/pc_forum_get_id_from_name" style="rpc"/>
+    <input><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
+    <output><soap:body use="encoded" namespace="http://localhost/phpbbconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
+  </operation>
+</binding>
+<service name="PhpBBConnect">
+  <port name="PhpBBConnectPort" binding="tns:PhpBBConnectBinding">
+    <soap:address location="http://127.0.0.1/phpBB3/api/soap/phpbbconnect.php"/>
+  </port>
+</service>
+</definitions>

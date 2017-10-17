@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+	<reference id="projectPresenter" interface="org.novaforge.forge.core.organization.presenters.ProjectPresenter" />
+	<reference id="spacePresenter" interface="org.novaforge.forge.core.organization.presenters.SpacePresenter" />
+	<reference id="projectPlanManager" interface="org.novaforge.forge.tools.managementmodule.business.ProjectPlanManager" />
+	<reference id="applicationPresenter" interface="org.novaforge.forge.core.organization.presenters.ApplicationPresenter" />
+	<reference id="userPresenter" interface="org.novaforge.forge.core.organization.presenters.UserPresenter" />
+	<reference id="languagePresenter" interface="org.novaforge.forge.core.organization.presenters.LanguagePresenter" />
+	<reference id="managementModuleManager" interface="org.novaforge.forge.tools.managementmodule.business.ManagementModuleManager" />
+	<reference id="referentielManager" interface="org.novaforge.forge.tools.managementmodule.business.ReferentielManager" />
+	<reference id="iterationManager" interface="org.novaforge.forge.tools.managementmodule.business.IterationManager" />
+	<reference id="rolePresenter" interface="org.novaforge.forge.core.organization.presenters.RolePresenter" />
+	<reference id="groupPresenter" interface="org.novaforge.forge.core.organization.presenters.GroupPresenter" />
+	<reference id="membershipPresenter" interface="org.novaforge.forge.core.organization.presenters.MembershipPresenter" />
+	<reference id="authentificationService" interface="org.novaforge.forge.core.security.authentification.AuthentificationService" />
+	<reference id="pluginsManager" interface="org.novaforge.forge.core.plugins.services.PluginsManager" />
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+	
+	
+	<bean id="importNovaforge"
+		class="org.novaforge.forge.configuration.csv.internal.ImportNovaforge" init-method="starting">
+		<property name="bundleContext" ref="blueprintBundleContext" />
+		<property name="projectPresenter" ref="projectPresenter" />
+		<property name="spacePresenter" ref="spacePresenter" />
+		<property name="applicationPresenter" ref="applicationPresenter" />
+		<property name="userPresenter" ref="userPresenter" />
+		<property name="languagePresenter" ref="languagePresenter" />
+		<property name="managementModuleManager" ref="managementModuleManager" />
+		<property name="referentielManager" ref="referentielManager" />
+		<property name="projectPlanManager" ref="projectPlanManager" />
+		<property name="iterationManager" ref="iterationManager" />
+		<property name="rolePresenter" ref="rolePresenter" />
+		<property name="groupPresenter" ref="groupPresenter" />
+		<property name="membershipPresenter" ref="membershipPresenter" />
+		<property name="authentificationService" ref="authentificationService" />
+		<property name="pluginsManager" ref="pluginsManager" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+</blueprint>

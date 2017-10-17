@@ -1,0 +1,198 @@
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.novaforge.products.launcher.update</groupId>
+	<artifactId>novaforge_aio-3.8.0</artifactId>
+	<packaging>beaver-launcher</packaging>
+	<version>2.0</version>
+	<name>NovaForge(tm) :: Products :: Launcher :: 3.8.0 :: NovaForge All-In-One</name>
+	<description>NovaForge(tm) :: Products :: Launcher :: 3.8.0 :: NovaForge All-In-One</description>
+
+	<properties>
+	<!-- Custom Configuration -->
+	<!-- Deployment Configuration -->
+		<tmpDir>${local:home}/tmp/deployment</tmpDir>
+		<logsDir>${local:home}/logs/deployment</logsDir>
+		<deployFile>${local:home}/deployment.xml</deployFile>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.novaforge.products.server.install</groupId>
+			<artifactId>server-aio</artifactId>
+			<version>2.0</version>
+			<type>beaver-server</type>
+		</dependency>
+		<dependency>
+			<groupId>org.novaforge.products.process.update</groupId>
+			<artifactId>novaforge_aio-3.8.0</artifactId>
+			<version>2.0</version>
+			<type>beaver-process</type>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.novaforge.beaver</groupId>
+				<artifactId>beaver-deployment-plugin</artifactId>
+				<version>3.6</version>
+				<extensions>true</extensions>
+				<configuration>
+					<tempDirectory>${tmpDir}</tempDirectory>
+					<logsDirectory>${logsDir}</logsDirectory>
+					<deploymentFile>${deployFile}</deploymentFile>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.4.1</version>
+				<executions>
+					<execution>
+						<id>auto-clean</id>
+						<phase>update</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+						<configuration>
+							<filesets>
+								<fileset>
+									<directory>${tmpDir}</directory>
+									<followSymlinks>false</followSymlinks>
+								</fileset>
+							</filesets>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+		<profile>
+			<id>beaver-resolution</id>
+			<activation>
+				<property>
+					<name>resolved</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-clean-plugin</artifactId>
+						<version>2.4.1</version>
+						<executions>
+							<execution>
+								<id>metadata-clean</id>
+								<phase>update</phase>
+								<goals>
+									<goal>clean</goal>
+								</goals>
+								<configuration>
+									<filesets>
+										<fileset>
+											<directory>${settings.localRepository}</directory>
+											<followSymlinks>false</followSymlinks>
+											<includes>
+												<include>**/resolver-status.properties</include>
+												<include>**/_maven.repositories</include>
+												<include>**/*.lastUpdated</include>
+												<include>**/*.sha1</include>
+											</includes>
+										</fileset>
+									</filesets>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>clean-local</id>
+			<activation>
+				<property>
+					<name>clean</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-clean-plugin</artifactId>
+						<version>2.4.1</version>
+						<executions>
+							<execution>
+								<id>auto-clean</id>
+								<phase>update</phase>
+								<goals>
+									<goal>clean</goal>
+								</goals>
+								<configuration>
+									<filesets>
+										<fileset>
+											<directory>${settings.localRepository}/org/novaforge/products/process</directory>
+											<followSymlinks>false</followSymlinks>
+										</fileset>
+										<fileset>
+											<directory>${settings.localRepository}/org/novaforge/products/data</directory>
+											<followSymlinks>false</followSymlinks>
+										</fileset>
+									</filesets>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	<repositories>
+		<repository>
+			<id>local_repo</id>
+			<name>Local Repository</name>
+			<url>file:///datas/repoMaven</url>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>local_repo</id>
+			<name>Local Repository</name>
+			<url>file:///datas/repoMaven</url>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+</project>

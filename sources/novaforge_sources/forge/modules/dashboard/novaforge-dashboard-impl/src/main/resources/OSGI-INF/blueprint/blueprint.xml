@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd">
+
+	<reference id="securityDelegate" interface="org.novaforge.forge.core.organization.delegates.SecurityDelegate" />
+	<reference id="portalMessages" interface="org.novaforge.forge.portal.services.PortalMessages" />
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+	<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/novaforge)" />
+
+	<bean id="dashBoardDAO" class="org.novaforge.forge.dashboard.internal.dao.DashBoardDAOImpl">
+		<jpa:context unitname="dashboard" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+
+	<bean id="dataSourceFactory" class="org.novaforge.forge.dashboard.internal.service.DataSourceFactoryImpl" />
+	<bean id="dashBoardService" class="org.novaforge.forge.dashboard.internal.service.DashBoardServiceImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Bean reference -->
+		<property name="dashBoardDAO" ref="dashBoardDAO" />
+		<!-- Service reference -->
+		<property name="securityDelegate" ref="securityDelegate" />
+	</bean>
+	<bean id="layoutService" class="org.novaforge.forge.dashboard.internal.service.LayoutServiceImpl"
+		init-method="init">
+		<!-- Service reference -->
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+
+	<reference-list id="widgetModule" interface="org.novaforge.forge.dashboard.model.WidgetModule"
+		availability="optional">
+		<reference-listener ref="widgetModuleService" bind-method="registerModule" unbind-method="unregisterModule" />
+	</reference-list>
+	<bean id="widgetModuleService" class="org.novaforge.forge.dashboard.internal.service.WidgetModuleServiceImpl"
+		init-method="init">
+		<!-- Service reference -->
+		<property name="dashBoardService" ref="dashBoardService" />
+		<property name="dataSourceFactory" ref="dataSourceFactory" />
+	</bean>
+
+	<service ref="dashBoardService" interface="org.novaforge.forge.dashboard.service.DashBoardService" />
+	<service ref="layoutService" interface="org.novaforge.forge.dashboard.service.LayoutService" />
+	<service ref="widgetModuleService" interface="org.novaforge.forge.dashboard.service.WidgetModuleService" />
+	<service ref="dataSourceFactory" interface="org.novaforge.forge.dashboard.service.DataSourceFactory" />
+	
+	<!-- Widget module used to replace unavailable one -->
+	<bean id="unavailable" class="org.novaforge.forge.dashboard.internal.widget.unavailable.module.UnavailableModule">
+		<property name="dataSourceFactory" ref="dataSourceFactory" />
+		<property name="portalMessages" ref="portalMessages" />
+	</bean>
+	<service ref="unavailable" interface="org.novaforge.forge.dashboard.model.WidgetModule">
+		<service-properties>
+			<entry key="widget-key" value="unavailable"/>
+		</service-properties>
+	</service>
+	<!-- Widget module used when settings are invalid -->
+	<bean id="noSettings" class="org.novaforge.forge.dashboard.internal.widget.nosettings.module.NoSettingsModule">
+		<property name="dataSourceFactory" ref="dataSourceFactory" />
+		<property name="portalMessages" ref="portalMessages" />
+	</bean>
+	<service ref="noSettings"  interface="org.novaforge.forge.dashboard.model.WidgetModule">
+		<service-properties>
+			<entry key="widget-key" value="nosettings"/>
+		</service-properties>
+	</service>
+	<!-- Widget module used when widget is loading -->
+	<bean id="loading" class="org.novaforge.forge.dashboard.internal.widget.loading.module.LoadingModule">
+		<property name="dataSourceFactory" ref="dataSourceFactory" />
+		<property name="portalMessages" ref="portalMessages" />
+	</bean>
+	<service ref="loading"  interface="org.novaforge.forge.dashboard.model.WidgetModule">
+		<service-properties>
+			<entry key="widget-key" value="loading"/>
+		</service-properties>
+	</service>
+
+</blueprint>

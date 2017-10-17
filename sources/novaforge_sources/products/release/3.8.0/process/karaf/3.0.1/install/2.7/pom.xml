@@ -1,0 +1,69 @@
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.novaforge.products.process</groupId>
+		<artifactId>parent-3.8.0</artifactId>
+		<version>2.0</version>
+		<relativePath>../../../../pom.xml</relativePath>
+	</parent>
+	<groupId>org.novaforge.products.process.install</groupId>
+	<artifactId>karaf-3.0.1</artifactId>
+	<packaging>beaver-process</packaging>
+	<version>2.7</version>
+	<name>NovaForge(tm) :: Products :: 3.8.0 :: Process :: Karaf :: Install :: 3.0.1 :: 2.7</name>
+	<description>NovaForge(tm) :: Products :: 3.8.0 :: Process :: Karaf :: Install :: 3.0.1 :: 2.7</description>
+	<dependencies>
+		<dependency>
+			<groupId>org.novaforge.products.process.install</groupId>
+			<artifactId>jre-7u80</artifactId>
+			<version>2.1</version>
+			<type>beaver-process</type>
+		</dependency>
+	</dependencies>
+	<properties>
+		<productId>karaf</productId>
+		<process>install</process>
+		<script>${process}.groovy</script>
+		<config>config.groovy</config>
+		<data>org.novaforge.products.data/karaf-distrib/3.0.1_2/tar.gz</data>
+
+		<product.home>@{local:engines}/karaf</product.home>
+		<product.bin>@{product.home}/bin</product.bin>
+		<product.deploy>@{product.home}/deploy</product.deploy>
+		<product.etc>@{product.home}/etc</product.etc>
+		<product.datas>@{local:datas}/karaf</product.datas>
+		<product.tmp>@{local:tmp}/karaf</product.tmp>
+		<product.logs>@{local:logs}/karaf</product.logs>
+		<product.execFile>@{local:bin}/karaf</product.execFile>
+		<product.repository>@{product.home}/system</product.repository>
+		<product.port>8181</product.port>
+		<product.cxfAlias>cxf</product.cxfAlias>
+		<product.adminUser>karaf</product.adminUser>
+		<product.adminPwd>karaf</product.adminPwd>
+	</properties>
+</project>

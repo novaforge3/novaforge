@@ -1,0 +1,115 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+.gla-main-panel {
+	width: 100%;
+	height: 100%;
+}
+
+.gla-toolbar-panel {
+	width: 26px;
+	height: 100%;
+}
+
+.gla-toolbar-panel td {
+	background-color: #5F5A59;
+}
+
+.gla-toolbar-tool,.gla-toolbar-tool-active,.gla-toolbar-tool-passive {
+	padding: 1px;
+	margin: 2px;
+	background-color: #4E4848;
+	white-space: nowrap;
+	text-align: center;
+	cursor: pointer;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
+.gla-toolbar-tool-vertical {
+	writing-mode: tb-rl;
+	filter: flipv fliph;
+}
+
+
+.gla-toolbar-tool-vertical-GeckoWebkit {
+	position: absolute;
+	height: 14px;
+	left: 21px;
+	-moz-transform: rotate(90deg);
+	-moz-transform-origin: 0% 0%;
+	-webkit-transform: rotate(90deg);
+	-webkit-transform-origin: 0% 0%;
+}
+
+.gla-toolbar-tool-collapse-active,.gla-toolbar-tool-collapse-passive {
+	color: #E6E6E6;
+	border: 1px solid #E6E6E6;
+}
+
+.gla-file-list-panel {
+	height: 100%;
+}
+
+.gla-file-list-panel table{
+	width: 100%;
+}
+
+.gla-search-stack-head {
+	vertical-align: middle;
+	height: 18px;
+	
+	color: #E6E6E6;
+	border: 1px solid #E6E6E6;
+	background-color: #4E4848;
+	white-space: nowrap;
+	text-align: center;
+	cursor: pointer;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
+.gla-search-stack, .gla-search-stack-head {
+	width: 200px;
+}
+
+.gla-search-param-label, .gla-search-param-input {
+	padding-left: 10px;
+	width: 190px;
+}
+
+.gla-search-param-label {
+	color: #E6E6E6;
+	background-color: #4E4848;
+	white-space: nowrap;
+	text-align: left;
+}
+
+.gla-invalid-field-value {
+	border: 1px solid red;	
+}
+
+.gla-search-param-input {
+	
+}

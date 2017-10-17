@@ -1,0 +1,70 @@
+
+h1. Eclipse configuration
+
+h2. Pre-requisites
+
+* "m2eclipse":http://m2eclipse.sonatype.org/update/ to support Maven2/3 projects
+* "Workspace Mechanic":http://code.google.com/a/eclipselabs.org/p/workspacemechanic/ to configure your maven project in one shots 
+* text2
+
+
+# WorkspaceMechanic
+# Commons4e
+# Checkstyle
+# Copyright plugin
+
+h2. Configuring Eclipse workspace
+
+Use of workspace mechanic
+
+
+h2. Importing preferences sets
+
+p. Team project sets are also declared in @eclise/working-sets@ under "https://novaforge7.bull.fr/svn/nfsafran/conventions":https://novaforge7.bull.fr/svn/nfsafran/conventions. Team project sets enable you to checkout the code but also to configure your workspace with pre-defined working sets which help to classify projects.
+
+p. First of all, you need at least to configure the NovaForge(tm) SVN repository ("https://novaforge7.bull.fr/svn/nfsafran/":https://novaforge7.bull.fr/svn/nfsafran/) in order to configure your credentials you have on this repository. Then, you need to checkout the files under the folder @eclipse/working-sets@ of @conventions@ (browse the svn directory to get the exact path).
+
+Once the files checked out, go to the menu *File -> Import...*.
+
+!../../images/eclipse-team-set-configuration0.png!
+
+Select *Team -> Team Project Set* and click on *Next*.
+
+!../../images/eclipse-team-set-configuration1.png!
+
+Browse your file system and choose the preference sets *nf-working-sets.psf* and click on *Finish*.
+
+!../../images/eclipse-team-set-configuration2.png!
+
+This will checked out the different projects. Once the checked out performed, you need to choose the pre-defined working-sets.
+
+!../../images/eclipse-team-set-configuration3.png!
+
+!../../images/eclipse-team-set-configuration4.png!
+  
+And then choose *Working Sets* as the top level elements of your *Package Explorer*.
+
+!../../images/eclipse-team-set-configuration5.png!
+
+That's it!
+
+!../../images/eclipse-team-set-configuration6.png!
+
+
+h1. Checkout the code
+
+
+h1. Coding conventions
+
+p. See.
+
+h1. Conception
+
+
+
+
+
+
+
+
+

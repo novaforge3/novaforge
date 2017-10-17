@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+
+
+<ipojo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:handlers="org.novaforge.forge.modules.handlers"
+			 xsi:schemaLocation="org.apache.felix.ipojo http://felix.apache.org/ipojo/schemas/CURRENT/core.xsd"
+			 xmlns="org.apache.felix.ipojo">
+
+	<component classname="org.novaforge.forge.distribution.reference.internal.service.DiffusionServiceImpl"
+		name="ReferenceDiffusionService">
+		<provides />
+		<handlers:historization />
+		<requires specification="org.novaforge.forge.distribution.register.services.ForgeDistributionService">
+			<callback type="bind" method="setForgeDistributionService" />
+		</requires>
+		
+		<requires specification="org.novaforge.forge.core.organization.services.ApplicationService">
+			<callback type="bind" method="setApplicationService" />
+		</requires>
+		
+		<requires specification="org.novaforge.forge.core.organization.services.SpaceService">
+			<callback type="bind" method="setSpaceService" />
+		</requires>
+
+		<requires specification="org.novaforge.forge.core.plugins.services.PluginsManager">
+			<callback type="bind" method="setPluginsManager" />
+		</requires>
+
+		<requires specification="org.novaforge.forge.core.configuration.services.ForgeIdentificationService">
+			<callback type="bind" method="setForgeIdentificationService" />
+		</requires>
+
+		<requires specification="org.novaforge.forge.distribution.reference.client.PluginDataClient">
+			<callback type="bind" method="setPluginDataClient" />
+		</requires>
+
+		<requires optional="false" field="referentielSynchroClient" />
+		<requires optional="false" field="forgeExtractionClient" />
+		<requires optional="false" field="projectPresenter" />
+		<requires optional="false" field="projectRoleService" />
+		<requires optional="false" field="forgeConfigurationService" />
+		<!-- the service below must be optional to avoid cyclic service dependencies -->
+		<requires optional="true" field="timerSchedulerService" filter="(type=diffusion)" />
+		<requires optional="false" field="templatePresenter" />
+		<requires optional="false" field="templateNodePresenter" />
+		<requires optional="false" field="templateRolePresenter" />
+		<requires optional="false" field="referenceToolService" />
+	</component>
+
+	<component classname="org.novaforge.forge.distribution.reference.internal.client.ReferentielSynchroClientImpl"
+		name="ReferentielSynchroClientImpl">
+		<provides />
+		<handlers:historization />
+	</component>
+
+	<component classname="org.novaforge.forge.distribution.reference.internal.client.ForgeExtractionClientImpl"
+		name="ForgeExtractionClientImpl">
+		<provides />
+		<handlers:historization />
+	</component>
+
+	<instance component="ReferentielSynchroClientImpl" />
+	<instance component="ForgeExtractionClientImpl" />
+	<instance component="ReferenceDiffusionService" />
+</ipojo>

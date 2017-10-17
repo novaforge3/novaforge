@@ -1,0 +1,7 @@
+Alias @WELCOMEPAGE_ALIAS@ "@WELCOMEPAGE_HOME@"
+
+<Directory @WELCOMEPAGE_HOME@>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Require all granted
+</Directory>

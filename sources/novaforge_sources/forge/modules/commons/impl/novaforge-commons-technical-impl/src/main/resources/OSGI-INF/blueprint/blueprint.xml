@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+					 xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+	http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
+	
+<!-- References -->
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService"
+		availability="optional" />
+	
+	
+<!-- Property place holder -->
+	<cm:property-placeholder id="message" persistent-id="commons.message"
+		update-strategy="reload">
+		<cm:default-properties>
+			<cm:property name="brokerURL" value="tcp://localhost:61616" />
+			<cm:property name="userName" value="novaforge" />
+			<cm:property name="password" value="novactivemq" />
+		</cm:default-properties>
+	</cm:property-placeholder>
+	
+	<!-- ActiveMQ Beans -->
+	<bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="${brokerURL}" />
+		<property name="userName" value="${userName}" />
+		<property name="password" value="${password}" />
+	</bean>
+	
+	<!--  Configuration for Camel JMS Route -->
+	<service id="jmsConnectionFactory" ref="connectionFactory" interface="javax.jms.ConnectionFactory" />
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<argument ref="jmsConfig" />
+	</bean>
+
+	<service id="fileService" interface="org.novaforge.forge.commons.technical.file.FileService">
+		<bean class="org.novaforge.forge.commons.technical.file.internal.FileServiceImpl" />
+	</service>
+
+	<service ref="messageService" interface="org.novaforge.forge.commons.technical.jms.MessageService" />
+	<bean id="messageService" class="org.novaforge.forge.commons.technical.jms.internal.MessageServiceImpl">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+
+	<service id="searchService" interface="org.novaforge.forge.commons.technical.search.SearchService">
+		<bean class="org.novaforge.forge.commons.technical.search.internal.SearchServiceImpl" />
+	</service>
+
+	<bean id="csvConverterService" class="org.novaforge.forge.commons.technical.conversion.internal.CsvConverterServiceImpl" />
+	<service ref="csvConverterService" interface="org.novaforge.forge.commons.technical.conversion.CsvConverterService" />
+	<bean id="csvConverterFactory" class="org.novaforge.forge.commons.technical.conversion.internal.CsvConverterFactoryImpl" />
+	<service ref="csvConverterFactory" interface="org.novaforge.forge.commons.technical.conversion.CsvConverterFactory" />
+	<service id="validationService" interface="org.novaforge.forge.commons.technical.validation.ValidationService">
+		<bean class="org.novaforge.forge.commons.technical.validation.internal.ValidationServiceImpl" />
+	</service>
+	<service id="normalizeService" interface="org.novaforge.forge.commons.technical.normalize.NormalizeService">
+		<bean class="org.novaforge.forge.commons.technical.normalize.internal.NormalizeServiceImpl" />
+	</service>
+
+	<service id="cxfConfigService" interface="org.novaforge.forge.commons.technical.cxf.CxfConfigService">
+		<bean class="org.novaforge.forge.commons.technical.cxf.internal.CXFConfigServiceImpl">
+			<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+		</bean>
+	</service>
+
+</blueprint>

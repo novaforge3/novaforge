@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+					 xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+	http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
+
+<!-- Property place holder -->
+	<cm:property-placeholder persistent-id="reference.configuration" update-strategy="reload">
+		<cm:default-properties>
+			<cm:property name="adminStorageDirectory" value="/datas/novaforge3/datas/referenceTool/admin/" />
+			<cm:property name="userStorageDirectory" value="/datas/novaforge3/datas/referenceTool/public/" />
+			<cm:property name="rsyncCommand" value="/usr/bin/rsync" />
+			<cm:property name="rsyncArguments" value="-avzr -e ssh --delete" />
+			<cm:property name="rsyncUser" value="novaforge" />
+			<cm:property name="certificatePublicKeyFile" value="/home/novaforge/.ssh/id_rsa.pub" />
+			<cm:property name="authorizedCertificatePublicKeysFile" value="/home/novaforge/.ssh/authorized_keys" />
+			<cm:property name="chmodCommand" value="/bin/chmod" />
+			<cm:property name="authorizedCertificatePublicKeysFileAccess" value="600" />
+		</cm:default-properties>
+	</cm:property-placeholder>
+<!-- References -->
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+	<reference id="projectRolePresenter" interface="org.novaforge.forge.core.organization.presenters.ProjectRolePresenter" />
+	<reference id="spacePresenter" interface="org.novaforge.forge.core.organization.presenters.SpacePresenter" />
+	<reference id="applicationPresenter" interface="org.novaforge.forge.core.organization.presenters.ApplicationPresenter" />
+	<reference id="projectPresenter" interface="org.novaforge.forge.core.organization.presenters.ProjectPresenter" />
+	
+<!-- Beans -->
+	<bean id="referenceService" class="org.novaforge.forge.reference.internal.ReferenceServiceImpl">
+		<!-- Services reference -->
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+		<property name="projectPresenter" ref="projectPresenter" />
+		<property name="spacePresenter" ref="spacePresenter" />
+		<property name="applicationPresenter" ref="applicationPresenter" />
+		<property name="projectRolePresenter" ref="projectRolePresenter" />
+	</bean>
+	<bean id="referenceToolService" class="org.novaforge.forge.reference.internal.ReferenceToolServiceImpl">
+		<property name="adminStorageDirectory" value="${adminStorageDirectory}"/>
+		<property name="userStorageDirectory" value="${userStorageDirectory}"/>
+		<property name="rsyncCommand" value="${rsyncCommand}"/>
+		<property name="rsyncArguments" value="${rsyncArguments}"/>
+		<property name="rsyncUser" value="${rsyncUser}"/>
+		<property name="certificatePublicKeyFile" value="${certificatePublicKeyFile}"/>
+		<property name="authorizedCertificatePublicKeysFile" value="${authorizedCertificatePublicKeysFile}"/>
+		<property name="chmodCommand" value="${chmodCommand}"/>
+		<property name="authorizedCertificatePublicKeysFileAccess" value="${authorizedCertificatePublicKeysFileAccess}" />
+	</bean>
+<!-- Services -->
+	<service ref="referenceService" interface="org.novaforge.forge.reference.facade.ReferenceService" />
+	<service ref="referenceToolService" interface="org.novaforge.forge.reference.tool.ReferenceToolService" />
+
+</blueprint>

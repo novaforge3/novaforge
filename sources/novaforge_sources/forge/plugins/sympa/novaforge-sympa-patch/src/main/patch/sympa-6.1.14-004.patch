@@ -1,0 +1,54 @@
+diff -rNU5 sympa-6.1.14-003/soap/sympasoap.pm sympa-6.1.14/soap/sympasoap.pm
+--- sympa-6.1.14-003/soap/sympasoap.pm	2013-05-15 16:55:32.006532186 +0200
++++ sympa-6.1.14/soap/sympasoap.pm	2013-05-15 16:52:11.782525000 +0200
+@@ -605,11 +605,11 @@
+ 	     &Log::do_log('info','notify listmaster for list creation');
+ 	 }else{
+ 	     &Log::do_log('notice',"Unable to send notify 'request_list_creation' to listmaster");
+ 	 }
+      }
+-     return SOAP::Data->name('result')->type('boolean')->value(1);
++     return "OK";
+ 
+ }
+ 
+ sub closeList {
+     my $class = shift;
+@@ -780,10 +780,11 @@
+ 						      'command' => 'add',
+ 						      'by' => $sender})) {
+ 	    &do_log('info',"Unable to send notify 'notice' to $list->{'name'} list owner");
+ 	}
+     }
++    return "OK";
+ }
+ 
+ sub del {
+     my $class = shift;
+     my $listname  = shift;
+@@ -791,11 +792,11 @@
+     my $quiet = shift;
+ 
+     my $sender = $ENV{'USER_EMAIL'};
+     my $robot = $ENV{'SYMPA_ROBOT'};
+     my $remote_application_name = $ENV{'remote_application_name'};
+-    
++
+     &Log::do_log('info', 'SOAP del(list = %s@%s,email = %s,quiet = %s) from %s via proxy application %s', $listname,$robot,$email,$quiet,$sender,$remote_application_name);
+ 
+     unless ($sender) {
+ 	die SOAP::Fault->faultcode('Client')
+ 	    ->faultstring('User not specified')
+@@ -890,11 +891,11 @@
+ 						      'command' => 'del',
+ 						      'by' => $sender})) {
+ 	    &do_log('info',"Unable to send notify 'notice' to $list->{'name'} list owner");
+ 	}
+     }
+-    return 1;
++    return "OK";
+ }
+ 
+ sub review {
+     my $class = shift;
+     my $listname  = shift;

@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+
+
+<section version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+		>
+	 
+	 <title>Manage Requirements</title>
+
+  <para>The integrated requirement manager is a tool developed internally to optimize and simplify the requirement validation process. It is based on an external requirement repository (in this case Obeo) and used to make the link with a test manager (in this case Testlink) and a source manager (in this case SVN).
+  </para>
+  <para>
+    The requirement manager offers the following features:
+    <itemizedlist>
+      <listitem>
+        <para>Display and search for requirements of deposits configured in the application</para>
+      </listitem>
+      <listitem>
+        <para>Display and search for requirements and their statuses with respect to the application code</para>
+      </listitem>
+      <listitem>
+        <para>Display and search for requirements and their statuses with respect to the application tests</para>
+      </listitem>
+      <listitem>
+        <para>Configure requirement deposits</para>
+      </listitem>
+      <listitem>
+        <para>Display requirements</para>
+      </listitem>
+    </itemizedlist>
+  </para>
+
+  <sect2>
+		<title>To start ...</title>
+		<para>
+			You must add the requirement application to your project. To do this, use
+      <xref linkend="applications"/>
+		</para>
+	</sect2>
+
+	<sect2>
+    <title>Creating your requirement application</title>
+    <para>
+      To explain as clearly as possible how to create your requirement application, we will start from an example. Our project is called &quot;test&quot; and we want to obtain the reports of the requirements applied to the code and the tests implemented for the project. You will therefore proceed as follows (you can go directly to
+      <xref linkend="requirements-associations"/>
+      if the applications are already present in your project): 
+      <orderedlist>
+        <listitem>
+          <para>Add the necessary applications to the project</para>
+        </listitem>
+        <listitem>
+          <para>Configure the inter-tool associations using the requirement manager</para>
+        </listitem>
+        <listitem>
+          <para>Configure the requirement deposits</para>
+        </listitem>
+        <listitem>
+          <para>Display requirements</para>
+        </listitem>
+      </orderedlist>
+    </para>
+    </sect2>
+    <sect2>
+			<title>Ajouter les applications nécessaires</title>
+			<para>
+				To use the requirement tool to best advantage, you need to associate requirement manager with a test manager and a source manager.
+				Use
+		        <xref linkend="applications"/>
+		        to add an SVN or a TestLink to your project.
+			</para>
+		</sect2>
+		<sect2 id="requirements-associations">
+			<title>Configuring associations</title>
+			<para>
+		        In order to use the information stored in the applications, NovaForge provides a mechanism called
+		        <emphasis role="bold">FIXME Inter-tool association</emphasis>
+		        . You can use section
+		        <xref linkend="associations"/>
+		        to add the following associations
+
+				<figure>
+					<title>Overview of the Create association screen
+					</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05f-03-AddRequirements.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</para>
+		</sect2>
+		<sect2>
+			<title>Configure the requirement repositories</title>
+			<para>
+				You can access the requirement application via the item circled in red in the left menu:
+				<figure>
+					<title>Open your requirement management tool</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05f-06-RequirementRepository.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+				Click the "Requirement Repositories" tabs to manage your repositories.
+				You can add two kind of repository :
+				<itemizedlist>
+					<listitem>
+						OBEO repository:
+						<emphasis>Fill the path to the repository</emphasis>
+					</listitem>
+					<listitem>
+						Excel repository:
+						<emphasis>Upload an excel file
+						</emphasis>
+					</listitem>
+				</itemizedlist>
+				<figure>
+					<title>Repository type</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05f-05-AddRepository.png" width="400px" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</para>
+		</sect2>
+		<sect2>
+			<title>Synchronize requirement repositories</title>
+			<para>
+				<figure>
+					<title>Synchronization</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="05-05f-14-RequirementSynchro.png" width="447px" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+				Each system can be selected for synchronization with Novaforge. The &quot;Synchronize&quot; button therefore starts synchronization. The result can be displayed in the Novaforge application log.
+				<itemizedlist>
+					<listitem>
+						Requirements:
+						<emphasis>Synchronize requirement repositoies (Obeo and
+							Excel)
+						</emphasis>
+					</listitem>
+				</itemizedlist>
+				<itemizedlist>
+					<listitem>
+						Tests:
+						<emphasis>Synchronize requirement in TestLink, and look at which one is linked with a test.
+						</emphasis>
+					</listitem>
+				</itemizedlist>
+				<itemizedlist>
+					<listitem>
+						Codes:
+						<emphasis>Look at which requirement is coded.
+						</emphasis>
+					</listitem>
+				</itemizedlist>
+			</para>
+		</sect2>
+		<sect2>
+			<title>Configure Requirement manager</title>
+			<para>
+				<figure>
+					<title>Configuration</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center"
+								fileref="05-05f-10-RequirementConfiguration.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+				You can configure :
+				<itemizedlist>
+					<listitem>
+						Source path to synchronize :
+						<emphasis>Allow you to synchronize only one folder with Source manager.
+						</emphasis>
+					</listitem>
+					<listitem>
+						Automatic Synchronization
+						<itemizedlist>
+							<listitem>
+								Activate:
+								<emphasis>allow to active or not the automatic synchronization
+								</emphasis>
+							</listitem>
+							<listitem>
+								Launch first synchronization:
+								<emphasis>configure the first time of automatic synchronization
+								</emphasis>
+							</listitem>
+							<listitem>
+								Repeat synchronization:
+								<emphasis>configure the period between two automatic synchronization
+								</emphasis>
+							</listitem>
+						</itemizedlist>
+					</listitem>
+				</itemizedlist>
+
+			</para>
+		</sect2>
+		<sect2>
+	      <title>Display requirements</title>
+	      <para>
+	        The requirement application offers three views to access the requirements:
+	        <para>
+	          <itemizedlist>
+	            <listitem>
+	              Functional view:
+	              <emphasis>to display the requirement trees (and details of each requirement) for all deposits configured</emphasis>
+	            </listitem>
+	          </itemizedlist>
+	          <figure>
+	            <title>Functional view</title>
+	            <mediaobject>
+	              <imageobject>
+	                <imagedata align="center" fileref="05-05f-07-RequirementsList.png"/>
+	              </imageobject>
+	            </mediaobject>
+	          </figure>
+	        </para>
+	
+	        <para>
+	          <itemizedlist>
+	            <listitem>
+	              View by code:
+	              <emphasis>to display the requirements implemented in the project source code</emphasis>
+	            </listitem>
+	          </itemizedlist>
+	          <figure>
+	            <title>View by code</title>
+	            <mediaobject>
+	              <imageobject>
+	                <imagedata align="center" fileref="05-05f-08-CodeView.png"/>
+	              </imageobject>
+	            </mediaobject>
+	          </figure>
+	        </para>
+	      </para>
+	
+	      <para>
+	        <itemizedlist>
+	          <listitem>
+	            View by test:
+	            <emphasis>to display the requirements related to test cases in Testlink</emphasis>
+	          </listitem>
+	        </itemizedlist>
+	        <figure>
+	          <title>View by test</title>
+	          <mediaobject>
+	            <imageobject>
+	              <imagedata align="center" fileref="05-05f-09-TestView.png"/>
+	            </imageobject>
+	          </mediaobject>
+	        </figure>
+	      </para>
+	      <para>
+	        Legend of requirement coverage applied to the views by code and by test:
+	        <para>
+	          <inlinemediaobject>
+	            <imageobject>
+	              <imagedata fileref="05-05f-11-PuceRed.png" width="27px"/>
+	            </imageobject>
+	          </inlinemediaobject>
+	          The requirement is not covered by the tests or by the code (for the corresponding view).
+	        </para>
+	        <para>
+	          <inlinemediaobject>
+	            <imageobject>
+	              <imagedata fileref="05-05f-12-PuceGreen.png" width="27px"/>
+	            </imageobject>
+	          </inlinemediaobject>
+	          The requirement is covered by the tests or by the code (for the corresponding view).
+	        </para>
+	        <para>
+	          <inlinemediaobject>
+	            <imageobject>
+	              <imagedata fileref="05-05f-13-PuceYellow.png" width="27px"/>
+	            </imageobject>
+	          </inlinemediaobject>
+	          The requirement is covered by the tests or by the code in a version preceding the current version.
+	        </para>
+	      </para>
+	
+	    </sect2>
+		<sect2>
+      <title>Important!</title>
+      <para>
+        In the above example, we have assumed that a code manager and a test manager are present for the project, but the application can nevertheless operate without one or all of these managers. Only the systems configured for the project can therefore be synchronized. An alert will then be displayed in the application Synchronization:
+      </para>
+      <para>
+        If the Testlink application is configured in the requirement application, you must take into account the list of roles in Testlink and the permissions to create the requirements necessary to make testlink synchronizations:
+        <itemizedlist>
+          <listitem>
+            Guest: NO
+          </listitem>
+        </itemizedlist>
+        <itemizedlist>
+          <listitem>
+            Tester: NO
+          </listitem>
+        </itemizedlist>
+        <itemizedlist>
+          <listitem>
+            Senior Tester: NO
+          </listitem>
+        </itemizedlist>
+        <itemizedlist>
+          <listitem>
+            TestDesigner: YES
+          </listitem>
+        </itemizedlist>
+        <itemizedlist>
+          <listitem>
+            Leader: YES
+          </listitem>
+        </itemizedlist>
+        <itemizedlist>
+          <listitem>
+            Admin: YES
+          </listitem>
+        </itemizedlist>
+      </para>
+    </sect2>
+</section>

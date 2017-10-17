@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+
+	<reference id="portalMessages" interface="org.novaforge.forge.portal.services.PortalMessages" />
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+	<reference id="requirementManagerService" interface="org.novaforge.forge.tools.requirements.common.services.RequirementManagerService" />
+	<reference id="requirementRepositoryService" interface="org.novaforge.forge.tools.requirements.common.services.RequirementRepositoryService" />
+	<reference id="requirementManagerFunctionalService"
+		interface="org.novaforge.forge.plugins.requirements.requirementmanager.services.RequirementManagerFunctionalService" />
+	<reference id="requirementManagerSchedulingService"
+		interface="org.novaforge.forge.tools.requirements.common.services.RequirementManagerSchedulingService" />
+	<reference id="authentificationService" interface="org.novaforge.forge.core.security.authentification.AuthentificationService" />
+	<reference id="applicationRequestService" interface="org.novaforge.forge.core.plugins.services.ApplicationRequestService" />
+	<reference id="requirementFactory" interface="org.novaforge.forge.tools.requirements.common.factories.RequirementFactory" />
+	<reference id="requirementCodeService" interface="org.novaforge.forge.tools.requirements.common.facades.RequirementCodeService" />
+	<reference id="requirementFunctionalTestService"
+		interface="org.novaforge.forge.tools.requirements.common.facades.RequirementFunctionalTestService" />
+	<reference id="requirementConfigurationService"
+		interface="org.novaforge.forge.plugins.requirements.requirementmanager.services.RequirementConfigurationService" />
+	<reference-list id="externalRepositoryRequirementConnectors"
+		interface="org.novaforge.forge.tools.requirements.common.connectors.ExternalRepositoryRequirementConnector"
+		availability="optional" />
+	<reference id="requirementPermissionService" interface="org.novaforge.forge.tools.requirements.common.services.RequirementPermissionService" />
+
+	<bean id="module" class="org.novaforge.forge.ui.requirements.internal.module.RequirementsModule">
+		<!-- Service reference -->
+		<property name="portalMessages" ref="portalMessages" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+		<property name="requirementManagerService" ref="requirementManagerService" />
+		<property name="requirementRepositoryService" ref="requirementRepositoryService" />
+		<property name="requirementManagerFunctionalService" ref="requirementManagerFunctionalService" />
+		<property name="requirementManagerSchedulingService" ref="requirementManagerSchedulingService" />
+		<property name="authentificationService" ref="authentificationService" />
+		<property name="applicationRequestService" ref="applicationRequestService" />
+		<property name="requirementFactory" ref="requirementFactory" />
+		<property name="requirementCodeService" ref="requirementCodeService" />
+		<property name="requirementFunctionalTestService" ref="requirementFunctionalTestService" />
+		<property name="requirementConfigurationService" ref="requirementConfigurationService" />
+		<property name="externalRepositoryRequirementConnectors" ref="externalRepositoryRequirementConnectors" />
+		<property name="requirementPermissionService" ref="requirementPermissionService" />
+	</bean>
+
+	<service ref="module" interface="org.novaforge.forge.portal.models.PortalModule">
+		<service-properties>
+			<entry key="module-id" value="requirements-management" />
+		</service-properties>
+	</service>
+
+</blueprint>

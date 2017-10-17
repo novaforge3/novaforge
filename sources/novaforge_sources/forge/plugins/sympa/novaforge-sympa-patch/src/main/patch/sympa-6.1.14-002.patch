@@ -1,0 +1,189 @@
+diff -rNU5 sympa-patched-001/soap/sympasoap.pm sympa-6.1.14/soap/sympasoap.pm
+--- sympa-patched-001/soap/sympasoap.pm	2013-01-31 10:23:46.000000000 +0100
++++ sympa-6.1.14/soap/sympasoap.pm	2013-01-31 10:46:35.000000000 +0100
+@@ -1516,65 +1516,101 @@
+ ## Parameters are :
+ ## 1. email
+ ## ENV variables needed are : SYMPA_ROBOT the robot domain name
+ 
+ ## returns OK if the user is successfully deleted
++
+ sub deleteUser {
+     my ($class) = shift;
+     my ($email) = shift;
+ 
+     my $remote_application_name = $ENV{'remote_application_name'};
+     my $robot = $ENV{'SYMPA_ROBOT'};
+ 
+-    &Log::do_log('info', 'SOAP deleteUser(email = %s) via proxy application %s', $email,$remote_application_name);
++    &Log::do_log('info', 'SOAP RECOMPILED deleteUser(email = %s) via proxy application %s', $email,$remote_application_name);
+ 
+     unless ($email) {
+ 	&do_log('err', 'deleteUser(): incorrect number of parameters');
+ 	die SOAP::Fault->faultcode('Client')
+ 	    ->faultstring('Incorrect number of parameters : Use  <email>')
+ 	    ->faultdetail('Use : <email> ');
+     }
+ 
+-# check the user exists
++ #check the user exists
+     unless (&List::is_user_db($email)) {
+-	&do_log('err', 'deleteUser(): no user found with this email');
+-	die SOAP::Fault->faultcode('Client')
+-	    ->faultstring('Unable to delete user : No user found with this email')
+-	    ->faultdetail('No user found with this email');
+-    }
++   	&do_log('err', 'deleteUser(): no user found with this email');
++   	die SOAP::Fault->faultcode('Client')
++  	    ->faultstring('Unable to delete user : No user found with this email')
++   	    ->faultdetail('No user found with this email');
++   }
+ 
+     my (@users) = ($email);
+ 
+-# delete the user from the user table
++ #delete the user from the user table
+     unless (&List::delete_user_db(@users)) {
+-	&do_log('err', 'deleteUser(): delete_user_db_failed for email = %s', $email);
+-	die SOAP::Fault->faultcode('Client')
+-	    ->faultstring('Unable to delete user : delete_user_db_failed')
+-	    ->faultdetail('delete_user_db_failed');
++    &do_log('err', 'deleteUser(): delete_user_db_failed for email = %s', $email);
++   	die SOAP::Fault->faultcode('Client')
++   	    ->faultstring('Unable to delete user : delete_user_db_failed')
++   	    ->faultdetail('delete_user_db_failed');
+     }
+ 
++
+ # delete the user from the lists he is subscriber
+     my %listnames;
+     
+     foreach my $role ('member','owner','editor') {
+ 	foreach my $list( &List::get_which($email,$robot,$role) ){    
+ 	    my $name = $list->{'name'};
+-            &Log::do_log('info', 'SOAP updateUserEmail(user is subscriber of listname = %s)',$name);
+ 	    $listnames{$name} = $list;
+ 	}
+     }
++ 
++   #=====================================================================================
++   # In first step, we delete the user from list where he is subscriber 
++   # if the user is a list owner,  it's complexe because Sympa allows to store 
++   # owner in a static way (I.e config file) or a dynamic way in another file
++   # which are defined by UI user ... 
++   # We need to improve Sympa integration to control the delete process
++   # multiple datasource. see later
++   # nowadays, we launch a report to notice administrator to close user account if needed
++   #======================================================================================
++   my @userAdminError=();
+ 
+-    foreach my $name (keys %listnames) {
++   foreach my $name (keys %listnames) {
+ 	    my $list = $listnames{$name};
+             my $listname = $list->{'name'};
+-            &del($class,$listname,$email);
++	    if ($list->is_user($email)) 
++	     { 
++	       &Log::do_log('info', '%s Is subscriber of the list %s we delete this one',$email,$listname);
++               &del($class,$listname,$email);
++	     } else { 
++    	       &Log::do_log('info', 'is not on the list %s',$listname);
++	       my ($is_admin, $count_admin)= &List::check_admin_to_delete($email,$name);
++	       if ($is_admin && $count_admin > 1) 
++                {  
++		#Ok here we can delete an admin	(see later) 
++		my $error= "The user defined by email : ". $email ." is owner of [". $listname ."] its possible to delete manually because an other owner exit on this list"; 
++		push(@userAdminError,$error); 
++                } else { 
++		    my $error= "The user defined by email : ". $email ." is owner of [". $listname ."] and it is the only"; 
++		    push (@userAdminError,$error ); 
++                   &Log::do_log('info', 'Here the admin is alone we can not delete this one %s %s ',$email,$listname);
++                } 
++	 }	
++	
++	if (scalar(@userAdminError) > 0) {    
++	  &do_log('err', 'deleteUser(): this user must be delete email = %s', $email);
++   	  die SOAP::Fault->faultcode('100')
++   	  ->faultstring(join (',', @userAdminError))
++   	   ->faultdetail("") ;
++	}
+     }
+-
+-    return "OK";
++  return "OK";
+ }
+ 
+ 
++
+ ## This subroutine allows to delete a user on all the lists of a specified topic
+ ## Parameters are :
+ ## 1. email
+ ## 2. topic name
+ ## ENV variables needed are : SYMPA_ROBOT the robot domain name
+diff -rNU5 sympa-patched-001/src/lib/List.pm sympa-6.1.14/src/lib/List.pm
+--- sympa-patched-001/src/lib/List.pm	2013-01-31 10:23:46.000000000 +0100
++++ sympa-6.1.14/src/lib/List.pm	2013-01-31 10:39:52.000000000 +0100
+@@ -10638,10 +10638,63 @@
+ }
+ 
+ ## ## ## ## ## ## ## ## ## ## 
+ ##  Patch NovaForge End    ## 
+ ## ## ## ## ## ## ## ## ## ## 
++#====================================== NOVAFORGE PATCH =====================================================
++
++sub check_admin_to_delete {
++
++    my $email = shift;
++    my $listname = shift;
++
++    unless ($List::use_db) {
++	&do_log('info', 'Sympa not setup to use DBI');
++	return undef;
++    }
++    my ($l,$whish,  $statement);
++    ## Check database connection
++    unless ($dbh and $dbh->ping) {
++	return undef unless &db_connect();
++    }	   
++       
++     #Get All list admin 
++     $statement = sprintf "select user_admin from admin_table where list_admin =%s",$dbh->quote($listname); 
++
++     push @sth_stack, $sth;
++     unless ($sth = $dbh->prepare($statement)) {
++      do_log('info','Unable to prepare SQL statement : %s', $dbh->errstr);
++     return undef;
++      }
++
++      &do_log('info','SQL: %s', $statement);
++	unless ($sth->execute) {
++	    do_log('err','Unable to execute SQL statement "%s" : %s', $statement, $dbh->errstr);
++	    return undef;
++	}
++	
++	my $count_admin=0; 
++	my $is_admin=0; 
++
++	while ($l = $sth->fetchrow_hashref) 
++	{
++	 my $admin=$l->{'user_admin'}; 
++	 do_log('info','%s is admin of  : %s',$admin,$listname);
++	  if ($email eq  $admin) 
++	  { 
++	    $is_admin=1; 
++	  }	
++	  $count_admin++; 
++	}
++	
++	$sth->finish();
++	$sth = pop @sth_stack;
++
++    return ($is_admin, $count_admin); 
++}
++
++
+ 
+ ## Loads the list of topics if updated
+ sub load_topics {
+     
+     my $robot = shift ;

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.novaforge.beaver</groupId>
+	<artifactId>parent</artifactId>
+	<name>NovaForge(tm) :: Beaver :: Parent</name>
+	<description>NovaForge(tm) :: Beaver :: Parent</description>
+	<version>3.6</version>
+	<packaging>pom</packaging>
+	<licenses>
+		<license>
+			<name>GNU Affero General Public License</name>
+			<url>http://www.gnu.org/licenses/agpl.txt</url>
+		</license>
+	</licenses>
+	<organization>
+		<name>Bull SAS</name>
+		<url>http://www.bull.net</url>
+	</organization>
+	<distributionManagement>
+	</distributionManagement>
+	<repositories>
+		<repository>
+			<id>groovy</id>
+			<name>Groovy Repository</name>
+			<url>http://repository.codehaus.org/org/codehaus/groovy</url>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+		</repository>
+	</repositories>
+
+	<!-- Global properties -->
+	<properties>
+		<!-- global properties -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
+		<!-- Versions -->
+		<maven.version>3.0.5</maven.version>
+		<jibx.version>1.2.5</jibx.version>
+		<ant.version>1.9.3</ant.version>
+		<groovy.version>2.3.2</groovy.version>
+		<ivy.version>2.3.0</ivy.version>
+	</properties>
+	<!-- Declaration of modules -->
+	<modules>
+		<module>beaver-context-oxm</module>
+		<module>beaver-context-apis</module>
+		<module>beaver-context-impl</module>
+		<module>beaver-deployment-plugin</module>
+	</modules>
+	<!-- Build settings -->
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-invoker-plugin</artifactId>
+					<version>1.10</version>
+					<configuration>
+						<localRepositoryPath>${basedir}/../beaver-deployment-plugin/target/it/repository</localRepositoryPath>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-shade-plugin</artifactId>
+					<version>2.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.1.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.jibx</groupId>
+					<artifactId>maven-jibx-plugin</artifactId>
+					<version>${jibx.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-plugin-plugin</artifactId>
+					<version>3.3</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<!-- compiler plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>UTF-8</encoding>
+					<optimize>true</optimize>
+					<compilerArgument>-proc:none</compilerArgument>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<configuration>
+					<includePom>true</includePom>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-plugin-api</artifactId>
+				<version>${maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-core</artifactId>
+				<version>${maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven</groupId>
+				<artifactId>maven-compat</artifactId>
+				<version>${maven.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven.plugin-tools</groupId>
+				<artifactId>maven-plugin-annotations</artifactId>
+				<version>3.3</version>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.16</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven.shared</groupId>
+				<artifactId>maven-dependency-tree</artifactId>
+				<version>2.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.groovy</groupId>
+				<artifactId>groovy-all</artifactId>
+				<version>${groovy.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.ivy</groupId>
+				<artifactId>ivy</artifactId>
+				<version>${ivy.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.ant</groupId>
+				<artifactId>ant</artifactId>
+				<version>${ant.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.rauschig</groupId>
+				<artifactId>jarchivelib</artifactId>
+				<version>0.7.0</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.4</version>				
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-compress</artifactId>
+				<version>1.8.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-exec</artifactId>
+				<version>1.2</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>1.9</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jibx</groupId>
+				<artifactId>jibx-run</artifactId>
+				<version>${jibx.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jibx</groupId>
+				<artifactId>jibx-extras</artifactId>
+				<version>${jibx.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven.plugin-testing</groupId>
+				<artifactId>maven-plugin-testing-harness</artifactId>
+				<version>3.1.0</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.11</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.hamcrest</groupId>
+				<artifactId>hamcrest-all</artifactId>
+				<version>1.3</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>

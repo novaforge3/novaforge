@@ -1,0 +1,70 @@
+/**
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+ */
+/**********************
+ * Default & white styles
+ **********************/
+.v-label-h1,
+.v-label-h2,
+.v-caption-h1,
+.v-caption-h2,
+.white .v-label-h1,
+.white .v-label-h2,
+.white .v-caption-h1,
+.white .v-caption-h2 {
+	font-family: Helvetica, Arial, "Lucida Grande", Geneva, Tahoma, Verdana, sans-serif;
+	font-size: 22px;
+	line-height: 36px;
+	font-weight: bold;
+	color: #222;
+	letter-spacing: -0.02em;
+	text-shadow: #fff 0 -1px 1px;
+}
+
+.v-caption-nf-label-icon-16 .v-icon {
+	width: 16px;
+	height: 16px;
+}
+
+.label-strike {
+	text-decoration: line-through;
+	color: grey;
+}
+
+.label-bold {
+	font-weight: bold;
+}
+
+.label-green {
+	color: #83b257;
+}
+.label-orange {
+	color: #db8c0f;
+}
+.label-grey {
+	color: grey;
+}
+.label-red {
+	color: rgb(233, 37, 37);
+}

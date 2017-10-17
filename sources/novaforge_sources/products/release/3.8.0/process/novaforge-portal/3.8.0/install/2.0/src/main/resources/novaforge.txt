@@ -1,0 +1,18 @@
+@CAS_LOGS@/catalina.out
+{
+ copytruncate
+ weekly 
+ rotate 5
+ compress 
+ missingok
+ size 50M
+}
+@HTTPD_LOGS@/http*log
+{
+ copytruncate
+ weekly 
+ rotate 5
+ compress 
+ missingok
+ size 50M
+}

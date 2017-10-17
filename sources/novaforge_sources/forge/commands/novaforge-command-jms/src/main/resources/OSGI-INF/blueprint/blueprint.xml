@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" default-activation="eager">
+
+    <!--  Configuration for Karaf JMS Commands -->
+
+	<reference id="messageService" interface="org.novaforge.forge.commons.technical.jms.MessageService" />
+
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action class="org.novaforge.forge.commands.jms.command.PublishShellCommand">
+				<property name="messageService" ref="messageService" />
+			</action>
+		</command>
+	</command-bundle>
+
+
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action class="org.novaforge.forge.commands.jms.command.SendShellCommand">
+				<property name="messageService" ref="messageService" />
+			</action>
+		</command>
+	</command-bundle>
+
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action class="org.novaforge.forge.commands.jms.command.BrowseShellCommand">
+				<property name="messageService" ref="messageService" />
+			</action>
+		</command>
+	</command-bundle>	
+	
+	<!--  Configuration for Camel JMS Route -->
+	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<argument ref="jmsConfig" />
+	</bean>
+
+	<bean id="testJmsRoute" class="org.novaforge.forge.commands.jms.route.JmsRoute" />
+
+	<camelContext id="testJms" xmlns="http://camel.apache.org/schema/blueprint">
+		<routeBuilder ref="testJmsRoute" />
+	</camelContext>
+
+</blueprint>

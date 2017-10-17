@@ -1,0 +1,43 @@
+.v-portlet .v-portlet-header {
+	background-image: url(header-bg.png);
+}
+
+.v-portlet .v-portlet-header-button-close {
+	background-image: url(close.png);
+}
+
+.v-portlet .v-portlet-header-button-collapse {
+	background-image: url(collapse.png);
+}
+
+.v-portlet .v-portlet-header-button-expand {
+	background-image: url(expand.png);
+}
+
+.v-portlet .v-portlet-header-button-close:hover {
+	background-image: url(close-hover.png);
+	cursor: pointer;
+}
+
+.v-portlet .v-portlet-header-button-collapse:active {
+	background-image: url(collapse-pressed.png);
+}
+
+.v-portlet .v-portlet-header-button-close:active {
+	background-image: url(close-pressed.png);
+}
+
+.v-portlet-resizable .v-portlet-resize-drag {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 15px;
+    height: 15px;
+    cursor: se-resize;
+    background: transparent;
+    background-image: url(resize.png);
+}
+
+.v-portlet-resizable .v-portlet-footer {
+    background-image: url(footer-bg.png);
+}

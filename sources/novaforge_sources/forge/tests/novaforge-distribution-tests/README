@@ -1,0 +1,48 @@
+                         #-------------------------------
+                         #    README
+                         #----------------------------
+
+documentation sur shunit2:
+https://code.google.com/p/shunit2/
+
+Les suites de tests pour la distribution s'appuient sur:
+	- les commandes karaf de test de la distribution (temporairement, en attendant d'avoir le profil maven de test: itests_safran, nécéssité de mettre les 2 jars des commandes karaf de tests sous le répertoire Cmd_jar) 
+	- le framework de test: shunit2
+
+
+La structure de l'installation sur management-node est la suivante:
+	Distribution-itests-shunit2                                        -> rep. parent
+              avec en dessous:         
+                  
+		bin		-> de shunit2
+		doc 		-> de shunit2 
+		examples  	-> de shunit2
+		lib  		-> de shunit2
+		src		-> de shunit2
+		README  	-> le présent fichier
+		  
+		Tests		-> scripts d'execution et le fichier de configuiration
+
+
+			actions_before_distribution_tests.sh                 
+			forge_distribution_referentiel_alfresco_test.sh     
+			start_distribution_auto_test.sh
+			check_forge_successful.sh                            
+			forge_distribution_referentiel_dokuwiki_test.sh     			
+			Cmd_jar							-> 2 jars des cmds java                                              			 
+			utility.sh						-> lib commune aux tests      			
+			distributionTest_validation-350.properties	-> fichier de config
+
+
+
+Installer la commande de lancement des tests avec crontab:
+
+# test safran distribution 3.5.0
+30 06 * * *  /datas/workspace/AutoTest/Distribution-itests-shunit2/Tests/start_distribution_auto_test.sh /datas/workspace/AutoTest/Distribution-itests-shunit2/Tests/distributionTest_validation-350.properties > /tmp/testDistrib_3.5.0_$$.log
+
+
+#----------------------------------------------------------
+Pour purger les log des tests de distribution de plus de 3J
+find testDistrib_3.5.0* -mtime +3 -type f -delete
+#----------------------------------------------------------
+

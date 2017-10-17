@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
+					 xmlns:cxf="http://cxf.apache.org/blueprint/core"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+					 xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+	http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd 
+    http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+
+    http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd">
+
+	<reference id="webServerConfigurator" interface="org.novaforge.forge.commons.webserver.configuration.services.WebServerConfigurator" />
+	<reference id="normalizeService" interface="org.novaforge.forge.commons.technical.normalize.NormalizeService" />
+	<reference id="mantisARDSoapClient" interface="org.novaforge.forge.plugins.bugtracker.mantis.ard.client.MantisARDSoapClient" />
+	<reference id="mantisARDResourceBuilder" interface="org.novaforge.forge.plugins.bugtracker.mantis.ard.datamapper.MantisARDResourceBuilder" />
+	<reference id="mantisARDConfigurationService" interface="org.novaforge.forge.plugins.bugtracker.mantis.ard.services.MantisARDConfigurationService" />
+	<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/pluginMantisARD)"/>
+	<reference id="httpService" interface="org.osgi.service.http.HttpService" />
+	<reference id="reportingService" interface="org.novaforge.forge.commons.reporting.services.ReportingService"></reference>
+		<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+	
+	<bean id="instanceConfigurationDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.InstanceConfigurationDAOImpl">
+		<jpa:context unitname="plugins.mantis-ard" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="rolesMappingDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.RolesMappingDAOImpl">
+		<jpa:context unitname="plugins.mantis-ard" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="toolInstanceDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.ToolInstanceDAOImpl">
+		<jpa:context unitname="plugins.mantis-ard" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="uuidDAO" class="org.novaforge.forge.plugins.commons.persistence.dao.UuidDAOImpl">
+		<jpa:context unitname="plugins.mantis-ard" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+
+	<!-- Mantis ARD Report -->
+	<bean id="MantisARDReport" class="org.novaforge.forge.plugins.bugtracker.mantis.ard.internal.servlets.MantisARDReport" 
+	init-method="init" destroy-method="destroy">
+		<property name="bundleContext" ref="blueprintBundleContext" />
+		<property name="httpService" ref="httpService" />
+		<property name="reportingService" ref="reportingService" />
+	</bean>
+
+	<bean id="mantisARDRoleMappingService" class="org.novaforge.forge.plugins.bugtracker.mantis.ard.internal.services.MantisARDRoleMappingServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="rolesMappingDAO" ref="rolesMappingDAO" />
+	</bean>
+	<bean id="mantisARDMembershipService" class="org.novaforge.forge.plugins.bugtracker.mantis.ard.internal.services.MantisARDMembershipServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="pluginRoleMappingService" ref="mantisARDRoleMappingService" />
+		<property name="mantisARDSoapClient" ref="mantisARDSoapClient" />
+		<property name="mantisARDResourceBuilder" ref="mantisARDResourceBuilder" />
+		<property name="pluginConfigurationService" ref="mantisARDConfigurationService" />
+	</bean>
+	<bean id="mantisARDProjectService" class="org.novaforge.forge.plugins.bugtracker.mantis.ard.internal.services.MantisARDProjectServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="normalizeService" ref="normalizeService" />
+		<property name="pluginRoleMappingService" ref="mantisARDRoleMappingService" />
+		<property name="mantisARDSoapClient" ref="mantisARDSoapClient" />
+		<property name="mantisARDResourceBuilder" ref="mantisARDResourceBuilder" />
+		<property name="pluginConfigurationService" ref="mantisARDConfigurationService" />
+	</bean>
+	<bean id="mantisARDUserService" class="org.novaforge.forge.plugins.bugtracker.mantis.ard.internal.services.MantisARDUserServiceImpl">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="mantisARDSoapClient" ref="mantisARDSoapClient" />
+		<property name="mantisARDResourceBuilder" ref="mantisARDResourceBuilder" />
+		<property name="pluginConfigurationService" ref="mantisARDConfigurationService" />
+	</bean>
+	<bean id="mantisARDToolInstanceProvider" class="org.novaforge.forge.plugins.commons.services.DefaultToolInstanceProvider">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+		<property name="toolInstanceDAO" ref="toolInstanceDAO" />
+		<property name="pluginConfigurationService" ref="mantisARDConfigurationService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+	<bean id="mantisARDInstanceService" class="org.novaforge.forge.plugins.commons.services.DefaultPluginInstanceService">
+		<property name="instanceConfigurationDAO" ref="instanceConfigurationDAO" />
+	</bean>
+	<cxf:bus id="mantisARDBus" />
+	<jaxws:endpoint implementor="#mantisARDInstanceService" address="/mantisARDInstance" />
+		
+	<!--  Configuration for Camel JMS Route -->
+	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
+	<!--  Configuration for Camel JMS Route -->
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<argument ref="jmsConfig" />
+	</bean>
+	<bean id="mantisARDMembershipRouteBuilder" class="org.novaforge.forge.plugins.bugtracker.mantis.ard.internal.route.MantisARDMembershipRoute">
+		<property name="pluginMembershipService" ref="mantisARDMembershipService" />
+	</bean>
+	<bean id="mantisARDProjectRouteBuilder" class="org.novaforge.forge.plugins.bugtracker.mantis.ard.internal.route.MantisARDProjectRoute">
+		<property name="pluginProjectService" ref="mantisARDProjectService" />
+	</bean>
+	<bean id="mantisARDRolesMappingRouteBuilder" class="org.novaforge.forge.plugins.bugtracker.mantis.ard.internal.route.MantisARDRolesMappingRoute">
+		<property name="pluginRoleMappingService" ref="mantisARDRoleMappingService" />
+		<property name="pluginMembershipService" ref="mantisARDMembershipService" />
+	</bean>
+	<bean id="mantisARDUserRouteBuilder" class="org.novaforge.forge.plugins.bugtracker.mantis.ard.internal.route.MantisARDUserRoute">
+		<property name="pluginUserService" ref="mantisARDUserService" />
+	</bean>
+	<camelContext id="mantisARDCamelContext" xmlns="http://camel.apache.org/schema/blueprint">
+		<routeBuilder ref="mantisARDMembershipRouteBuilder" />
+		<routeBuilder ref="mantisARDProjectRouteBuilder" />
+		<routeBuilder ref="mantisARDRolesMappingRouteBuilder" />
+		<routeBuilder ref="mantisARDUserRouteBuilder" />
+	</camelContext>
+	<bean id="mantisARDService" class="org.novaforge.forge.plugins.bugtracker.mantis.ard.internal.MantisARDServiceImpl">
+	   <!-- Camel context -->
+		<property name="camelContext" ref="mantisARDCamelContext" />
+	   <!-- Service reference -->
+		<argument ref="uuidDAO" />
+		<property name="pluginConfigurationService" ref="mantisARDConfigurationService" />
+		<property name="pluginRoleMappingService" ref="mantisARDRoleMappingService" />
+		<property name="pluginUserService" ref="mantisARDUserService" />
+		<property name="webServerConfigurator" ref="webServerConfigurator" />
+		<property name="toolInstanceProvisioningService" ref="mantisARDToolInstanceProvider" />
+		<!-- Configuration -->
+		<property name="type" value="mantis_ard" />
+		<property name="version" value="${novaforge.version}" />
+	</bean>
+	<bean id="mantisARDCategoryService" class="org.novaforge.forge.plugins.bugtracker.mantis.ard.internal.MantisARDCategoryServiceImpl" />
+
+	<service id="mantisARDServiceRegistration" ref="mantisARDService" interface="org.novaforge.forge.core.plugins.services.PluginService">
+		<service-properties>
+			<entry key="type" value="mantis_ard"></entry>
+			<entry key="version" value="${novaforge.version}"></entry>
+		</service-properties>
+	</service>
+	<service id="mantisARDCategoryRegistration" ref="mantisARDCategoryService" auto-export="interfaces">
+		<service-properties>
+			<entry key="type" value="mantis_ard"></entry>
+			<entry key="version" value="${novaforge.version}"></entry>
+		</service-properties>
+	</service>
+	<bean id="pluginServiceRegistration" class="org.novaforge.forge.plugins.commons.services.PluginServiceRegistration">
+		<argument ref="blueprintBundleContext" />
+		<argument ref="mantisARDServiceRegistration" />
+		<argument ref="mantisARDCategoryRegistration" />
+	</bean>
+</blueprint>

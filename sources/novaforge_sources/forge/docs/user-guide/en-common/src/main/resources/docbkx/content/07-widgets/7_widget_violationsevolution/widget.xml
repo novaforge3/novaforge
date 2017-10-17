@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+
+
+<section version="5.0" xml:lang="en" xmlns="http://docbook.org/ns/docbook"
+		>
+
+			<title>Widget Violations evolution</title>
+			<section>
+				<title>Binding Applications rule</title>
+				<para>
+					All Quality management applications of all your projects can be binded to the widget. 
+					For configuring applications to bind, please refer to section <xref linkend="widgetCommonSetting" endterm="widgetCommonSettingXref" />.
+				</para>
+			</section>
+			<section>
+				<title>Overview</title>
+				<para>
+					This widget show the violations evolution for one resource, grouped by state, in the form of a stacked area chart.
+					You can hide or show violation state by clicking on state name and icon in the legend.
+				</para>
+				<figure>
+					<title>Example : Widget Violations timeline Overview
+					</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center"
+								fileref="07-Widget-ViolationsEvolution-Overview.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+				
+			</section>
+			<section>
+				<title>Widget parameters</title>
+				<figure>
+					<title>configure widget properties</title>
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center"
+								fileref="07-Widget-ViolationsEvolution-Setting.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+				<para>
+					This menu allow you to :
+					<itemizedlist>
+						<listitem>
+							<para>Modify widget title in your dashboard, by editing the "name" field
+							</para>
+						</listitem>
+						<listitem>
+							<para>Select the resource you want to use in the widget
+							</para>
+						</listitem>
+						<listitem>
+							<para>Save your modifications</para>
+						</listitem>
+						<listitem>
+							<para>Return to dashboard, by clicking on the return button at top right.
+							</para>
+						</listitem>
+					</itemizedlist>
+				</para>
+			</section>
+</section>

@@ -1,0 +1,3 @@
+SSLProxyEngine On
+ProxyPass    @CAS_URI@   https://@CAS_HOST@:@CAS_PORT@@CAS_URI@
+ProxyPassReverse @CAS_URI@ https://@CAS_HOST@:@CAS_PORT@@CAS_URI@

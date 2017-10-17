@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<chapter version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude"
+	xmlns:ns5="http://www.w3.org/2000/svg" xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+	xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:db="http://docbook.org/ns/docbook">
+	<title>Gérer le référentiel de forge</title>
+
+	<para>Il existe dans Novaforge deux espaces spéciaux : le projet de
+		Forge et
+		le référentiel de forge. Nous allons voir dans ce chapitre le but du
+		référentiel de forge et comment l'administrer.
+	</para>
+
+	<sect1>
+		<title>But du référentiel de forge</title>
+
+		<para>Le but du référentiel de forge est de partager de l'information
+			pour
+			tous les utilisateurs d'une forge mais plus encore d'une même grappe de
+			forges.
+		</para>
+
+		<para>
+			Le concept de "référentiel" est donc intimement lié au concept de
+			distribution des forges car tout le contenu du référentiel peut-être
+			propagé d'une forge centrale vers toutes ses forges filles.
+		</para>
+
+		<para>
+			Ainsi grâce au référentiel de forge, n'importe quel utilisateur de
+			la forge ou de la grappe de forge aura accès à :
+			<itemizedlist>
+				<listitem>
+					<para>Des applications partagées (Wiki et Documents du
+						référentiel)
+					</para>
+				</listitem>
+				<listitem>
+					<para>Des templates projets.</para>
+				</listitem>
+				<listitem>
+					<para>Des outils partagés.</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+
+		<para>On notera que pour rendre disponible un wiki ou une application
+			de
+			gestion de documents, il est possible d'utiliser le projet de forge ou bien
+			le référentiel de forge. On choisira alors le référentiel si le
+			contenu a
+			pour but d'être partagé dans toute la grappe de forges filles.
+			En revanche, on choisira plutôt le projet de forge si le contenu est
+			spécifique à une seule forge.
+		</para>
+
+		<para> Aussi le projet de forge permet de partager
+			d'autres applications alors que le référentiel permet de gérer les
+			templates et la mise à disposition d'outils versionnés.
+		</para>
+	</sect1>
+
+	<sect1>
+		<title>Administration du référentiel de forge</title>
+
+		<para>Pour accéder à l'espace administration du référentiel, il faut
+			être
+			administrateur de forge et se connecter sur une forge centrale ou orpheline, c'est
+			à dire
+			sans forge mère. En effet, comme le contenu du référentiel de forge est
+			poussé
+			d'une mère vers ses filles le contenu des filles est alors remplacé par
+			celui de sa mère. L'accès à l'administration du référentiel est donc
+			supprimé sur les forges filles afin d'éviter toute perte
+			d'information.
+		</para>
+
+		<sect2>
+			<title>Administrer les applications </title>
+
+			<para>Depuis le menu de gauche cliquer sur "Administration du projet
+				référence"
+			</para>
+
+			<figure>
+				<title>Administrer le projet référentiel</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="062-01-ReferenceProject.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>L'administration des applications dans le projet référentiel
+				s'effectue de la même manière que pour un projet classique avec une
+				différence majeure : seules les applications diffusables peuvent-être
+				ajoutées au projet référentiel.
+			</para>
+
+			<para>
+				Par défaut les applications diffusables sont:
+				<itemizedlist>
+					<listitem>
+						<para>Dokuwiki</para>
+					</listitem>
+
+					<listitem>
+						<para>Alfresco</para>
+					</listitem>
+				</itemizedlist>
+			</para>
+
+			<para>
+				Les actions possibles sur le projet référentiel sont :
+				<itemizedlist>
+					<listitem>
+						<para>Créer, modifier, supprimer un domaine</para>
+					</listitem>
+
+					<listitem>
+						<para>Ajouter, modifier, supprimer une application
+							diffusable
+						</para>
+					</listitem>
+
+					<listitem>
+						<para>Editer la description du projet</para>
+					</listitem>
+				</itemizedlist>
+			</para>
+
+			<para>
+				Par rapport à un projet classique, les actions indisponibles sur
+				le projet référentiel sont :
+				<itemizedlist>
+					<listitem>
+						<para>Gestion des groupes, utilisateurs : tous les utilisateurs
+							par
+							défaut sont membres. Seuls les administrateurs de forge sur des
+							forges centrales ou orphelines ont accès à l'administration du
+							projet.
+						</para>
+					</listitem>
+
+					<listitem>
+						<para>Gestion des rôles : Deux rôles existent : Administrateur et
+							membre. Ils sont utilisés pour la correspondance avec les rôles
+							des
+							outils.
+						</para>
+					</listitem>
+
+					<listitem>
+						<para>Liens entre applications.</para>
+					</listitem>
+				</itemizedlist>
+			</para>
+		</sect2>
+
+		<sect2>
+			<title>Administrer les templates projets</title>
+
+			<para>Les templates projets permettent à un utilisateur de forge de
+				rapidement créer un projet avec des rôles, des espaces, des
+				applications et une
+				correspondance de rôles pré-configurés et ainsi permettre un gain de temps à
+				la création de projets typiques redondants au sein d'une
+				organisation.
+			</para>
+
+			<para>Pour accéder à l'espace administration des templates, depuis le
+				référentiel de forge, cliquer sur l'onglet "Templates".
+			</para>
+
+			<figure>
+				<title>Administrer les templates</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="062-02-TemplatesProject.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>La forge est initialisée avec un certain
+				nombre de templates qui pourront être modifiés et supprimés. Des
+				nouveaux templates pourront être crées également.
+			</para>
+
+			<sect3>
+				<title>Créer un template</title>
+
+				<para>Cliquer sur le bouton "Créer un template". Un assistant
+					contenant
+					plusieurs étapes est lancé. Il est possible à tout moment de revenir
+					en arrière ou bien d'annuler l'assistant à l'aide des boutons
+					"Précédent" ou "Annuler".
+				</para>
+
+				<figure>
+					<title>Créer un template</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="062-03-CreateTemplate.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+
+				<para>Renseigner les noms, identifiants et description du template
+					puis
+					cliquer sur "Suivant"
+				</para>
+
+				<figure>
+					<title>Renseigner les informations du template</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="062-04-CreateTemplateDesc.png"
+								width="400px" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+
+				<para>Ajouter, modifier ou supprimer des rôles. Ici la gestion des
+					rôles est identique à la gestion des rôles sur un projet.
+				</para>
+
+				<figure>
+					<title>Gérer les rôles du template</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="062-05-CreateTemplateRole.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+
+				<para>Ajouter, modifier ou supprimer des domaines et applications.
+				</para>
+
+				<figure>
+					<title>Gérer les applications du template</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="062-06-CreateTemplateAppli.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+
+				<para>Un résumé du template est affiché.</para>
+
+				<figure>
+					<title>Résumé du template</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="062-07-CreateTemplateSummary.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+
+				<para>Cliquer sur le bouton "Enregistrer", le template est alors
+					enregistré dans un état brouillon. Afin de pouvoir l'utiliser lors
+					de
+					la création d'un projet, il doit être validé.
+				</para>
+
+				<figure>
+					<title>Valider un template</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="062-08-CreateTemplateValidate.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+
+				<para>Le template est alors utilisable pour la création de
+					projet.
+				</para>                                                                   
+
+				<figure>
+					<title>Template activé</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="062-09-CreateTemplateActivated.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</sect3>
+		</sect2>
+
+		<sect2>
+			<title>Administrer les outils partagés</title>
+
+			<para>L'administrateur d'une forge peut, par le biais de l'onglet
+				"Import
+				Outils" depuis le menu "Administration du projet référence", mettre à
+				disposition des utilisateurs de la forge des outils, fichiers
+				binaires,
+				IDE...
+			</para>
+
+			<para>Les outils importés sont alors disponibles en téléchargement
+				depuis le menu "Outils Partagés". L'administrateur possède alors le
+				choix de
+				déposer un outil dans un des deux espaces :
+			</para>
+
+			<itemizedlist>
+				<listitem>
+					<para>L'espace Administrateur : cet espace n'est accessible en
+						téléchargement que par les administrateurs de la forge.
+					</para>
+				</listitem>
+
+				<listitem>
+					<para>L'espace utilisateur : cet espace est accessible en
+						téléchargement par tous les utilisateurs de la forge.
+					</para>
+				</listitem>
+			</itemizedlist>
+
+			<para>Cliquer sur l'onglet "Import d'outils". Choisir l'espace
+				souhaité
+				(Administrateur ou utilisateur), donner un nom et une version au
+				fichier. Ces paramètres sont obligatoires, en revanche l'outil en
+				question gardera son extension existante (par ex. .zip, .rpm, ...). Donc
+				ne pas mettre l'extension dans le nom.
+			</para>
+
+			<figure>
+				<title>Informations sur l'outil importé.</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="062-10-ImportToolInfo.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>Cliquer sur le bouton "Choisissez un fichier", puis après avoir
+				choisi l'outil, cliquer sur "Envoyez votre fichier".
+			</para>
+
+			<figure>
+				<title>Choisir, envoyer un outil</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="062-11-ImportToolFile1.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>Une barre de progression est alors affichée. Il est possible
+				d'annuler le transfert en cliquant sur la croix. Lorsque le fichier
+				est
+				transféré un message est affiché : "Votre fichier a été reçu avec
+				succès."
+			</para>
+
+			<figure>
+				<title>Barre de progression </title>
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="062-12-ImportToolFile2.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<para>Il est possible alternativement d'aller chercher un outil
+				disponible depuis une URL.
+			</para>
+
+			<figure>
+				<title>Récupérer un outil depuis une URL.</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="062-13-ImportToolFile3.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</sect2>
+	</sect1>
+
+	<sect1>
+		<title>Utilisation du référentiel de forge</title>
+
+		<sect2>
+			<title>Visualiser les document partagés dans le référentiel de forge
+			</title>
+
+			<para>Pour accéder aux documents partagés, ouvrir le menu
+				"Applications
+				partagées" -&gt; "Alfresco Referentiel". L'administrateur d'une forge
+				centrale ou orpheline peut alors visualiser, créer, modifier des
+				documents. Tout autre utilisateur ne peut accéder à l'application de gestion
+				de
+				documents qu'en lecture seule.
+			</para>
+
+			<figure>
+				<title>Alfresco : référentiel documentaire de la forge</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="062-14-SharedGED.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</sect2>
+
+		<sect2>
+			<title>Visualiser le wiki partagé dans le référentiel de forge
+			</title>
+
+			<para>Pour accéder au wiki partagé, ouvrir le menu "Applications
+				partagées" -&gt; "Wiki Referentiel". L'administrateur d'une forge
+				centrale ou orpheline peut alors visualiser, créer, modifier des
+				pages.
+				Tout autre utilisateur ne peut accéder à l'application de gestion de
+				documents qu'en lecture seule.
+			</para>
+
+			<figure>
+				<title>Wiki du référentiel de forge</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="062-15-SharedWiki.png" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</sect2>
+
+		<sect2>
+			<title>Créer un projet à partir d'un template</title>
+
+			<para>
+				Pour créer un projet à partir d'un template, il faut choisir
+				le template souhaité dans le formulaire de création d'un projet (cf
+				<xref linkend="create-project" />
+				)
+			</para>
+
+
+			<para>Une fois validé par l'administrateur de la forge, le projet
+				sera
+				alors créé avec les rôles, applications et correspondance des rôles
+				forge-outil pré-configurés dans le template.
+			</para>
+		</sect2>
+
+		<sect2>
+			<title>Télécharger un outil partagé</title>
+
+			<para>Pour télécharger un outil partagé, cliquer sur le menu "Outils
+				partagés". Deux sous-menus sont disponibles :
+			</para>
+
+			<itemizedlist>
+				<listitem>
+					<para>L'espace administrateur visible uniquement pour les
+						administrateurs de la forge
+					</para>
+				</listitem>
+				<listitem>
+					<para>L'espace utilisateur visible pour tous les utilisateurs de la
+						forge
+					</para>
+				</listitem>
+			</itemizedlist>
+
+			<figure>
+				<title>Menu Outils Partagés</title>
+
+				<mediaobject>
+					<imageobject>
+						<imagedata align="center" fileref="062-16-SharedToolsMenu.png"
+							width="250px" />
+					</imageobject>
+				</mediaobject>
+			</figure>
+
+			<sect3>
+				<title>Outils Administrateur</title>
+
+				<para>En cliquant sur le menu Outils administrateur, la liste des
+					fichiers disponibles s'affiche. Il est possible de filtrer en
+					fonction du
+					nom de l'outil, de supprimer un outil (croix) ou de le
+					télécharger (image flèche verte)
+				</para>
+
+				<figure>
+					<title>Outils partagés : Outils Administrateur</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="062-17-SharedToolsAdmin.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</sect3>
+
+			<sect3>
+				<title>Outils Utilisateur</title>
+
+				<para>En cliquant sur le menu Outils Utilisateur, la liste des
+					fichiers disponibles s'affiche. Il est possible de filtrer en
+					fonction du
+					nom de l'outil, de supprimer un outil (uniquement disponible pour un
+					administrateur de forge) ou de le télécharger (image flèche
+					verte)
+				</para>
+
+				<figure>
+					<title>Outils partagés : Outils Utilisateur</title>
+
+					<mediaobject>
+						<imageobject>
+							<imagedata align="center" fileref="062-18-SharedToolsUser.png" />
+						</imageobject>
+					</mediaobject>
+				</figure>
+			</sect3>
+		</sect2>
+	</sect1>
+</chapter>

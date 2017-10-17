@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+ *
+ * This file is free software: you may redistribute and/or 
+ * modify it under the terms of the GNU Affero General Public License
+ * as published by the Free Software Foundation, version 3 of the License.
+ *
+ * This file is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see http://www.gnu.org/licenses.
+ *
+ * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7
+ *
+ * If you modify this Program, or any covered work,
+ * by linking or combining it with libraries listed
+ * in COPYRIGHT file at the top-level directof of this
+ * distribution (or a modified version of that libraries),
+ * containing parts covered by the terms of licenses cited
+ * in the COPYRIGHT file, the licensors of this Program
+ * grant you additional permission to convey the resulting work.
+-->
+<sect1 version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+       xmlns:xlink="http://www.w3.org/1999/xlink"
+       xmlns:xi="http://www.w3.org/2001/XInclude"
+       xmlns:ns5="http://www.w3.org/2000/svg"
+       xmlns:ns4="http://www.w3.org/1998/Math/MathML"
+       xmlns:ns3="http://www.w3.org/1999/xhtml"
+       xmlns:db="http://docbook.org/ns/docbook">
+  <title>Gestion des groupes</title>
+
+  <para>Un groupe est un ensemble d'utilisateur affilié soit au projet de forge, soit à un projet donné.</para>
+  
+  <sect2>
+  <title>Créer un groupe</title>
+  <para>Dans la rubrique <emphasis
+    role="bold">«Administration du projet/Vos affiliations/Vos groupes»</emphasis>, cliquer sur le bouton <emphasis role="bold">«Créer un groupe»</emphasis>, renseigner les informations demandées et enfin cliquer sur le bouton <emphasis role="bold">«Créer le groupe»</emphasis>.</para>
+    
+     
+    
+    </sect2>
+  <sect2>
+    <title>Groupe de forge</title>
+
+    <para>Un <emphasis role="bold">groupe de forge</emphasis> peut représenter une équipe transverse affiliée à plusieurs projets (groupe d'architectes, équipe de validation, administration du parc informatique, etc.).
+    </para>
+   
+    <para>Les groupes créés au niveau forge peuvent être définis comme des groupes globaux c’est-à-dire qu'ils peuvent être ajoutés à n'importe quel projet ou bien comme des groupes simples c’est-à-dire ayant comme périmètre le projet de forge seulement. Ceci en sélectionnant la case à cocher <emphasis
+    role="bold">«Rendre public»</emphasis>. 
+    </para>
+    
+
+  </sect2>
+
+   <sect2>
+    <title>Groupe de projet</title>
+
+    <para>Un <emphasis role="bold">groupe de projet</emphasis> peut représenter un sous ensemble de personnes cohérent au niveau des rôles sur le projet (responsables techniques avec les rôles « développeur » et « architecte », intégrateurs avec des rôles « publication » et « validation », stagiaires, etc.).
+	 Les groupes créés au niveau d'un projet ne peuvent être rajoutés qu'à ce projet donné.</para>
+   
+    
+
+  </sect2>
+
+  
+</sect1>

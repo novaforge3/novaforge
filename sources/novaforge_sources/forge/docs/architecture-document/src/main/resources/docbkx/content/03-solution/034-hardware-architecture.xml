@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<section version="5.0" xml:lang="fr" xmlns="http://docbook.org/ns/docbook"
+        >
+    <para>Cette section détaille les différentes topologies de NovaForge v3, les architectures physiques associées
+        et les ressources nécessaires à son bon fonctionnement.
+    </para>
+    <sect3>
+        <title>Topologies de déploiement</title>
+        <para>
+            En fonction du contexte d'exploitation et dans le but de garantir la disponibilité de ses outils,
+            NovaForge v3 peut être installée suivant deux topologies :
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">All In One (AIO)</emphasis>
+                        : Tous les outils sont installés sur un serveur unique.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">Distribuée</emphasis>
+                        : Les outils demandant le plus de ressources sont déportés sur des serveurs spécifiques.
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            Dans le cas d'une topologie distribuée, les différents serveurs hébergant NovaForge v3 et ses outils sont
+            les suivants :
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">Serveur Portal</emphasis>
+                        : il héberge le serveur frontal, le portail et ses services et tous les outils nécéssitant de
+                        faibles ressources.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">Serveur ECM</emphasis>
+                        : il héberge l'outil de gestion de document éléctronique Alfresco.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">Serveur(s) CI</emphasis>
+                        : il héberge les outils d'intégration continue et de qualité Jenkins et Sonar. Il est possible
+                        de déployer
+                        plusieurs instances de serveur PIC pour une forge NovaForge v3.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">Serveur SCM</emphasis>
+                        : il héberge les outils de gestion des sources SVN et Gitlab.
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <para>
+            Les figures ci-dessous présentent les diagrammes de déploiement pour chaque topologie.
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        En vert, le coeur de Forge et les outils à faible resources.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        En rouge, les outils pouvant nécessiter plus de resources.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        En violet, le poste de l'utilisateur de NovaForge .
+                    </para>
+                </listitem>
+            </itemizedlist>
+            <figure>
+                <title>Déploiement All In One</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="034-topology-aio.png" width="100px"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <figure>
+                <title>Déploiement Distribué</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata align="center" fileref="034-topology-distributed.png" width="250px"/>
+                    </imageobject>
+                </mediaobject>
+            </figure>
+        </para>
+    </sect3>
+    <sect3>
+        <title>Architecture détaillée</title>
+        <para>
+            Les figures ci dessous présentent les éléments matériels ainsi que leurs interactions au travers d'un
+            diagramme de déploiement dans le cas de la topologie la plus complexe :
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        En rouge, la limite du système.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        En cyan, le poste de travail de l'utilisateur avec ses outils.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        En violet, les serveurs frontaux avec leur mandataire inverse.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        En bleu, les applications et services proposés par NovaForge v3.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        En orange, le coeur de NovaForge v3 et ses agents déployés.
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        En vert, les bases de données de NovaForge v3 et ses outils.
+                    </para>
+                </listitem>
+            </itemizedlist>
+        </para>
+        <figure>
+            <title>Diagramme de déploiement : Portail</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata align="center" fileref="034-deploy-diagram-full.png" width="450px"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+    </sect3>
+    <sect3>
+        <title>Resources requises</title>
+        <para>
+            En fonction de la topologie de déploiement choisie, chaque serveur décrit précédemment requiert des
+            ressources spécifiques en terme de RAM, d'espace disque et de
+            CPU. Ces ressources sont décrites ci-dessous :
+            <itemizedlist>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">Topologie AIO :</emphasis>
+                    </para>
+                    <informaltable frame="all">
+                        <tgroup cols="5" align="justify" colsep="1" rowsep="1">
+                            <colspec colname="Server" colwidth="1*"/>
+                            <colspec colname="OS" colwidth="1*"/>
+                            <colspec colname="RAM" colwidth="1*"/>
+                            <colspec colname="CPU" colwidth="1*"/>
+                            <colspec colname="Espace disque" colwidth="1*"/>
+                            <spanspec spanname="span1" namest="c1" nameend="c2"/>
+                            <thead>
+                                <row>
+                                    <entry>
+                                        <emphasis role="bold">Server</emphasis>
+                                    </entry>
+                                    <entry>
+                                        <emphasis role="bold">OS</emphasis>
+                                    </entry>
+                                    <entry>
+                                        <emphasis role="bold">RAM</emphasis>
+                                    </entry>
+                                    <entry>
+                                        <emphasis role="bold">CPU</emphasis>
+                                    </entry>
+                                    <entry>
+                                        <emphasis role="bold">Espace disque</emphasis>
+                                    </entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>
+                                        <emphasis role="bold">Portail</emphasis>
+                                    </entry>
+                                    <entry>CentOS 7</entry>
+                                    <entry>16 Go</entry>
+                                    <entry>8</entry>
+                                    <entry>180 Go</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </informaltable>
+                </listitem>
+                <listitem>
+                    <para>
+                        <emphasis role="bold">Topologie Distribuée :</emphasis>
+                    </para>
+                    <informaltable frame="all">
+                        <tgroup cols="5" align="justify" colsep="1" rowsep="1">
+                            <colspec colname="Server" colwidth="1*"/>
+                            <colspec colname="OS" colwidth="1*"/>
+                            <colspec colname="RAM" colwidth="1*"/>
+                            <colspec colname="CPU" colwidth="1*"/>
+                            <colspec colname="Espace disque" colwidth="1*"/>
+                            <spanspec spanname="span1" namest="c1" nameend="c2"/>
+                            <thead>
+                                <row>
+                                    <entry>
+                                        <emphasis role="bold">Server</emphasis>
+                                    </entry>
+                                    <entry>
+                                        <emphasis role="bold">OS</emphasis>
+                                    </entry>
+                                    <entry>
+                                        <emphasis role="bold">RAM</emphasis>
+                                    </entry>
+                                    <entry>
+                                        <emphasis role="bold">CPU</emphasis>
+                                    </entry>
+                                    <entry>
+                                        <emphasis role="bold">Espace disque</emphasis>
+                                    </entry>
+                                </row>
+                            </thead>
+                            <tbody>
+                                <row>
+                                    <entry>
+                                        <emphasis role="bold">Portal</emphasis>
+                                    </entry>
+                                    <entry>CentOS 7</entry>
+                                    <entry>8 Go</entry>
+                                    <entry>4</entry>
+                                    <entry>300 Go</entry>
+                                </row>
+                                <row>
+                                    <entry>
+                                        <emphasis role="bold">ECM</emphasis>
+                                    </entry>
+                                    <entry>CentOS 7</entry>
+                                    <entry>4 Go</entry>
+                                    <entry>2</entry>
+                                    <entry>128 Go</entry>
+                                </row>
+                                <row>
+                                    <entry>
+                                        <emphasis role="bold">SCM</emphasis>
+                                    </entry>
+                                    <entry>CentOS 7</entry>
+                                    <entry>4 Go</entry>
+                                    <entry>2</entry>
+                                    <entry>128 Go</entry>
+                                </row>
+                                <row>
+                                    <entry>
+                                        <emphasis role="bold">CI</emphasis>
+                                    </entry>
+                                    <entry>CentOS 7</entry>
+                                    <entry>4 Go</entry>
+                                    <entry>2</entry>
+                                    <entry>80 Go</entry>
+                                </row>
+                                <row>
+                                    <entry>
+                                        <emphasis role="bold">JIRA</emphasis>
+                                    </entry>
+                                    <entry>CentOS 7</entry>
+                                    <entry>4 Go</entry>
+                                    <entry>2</entry>
+                                    <entry>40 Go</entry>
+                                </row>
+                            </tbody>
+                        </tgroup>
+                    </informaltable>
+                </listitem>
+
+            </itemizedlist>
+        </para>
+    </sect3>
+</section>

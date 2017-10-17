@@ -1,0 +1,93 @@
+<!-- * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above. 
+	* * This file is free software: you may redistribute and/or modify it under 
+	* the terms of the GNU Affero General Public License as published by the 
+	* Free Software Foundation, version 3 of the License. * * This file is distributed 
+	in the hope that it will be useful, * but WITHOUT ANY WARRANTY; without even 
+	the implied warranty * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+	* See the GNU Affero General Public License for more details. * You should 
+	have received a copy of the GNU Affero General Public License * along with 
+	this program. If not, see http://www.gnu.org/licenses. * * Additional permission 
+	under GNU AGPL version 3 (AGPL-3.0) section 7. * * If you modify this Program, 
+	or any covered work, by linking or combining * it with libraries listed in 
+	COPYRIGHT file at the top-level directory of * this distribution (or a modified 
+	version of that libraries), containing parts * covered by the terms of licenses 
+	cited in the COPYRIGHT file, the licensors * of this Program grant you additional 
+	permission to convey the resulting work. -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>novaforge-plugins</artifactId>
+		<groupId>org.novaforge.forge.plugins</groupId>
+		<version>3.8.0</version>
+	</parent>
+
+	<artifactId>novaforge-nexus</artifactId>
+	<packaging>pom</packaging>
+	<name>NovaForge(tm) :: Plugins :: Nexus</name>
+	<properties>
+		<nexus.version>3.4.0-02</nexus.version>
+		<jersey2.version>2.25.1</jersey2.version>
+	</properties>
+	<repositories>
+		<repository>
+			<id>rso-public-grid</id>
+			<url>https://repository.sonatype.org/content/groups/sonatype-public-grid/</url>
+			<releases>
+                <updatePolicy>never</updatePolicy>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+                <updatePolicy>never</updatePolicy>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>sonatype-forge</id>
+			<url>http://repository.sonatype.org/content/groups/forge</url>
+			<releases>
+                <updatePolicy>never</updatePolicy>
+				<enabled>true</enabled>
+			</releases>
+            <snapshots>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+		</repository>
+	</repositories>
+	<dependencyManagement>
+		<dependencies>
+			<!-- Nexus resources -->
+			<!-- 	remove dependencies compiled on JDK 1.8 - source of the classes imported from dependencies 
+					are directly embedded in nexus plugin project to be compiled on JDK 1.7
+				
+					In a future version of the plugin running on JRE 1.8 these dependencies can be restored and 
+					the replacement classes removed
+			-->
+			<dependency>
+				<groupId>org.glassfish.jersey.core</groupId>
+				<artifactId>jersey-client</artifactId>
+				<version>${jersey2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.jersey.connectors</groupId>
+				<artifactId>jersey-apache-connector</artifactId>
+				<version>${jersey2.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.glassfish.jersey.media</groupId>
+				<artifactId>jersey-media-json-jackson</artifactId>
+				<version>${jersey2.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<modules>
+		<module>novaforge-jersey-core-common-parent</module>
+		<!--<module>novaforge-jersey-core-common</module>-->
+		<module>novaforge-nexus-api</module>
+		<module>novaforge-nexus-client</module>
+		<module>novaforge-nexus-cfg</module>
+		<module>novaforge-nexus-impl</module>
+	</modules>
+</project>

@@ -1,0 +1,803 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<features xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://karaf.apache.org/xmlns/features/v1.2.0"
+					name="novaforge-${novaforge.version}" xsi:schemaLocation="http://karaf.apache.org/xmlns/features/v1.2.0">
+	<repository>mvn:org.apache.karaf.features/standard/${karaf.version}/xml/features</repository>
+	<repository>mvn:org.apache.karaf.features/spring/${karaf.version}/xml/features</repository>
+	<repository>mvn:org.apache.karaf.features/enterprise/${karaf.version}/xml/features</repository>
+	<repository>mvn:org.apache.cxf.karaf/apache-cxf/${cxf.version}/xml/features</repository>
+	<repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
+	<repository>mvn:org.apache.activemq/activemq-karaf/${activemq.version}/xml/features</repository>
+	<repository>mvn:org.apache.shiro/shiro-features/${shiro.version}/xml/features</repository>
+
+	<!--############################################################### #### 
+		External components ################################################################ -->
+	<feature name='ipojo' version='${ipojo.version}'>
+		<bundle>mvn:org.apache.felix/org.apache.felix.ipojo/${ipojo.version}</bundle>
+		<bundle>mvn:org.apache.felix/org.apache.felix.ipojo.gogo/${ipojo.version}</bundle>
+	</feature>
+	<feature name='ipojo-webconsole' version='${ipojo.version}'>
+		<feature version='${ipojo.version}'>ipojo</feature>
+		<feature version='${karaf.version}'>webconsole</feature>
+		<bundle>mvn:org.apache.felix/org.apache.felix.ipojo.webconsole/1.7.0</bundle>
+	</feature>
+	<feature name='json-lib' version='${json-lib.version}'>
+		<bundle>mvn:commons-collections/commons-collections/${apache.commons.collections.version}</bundle>
+		<bundle>mvn:commons-lang/commons-lang/${apache.commons.lang.version}</bundle>
+		<bundle>mvn:commons-beanutils/commons-beanutils/${apache.commons.beanutils.version}</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ezmorph/${servicemix.ezmorph.version}</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.oro/${servicemix.oro.version}</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.json-lib/${servicemix.json-lib.version}</bundle>
+	</feature>
+	<feature name='google-guava' version='${google.guava.version}'>
+		<bundle>mvn:com.google.guava/guava/${google.guava.version}</bundle>
+	</feature>
+	<feature name='novaforge-security' version='${novaforge.version}'>
+		<feature version='${shiro.version}'>shiro-core</feature>
+		<feature version='${shiro.version}'>shiro-web</feature>
+		<feature version='${shiro.version}'>shiro-cas</feature>
+		<bundle>mvn:org.jasig.cas.client/org.novaforge.cas-client-core/${cas.client.version}</bundle>
+	</feature>
+	<feature name='novaforge-jms' version='${novaforge.version}'>
+		<feature version='${aries.jpa.version}'>transaction</feature>
+		<feature version='${camel.version}'>camel</feature>
+		<feature version='${camel.version}'>camel-jms</feature>
+		<feature version='${karaf.version}'>eventadmin</feature>
+		<feature version='${activemq.version}'>activemq-broker</feature>
+		<feature version='${activemq.version}'>activemq-blueprint</feature>
+		<feature version='${activemq.version}'>activemq-camel</feature>
+	</feature>
+	<!--############################################################### #### 
+		Configuration components ################################################################ -->
+	<feature name='novaforge-configuration' version='${novaforge.version}'>
+		<feature version='${google.guava.version}'>google-guava</feature>
+		<feature version='${openjpa.version}'>openjpa</feature>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-digester/${servicemix.apache.commons.digester.version}</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-jxpath/${servicemix.apache.commons.jxpath.version}</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-configuration/${servicemix.apache.commons.configuration.version}</bundle>
+		<configfile finalname="${fileinstall.dir.forge}/core.configuration.cfg">mvn:org.novaforge.forge.modules/novaforge-configuration-impl/${novaforge.version}/cfg</configfile>
+		<configfile finalname="${fileinstall.dir.forge}/novaforge.properties">mvn:org.novaforge.forge.modules/novaforge-configuration-impl/${novaforge.version}/properties</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.novaforge.cfg">mvn:org.novaforge.forge.modules/novaforge-core-organization-dao/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="/deploy/datasource.novaforge.xml">mvn:org.novaforge.forge.modules/novaforge-core-organization-dao/${novaforge.version}/xml/datasource</configfile>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-configuration-apis/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-configuration-impl/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Commons components ################################################################ -->
+	<feature name='novaforge-commons' version='${novaforge.version}'>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-commons-libs/${novaforge.version}</bundle>
+	</feature>
+	<feature name='novaforge-technical' version='${novaforge.version}'>
+		<feature version='${novaforge.version}'>novaforge-commons</feature>
+		<feature version='${ipojo.version}'>ipojo</feature>
+		<feature version='${novaforge.version}'>novaforge-jms</feature>
+		<bundle>mvn:commons-io/commons-io/${apache.commons.io.version}</bundle>
+		<bundle>mvn:commons-fileupload/commons-fileupload/${apache.commons.fileupload.version}</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-httpclient/3.1_7</bundle>
+		<bundle>mvn:net.sf.supercsv/super-csv/2.1.0</bundle>
+		<bundle>mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/${geronimo.jms.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-configuration-apis/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-commons-technical/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-commons-technical-impl/${novaforge.version}</bundle>
+	</feature>
+	<feature name='novaforge-historization' version='${novaforge.version}'>
+		<feature version='${camel.version}'>camel</feature>
+		<feature version='${openjpa.version}'>openjpa</feature>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-commons-technical/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-commons-historization/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-commons-historization-impl/${novaforge.version}</bundle>
+		<configfile finalname="/deploy/datasource.historization.xml">mvn:org.novaforge.forge.modules/novaforge-commons-historization-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.historization.cfg">mvn:org.novaforge.forge.modules/novaforge-commons-historization-impl/${novaforge.version}/cfg/datasource</configfile>
+	</feature>
+	<feature name='novaforge-mail' version='${novaforge.version}'>
+		<feature version='${camel.version}'>camel-mail</feature>
+		<feature version='${novaforge.version}'>novaforge-jms</feature>
+		<feature version='${novaforge.version}'>novaforge-technical</feature>
+		<feature version='${novaforge.version}'>novaforge-configuration</feature>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-commons-mail/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-commons-mail-impl/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.commands/novaforge-command-mail/${novaforge.version}</bundle>
+	</feature>
+	<feature name='novaforge-ldap' version='${novaforge.version}'>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-commons-ldap/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-commons-ldap-impl/${novaforge.version}</bundle>
+		<configfile finalname="${fileinstall.dir.forge}/commons.ldap.cfg">mvn:org.novaforge.forge.modules/novaforge-commons-ldap-impl/${novaforge.version}/cfg</configfile>
+	</feature>
+	<feature name='novaforge-log' version='${novaforge.version}'>
+		<feature version='${karaf.version}'>http</feature>
+		<feature version='${json-lib.version}'>json-lib</feature>
+		<bundle>mvn:commons-io/commons-io/${apache.commons.io.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-commons-log/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-commons-log-impl/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-ui-file-manager-app/${novaforge.version}/war</bundle>
+		<configfile finalname="${fileinstall.dir.forge}/commons.logtechnical.cfg">mvn:org.novaforge.forge.modules/novaforge-commons-log-impl/${novaforge.version}/cfg</configfile>
+	</feature>
+	<feature name='novaforge-reporting' version='${novaforge.version}'>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-commons-reporting/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-commons-reporting-libraries/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-commons-reporting-impl/${novaforge.version}</bundle>
+		<configfile finalname="${fileinstall.dir.forge}/commons.reporting.cfg">mvn:org.novaforge.forge.modules/novaforge-commons-reporting-impl/${novaforge.version}/cfg</configfile>
+	</feature>
+	<feature name='novaforge-webserver' version='${novaforge.version}'>
+		<bundle>mvn:commons-codec/commons-codec/${apache.commons.codec.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-commons-webserver-configuration/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-commons-webserver-configuration-impl/${novaforge.version}</bundle>
+		<configfile finalname="${fileinstall.dir.forge}/commons.webserver.cfg">mvn:org.novaforge.forge.modules/novaforge-commons-webserver-configuration-impl/${novaforge.version}/cfg</configfile>
+	</feature>
+	<!--############################################################### #### 
+		Core components ################################################################ -->
+	<feature name='novaforge-core-apis' version='${novaforge.version}'>
+		<feature version='${novaforge.version}'>novaforge-technical</feature>
+		<feature version='${novaforge.version}'>novaforge-historization</feature>
+		<feature version='${novaforge.version}'>novaforge-log</feature>
+		<feature version='${novaforge.version}'>novaforge-security</feature>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-core-organization/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-core-plugins/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-core-security/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-security-shiro/${novaforge.version}</bundle>
+	</feature>
+	<feature name='novaforge-core-impl' version='${novaforge.version}'>
+		<feature version='${ipojo.version}'>ipojo</feature>
+		<feature version='${google.guava.version}'>google-guava</feature>
+		<feature version='${novaforge.version}'>novaforge-core-apis</feature>
+		<feature version='${novaforge.version}'>novaforge-dashboard-apis</feature>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-core-organization-dao/${novaforge.version}</bundle>
+		<configfile finalname="/deploy/datasource.novaforge.xml">mvn:org.novaforge.forge.modules/novaforge-core-organization-dao/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.novaforge.cfg">mvn:org.novaforge.forge.modules/novaforge-core-organization-dao/${novaforge.version}/cfg/datasource</configfile>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-handler-historization/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-core-security-impl/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-core-organization-delegates-impl/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-core-plugins-impl/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-core-organization-impl/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-core-user-jpa-impl/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-core-plugins-categories/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-core-plugins-route/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-plugins-commons/${novaforge.version}</bundle>
+	</feature>
+	<feature name='novaforge-portal-apis' version='${novaforge.version}'>
+		<feature version='${google.guava.version}'>google-guava</feature>
+		<bundle>mvn:com.vaadin.external.google/guava/${vaadin.guava.version}</bundle>
+		<bundle>mvn:net.engio/mbassador/${mbassador.version}</bundle>
+		<bundle>mvn:com.vaadin.external.flute/flute/${vaadin.flute.version}</bundle>
+		<bundle>mvn:com.vaadin.external.streamhtmlparser/streamhtmlparser-jsilver/${vaadin.streamhtmlparser.version}</bundle>
+		<bundle>mvn:com.vaadin.external.google/android-json/${vaadin.android-json.version}</bundle>
+		<bundle>mvn:com.vaadin/vaadin-shared/${vaadin.version}</bundle>
+		<bundle>mvn:org.jsoup/jsoup/1.8.2</bundle>
+		<bundle>mvn:com.vaadin/vaadin-server/${vaadin.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-portal-xml/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-portal-apis/${novaforge.version}</bundle>
+	</feature>
+	<feature name='novaforge-portal-ui' version='${novaforge.version}'>
+		<feature version="${novaforge.version}">novaforge-portal-apis</feature>
+		<feature version="${novaforge.version}">novaforge-core-impl</feature>
+		<bundle>mvn:com.vaadin/vaadin-client-compiled/${vaadin.version}</bundle>
+		<bundle>mvn:com.vaadin/vaadin-client/${vaadin.version}</bundle>
+		<bundle>mvn:com.vaadin/vaadin-themes/${vaadin.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-portal-impl/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-ui-vaadin-theme/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-ui-vaadin-libraries/${novaforge.version}</bundle>
+		<bundle>wrap:mvn:org.peimari/maddon/1.11</bundle>
+		<bundle>wrap:mvn:org.vaadin.addon/easyuploads/7.4.1</bundle>
+		<bundle>wrap:mvn:org.vaadin.addons/formsender/2.1.0</bundle>
+		<bundle>wrap:mvn:org.vaadin.addons/stepper/2.2.2</bundle>
+		<bundle>wrap:mvn:org.vaadin.addons/dragdroplayouts/1.1.3</bundle>
+		<bundle>wrap:mvn:org.vaadin.addons/PortalLayout/2.0.alpha5.v7.4</bundle>
+		<bundle>wrap:mvn:org.vaadin.addon/itemlayout/2.1.0</bundle>
+		<bundle>wrap:mvn:org.vaadin.addons/graphics2dimages/1.0.0</bundle>
+		<!--  needed for vaadin-charts -->
+		<bundle>wrap:mvn:com.google.code.gson/gson/2.7</bundle>
+		<bundle>mvn:commons-io/commons-io/${apache.commons.io.version}</bundle>
+		<bundle>wrap:mvn:com.vaadin.addon/vaadin-charts/1.1.7/jar/novaforge</bundle>
+		<bundle>wrap:mvn:org.vaadin.addons/wizards-for-vaadin/1.1.0</bundle>
+		<bundle>wrap:mvn:org.apache.poi/poi/${apache.poi.version}</bundle>
+		<bundle>wrap:mvn:com.itextpdf/itextpdf/5.5.2</bundle>
+		<bundle>wrap:mvn:org.vaadin.addons/exporter/0.0.5.5</bundle>
+		<bundle>wrap:mvn:org.vaadin.addons/refresher/1.2.3.7</bundle>
+		<bundle>wrap:mvn:org.vaadin.jonatan/contexthelp/2.0.0.beta2</bundle>
+		<bundle>wrap:mvn:org.vaadin.addons/popupbutton/2.3.0</bundle>
+		<bundle>wrap:mvn:org.vaadin.addons/actionbuttontextfield/1.0.2</bundle>
+		<bundle>wrap:mvn:org.eclipse.xtext/org.eclipse.xtext.xbase.lib/2.4.0</bundle>
+		<bundle>wrap:mvn:org.vaadin.virkki/carousel/0.5.2</bundle>
+		<bundle>wrap:mvn:org.vaadin.addons/loginform/0.5</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-portal-ui-unavailable/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-portal-ui-header/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-portal-ui-footer/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-portal-ui-public/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-portal-ui-private/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-portal-ui-recoverypwd/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-portal-ui-changepwd/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-portal-ui/${novaforge.version}/war</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-ui-public-project/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-ui-plugins-management/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-ui-projects-management/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-ui-applications-management/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-ui-memberships-management/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-ui-mailing-management/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-ui-user-management/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-ui-historization/${novaforge.version}/war</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-ui-file-manager-app/${novaforge.version}/war</bundle>
+		<bundle>mvn:org.novaforge.forge.commands/novaforge-command-portal/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Article components ################################################################ -->
+	<feature name='novaforge-article-apis' version='${novaforge.version}'>
+		<feature version="${novaforge.version}">novaforge-portal-apis</feature>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-article-apis/${novaforge.version}</bundle>
+	</feature>
+	<feature name='novaforge-article-ui' version='${novaforge.version}'>
+		<feature version="${novaforge.version}">novaforge-article-apis</feature>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-article-impl/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-article-ui/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Dashboard components ################################################################ -->
+	<feature name='novaforge-dashboard-apis' version='${novaforge.version}'>
+		<feature version="${novaforge.version}">novaforge-portal-apis</feature>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-dashboard-xml/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-dashboard-apis/${novaforge.version}</bundle>
+	</feature>
+	<feature name='novaforge-dashboard-ui' version='${novaforge.version}'>
+		<feature version="${novaforge.version}">novaforge-dashboard-apis</feature>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-dashboard-libraries/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-dashboard-impl/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-dashboard-ui/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.widgets/novaforge-scm-last-commit/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.widgets.charts/novaforge-bugtracker-issues-division/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.widgets.charts/novaforge-bugtracker-issues-timeline/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.widgets.charts/novaforge-quality-libraries/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.widgets.charts/novaforge-quality-violations-timeline/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.widgets.charts/novaforge-quality-coverage-timeline/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.widgets.charts/novaforge-quality-unittests-bar/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.commands/novaforge-command-dashboard/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Remote components ################################################################ -->
+	<feature name='novaforge-remote' version='${novaforge.version}'>
+		<feature version="${cxf.version}">cxf</feature>
+		<feature version="${novaforge.version}">novaforge-core-impl</feature>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-core-security-cxf/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-remote-apis/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-remote-server/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Reference components ################################################################ -->
+	<feature name='novaforge-reference' version='${novaforge.version}'>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-reference-apis/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-reference-impl/${novaforge.version}</bundle>
+		<configfile finalname="${fileinstall.dir.forge}/reference.configuration.cfg">mvn:org.novaforge.forge.modules/novaforge-reference-impl/${novaforge.version}/cfg</configfile>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-reference-ui/${novaforge.version}/war</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Commands components ################################################################ -->
+	<feature name='novaforge-commands' version='${novaforge.version}'>
+		<bundle>mvn:org.novaforge.forge.commands/novaforge-command-datasource/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.commands/novaforge-command-upgrade/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.commands/novaforge-command-cache/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Initialization components ################################################################ -->
+	<feature name='novaforge-initialization' version='${novaforge.version}'>
+		<configfile finalname="${fileinstall.dir.forge}/novaforge-init.properties">mvn:org.novaforge.forge.modules/novaforge-initialization/${novaforge.version}/properties</configfile>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-digester/${servicemix.apache.commons.digester.version}</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-jxpath/${servicemix.apache.commons.jxpath.version}</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-configuration/${servicemix.apache.commons.configuration.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-reference-apis/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-initialization/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Mantis Plugins ################################################################ -->
+	<feature name='novaforge-plugins-mantis' version='${novaforge.version}'>
+		<configfile finalname="/deploy/datasource.mantis.xml">mvn:org.novaforge.forge.plugins/novaforge-mantis-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.mantis.cfg">mvn:org.novaforge.forge.plugins/novaforge-mantis-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.mantis.cfg">mvn:org.novaforge.forge.plugins/novaforge-mantis-cfg/${novaforge.version}/cfg/plugins</configfile>
+		<bundle>mvn:commons-discovery/commons-discovery/0.5</bundle>
+		<bundle>mvn:org.apache.commons/com.springsource.org.apache.commons.net/1.4.1</bundle>
+		<bundle>mvn:javax.xml.rpc/com.springsource.javax.xml.rpc/1.1.0.v20110517</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-httpclient/3.1_7</bundle>
+		<bundle>mvn:org.apache.axis/org.novaforge.axis/1.4_1</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-mantis-library/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-mantis-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-mantis-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-mantis-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-mantis-impl/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Dokuwiki Plugins ################################################################ -->
+	<feature name='novaforge-plugins-dokuwiki' version='${novaforge.version}'>
+		<configfile finalname="/deploy/datasource.dokuwiki.xml">mvn:org.novaforge.forge.plugins/novaforge-dokuwiki-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.dokuwiki.cfg">mvn:org.novaforge.forge.plugins/novaforge-dokuwiki-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.dokuwiki.cfg">mvn:org.novaforge.forge.plugins/novaforge-dokuwiki-cfg/${novaforge.version}/cfg/plugins</configfile>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ws-commons-util/${servicemix.ws-commons.version}</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xmlrpc-client/${servicemix.xmlrpc.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-dokuwiki-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-dokuwiki-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-dokuwiki-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-dokuwiki-impl/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### ####
+            Novadeploy Plugins ################################################################ -->
+	<feature name='novaforge-plugins-novadeploy' version='${novaforge.version}'>
+		<configfile finalname="/deploy/datasource.novadeploy.xml">mvn:org.novaforge.forge.plugins/novaforge-novadeploy-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="/nf-conf/datasource/datasource.novadeploy.cfg">mvn:org.novaforge.forge.plugins/novaforge-novadeploy-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="/nf-conf/plugins/plugins.novadeploy.cfg">mvn:org.novaforge.forge.plugins/novaforge-novadeploy-cfg/${novaforge.version}/cfg/plugins</configfile>
+		
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ws-commons-util/1.0.2_2</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xmlrpc-client/3.1.3_1</bundle>
+		<bundle>mvn:org.codehaus.jackson/jackson-jaxrs/1.9.2</bundle>
+		<bundle>mvn:org.codehaus.jackson/jackson-core-asl/1.9.2</bundle>
+		<bundle>mvn:org.codehaus.jackson/jackson-xc/1.9.2</bundle>
+		<bundle>mvn:com.google.code.gson/gson/2.2.4</bundle>
+
+		<bundle>mvn:com.sun.jersey/jersey-client/1.19</bundle>
+		<bundle>mvn:com.sun.jersey/jersey-core/1.19</bundle>
+		<bundle>mvn:com.sun.jersey/jersey-json/1.19</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-novadeploy-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-novadeploy-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-novadeploy-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-novadeploy-impl/${novaforge.version}</bundle>
+	</feature>
+
+		<!--############################################################### #### 
+		Nexus Plugins ################################################################ -->
+	<feature name='novaforge-plugins-nexus' version='${novaforge.version}'>
+		<configfile finalname="/deploy/datasource.nexus.xml">mvn:org.novaforge.forge.plugins/novaforge-nexus-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.nexus.cfg">mvn:org.novaforge.forge.plugins/novaforge-nexus-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.nexus.cfg">mvn:org.novaforge.forge.plugins/novaforge-nexus-cfg/${novaforge.version}/cfg/plugins</configfile>
+
+		<bundle>mvn:javax.annotation/javax.annotation-api/1.2</bundle>
+		<bundle>mvn:javax.ws.rs/javax.ws.rs-api/2.0.1</bundle>
+		<bundle>mvn:com.fasterxml.jackson.core/jackson-core/2.8.4</bundle>
+		<bundle>mvn:com.fasterxml.jackson.core/jackson-databind/2.8.4</bundle>
+		<bundle>mvn:com.fasterxml.jackson.core/jackson-annotations/2.8.4</bundle>
+		<bundle>mvn:org.glassfish.jersey.media/jersey-media-json-jackson/2.25.1</bundle>
+		<bundle>mvn:org.glassfish.jersey.media/jersey-media-json-jackson/2.25.1</bundle>
+		<bundle>mvn:org.glassfish.jersey.core/jersey-client/2.25.1</bundle>
+		<bundle>mvn:org.glassfish.jersey.connectors/jersey-apache-connector/2.25.1</bundle>
+		<bundle>mvn:org.glassfish.hk2.external/javax.inject/2.5.0-b32</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-jersey-common/2.25.1</bundle>
+		<bundle>mvn:org.glassfish.jersey.bundles.repackaged/jersey-guava/2.25.1</bundle>
+		<bundle>mvn:org.glassfish.hk2/hk2-api/2.5.0-b32</bundle>
+		<bundle>mvn:org.glassfish.hk2/hk2-locator/2.5.0-b32</bundle>
+		<bundle>mvn:org.glassfish.hk2/hk2-utils/2.5.0-b32</bundle>
+		<bundle>mvn:org.glassfish.hk2/osgi-resource-locator/1.0.1</bundle>
+		<bundle>mvn:org.glassfish.jersey.core/jersey-server/2.25.1</bundle>
+        <bundle>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/2.8.4</bundle>
+        <bundle>mvn:com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider/2.8.4</bundle>
+		<bundle>mvn:org.glassfish.jersey.ext/jersey-entity-filtering/2.25.1</bundle>
+		<bundle>mvn:org.javassist/javassist/3.20.0-GA</bundle>
+		<bundle>wrap:mvn:org.apache.httpcomponents/httpclient/4.5</bundle>
+		<bundle>wrap:mvn:org.apache.httpcomponents/httpcore/4.4.1</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.dom4j/1.6.1_2</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jdom/1.1_4</bundle>
+		<bundle>mvn:org.restlet/org.restlet/1.1.10</bundle>
+		<bundle>mvn:org.restlet/org.restlet.ext.wadl/1.1.10</bundle>
+		<bundle>mvn:com.noelios.restlet/com.noelios.restlet/1.1.10</bundle>
+
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-nexus-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-nexus-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-nexus-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-nexus-impl/${novaforge.version}</bundle>
+	</feature>
+
+	<!--############################################################### #### 
+		PhpBB Plugins ################################################################ -->
+	<feature name='novaforge-plugins-phpbb' version='${novaforge.version}'>
+		<configfile finalname="/deploy/datasource.phpbb.xml">mvn:org.novaforge.forge.plugins/novaforge-phpbb-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.phpbb.cfg">mvn:org.novaforge.forge.plugins/novaforge-phpbb-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.phpbb.cfg">mvn:org.novaforge.forge.plugins/novaforge-phpbb-cfg/${novaforge.version}/cfg/plugins</configfile>
+		<bundle>mvn:commons-discovery/commons-discovery/0.5</bundle>
+		<bundle>mvn:org.apache.commons/com.springsource.org.apache.commons.net/1.4.1</bundle>
+		<bundle>mvn:javax.xml.rpc/com.springsource.javax.xml.rpc/1.1.0.v20110517</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-httpclient/3.1_7</bundle>
+		<bundle>mvn:org.apache.axis/org.novaforge.axis/1.4_1</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-phpbb-library/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-phpbb-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-phpbb-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-phpbb-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-phpbb-impl/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Alfresco Plugins ################################################################ -->
+	<feature name='novaforge-plugins-alfresco' version='${novaforge.version}'>
+		<configfile finalname="/deploy/datasource.alfresco.xml">mvn:org.novaforge.forge.plugins/novaforge-alfresco-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.alfresco.cfg">mvn:org.novaforge.forge.plugins/novaforge-alfresco-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.alfresco.cfg">mvn:org.novaforge.forge.plugins/novaforge-alfresco-cfg/${novaforge.version}/cfg/plugins</configfile>
+		<bundle>mvn:org.json/org.novaforge.org.json/${json.version}</bundle>
+		<bundle>mvn:org.restlet/org.restlet/${restlet.version}</bundle>
+		<bundle>mvn:org.restlet/org.restlet.ext.wadl/${restlet.version}</bundle>
+		<bundle>mvn:org.restlet/org.restlet.ext.json/${restlet.version}</bundle>
+		<bundle>mvn:com.noelios.restlet/com.noelios.restlet/${restlet.version}</bundle>
+		<bundle>mvn:org.apache.chemistry.opencmis/chemistry-opencmis-osgi-client/0.8.0</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-alfresco-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-alfresco-library/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-alfresco-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-alfresco-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-alfresco-impl/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Testlink Plugins ################################################################ -->
+	<feature name='novaforge-plugins-testlink' version='${novaforge.version}'>
+		<configfile finalname="/deploy/datasource.testlink.xml">mvn:org.novaforge.forge.plugins/novaforge-testlink-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.testlink.cfg">mvn:org.novaforge.forge.plugins/novaforge-testlink-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.testlink.cfg">mvn:org.novaforge.forge.plugins/novaforge-testlink-cfg/${novaforge.version}/cfg/plugins</configfile>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ws-commons-util/${servicemix.ws-commons.version}</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xmlrpc-client/${servicemix.xmlrpc.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-testlink-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-testlink-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-testlink-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-testlink-impl/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Sympa Plugins ################################################################ -->
+	<feature name='novaforge-plugins-sympa' version='${novaforge.version}'>
+		<configfile finalname="/deploy/datasource.sympa.xml">mvn:org.novaforge.forge.plugins/novaforge-sympa-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.sympa.cfg">mvn:org.novaforge.forge.plugins/novaforge-sympa-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.sympa.cfg">mvn:org.novaforge.forge.plugins/novaforge-sympa-cfg/${novaforge.version}/cfg/plugins</configfile>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ws-commons-util/${servicemix.ws-commons.version}</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xmlrpc-client/${servicemix.xmlrpc.version}</bundle>
+		<bundle>mvn:commons-discovery/commons-discovery/0.5</bundle>
+		<bundle>mvn:org.apache.commons/com.springsource.org.apache.commons.net/1.4.1</bundle>
+		<bundle>mvn:javax.xml.rpc/com.springsource.javax.xml.rpc/1.1.0.v20110517</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-httpclient/3.1_7</bundle>
+		<bundle>mvn:org.apache.axis/org.novaforge.axis/1.4_1</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-sympa-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-sympa-library/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-sympa-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-sympa-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-sympa-impl/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Spip Plugins ################################################################ -->
+	<feature name='novaforge-plugins-spip' version='${novaforge.version}'>
+		<configfile finalname="/deploy/datasource.spip.xml">mvn:org.novaforge.forge.plugins/novaforge-spip-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.spip.cfg">mvn:org.novaforge.forge.plugins/novaforge-spip-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.spip.cfg">mvn:org.novaforge.forge.plugins/novaforge-spip-cfg/${novaforge.version}/cfg/plugins</configfile>
+		<bundle>mvn:commons-discovery/commons-discovery/0.5</bundle>
+		<bundle>mvn:org.apache.commons/com.springsource.org.apache.commons.net/1.4.1</bundle>
+		<bundle>mvn:javax.xml.rpc/com.springsource.javax.xml.rpc/1.1.0.v20110517</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-httpclient/3.1_7</bundle>
+		<bundle>mvn:org.apache.axis/org.novaforge.axis/1.4_1</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-spip-library/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-spip-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-spip-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-spip-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-spip-impl/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Jenkins Plugins ################################################################ -->
+	<feature name='novaforge-plugins-jenkins' version='${novaforge.version}'>
+		<configfile finalname="/deploy/datasource.jenkins.xml">mvn:org.novaforge.forge.plugins/novaforge-jenkins-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.jenkins.cfg">mvn:org.novaforge.forge.plugins/novaforge-jenkins-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.jenkins.cfg">mvn:org.novaforge.forge.plugins/novaforge-jenkins-cfg/${novaforge.version}/cfg/plugins</configfile>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-httpclient/3.1_7</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.dom4j/1.6.1_2</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-jenkins-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-jenkins-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-jenkins-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-jenkins-impl/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Limesurvey Plugins ################################################################ -->
+	<feature name='novaforge-plugins-limesurvey' version='${novaforge.version}'>
+		<configfile finalname="/deploy/datasource.limesurvey.xml">mvn:org.novaforge.forge.plugins/novaforge-limesurvey-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.limesurvey.cfg">mvn:org.novaforge.forge.plugins/novaforge-limesurvey-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.limesurvey.cfg">mvn:org.novaforge.forge.plugins/novaforge-limesurvey-cfg/${novaforge.version}/cfg/plugins</configfile>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ws-commons-util/${servicemix.ws-commons.version}</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xmlrpc-client/${servicemix.xmlrpc.version}</bundle>
+		<bundle>mvn:commons-discovery/commons-discovery/0.5</bundle>
+		<bundle>mvn:org.apache.commons/com.springsource.org.apache.commons.net/1.4.1</bundle>
+		<bundle>mvn:javax.xml.rpc/com.springsource.javax.xml.rpc/1.1.0.v20110517</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-httpclient/3.1_7</bundle>
+		<bundle>mvn:org.apache.axis/org.novaforge.axis/1.4_1</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-limesurvey-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-limesurvey-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-limesurvey-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-limesurvey-impl/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Sonar Plugins ################################################################ -->
+	<feature name='novaforge-plugins-sonar' version='${novaforge.version}'>
+		<configfile finalname="/deploy/datasource.sonar.xml">mvn:org.novaforge.forge.plugins/novaforge-sonar-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.sonar.cfg">mvn:org.novaforge.forge.plugins/novaforge-sonar-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.sonar.cfg">mvn:org.novaforge.forge.plugins/novaforge-sonar-cfg/${novaforge.version}/cfg/plugins</configfile>
+		<bundle>mvn:org.json/org.novaforge.com.googlecode.json-simple/${json-simple.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-sonar-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-sonar-library/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-sonar-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-sonar-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-sonar-impl/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		SVN Plugins ################################################################ -->
+	<feature name='novaforge-plugins-svn' version='${novaforge.version}'>
+		<configfile finalname="/deploy/datasource.svn.xml">mvn:org.novaforge.forge.plugins/novaforge-svn-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.svn.cfg">mvn:org.novaforge.forge.plugins/novaforge-svn-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.svn.cfg">mvn:org.novaforge.forge.plugins/novaforge-svn-cfg/${novaforge.version}/cfg/plugins</configfile>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-svn-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-svn-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-svn-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-svn-impl/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		SVN Agent ################################################################ -->
+	<feature name='novaforge-plugins-svn-agent' version='${novaforge.version}'>
+		<feature version='${openjpa.version}'>openjpa</feature>
+		<feature version="${cxf.version}">cxf</feature>
+		<feature version='${novaforge.version}'>novaforge-technical</feature>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-commons-historization/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-core-plugins/${novaforge.version}</bundle>
+		<configfile finalname="/deploy/datasource.svn-agent.xml">mvn:org.novaforge.thirdparty.plugins/novaforge-svn-agent-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.svn.agent.cfg">mvn:org.novaforge.thirdparty.plugins/novaforge-svn-agent-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.svn.agent.cfg">mvn:org.novaforge.thirdparty.plugins/novaforge-svn-agent-impl/${novaforge.version}/cfg/agent</configfile>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-svn-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.thirdparty.plugins/novaforge-svn-agent-library/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.thirdparty.plugins/novaforge-svn-agent-impl/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Delivery ################################################################ -->
+	<feature name='novaforge-plugins-delivery-manager' version='${novaforge.version}'>
+		<feature version="${novaforge.version}">novaforge-reporting</feature>
+		<configfile finalname="/deploy/datasource.delivery.xml">mvn:org.novaforge.forge.plugins/novaforge-delivery-manager-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.delivery.cfg">mvn:org.novaforge.forge.plugins/novaforge-delivery-manager-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.delivery.cfg">mvn:org.novaforge.forge.plugins/novaforge-delivery-manager-cfg/${novaforge.version}/cfg/plugins</configfile>
+		<configfile finalname="/deploy/datasource.tool-delivery.xml">mvn:org.novaforge.forge.plugins/novaforge-delivery-manager-tool-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.tool.delivery.cfg">mvn:org.novaforge.forge.plugins/novaforge-delivery-manager-tool-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/tools.delivery.cfg">mvn:org.novaforge.forge.plugins/novaforge-delivery-manager-tool-impl/${novaforge.version}/cfg/tools</configfile>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-delivery-manager-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-delivery-manager-tool-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-delivery-manager-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-delivery-manager-impl/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-delivery-manager-tool-impl/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-delivery-manager-tool-ui/${novaforge.version}/war</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Requirements ################################################################ -->
+	<feature name='novaforge-plugins-requirements-manager' version='${novaforge.version}'>
+		<feature version='${ipojo.version}'>ipojo</feature>
+		<feature version='${camel.version}'>camel-quartz</feature>
+		<configfile finalname="/deploy/datasource.requirements.xml">mvn:org.novaforge.forge.plugins/novaforge-requirements-manager-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.requirements.cfg">mvn:org.novaforge.forge.plugins/novaforge-requirements-manager-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.requirements.cfg">mvn:org.novaforge.forge.plugins/novaforge-requirements-manager-cfg/${novaforge.version}/cfg/plugins</configfile>
+		<configfile finalname="/deploy/datasource.tool-requirements.xml">mvn:org.novaforge.forge.plugins/novaforge-requirements-tool-common-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.tool.requirements.cfg">mvn:org.novaforge.forge.plugins/novaforge-requirements-tool-common-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/requirements.cdo.connector.cfg">mvn:org.novaforge.forge.plugins/novaforge-requirements-tool-common-connectors/${novaforge.version}/cfg/cdo</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/requirements.svn.connector.cfg">mvn:org.novaforge.forge.plugins/novaforge-requirements-tool-common-connectors/${novaforge.version}/cfg/svn</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/requirements.excel.connector.cfg">mvn:org.novaforge.forge.plugins/novaforge-requirements-tool-common-connectors/${novaforge.version}/cfg/excel</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/tools.requirements.roles.cfg">mvn:org.novaforge.forge.plugins/novaforge-requirements-tool-common-impl/${novaforge.version}/cfg/roles</configfile>
+		<bundle>wrap:mvn:org.antlr/antlr4/${antlr4.version}</bundle>
+		<bundle>wrap:mvn:org.antlr/antlr4-runtime/${antlr4.version}</bundle>
+		<bundle>mvn:org.json/org.novaforge.org.json/${json.version}</bundle>
+		<bundle>wrap:mvn:org.apache.poi/poi/${apache.poi.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-handler-historization/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-requirements-manager-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-requirements-tool-common-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-requirements-manager-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-requirements-manager-impl/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-requirements-tool-scheduler/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-requirements-tool-scheduler/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-requirements-tool-common-impl/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-requirements-tool-common-connectors/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-requirements-tool-ui-vaadin/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Mantis ARD Plugin ################################################################ -->
+	<feature name='novaforge-plugins-mantis-ard' version='${novaforge.version}'>
+		<configfile finalname="/deploy/datasource.mantis-ard.xml">mvn:org.novaforge.forge.plugins/novaforge-mantis-ard-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.mantis.ard.cfg">mvn:org.novaforge.forge.plugins/novaforge-mantis-ard-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.mantis.ard.cfg">mvn:org.novaforge.forge.plugins/novaforge-mantis-ard-cfg/${novaforge.version}/cfg/plugins</configfile>
+		<bundle>mvn:commons-discovery/commons-discovery/0.5</bundle>
+		<bundle>mvn:org.apache.commons/com.springsource.org.apache.commons.net/1.4.1</bundle>
+		<bundle>mvn:javax.xml.rpc/com.springsource.javax.xml.rpc/1.1.0.v20110517</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-httpclient/3.1_7</bundle>
+		<bundle>mvn:org.apache.axis/org.novaforge.axis/1.4_1</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-mantis-ard-library/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-mantis-ard-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-mantis-ard-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-mantis-ard-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-mantis-ard-impl/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Management Module Plugin ################################################################ -->
+	<feature name='novaforge-plugins-management-module' version='${novaforge.version}'>
+		<feature version='${camel.version}'>camel-quartz</feature>
+		<feature version="${novaforge.version}">novaforge-reporting</feature>
+		<configfile finalname="/deploy/datasource.management.module.xml">mvn:org.novaforge.forge.plugins/novaforge-management-module-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.management.module.cfg">mvn:org.novaforge.forge.plugins/novaforge-management-module-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.management.module.cfg">mvn:org.novaforge.forge.plugins/novaforge-management-module-cfg/${novaforge.version}/cfg/plugins</configfile>
+		<configfile finalname="/deploy/datasource.tool-management-module.xml">mvn:org.novaforge.forge.plugins/novaforge-management-module-tool-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.tool.management.module.cfg">mvn:org.novaforge.forge.plugins/novaforge-management-module-tool-impl/${novaforge.version}/cfg/datasource</configfile>
+		<bundle>mvn:org.apache.commons/commons-math3/3.0</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-management-module-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-management-module-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-management-module-impl/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-management-module-tool-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-management-module-tool-connectors/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-management-module-tool-impl/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-management-module-tool-ui/${novaforge.version}/war</bundle>
+		<bundle start='false'>mvn:org.novaforge.forge.plugins/novaforge-management-module-tool-initialization/${novaforge.version}</bundle>
+		<bundle start='false'>mvn:org.novaforge.forge.plugins/novaforge-management-module-tool-upgrade/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Jira Plugins ################################################################ -->
+	<feature name='novaforge-plugins-jira' version='${novaforge.version}'>
+		<configfile finalname="/deploy/datasource.jira.xml">mvn:org.novaforge.forge.plugins/novaforge-jira-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.jira.cfg">mvn:org.novaforge.forge.plugins/novaforge-jira-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.jira.cfg">mvn:org.novaforge.forge.plugins/novaforge-jira-cfg/${novaforge.version}/cfg/plugins</configfile>
+		<bundle>mvn:commons-discovery/commons-discovery/0.5</bundle>
+		<bundle>mvn:org.apache.commons/com.springsource.org.apache.commons.net/1.4.1</bundle>
+		<bundle>mvn:javax.xml.rpc/com.springsource.javax.xml.rpc/1.1.0.v20110517</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-httpclient/3.1_7</bundle>
+		<bundle>mvn:org.apache.axis/org.novaforge.axis/1.4_1</bundle>
+		<bundle>mvn:com.sun.jersey/jersey-core/1.5</bundle>
+		<bundle>mvn:com.sun.jersey/jersey-client/1.5</bundle>
+		<bundle>wrap:mvn:com.sun.jersey.contribs/jersey-apache-client/1.5</bundle>
+		<bundle>mvn:com.sun.jersey/jersey-json/1.5</bundle>
+		<bundle>mvn:org.codehaus.jackson/jackson-jaxrs/1.5.5</bundle>
+		<bundle>mvn:org.apache.httpcomponents/httpcore-osgi/4.2.2-atlassian1</bundle>
+		<bundle>mvn:org.apache.httpcomponents/httpasyncclient-osgi/4.0-beta3-atlassian-1</bundle>
+		<bundle>mvn:org.apache.httpcomponents/httpclient-osgi/4.2.1-atlassian-2</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-jira-library/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-jira-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-jira-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-jira-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-jira-impl/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### ####
+		Gitlab Plugins ################################################################ -->
+	<feature name='novaforge-plugins-gitlab' version='${novaforge.version}'>
+		<configfile finalname="/deploy/datasource.gitlab.xml">mvn:org.novaforge.forge.plugins/novaforge-gitlab-impl/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.gitlab.cfg">mvn:org.novaforge.forge.plugins/novaforge-gitlab-impl/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.plugins}/plugins.gitlab.cfg">mvn:org.novaforge.forge.plugins/novaforge-gitlab-cfg/${novaforge.version}/cfg/plugins</configfile>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-gitlab-library/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-gitlab-api/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-gitlab-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-gitlab-cfg/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.plugins/novaforge-gitlab-impl/${novaforge.version}</bundle>
+		<bundle>mvn:com.fasterxml.jackson.core/jackson-core/2.5.3</bundle>
+		<bundle>mvn:com.fasterxml.jackson.core/jackson-databind/2.5.3</bundle>
+		<bundle>mvn:com.fasterxml.jackson.core/jackson-annotations/2.5.0</bundle>
+
+	</feature>
+	<!--############################################################### #### 
+		NovaForge ################################################################ -->
+	<feature name='novaforge' version='${novaforge.version}'>
+		<feature version="${novaforge.version}">novaforge-log</feature>
+		<feature version="${novaforge.version}">novaforge-configuration</feature>
+		<feature version="${novaforge.version}">novaforge-commons</feature>
+		<feature version='${novaforge.version}'>novaforge-jms</feature>
+		<feature version='${novaforge.version}'>novaforge-security</feature>
+		<feature version="${novaforge.version}">novaforge-technical</feature>
+		<feature version="${novaforge.version}">novaforge-historization</feature>
+		<feature version="${novaforge.version}">novaforge-mail</feature>
+		<feature version="${novaforge.version}">novaforge-webserver</feature>
+		<feature version="${novaforge.version}">novaforge-core-apis</feature>
+		<feature version="${novaforge.version}">novaforge-portal-apis</feature>
+		<feature version="${novaforge.version}">novaforge-dashboard-apis</feature>
+		<feature version="${novaforge.version}">novaforge-article-apis</feature>
+		<feature version="${novaforge.version}">novaforge-core-impl</feature>
+		<feature version="${novaforge.version}">novaforge-portal-ui</feature>
+		<feature version="${novaforge.version}">novaforge-dashboard-ui</feature>
+		<feature version="${novaforge.version}">novaforge-article-ui</feature>
+		<feature version="${novaforge.version}">novaforge-remote</feature>
+		<feature version="${novaforge.version}">novaforge-commands</feature>
+	</feature>
+	<!--############################################################### #### 
+		Import-Export ################################################################ -->
+	<feature name='novaforge-import-export' version='${novaforge.version}'>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-import-export-datas/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-import-export-apis/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-import-export-impl/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.commands/novaforge-command-import-export/${novaforge.version}</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Distribution Client ################################################################ -->
+	<feature name='novaforge-distribution-client' version='${novaforge.version}'>
+		<feature version='${camel.version}'>camel-quartz</feature>
+
+		<!-- config files -->
+		<configfile finalname="${fileinstall.dir.forge}/distribution.register.client.cfg">mvn:org.novaforge.forge.modules/novaforge-distribution-register-client/${novaforge.version}/cfg</configfile>
+		<configfile finalname="${fileinstall.dir.forge}/distribution.reporting.client.cfg">mvn:org.novaforge.forge.modules/novaforge-distribution-reporting-client/${novaforge.version}/cfg/client</configfile>
+		<configfile finalname="${fileinstall.dir.forge}/distribution.reporting.extraction.cfg">mvn:org.novaforge.forge.modules/novaforge-distribution-reporting-client/${novaforge.version}/cfg/extraction</configfile>
+
+		<!-- APIs -->
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-distribution-reference-apis/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-distribution-register-apis/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-distribution-reporting-apis/${novaforge.version}</bundle>
+
+		<!-- Impls -->
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-distribution-reference-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-distribution-register-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-distribution-reporting-client/${novaforge.version}</bundle>
+		<bundle start="false">mvn:org.novaforge.forge.modules/novaforge-distribution-register-initialization/${novaforge.version}</bundle>
+
+		<!-- UI -->
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-distribution-ui/${novaforge.version}/war</bundle>
+	</feature>
+	<!--############################################################### #### 
+		Distribution Full ################################################################ -->
+	<feature name='novaforge-distribution-full' version='${novaforge.version}'>
+		<feature version='${camel.version}'>camel-quartz</feature>
+
+		<!-- datasources -->
+		<configfile finalname="/deploy/datasource.distribution.xml">mvn:org.novaforge.forge.modules/novaforge-distribution-register-server/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.distribution.cfg">mvn:org.novaforge.forge.modules/novaforge-distribution-register-server/${novaforge.version}/cfg/datasource</configfile>
+		<configfile finalname="/deploy/datasource.reporting.xml">mvn:org.novaforge.forge.modules/novaforge-distribution-reporting-server/${novaforge.version}/xml/datasource</configfile>
+		<configfile finalname="${fileinstall.dir.datasource}/datasource.reporting.cfg">mvn:org.novaforge.forge.modules/novaforge-distribution-reporting-server/${novaforge.version}/cfg/datasource</configfile>
+
+		<!-- config files -->
+		<configfile finalname="${fileinstall.dir.forge}/distribution.reference.scheduler.cfg">mvn:org.novaforge.forge.modules/novaforge-distribution-reference-server/${novaforge.version}/cfg</configfile>
+		<configfile finalname="${fileinstall.dir.forge}/distribution.register.client.cfg">mvn:org.novaforge.forge.modules/novaforge-distribution-register-client/${novaforge.version}/cfg</configfile>
+		<configfile finalname="${fileinstall.dir.forge}/distribution.reference.scheduler.cfg">mvn:org.novaforge.forge.modules/novaforge-distribution-reference-server/${novaforge.version}/cfg</configfile>
+		<configfile finalname="${fileinstall.dir.forge}/distribution.reporting.client.cfg">mvn:org.novaforge.forge.modules/novaforge-distribution-reporting-client/${novaforge.version}/cfg/client</configfile>
+		<configfile finalname="${fileinstall.dir.forge}/distribution.reporting.extraction.cfg">mvn:org.novaforge.forge.modules/novaforge-distribution-reporting-client/${novaforge.version}/cfg/extraction</configfile>
+
+		<!-- APIs -->
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-distribution-reference-apis/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-distribution-register-apis/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-distribution-reporting-apis/${novaforge.version}</bundle>
+
+		<!-- Impls -->
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-distribution-reference-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-distribution-reference-server/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-distribution-register-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-distribution-register-server/${novaforge.version}</bundle>
+		<bundle start="false">mvn:org.novaforge.forge.modules/novaforge-distribution-register-initialization/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-distribution-reporting-server/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-distribution-reporting-client/${novaforge.version}</bundle>
+
+		<!-- UI -->
+		<bundle>mvn:org.novaforge.forge.modules/novaforge-distribution-ui/${novaforge.version}/war</bundle>
+	</feature>
+	<!--###################################################################### 
+		#### Distribution test client: to be installed on zonal and local forge to 
+		be tested ########################################################################## -->
+	<feature name='novaforge-command-test-distribution-zonal-local' version='${novaforge.version}'>
+		<bundle>mvn:org.novaforge.forge.tests/novaforge-command-test-distribution-client/${novaforge.version}</bundle>
+	</feature>
+	<!--###################################################################### 
+		#### Distribution test full: to be installed only on central forge to be 
+		tested ###################################################################### -->
+
+	<feature name='novaforge-command-test-distribution-central' version='${novaforge.version}'>
+		<bundle>mvn:org.novaforge.forge.tests/novaforge-command-test-distribution-client/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.tests/novaforge-command-test-distribution-server/${novaforge.version}</bundle>
+	</feature>
+	<!--######################################################################
+	####		itests 
+	##########################################################################-->
+	<feature name='novaforge-itests' version='${novaforge.version}'>
+		<bundle>mvn:org.apache.felix/org.apache.felix.ipojo.handler.extender/1.4.0</bundle>
+		<bundle>mvn:org.apache.felix/org.apache.felix.ipojo.junit4osgi/1.0.0</bundle>
+		<bundle>mvn:org.apache.felix/org.apache.felix.ipojo/${ipojo.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.itests/novaforge-junit4osgi-starter/${novaforge.version}</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.dbunit/2.4.8_2</bundle>
+		<bundle>mvn:org.novaforge.forge.itests/novaforge-commons-it/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.itests/novaforge-plugins-alfresco-it/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.itests/novaforge-tools-propagation-it/${novaforge.version}</bundle>
+		<bundle>mvn:org.novaforge.forge.itests/novaforge-tools-mailinglist-it/${novaforge.version}</bundle>
+		<bundle>wrap:mvn:com.itextpdf/itextpdf/5.5.2</bundle>
+		<bundle>wrap:mvn:com.jcraft/jsch/0.1.52</bundle>
+		<bundle>mvn:org.novaforge.forge.itests/novaforge-plugins-delivery-it/${novaforge.version}</bundle>
+	</feature>
+</features>

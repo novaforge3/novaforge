@@ -1,0 +1,2 @@
+# Module org.novaforge.forge.ui.portal.client.widgetset.PortalWidgetset
+# RPC service class, partial path of RPC policy file

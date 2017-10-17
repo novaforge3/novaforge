@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd
+	http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
+
+	<!-- Property place holder -->
+	<cm:property-placeholder persistent-id="tools.requirements.roles" update-strategy="reload">
+		<cm:default-properties>
+			<cm:property name="roles"
+				value=">[{'name': 'viewer', 'permissions': ['read']}, {'name': 'project manager', 'permissions': ['read','execute']}]" />
+		</cm:default-properties>
+	</cm:property-placeholder>
+
+
+	<!-- References -->
+	<reference id="requirementConfigurationService"
+		interface="org.novaforge.forge.plugins.requirements.requirementmanager.services.RequirementConfigurationService" />
+	<reference-list id="externalRepositoryRequirementConnectors"
+		interface="org.novaforge.forge.tools.requirements.common.connectors.ExternalRepositoryRequirementConnector"
+		availability="optional" />
+	<reference id="scmRequirementConnector" interface="org.novaforge.forge.tools.requirements.common.connectors.SCMRequirementConnector"
+		availability="optional" />
+	<reference id="testRequirementConnector" interface="org.novaforge.forge.tools.requirements.common.connectors.TestRequirementConnector"
+		availability="optional" />
+	<reference id="requirementCronJobService" interface="org.novaforge.forge.tools.requirements.common.services.RequirementCronJobService" />
+	<reference id="requirementSchedulerService" interface="org.novaforge.forge.tools.requirements.common.services.RequirementSchedulerService" />
+	<reference interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/toolRequirements)" />
+	
+	<!-- Beans DAO -->
+	<bean id="directoryDAO" class="org.novaforge.forge.tools.requirements.common.internal.dao.DirectoryDAOImpl">
+		<jpa:context unitname="tools.requirements" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="projectDAO" class="org.novaforge.forge.tools.requirements.common.internal.dao.ProjectDAOImpl">
+		<jpa:context unitname="tools.requirements" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="repositoryDAO" class="org.novaforge.forge.tools.requirements.common.internal.dao.RepositoryDAOImpl">
+		<jpa:context unitname="tools.requirements" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="requirementDAO" class="org.novaforge.forge.tools.requirements.common.internal.dao.RequirementDAOImpl">
+		<jpa:context unitname="tools.requirements" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="schedulerDAO" class="org.novaforge.forge.tools.requirements.common.internal.dao.SchedulerDAOImpl">
+		<jpa:context unitname="tools.requirements" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+
+	<bean id="roleDAO" class="org.novaforge.forge.tools.requirements.common.internal.dao.RoleDAOImpl">
+		<jpa:context unitname="tools.requirements" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="userDAO" class="org.novaforge.forge.tools.requirements.common.internal.dao.UserDAOImpl">
+		<jpa:context unitname="tools.requirements" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>
+	<bean id="membershipDAO" class="org.novaforge.forge.tools.requirements.common.internal.dao.MembershipDAOImpl">
+		<jpa:context unitname="tools.requirements" property="entityManager" />
+		<tx:transaction method="*" value="Required" />
+	</bean>		
+	
+    <!--
+   =====================================================
+      Service to provide CRUD requirements layer 
+   =====================================================
+    -->
+	<bean id="requirementManagerService"
+		class="org.novaforge.forge.tools.requirements.common.internal.services.RequirementManagerServiceJPAImpl">
+		<tx:transaction method="*" value="Required" />
+		<property name="requirementDAO" ref="requirementDAO" />
+		<property name="directoryDAO" ref="directoryDAO" />
+		<property name="projectDAO" ref="projectDAO" />
+		<property name="businessStatusService" ref="businessStatusService" />
+	</bean>
+	<bean id="requirementRepositoryService"
+		class="org.novaforge.forge.tools.requirements.common.internal.services.repository.RequirementRepositoryServicesImpl">
+		<tx:transaction method="*" value="Required" />
+		<property name="projectDAO" ref="projectDAO" />
+		<property name="repositoryDAO" ref="repositoryDAO" />
+		<property name="directoryDAO" ref="directoryDAO" />
+		<property name="requirementConfigurationService" ref="requirementConfigurationService" />
+	</bean>
+	
+   <!--
+   =====================================================
+      Service to provide Business rules : status 
+   =====================================================
+    -->
+	<bean id="businessStatusService" class="org.novaforge.forge.tools.requirements.common.internal.services.BusinessStatusServiceImpl" />  	
+   <!--
+   =====================================================
+   Business service : functional test manager and Code Service
+   =====================================================
+    -->
+	<bean id="requirementFunctionalTestService"
+		class="org.novaforge.forge.tools.requirements.common.internal.services.RequirementFunctionalTestServiceImpl">
+		<property name="requirementManagerService" ref="requirementManagerService" />
+	</bean>
+	<bean id="requirementCodeService" class="org.novaforge.forge.tools.requirements.common.internal.services.RequirementCodeServiceImpl">
+		<property name="requirementManagerService" ref="requirementManagerService" />
+		<property name="requirementRepositoryService" ref="requirementRepositoryService" />
+		<property name="requirementFactory" ref="requirementFactory" />
+	</bean>
+	
+    <!--
+   =====================================================
+      Service to provide Requirements Model
+   =====================================================
+    -->
+	<bean id="requirementFactory" class="org.novaforge.forge.tools.requirements.common.internal.services.RequirementFactoryJPAImpl" />
+  	
+    <!--
+   =====================================================
+     Facade for Historization Provider
+   =====================================================
+    -->
+	<bean id="requirementManagerHistorizationProvider"
+		class="org.novaforge.forge.tools.requirements.common.internal.services.RequirementManagerHistorizationProviderImpl">
+		<property name="extConnectors" ref="externalRepositoryRequirementConnectors" />
+		<property name="scmConnector" ref="scmRequirementConnector" />
+		<property name="testConnector" ref="testRequirementConnector" />
+	</bean>
+   <!--
+   =====================================================
+      Service to handle a high level process activity, 
+      and cron ob persistence 
+   =====================================================
+    -->
+	<bean id="requirementManagerSchedulerService"
+		class="org.novaforge.forge.tools.requirements.common.internal.services.RequirementManagerSchedulerServiceImpl"
+		init-method="starting" destroy-method="stopping">
+		<property name="schedulerDAO" ref="schedulerDAO" />
+		<property name="requirementManagerService" ref="requirementManagerService" />
+		<property name="requirementSchedulerService" ref="requirementSchedulerService" />
+		<property name="requirementSequenceBuilder" ref="requirementSequenceBuilderTwo" />
+		<property name="cronJobService" ref="requirementCronJobService" />
+	</bean>
+
+	<bean id="requirementSequenceBuilder"
+		class="org.novaforge.forge.tools.requirements.common.internal.process.builder.RequirementSequenceBuilder">
+		<property name="testRequirementConnector" ref="testRequirementConnector" />
+		<property name="scmRequirementConnector" ref="scmRequirementConnector" />
+		<property name="externalRepositoryRequirementConnectors" ref="externalRepositoryRequirementConnectors" />
+	</bean>
+	<bean id="requirementSequenceBuilderDummy"
+		class="org.novaforge.forge.tools.requirements.common.internal.process.builder.RequirementSequenceBuilderDummy" />
+	<bean id="requirementSequenceBuilderTwo"
+		class="org.novaforge.forge.tools.requirements.common.internal.process.builder.RequirementSequenceBuilderTwo">
+		<property name="testRequirementConnector" ref="testRequirementConnector" />
+		<property name="scmRequirementConnector" ref="scmRequirementConnector" />
+		<property name="externalRepositoryRequirementConnectors" ref="externalRepositoryRequirementConnectors" />
+	</bean>
+	
+	<!-- OrganizationService And PermissionService -->
+	<bean id="requirementOrganizationService"
+		class="org.novaforge.forge.tools.requirements.common.internal.services.RequirementOrganizationServiceImpl">
+		<tx:transaction method="*" value="Required" />
+		<property name="roleDAO" ref="roleDAO" />
+		<property name="membershipDAO" ref="membershipDAO" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="projectDAO" ref="projectDAO" />
+	</bean>
+	<bean id="requirementPermissionService"
+		class="org.novaforge.forge.tools.requirements.common.internal.services.RequirementPermissionServiceImpl">
+		<property name="membershipDAO" ref="membershipDAO" />
+	</bean>
+	
+	<!-- Services -->
+	<service ref="requirementFactory" interface="org.novaforge.forge.tools.requirements.common.factories.RequirementFactory" />
+	<service ref="requirementManagerService" interface="org.novaforge.forge.tools.requirements.common.services.RequirementManagerService" />
+	<service ref="requirementRepositoryService" interface="org.novaforge.forge.tools.requirements.common.services.RequirementRepositoryService" />
+	<service ref="requirementCodeService" interface="org.novaforge.forge.tools.requirements.common.facades.RequirementCodeService" />
+	<service ref="requirementFunctionalTestService" interface="org.novaforge.forge.tools.requirements.common.facades.RequirementFunctionalTestService" />
+	<service ref="requirementManagerSchedulerService"
+		interface="org.novaforge.forge.tools.requirements.common.services.RequirementManagerSchedulingService" />
+	<service ref="requirementOrganizationService" interface="org.novaforge.forge.tools.requirements.common.services.RequirementOrganizationService" />
+	<service ref="requirementPermissionService" interface="org.novaforge.forge.tools.requirements.common.services.RequirementPermissionService" />
+	
+	<!-- Initialization -->
+	<bean id="roleHandler" class="org.novaforge.forge.tools.requirements.common.internal.handlers.RoleHandler"
+		init-method="starting">
+		<tx:transaction method="*" value="Required" />
+		<property name="roleDAO" ref="roleDAO" />
+		<property name="bundleContext" ref="blueprintBundleContext" />
+		<property name="roles" value="${roles}" />
+	</bean>
+</blueprint>
+

@@ -1,0 +1,1 @@
+core.connectionRetryAttempts(Integer.parseInt(args))

@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://aries.apache.org/xmlns/jpa/v1.0.0"
+					 xmlns:tx="http://aries.apache.org/xmlns/transactions/v1.0.0"
+					 xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd http://aries.apache.org/xmlns/jpa/v1.0.0 http://aries.apache.org/schemas/jpa/jpa.xsd
+	http://aries.apache.org/xmlns/transactions/v1.0.0 http://aries.apache.org/schemas/transaction/transactionv10.xsd">
+
+	<!--  Configuration for Camel JMS Route -->
+	<reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
+	
+<!-- References -->
+	<reference id="forgeConfigurationService" interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+	<reference id="forgeIdentificationService" interface="org.novaforge.forge.core.configuration.services.ForgeIdentificationService" />
+	<reference id="mailService" interface="org.novaforge.forge.commons.technical.mail.MailService" />
+	<reference id="permissionHandler" interface="org.novaforge.forge.core.security.authorization.PermissionHandler" />
+	<reference id="pluginsManager" interface="org.novaforge.forge.core.plugins.services.PluginsManager" />
+	<reference id="pluginsCategoryManager" interface="org.novaforge.forge.core.plugins.services.PluginsCategoryManager" />
+	<reference id="pluginArtefactFactory" interface="org.novaforge.forge.core.plugins.services.PluginArtefactFactory" />
+	<reference id="validationService" interface="org.novaforge.forge.commons.technical.validation.ValidationService" />
+	<reference id="roleDAO" interface="org.novaforge.forge.core.organization.dao.RoleDAO" />
+	<reference id="nodeDAO" interface="org.novaforge.forge.core.organization.dao.NodeDAO" />
+	<reference id="membershipDAO" interface="org.novaforge.forge.core.organization.dao.MembershipDAO" />
+	<reference id="projectDAO" interface="org.novaforge.forge.core.organization.dao.ProjectDAO" />
+	<reference id="userDAO" interface="org.novaforge.forge.core.organization.dao.UserDAO" />
+	<reference id="languageDAO" interface="org.novaforge.forge.core.organization.dao.LanguageDAO" />
+	<reference id="projectElementDAO" interface="org.novaforge.forge.core.organization.dao.ProjectElementDAO" />
+	<reference id="groupDAO" interface="org.novaforge.forge.core.organization.dao.GroupDAO" />
+	<reference id="compositionDAO" interface="org.novaforge.forge.core.organization.dao.CompositionDAO" />
+	<reference id="organizationDAO" interface="org.novaforge.forge.core.organization.dao.OrganizationDAO" />
+	<reference id="projectApplicationRequestDAO" interface="org.novaforge.forge.core.organization.dao.ProjectApplicationRequestDAO" />
+	<reference id="templateDAO" interface="org.novaforge.forge.core.organization.dao.TemplateDAO" />
+
+	<reference id="mailDelegate" interface="org.novaforge.forge.core.organization.delegates.MailDelegate" />
+	<reference id="messageDelegate" interface="org.novaforge.forge.core.organization.delegates.MessageDelegate" />
+	<reference id="securityDelegate" interface="org.novaforge.forge.core.organization.delegates.SecurityDelegate" />
+	<reference id="membershipDelegate" interface="org.novaforge.forge.core.organization.delegates.MembershipDelegate" />
+	<reference id="messageService" interface="org.novaforge.forge.commons.technical.jms.MessageService" />
+	
+<!-- Beans -->
+	<service id="cacheService" interface="org.novaforge.forge.core.organization.services.CacheService">
+		<bean class="org.novaforge.forge.core.organization.internal.services.CacheServiceImpl">
+			<jpa:context unitname="core.organization" property="entityManager" />
+		</bean>
+	</service>
+	
+	<bean id="applicationHandler" class="org.novaforge.forge.core.organization.internal.handlers.ApplicationHandlerImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="pluginsManager" ref="pluginsManager" />
+		<property name="nodeDAO" ref="nodeDAO" />
+		<!-- Beans reference -->
+		<property name="messageDelegate" ref="messageDelegate" />
+	</bean>
+	<bean id="membershipHandler" class="org.novaforge.forge.core.organization.internal.handlers.MembershipHandlerImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="membershipDAO" ref="membershipDAO" />
+		<property name="projectDAO" ref="projectDAO" />
+		<!-- Beans reference -->
+		<property name="messageDelegate" ref="messageDelegate" />
+		<property name="applicationHandler" ref="applicationHandler" />
+		<property name="mailDelegate" ref="mailDelegate" />
+	</bean>
+	<bean id="PICApplicationHandler" class="org.novaforge.forge.core.organization.internal.handlers.PICApplicationHandlerImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="nodeDAO" ref="nodeDAO" />
+		<property name="projectDAO" ref="projectDAO" />
+		<property name="roleDAO" ref="roleDAO" />
+		<property name="pluginsManager" ref="pluginsManager" />
+		<!-- Beans reference -->
+		<property name="permissionHandler" ref="permissionHandler" />
+		<property name="applicationService" ref="applicationService" />
+		<property name="projectApplicationRequestService" ref="projectApplicationRequestService" />
+		<property name="applicationHandler" ref="applicationHandler" />
+	</bean>
+	<bean id="sysApplicationHandler" class="org.novaforge.forge.core.organization.internal.handlers.SysApplicationHandlerImpl">
+		<!-- Services reference -->
+		<property name="pluginsManager" ref="pluginsManager" />
+		<property name="pluginsCategoryManager" ref="pluginsCategoryManager" />
+		<property name="applicationService" ref="applicationService" />
+		<property name="spaceService" ref="spaceService" />
+		<property name="permissionHandler" ref="permissionHandler" />
+		<property name="projectRoleService" ref="projectRoleService" />
+		<property name="securityDelegate" ref="securityDelegate" />
+	</bean>
+	<bean id="templateInitializationHandler" class="org.novaforge.forge.core.organization.internal.handlers.TemplateInitializationHandlerImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="projectDAO" ref="projectDAO" />
+		<!-- Beans reference -->
+		<property name="templateService" ref="templateService" />
+		<property name="templateRoleService" ref="templateRoleService" />
+		<property name="templateNodeService" ref="templateNodeService" />
+		<property name="projectRoleService" ref="projectRoleService" />
+		<property name="spaceService" ref="spaceService" />
+		<property name="applicationService" ref="applicationService" />
+	</bean>
+	<bean id="applicationService" class="org.novaforge.forge.core.organization.internal.services.ApplicationServiceImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="nodeDAO" ref="nodeDAO" />
+		<property name="roleDAO" ref="roleDAO" />
+		<property name="membershipDAO" ref="membershipDAO" />
+		<!-- Beans reference -->
+		<property name="compositionService" ref="compositionService" />
+		<property name="picApplicationHandler" ref="PICApplicationHandler" />
+		<property name="applicationHandler" ref="applicationHandler" />
+		<property name="projectApplicationRequestService" ref="projectApplicationRequestService" />
+		<property name="permissionHandler" ref="permissionHandler" />
+		<property name="pluginsManager" ref="pluginsManager" />
+		<property name="membershipDelegate" ref="membershipDelegate" />
+		<property name="securityDelegate" ref="securityDelegate" />
+	</bean>
+	<bean id="commonUserService" class="org.novaforge.forge.core.organization.internal.services.CommonUserServiceImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="userDAO" ref="userDAO" />
+		<property name="membershipDAO" ref="membershipDAO" />
+		<property name="projectDAO" ref="projectDAO" />
+		<property name="groupService" ref="groupService" />
+		<property name="pluginsManager" ref="pluginsManager" />
+		<property name="validationService" ref="validationService" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+		<!-- Beans reference -->
+		<property name="projectService" ref="projectService" />
+		<property name="mailDelegate" ref="mailDelegate" />
+		<property name="messageDelegate" ref="messageDelegate" />
+		<property name="applicationService" ref="applicationService" />
+		<property name="securityDelegate" ref="securityDelegate" />
+	</bean>
+
+	<bean id="compositionService" class="org.novaforge.forge.core.organization.internal.services.CompositionServiceImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="compositionDAO" ref="compositionDAO" />
+		<property name="projectDAO" ref="projectDAO" />
+		<property name="nodeDAO" ref="nodeDAO" />
+		<property name="pluginArtefactFactory" ref="pluginArtefactFactory" />
+	</bean>
+	<bean id="groupService" class="org.novaforge.forge.core.organization.internal.services.GroupServiceImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="groupDAO" ref="groupDAO" />
+		<property name="projectDAO" ref="projectDAO" />
+		<property name="membershipDAO" ref="membershipDAO" />
+		<property name="validationService" ref="validationService" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+		<property name="pluginsManager" ref="pluginsManager" />
+		<property name="messageDelegate" ref="messageDelegate" />
+		<!-- Beans reference -->
+		<property name="applicationService" ref="applicationService" />
+		<property name="membershipHandler" ref="membershipHandler" />
+	</bean>
+	<bean id="languageService" class="org.novaforge.forge.core.organization.internal.services.LanguageServiceImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="languageDAO" ref="languageDAO" />
+	</bean>
+	<bean id="membershipRequestService" class="org.novaforge.forge.core.organization.internal.services.MembershipRequestServiceImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="projectElementDAO" ref="projectElementDAO" />
+		<property name="projectDAO" ref="projectDAO" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="membershipDAO" ref="membershipDAO" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+		<!-- Beans reference -->
+		<property name="membershipService" ref="membershipService" />
+		<property name="mailDelegate" ref="mailDelegate" />
+	</bean>
+	<bean id="membershipService" class="org.novaforge.forge.core.organization.internal.services.MembershipServiceImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="userDAO" ref="userDAO" />
+		<property name="projectDAO" ref="projectDAO" />
+		<property name="membershipDAO" ref="membershipDAO" />
+		<property name="roleDAO" ref="roleDAO" />
+		<property name="groupDAO" ref="groupDAO" />
+		<!-- Beans reference -->
+		<property name="applicationService" ref="applicationService" />
+		<property name="membershipHandler" ref="membershipHandler" />
+	</bean>
+	<bean id="organizationService" class="org.novaforge.forge.core.organization.internal.services.OrganizationServiceImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="organizationDAO" ref="organizationDAO" />
+	</bean>
+	<bean id="projectApplicationRequestService" class="org.novaforge.forge.core.organization.internal.services.ProjectApplicationRequestServiceImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="mailDelegate" ref="mailDelegate" />
+		<property name="projectApplicationRequestDAO" ref="projectApplicationRequestDAO" />
+		<property name="projectDAO" ref="projectDAO" />
+		<property name="nodeDAO" ref="nodeDAO" />
+		<!-- Beans reference -->
+		<property name="applicationHandler" ref="applicationHandler" />
+		<property name="picApplicationHandler" ref="PICApplicationHandler" />
+	</bean>
+	<bean id="projectRoleService" class="org.novaforge.forge.core.organization.internal.services.ProjectRoleServiceImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="projectDAO" ref="projectDAO" />
+		<property name="roleDAO" ref="roleDAO" />
+		<property name="validationService" ref="validationService" />
+		<property name="membershipDAO" ref="membershipDAO" />
+		<property name="permissionHandler" ref="permissionHandler" />
+		<!-- Beans reference -->
+		<property name="applicationService" ref="applicationService" />
+		<property name="applicationHandler" ref="applicationHandler" />
+		<property name="membershipHandler" ref="membershipHandler" />
+		<property name="sysApplicationHandler" ref="sysApplicationHandler" />
+	</bean>
+	<bean id="projectService" class="org.novaforge.forge.core.organization.internal.services.ProjectServiceImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="projectDAO" ref="projectDAO" />
+		<property name="membershipDAO" ref="membershipDAO" />
+		<property name="groupDAO" ref="groupDAO" />
+		<property name="projectElementDAO" ref="projectElementDAO" />
+		<property name="templateDAO" ref="templateDAO" />
+		<property name="roleDAO" ref="roleDAO" />
+		<property name="userDAO" ref="userDAO" />
+		<property name="membershipDAO" ref="membershipDAO" />
+		<property name="validationService" ref="validationService" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+		<property name="permissionHandler" ref="permissionHandler" />
+		<property name="messageService" ref="messageService" />
+		<!-- Beans reference -->
+		<property name="applicationService" ref="applicationService" />
+		<property name="templateInitializationHandler" ref="templateInitializationHandler" />
+		<property name="messageDelegate" ref="messageDelegate" />
+		<property name="mailDelegate" ref="mailDelegate" />
+		<property name="sysApplicationHandler" ref="sysApplicationHandler" />
+	</bean>
+	<!--  Configuration for Camel JMS Route -->
+	<bean id="jmsConfig" class="org.apache.camel.component.jms.JmsConfiguration">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<argument ref="jmsConfig" />
+	</bean>
+
+	<bean id="projectDeleteRoute" class="org.novaforge.forge.core.organization.internal.route.ProjectDeleteRoute">
+		<property name="projectDAO" ref="projectDAO" />
+		<property name="nodeDAO" ref="nodeDAO" />
+		<property name="roleDAO" ref="roleDAO" />
+		<property name="permissionHandler" ref="permissionHandler" />
+		<property name="membershipDAO" ref="membershipDAO" />
+		<property name="applicationService" ref="applicationService" />
+		<property name="pluginsManager" ref="pluginsManager" />
+	</bean>
+	<bean id="sharedProjectRoute" class="org.novaforge.forge.core.organization.internal.route.SharedProjectRoute">
+		<property name="membershipService" ref="membershipService" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+		<property name="projectElementDAO" ref="projectElementDAO" />
+
+	</bean>
+	<camelContext id="organizationCamelContext" xmlns="http://camel.apache.org/schema/blueprint">
+		<routeBuilder ref="projectDeleteRoute" />
+		<routeBuilder ref="sharedProjectRoute" />
+	</camelContext>
+	<bean id="spaceService" class="org.novaforge.forge.core.organization.internal.services.SpaceServiceImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="projectDAO" ref="projectDAO" />
+		<property name="nodeDAO" ref="nodeDAO" />
+	</bean>
+	<bean id="templateNodeService" class="org.novaforge.forge.core.organization.internal.services.TemplateNodeServiceImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="nodeDAO" ref="nodeDAO" />
+		<property name="templateDAO" ref="templateDAO" />
+	</bean>
+	<bean id="templateRoleService" class="org.novaforge.forge.core.organization.internal.services.TemplateRoleServiceImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="roleDAO" ref="roleDAO" />
+		<property name="templateDAO" ref="templateDAO" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+		<property name="validationService" ref="validationService" />
+	</bean>
+	<bean id="templateService" class="org.novaforge.forge.core.organization.internal.services.TemplateServiceImpl">
+		<tx:transaction method="*" value="Required" />
+		<!-- Services reference -->
+		<property name="projectElementDAO" ref="projectElementDAO" />
+		<property name="templateDAO" ref="templateDAO" />
+		<property name="validationService" ref="validationService" />
+	</bean>
+	<bean id="compositionPresenter" class="org.novaforge.forge.core.organization.internal.presenter.CompositionPresenterImpl">
+		<!-- Beans reference -->
+		<property name="compositionService" ref="compositionService" />
+		<property name="securityDelegate" ref="securityDelegate" />
+	</bean>
+	<bean id="languagePresenter" class="org.novaforge.forge.core.organization.internal.presenter.LanguagePresenterImpl">
+		<!-- Beans reference -->
+		<property name="languageService" ref="languageService" />
+	</bean>
+	<bean id="membershipRequestPresenter" class="org.novaforge.forge.core.organization.internal.presenter.MembershipRequestPresenterImpl">
+		<!-- Beans reference -->
+		<property name="membershipRequestService" ref="membershipRequestService" />
+		<property name="securityDelegate" ref="securityDelegate" />
+	</bean>
+	<bean id="organizationPresenter" class="org.novaforge.forge.core.organization.internal.presenter.OrganizationPresenterImpl">
+		<!-- Beans reference -->
+		<property name="organizationService" ref="organizationService" />
+	</bean>
+	<bean id="projectApplicationRequestPresenter"
+		class="org.novaforge.forge.core.organization.internal.presenter.ProjectApplicationRequestPresenterImpl">
+		<!-- Beans reference -->
+		<property name="projectApplicationRequestService" ref="projectApplicationRequestService" />
+		<property name="securityDelegate" ref="securityDelegate" />
+	</bean>
+	<bean id="projectRolePresenter" class="org.novaforge.forge.core.organization.internal.presenter.ProjectRolePresenterImpl">
+		<!-- Beans reference -->
+		<property name="membershipService" ref="membershipService" />
+		<property name="projectRoleService" ref="projectRoleService" />
+		<property name="securityDelegate" ref="securityDelegate" />
+	</bean>
+	
+	<bean id="projectPresenter" class="org.novaforge.forge.core.organization.internal.presenter.ProjectPresenterImpl">
+		<!-- Beans reference -->
+		<property name="projectService" ref="projectService" />
+		<property name="securityDelegate" ref="securityDelegate" />
+		<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+	</bean>
+	
+	
+	
+	<bean id="spacePresenter" class="org.novaforge.forge.core.organization.internal.presenter.SpacePresenterImpl">
+		<!-- Beans reference -->
+		<property name="spaceService" ref="spaceService" />
+		<property name="securityDelegate" ref="securityDelegate" />
+	</bean>
+	<bean id="templateNodePresenter" class="org.novaforge.forge.core.organization.internal.presenter.TemplateNodePresenterImpl">
+		<!-- Beans reference -->
+		<property name="templateNodeService" ref="templateNodeService" />
+	</bean>
+	<bean id="templatePresenter" class="org.novaforge.forge.core.organization.internal.presenter.TemplatePresenterImpl">
+		<!-- Beans reference -->
+		<property name="templateService" ref="templateService" />
+	</bean>
+	<bean id="templateRolePresenter" class="org.novaforge.forge.core.organization.internal.presenter.TemplateRolePresenterImpl">
+		<!-- Beans reference -->
+		<property name="templateRoleService" ref="templateRoleService" />
+	</bean>
+	<bean id="applicationPresenter" class="org.novaforge.forge.core.organization.internal.presenter.ApplicationPresenterImpl">
+		<!-- Beans reference -->
+		<property name="applicationService" ref="applicationService" />
+		<property name="securityDelegate" ref="securityDelegate" />
+	</bean>
+	
+<!-- Services -->
+	<service ref="applicationHandler" interface="org.novaforge.forge.core.organization.handlers.ApplicationHandler" />
+	<service ref="sysApplicationHandler" interface="org.novaforge.forge.core.organization.handlers.SysApplicationHandler" />
+	<service ref="membershipHandler" interface="org.novaforge.forge.core.organization.handlers.MembershipHandler" />
+	<service ref="PICApplicationHandler" interface="org.novaforge.forge.core.organization.handlers.PICApplicationHandler" />
+	<service ref="templateInitializationHandler" interface="org.novaforge.forge.core.organization.services.TemplateInitializationHandler" />
+	<service ref="applicationService" interface="org.novaforge.forge.core.organization.services.ApplicationService" />
+	<service ref="commonUserService" interface="org.novaforge.forge.core.organization.services.CommonUserService" />
+	<service ref="compositionService" interface="org.novaforge.forge.core.organization.services.CompositionService" />
+	<service ref="groupService" interface="org.novaforge.forge.core.organization.services.GroupService" />
+	<service ref="languageService" interface="org.novaforge.forge.core.organization.services.LanguageService" />
+	<service ref="membershipRequestService" interface="org.novaforge.forge.core.organization.services.MembershipRequestService" />
+	<service ref="membershipService" interface="org.novaforge.forge.core.organization.services.MembershipService" />
+	<service ref="organizationService" interface="org.novaforge.forge.core.organization.services.OrganizationService" />
+	<service ref="projectApplicationRequestService" interface="org.novaforge.forge.core.organization.services.ProjectApplicationRequestService" />
+	<service ref="projectRoleService" interface="org.novaforge.forge.core.organization.services.ProjectRoleService" />
+	<service ref="projectService" interface="org.novaforge.forge.core.organization.services.ProjectService" />
+	<service ref="spaceService" interface="org.novaforge.forge.core.organization.services.SpaceService" />
+	<service ref="templateNodeService" interface="org.novaforge.forge.core.organization.services.TemplateNodeService" />
+	<service ref="templateRoleService" interface="org.novaforge.forge.core.organization.services.TemplateRoleService" />
+	<service ref="templateService" interface="org.novaforge.forge.core.organization.services.TemplateService" />
+	<service ref="compositionPresenter" interface="org.novaforge.forge.core.organization.presenters.CompositionPresenter" />
+	<service ref="languagePresenter" interface="org.novaforge.forge.core.organization.presenters.LanguagePresenter" />
+	<service ref="membershipRequestPresenter" interface="org.novaforge.forge.core.organization.presenters.MembershipRequestPresenter" />
+	<service ref="organizationPresenter" interface="org.novaforge.forge.core.organization.presenters.OrganizationPresenter" />
+	<service ref="projectApplicationRequestPresenter" interface="org.novaforge.forge.core.organization.presenters.ProjectApplicationRequestPresenter" />
+	<service ref="projectRolePresenter" interface="org.novaforge.forge.core.organization.presenters.ProjectRolePresenter" />
+	<service ref="spacePresenter" interface="org.novaforge.forge.core.organization.presenters.SpacePresenter" />
+	<service ref="templateNodePresenter" interface="org.novaforge.forge.core.organization.presenters.TemplateNodePresenter" />
+	<service ref="templatePresenter" interface="org.novaforge.forge.core.organization.presenters.TemplatePresenter" />
+	<service ref="templateRolePresenter" interface="org.novaforge.forge.core.organization.presenters.TemplateRolePresenter" />
+	<service ref="applicationPresenter" interface="org.novaforge.forge.core.organization.presenters.ApplicationPresenter" />
+
+</blueprint>

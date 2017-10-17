@@ -1,0 +1,172 @@
+<?xml version="1.0"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<chapter version="5.0" xmlns="http://docbook.org/ns/docbook"
+				 xml:lang="en">
+
+	<title>Discovering NovaForgeTM</title>
+
+	<sect2>
+		<title>Authentication</title>
+
+		<para>To use the forge, identify yourself by entering your login and
+			password.</para>
+
+		<figure>
+			<title>Authentication</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="02-00-login.png"
+						width="450px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+
+	</sect2>
+
+	<sect2>
+		<title>Navigation</title>
+
+		<para>Novaforge allows navigation on 3 levels: left menu, tabs
+			(projects) and sub-tabs (applications).</para>
+
+		<para>The content is always displayed in the central area.</para>
+
+		<figure>
+			<title>Content</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="02-01-intro.png"
+						width="450px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+
+	</sect2>
+
+	<sect2>
+		<title>Projects menu</title>
+
+		<para>Each tab represents an open project. To navigate, click a tab.
+		</para>
+
+		<figure>
+			<title>Projects tabs</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="02-015-ongletsProjets.png"
+						width="450px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+
+	</sect2>
+
+	<sect2>
+		<title>Left menu</title>
+
+		<para>The left menu contains the drop-down list of available
+			applications. To open an application, click its name.</para>
+
+		<figure>
+			<title>Left menu</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="02-02-menuGauche.png"
+						width="450px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+
+	</sect2>
+
+	<sect2>
+		<title>Applications</title>
+
+		<para>With the Novaforge interface, several tabs (applications) can be
+			open at the same time. To navigate, click a tab.</para>
+
+		<figure>
+			<title>Applications tab</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="02-03-menuHaut.png"
+						width="450px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+
+	</sect2>
+
+
+	<sect2>
+		<title>Projects quick menu</title>
+
+		<para>You can change project at any time. The projects menu lists all
+			available projects.</para>
+
+		<figure>
+			<title>Projects quick menu</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="02-04-menuProjets.png"
+						width="450px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+
+	</sect2>
+
+	<sect2>
+		<title>Account menu</title>
+
+		<para>Use the account menu to access the account parameters and online
+			help and to log off.</para>
+
+		<figure>
+			<title>Account menu</title>
+
+			<mediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="02-05-menuCompte.png"
+						width="450px" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+
+	</sect2>
+</chapter>
+

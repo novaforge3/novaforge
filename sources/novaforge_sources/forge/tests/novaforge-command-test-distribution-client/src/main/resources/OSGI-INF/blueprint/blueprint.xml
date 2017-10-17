@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  * Copyright (c) 2011-2015, BULL SAS, NovaForge Version 3 and above.
+  *
+  * This file is free software: you may redistribute and/or modify it under
+  * the terms of the GNU Affero General Public License as published by the
+  * Free Software Foundation, version 3 of the License.
+  *
+  * This file is distributed in the hope that it will be useful,
+  * but WITHOUT ANY WARRANTY; without even the implied warranty
+  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  * See the GNU Affero General Public License for more details.
+  * You should have received a copy of the GNU Affero General Public License
+  * along with this program. If not, see http://www.gnu.org/licenses.
+  *
+  * Additional permission under GNU AGPL version 3 (AGPL-3.0) section 7.
+  *
+  * If you modify this Program, or any covered work, by linking or combining
+  * it with libraries listed in COPYRIGHT file at the top-level directory of
+  * this distribution (or a modified version of that libraries), containing parts
+  * covered by the terms of licenses cited in the COPYRIGHT file, the licensors
+  * of this Program grant you additional permission to convey the resulting work.
+  -->
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	default-activation="eager">
+
+	<!-- Configuration for Karaf Forge distribution Commands -->
+	<reference id="forgeDistributionService"
+		interface="org.novaforge.forge.distribution.register.services.ForgeDistributionService" />
+	<reference id="userService"
+		interface="org.novaforge.forge.core.organization.services.UserService" />
+	<reference id="projectService"
+		interface="org.novaforge.forge.core.organization.services.ProjectService" />
+	<reference id="membershipService"
+		interface="org.novaforge.forge.core.organization.services.MembershipService" />
+	<reference id="forgeIdentificationService"
+		interface="org.novaforge.forge.core.configuration.services.ForgeIdentificationService" />
+	<reference id="forgeConfigurationService"
+		interface="org.novaforge.forge.core.configuration.services.ForgeConfigurationService" />
+	<reference id="authentificationService"
+		interface="org.novaforge.forge.core.security.authentification.AuthentificationService" />
+	<reference id="applicationService"
+		interface="org.novaforge.forge.core.organization.services.ApplicationService" />
+	<reference id="pluginsManager"
+		interface="org.novaforge.forge.core.plugins.services.PluginsManager" />
+	<reference id="pluginDataClient"
+		interface="org.novaforge.forge.distribution.reference.client.PluginDataClient" />
+
+	<!-- for templates -->
+	<reference id="templateService"
+		interface="org.novaforge.forge.core.organization.services.TemplateService" />
+	<reference id="organizationService"
+		interface="org.novaforge.forge.core.organization.services.OrganizationService" />
+
+
+	<!-- for reports -->
+	<reference id="forgeReportingClient"
+		interface="org.novaforge.forge.distribution.reporting.client.ForgeReportingClient" />
+
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.SubscribeForgeCommand">
+				<property name="forgeDistributionService" ref="forgeDistributionService" />
+				<property name="forgeIdentificationService" ref="forgeIdentificationService" />
+			</action>
+		</command>
+	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.UnSubscribeForgeCommand">
+				<property name="forgeDistributionService" ref="forgeDistributionService" />
+				<property name="forgeIdentificationService" ref="forgeIdentificationService" />
+			</action>
+		</command>
+	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.CheckReceivedRequestForgeCommand">
+				<property name="forgeDistributionService" ref="forgeDistributionService" />
+				<property name="forgeIdentificationService" ref="forgeIdentificationService" />
+			</action>
+		</command>
+	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.RefuseSubscriptionRequestCommand">
+				<property name="forgeDistributionService" ref="forgeDistributionService" />
+				<property name="forgeIdentificationService" ref="forgeIdentificationService" />
+			</action>
+		</command>
+	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.ValidateSubscriptionRequestCommand">
+				<property name="forgeDistributionService" ref="forgeDistributionService" />
+				<property name="forgeIdentificationService" ref="forgeIdentificationService" />
+			</action>
+		</command>
+	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.ValidateUnSubscriptionRequestCommand">
+				<property name="forgeDistributionService" ref="forgeDistributionService" />
+				<property name="forgeIdentificationService" ref="forgeIdentificationService" />
+			</action>
+		</command>
+	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.AddFolderAlfrescoReferentielCommand">
+				<property name="authentificationService" ref="authentificationService" />
+				<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+				<property name="forgeIdentificationService" ref="forgeIdentificationService" />
+				<property name="userService" ref="userService" />
+				<property name="applicationService" ref="applicationService" />
+				<property name="pluginsManager" ref="pluginsManager" />
+				<property name="pluginDataClient" ref="pluginDataClient" />
+			</action>
+		</command>
+	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.DeleteFolderAlfrescoReferentielCommand">
+				<property name="authentificationService" ref="authentificationService" />
+				<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+				<property name="forgeIdentificationService" ref="forgeIdentificationService" />
+				<property name="userService" ref="userService" />
+				<property name="applicationService" ref="applicationService" />
+				<property name="pluginsManager" ref="pluginsManager" />
+				<property name="pluginDataClient" ref="pluginDataClient" />
+			</action>
+		</command>
+	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.FetchFolderAlfrescoReferentielCommand">
+				<property name="authentificationService" ref="authentificationService" />
+				<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+				<property name="forgeIdentificationService" ref="forgeIdentificationService" />
+				<property name="userService" ref="userService" />
+				<property name="applicationService" ref="applicationService" />
+				<property name="pluginsManager" ref="pluginsManager" />
+				<property name="pluginDataClient" ref="pluginDataClient" />
+			</action>
+		</command>
+	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.AddWikiReferentielCommand">
+				<property name="authentificationService" ref="authentificationService" />
+				<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+				<property name="forgeIdentificationService" ref="forgeIdentificationService" />
+				<property name="userService" ref="userService" />
+				<property name="projectService" ref="projectService" />
+				<property name="applicationService" ref="applicationService" />
+				<property name="pluginsManager" ref="pluginsManager" />
+				<property name="pluginDataClient" ref="pluginDataClient" />
+			</action>
+		</command>
+	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.FetchWikiReferentielCommand">
+				<property name="authentificationService" ref="authentificationService" />
+				<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+				<property name="forgeIdentificationService" ref="forgeIdentificationService" />
+				<property name="userService" ref="userService" />
+				<property name="projectService" ref="projectService" />
+				<property name="applicationService" ref="applicationService" />
+				<property name="pluginsManager" ref="pluginsManager" />
+				<property name="pluginDataClient" ref="pluginDataClient" />
+			</action>
+		</command>
+	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.DeleteWikiReferentielCommand">
+				<property name="authentificationService" ref="authentificationService" />
+				<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+				<property name="forgeIdentificationService" ref="forgeIdentificationService" />
+				<property name="userService" ref="userService" />
+				<property name="projectService" ref="projectService" />
+				<property name="applicationService" ref="applicationService" />
+				<property name="pluginsManager" ref="pluginsManager" />
+				<property name="pluginDataClient" ref="pluginDataClient" />
+			</action>
+		</command>
+	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.FetchRefTemplateCommand">
+				<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+				<property name="authentificationService" ref="authentificationService" />
+				<property name="forgeIdentificationService" ref="forgeIdentificationService" />
+				<property name="userService" ref="userService" />
+				<property name="templateService" ref="templateService" />
+			</action>
+		</command>
+	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.CreateProjectWithRefTemplateCommand">
+				<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+				<property name="authentificationService" ref="authentificationService" />
+				<property name="forgeIdentificationService" ref="forgeIdentificationService" />
+				<property name="userService" ref="userService" />
+				<property name="projectService" ref="projectService" />
+				<property name="organizationService" ref="organizationService" />
+			</action>
+		</command>
+	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.DeleteRefTemplateCommand">
+				<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+				<property name="authentificationService" ref="authentificationService" />
+				<property name="userService" ref="userService" />
+				<property name="templateService" ref="templateService" />
+			</action>
+		</command>
+	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.ReportingForgeCommand">
+				<property name="forgeReportingClient" ref="forgeReportingClient" />
+				<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+				<property name="authentificationService" ref="authentificationService" />
+				<property name="forgeIdentificationService" ref="forgeIdentificationService" />
+				<property name="userService" ref="userService" />
+			</action>
+		</command>
+	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.ReportingOrganizationCommand">
+				<property name="forgeReportingClient" ref="forgeReportingClient" />
+				<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+				<property name="authentificationService" ref="authentificationService" />
+				<property name="forgeIdentificationService" ref="forgeIdentificationService" />
+				<property name="userService" ref="userService" />
+			</action>
+		</command>
+	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.ReportingProfileCommand">
+				<property name="forgeReportingClient" ref="forgeReportingClient" />
+				<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+				<property name="authentificationService" ref="authentificationService" />
+				<property name="forgeIdentificationService" ref="forgeIdentificationService" />
+				<property name="userService" ref="userService" />
+			</action>
+		</command>
+	</command-bundle>
+	<!-- to check reporting -->
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.ReportingCheckProjectCommand">
+				<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+				<property name="authentificationService" ref="authentificationService" />
+				<property name="userService" ref="userService" />
+				<property name="projectService" ref="projectService" />
+				<property name="membershipService" ref="membershipService" />
+			</action>
+		</command>
+	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.1.0">
+		<command>
+			<action
+				class="org.novaforge.forge.commands.distribution.ReportingCheckAccountCommand">
+				<property name="forgeConfigurationService" ref="forgeConfigurationService" />
+				<property name="authentificationService" ref="authentificationService" />
+				<property name="userService" ref="userService" />
+				<property name="projectService" ref="projectService" />
+				<property name="membershipService" ref="membershipService" />
+			</action>
+		</command>
+	</command-bundle>
+</blueprint>
