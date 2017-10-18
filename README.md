@@ -377,6 +377,18 @@ main:smtp.noReply=_Email_address_for_No_Reply_mails_
 main:novaforge-connector-forge.adminEmail=_Email_address_for_Forge_Administrator_
 ```
 
+Be sure to have correctly defined your servers int the file `/etc/hosts`.
+
+Example :
+```sh
+[root@novatest livraison]# more /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+10.0.2.15  novatest
+192.168.56.2 novamail
+```
+
 ### Deploy NovaForge
 Run the following command :
 ```sh
