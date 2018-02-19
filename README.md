@@ -269,7 +269,13 @@ java version "1.8.0_112"
 Java(TM) SE Runtime Environment (build 1.8.0_112-b15)
 Java HotSpot(TM) 64-Bit Server VM (build 25.112-b15, mixed mode)
 ```
-
+Check that the native2ascii plugin version is 1.0-beta-1 in `/datas/sources/novaforge_sources/products/release/3.8.0/data/novaforge-portal/novaforge-portal-distrib/pom.xml`
+```sh
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>native2ascii-maven-plugin</artifactId>
+      <version>1.0-beta-1</version>
+```
+### Build Maven Java 8 artifacts
 ```sh
 cd /datas/sources/novaforge_sources/products/release
 mvn install
